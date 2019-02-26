@@ -11,7 +11,6 @@ import java.util.List;
  */
 public interface GunInforHander extends GunH {
     /**
-     *
      * @param l GunBootServer.GunNetHander
      * @param t GunBootServer.GunNetHander.EventType
      * @param c GunBootServer.C3B4DTO
@@ -20,7 +19,7 @@ public interface GunInforHander extends GunH {
 
     /**
      *
-     * @return
+     * @return GunInforHander
      */
     static GunInforHander getAsyncHander() {
         return new GunAsyncGunInforHander();
@@ -28,7 +27,7 @@ public interface GunInforHander extends GunH {
 
     /**
      *
-     * @return
+     * @return GunInforHander
      */
     static GunInforHander getSyncHander() {
         return new GunSyncGunInforHander();

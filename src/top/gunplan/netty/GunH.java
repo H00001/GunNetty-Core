@@ -1,4 +1,6 @@
 package top.gunplan.netty;
 
-public interface GunH {
-}
+/**
+ * @author dosdrtt
+ */
+public interface GunH { }

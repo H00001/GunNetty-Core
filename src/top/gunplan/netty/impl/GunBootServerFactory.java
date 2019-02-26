@@ -9,6 +9,6 @@ import top.gunplan.netty.GunBootServer;
 public class GunBootServerFactory {
     public static GunBootServer getInstance(int port)
     {
-        return new GunBootServerimpl(port);
+        return new GunBootServerImpl(port);
     }
 }

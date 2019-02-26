@@ -1,5 +1,8 @@
 package top.gunplan.netty;
 
+/**
+ * @author dosdrtt
+ */
 public class GunException extends RuntimeException {
     private static final long serialVersionUID = 8399807092074881988L;
 

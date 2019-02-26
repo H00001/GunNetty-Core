@@ -3,10 +3,12 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunInforHander;
-
 import java.util.List;
 
-
+/**
+ *
+ * @author dosdrtt
+ */
 public class GunSyncGunInforHander implements GunInforHander {
 
     public GunSyncGunInforHander() {

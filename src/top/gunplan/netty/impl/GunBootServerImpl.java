@@ -5,98 +5,119 @@ import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunH;
 import top.gunplan.netty.GunInforHander;
+import top.gunplan.netty.anno.Order;
 
 import java.io.IOException;
+
+import java.lang.annotation.Annotation;
 import java.net.InetSocketAddress;
+
 import java.nio.ByteBuffer;
-import java.nio.channels.*;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
+import java.nio.channels.ServerSocketChannel;
+import java.nio.channels.SocketChannel;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.concurrent.locks.ReentrantReadWriteLock;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.Executor;
 import java.util.concurrent.locks.ReadWriteLock;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+
 
 /**
  * @author Gunplan
- * @version 0.0.0.3
- * @apiNote 0.0.0.2
- * @since 0.0.0.3
+ * @version 0.0.0.4
+ * @apiNote 0.0.0.4
+ * @since 0.0.0.4
  */
 
-final class GunBootServerimpl implements GunBootServer {
+final class GunBootServerImpl implements GunBootServer {
 
     private ReadWriteLock var3 = new ReentrantReadWriteLock();
-
-    private volatile Executor var1 = null;
-
-    private volatile Executor var2 = null;
 
     private GunInforHander gih = null;
 
     private final int var3315;
 
+    private boolean runnable = false;
+
     private Selector var2c;
 
-    private List<GunNetHander> var41 = new ArrayList<>(1);
+    private List<GunNetHander> var41 = new LinkedList<>();
 
-    private GunBootServerimpl() {
+    private GunBootServerImpl() {
         this(8888);
     }
 
     private void inforHander(GunNetHander.EventType var6, C3B4DTO var7) {
+
         var3.readLock().lock();
         this.gih.doInformate(this.var41, var6, var7);
         var3.readLock().unlock();
     }
 
-    GunBootServerimpl(int var3315) {
+    GunBootServerImpl(int var3315) {
         this.var3315 = var3315;
     }
 
+
     @Override
-    public GunBootServer group(@NotNull Executor var8, @NotNull Executor var9) {
-        if (this.var1 == null && this.var2 == null) {
-            this.var1 = var8;
-            this.var2 = var9;
+    public synchronized GunBootServer infor(GunNetHander hander) {
+        if (hander != null) {
+            var3.writeLock().lock();
+            this.getAnnoAndInsert(hander);
+            var3.writeLock().unlock();
+        } else {
+            throw new GunException("GunNetHander is null");
         }
         return this;
     }
 
-    @Override
-    public synchronized GunBootServer infor(GunNetHander hander) {
-        var3.writeLock().lock();
-        var41.add(hander);
-        var3.writeLock().unlock();
-        return this;
-    }
 
-
-    private void toDealConnection(ServerSocketChannel serverChannel, SelectionKey sk) throws IOException {
+    private void toDealConnection(@NotNull ServerSocketChannel serverChannel, @NotNull SelectionKey sk) throws IOException {
         SocketChannel var29;
         ByteBuffer var102;
         if (sk.isAcceptable()) {
-            var29 = serverChannel.accept();
-            var29.configureBlocking(false).register(this.var2c, SelectionKey.OP_READ);
-            this.inforHander(GunNetHander.EventType.CONNRCTED, new C3B4DTO(var29, null));
+            {
+                var29 = serverChannel.accept();
+                var29.configureBlocking(false).register(this.var2c, SelectionKey.OP_READ);
+                this.inforHander(GunNetHander.EventType.CONNRCTED, new C3B4DTO(var29, null));
+            }
         } else if (sk.isReadable()) {
-            var29 = (SocketChannel) sk.channel();
-            var102 = ByteBuffer.allocate(1024);
+            {
+                var29 = (SocketChannel) sk.channel();
+                var102 = ByteBuffer.allocate(1024);
+            }
             int readlen = 0;
             try {
-                readlen = ((SocketChannel) sk.channel()).read(var102);
+                //var29.
+                readlen = var29.read(var102);
             } catch (Exception exp) {
-                return;
+                this.inforHander(GunNetHander.EventType.EXECPTION, null);
             }
+
             if (readlen == -1) {
-                sk.channel().close();
-                sk.cancel();
-                this.inforHander(GunNetHander.EventType.CLOSEED, null);
+                {
+                    sk.channel().close();
+                    sk.cancel();
+                    this.inforHander(GunNetHander.EventType.CLOSEED, null);
+                }
             } else {
                 this.inforHander(GunNetHander.EventType.RECEIVED, new C3B4DTO(var29, var102));
             }
         }
 
+    }
+
+    private void getAnnoAndInsert(GunBootServer.GunNetHander hander)
+    {
+        for (Annotation ano : hander.getClass().getAnnotations()) {
+            if (ano.annotationType() == Order.class) {
+                var41.add(((Order) ano).index(), hander);
+            }
+        }
     }
 
     @Override
@@ -105,7 +126,7 @@ final class GunBootServerimpl implements GunBootServer {
         if (clazz != null) {
             GunH h = clazz.newInstance();
             if (h instanceof GunBootServer.GunNetHander) {
-                this.var41.add((GunBootServer.GunNetHander) h);
+               getAnnoAndInsert((GunNetHander) h);
             } else if (h instanceof GunInforHander) {
                 this.gih = (GunInforHander) h;
             }
@@ -113,9 +134,15 @@ final class GunBootServerimpl implements GunBootServer {
         this.var3.writeLock().unlock();
     }
 
+    private boolean initCheck() {
+        return this.gih != null && this.var41.size() != 0 && !runnable;
+    }
 
     @Override
-    public void sync() throws Exception {
+    public synchronized void sync() throws IOException {
+        if (!this.initCheck()) {
+            throw new GunException("hander error or has been running");
+        }
         ServerSocketChannel var57;
         try {
             var2c = Selector.open();
@@ -125,7 +152,7 @@ final class GunBootServerimpl implements GunBootServer {
         } catch (IOException e) {
             throw new GunException(e);
         }
-        for (; var2c.select() > 0; ) {
+        while (var2c.select() > 0) {
             Iterator keyIterator = var2c.selectedKeys().iterator();
             while (keyIterator.hasNext()) {
                 SelectionKey sk = (SelectionKey) keyIterator.next();
@@ -140,9 +167,13 @@ final class GunBootServerimpl implements GunBootServer {
 
     @Override
     public void setInforHander(GunInforHander hander) {
-        this.var3.writeLock().lock();
-        this.gih = hander;
-        this.var3.writeLock().unlock();
+        if (hander != null) {
+            this.var3.writeLock().lock();
+            this.gih = hander;
+            this.var3.writeLock().unlock();
+        } else {
+            throw new GunException("GunInforHander is null");
+        }
     }
 
 

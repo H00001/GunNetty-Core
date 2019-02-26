@@ -5,7 +5,7 @@ import java.io.PrintStream;
 /**
  * @author dosdrtt
  */
-public abstract class GunLog {
+public abstract class BaseGunLog {
     private static final int BASELEVEL = 1;
     private static volatile int level = 4;
     private static volatile PrintStream stdoutput = System.out;
@@ -13,30 +13,30 @@ public abstract class GunLog {
 
 
     public static void info(String s) {
-        if (GunLog.level <= (BASELEVEL)) {
-            GunLog.stdoutput.println("[LOG][INFOR] "+s.replace("\n","\n\t")+"");
+        if (BaseGunLog.level <= (BASELEVEL)) {
+            BaseGunLog.stdoutput.println("[LOG][INFOR] "+s.replace("\n","\n\t")+"");
         }
     }
 
     public static void debug(String s) {
-        if (GunLog.level <= (BASELEVEL<<1)) {
-            GunLog.stdoutput.println("[LOG][DEBUG] "+s+"");
+        if (BaseGunLog.level <= (BASELEVEL<<1)) {
+            BaseGunLog.stdoutput.println("[LOG][DEBUG] "+s+"");
         }
     }
 
     public static void error(String s) {
-        if (GunLog.level <= (BASELEVEL<<2)) {
-            GunLog.erroutput.println("[LOG][ERROR] "+s+"");
+        if (BaseGunLog.level <= (BASELEVEL<<2)) {
+            BaseGunLog.erroutput.println("[LOG][ERROR] "+s+"");
         }
     }
 
     public static void urgency(String s) {
-        if (GunLog.level <= (BASELEVEL<<3)) {
-            GunLog.erroutput.println("[LOG][URGEN] "+"");
+        if (BaseGunLog.level <= (BASELEVEL<<3)) {
+            BaseGunLog.erroutput.println("[LOG][URGEN] "+"");
         }
     }
 
     public static void setLevel(int level) {
-        GunLog.level = level;
+        BaseGunLog.level = level;
     }
 }

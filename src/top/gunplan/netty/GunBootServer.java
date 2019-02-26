@@ -1,12 +1,13 @@
 package top.gunplan.netty;
 
+
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
-import java.util.concurrent.Executor;
+
 
 /**
  * @author dosdrtt
@@ -15,10 +16,10 @@ public interface GunBootServer {
 
     /**
      * start sync waitting
-     * @throws Exception
+     * @throws IOException syncing's exception
      */
 
-    void sync() throws Exception;
+    void sync() throws IOException;
 
     /**
      *
@@ -33,14 +34,9 @@ public interface GunBootServer {
      * @return this
      */
 
-    GunBootServer infor(GunBootServer.GunNetHander hander);
+    GunBootServer infor(@NotNull GunBootServer.GunNetHander hander);
 
-    /**
-     * @param conn A ThreadPool
-     * @param deal A ThreadPool
-     * @return this
-     */
-    GunBootServer group(@NotNull Executor conn, @NotNull Executor deal);
+
 
 
     /**
@@ -51,6 +47,9 @@ public interface GunBootServer {
      */
     void inintObject(@NotNull Class<? extends GunH> clazz) throws Exception;
 
+    /**
+     *
+     */
     class C3B4DTO {
         @Override
         public String toString() {
@@ -78,6 +77,9 @@ public interface GunBootServer {
         void dealevent(EventType t, C3B4DTO m) throws Exception;
 
         enum EventType {
+            /**
+             *
+             */
             // private int value;
 
 
