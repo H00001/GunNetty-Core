@@ -4,59 +4,51 @@ import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunH;
-import top.gunplan.netty.GunInforHander;
-import top.gunplan.netty.anno.Order;
 
 import java.io.IOException;
-
-import java.lang.annotation.Annotation;
 import java.net.InetSocketAddress;
-
-import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.concurrent.locks.ReentrantReadWriteLock;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.concurrent.locks.ReadWriteLock;
+import java.util.concurrent.Executor;
 
 
 /**
  * @author Gunplan
- * @version 0.0.0.4
+ * @version 0.0.0.5
  * @apiNote 0.0.0.4
  * @since 0.0.0.4
  */
 
 final class GunBootServerImpl implements GunBootServer {
 
-    private ReadWriteLock var3 = new ReentrantReadWriteLock();
-
-    private GunInforHander gih = null;
-
     private final int var3315;
 
-    private boolean runnable = false;
+    private volatile boolean runnable = false;
 
     private Selector var2c;
 
-    private List<GunNetHander> var41 = new LinkedList<>();
+    private Executor acceptExector;
+
+    private Executor requestExector;
+
+    private volatile GunNetHander dealhander = null;
+
+    private final List<GunNettyFilter> filters = new CopyOnWriteArrayList<>();
 
     private GunBootServerImpl() {
         this(8888);
     }
 
-    private void inforHander(GunNetHander.EventType var6, C3B4DTO var7) {
-
-        var3.readLock().lock();
-        this.gih.doInformate(this.var41, var6, var7);
-        var3.readLock().unlock();
+    @Override
+    public boolean getRunnable() {
+        return this.runnable;
     }
+
 
     GunBootServerImpl(int var3315) {
         this.var3315 = var3315;
@@ -66,76 +58,46 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public synchronized GunBootServer infor(GunNetHander hander) {
         if (hander != null) {
-            var3.writeLock().lock();
             this.getAnnoAndInsert(hander);
-            var3.writeLock().unlock();
         } else {
             throw new GunException("GunNetHander is null");
         }
         return this;
     }
 
-
-    private void toDealConnection(@NotNull ServerSocketChannel serverChannel, @NotNull SelectionKey sk) throws IOException {
-        SocketChannel var29;
-        ByteBuffer var102;
-        if (sk.isAcceptable()) {
-            {
-                var29 = serverChannel.accept();
-                var29.configureBlocking(false).register(this.var2c, SelectionKey.OP_READ);
-                this.inforHander(GunNetHander.EventType.CONNRCTED, new C3B4DTO(var29, null));
-            }
-        } else if (sk.isReadable()) {
-            {
-                var29 = (SocketChannel) sk.channel();
-                var102 = ByteBuffer.allocate(1024);
-            }
-            int readlen = 0;
-            try {
-                //var29.
-                readlen = var29.read(var102);
-            } catch (Exception exp) {
-                this.inforHander(GunNetHander.EventType.EXECPTION, null);
-            }
-
-            if (readlen == -1) {
-                {
-                    sk.channel().close();
-                    sk.cancel();
-                    this.inforHander(GunNetHander.EventType.CLOSEED, null);
-                }
-            } else {
-                this.inforHander(GunNetHander.EventType.RECEIVED, new C3B4DTO(var29, var102));
-            }
-        }
-
+    @Override
+    public void addFilter(GunNettyFilter filter) {
+        this.filters.add(filter);
     }
 
-    private void getAnnoAndInsert(GunBootServer.GunNetHander hander)
-    {
-        for (Annotation ano : hander.getClass().getAnnotations()) {
-            if (ano.annotationType() == Order.class) {
-                var41.add(((Order) ano).index(), hander);
-            }
+
+    private void toDealConnection(@NotNull SelectionKey sk) throws IOException {
+        if (sk.isAcceptable()) {
+            SocketChannel socketChannel = ((ServerSocketChannel) sk.channel()).accept();
+            socketChannel.configureBlocking(false).register(this.var2c, SelectionKey.OP_READ);
+            this.acceptExector.execute(new GunAcceptWorker(dealhander, socketChannel));
+        } else if (sk.isReadable()) {
+            this.acceptExector.execute(new GunRequestWorker(filters, dealhander, (SocketChannel) sk.channel()));
+            sk.cancel();
         }
+    }
+
+    private void getAnnoAndInsert(GunBootServer.GunNetHander hander) {
+        this.dealhander = hander;
     }
 
     @Override
     public void inintObject(Class<? extends GunH> clazz) throws IllegalAccessException, InstantiationException {
-        this.var3.writeLock().lock();
         if (clazz != null) {
             GunH h = clazz.newInstance();
             if (h instanceof GunBootServer.GunNetHander) {
-               getAnnoAndInsert((GunNetHander) h);
-            } else if (h instanceof GunInforHander) {
-                this.gih = (GunInforHander) h;
+                getAnnoAndInsert((GunNetHander) h);
             }
         }
-        this.var3.writeLock().unlock();
     }
 
     private boolean initCheck() {
-        return this.gih != null && this.var41.size() != 0 && !runnable;
+        return this.acceptExector != null && requestExector != null && this.dealhander != null && !runnable;
     }
 
     @Override
@@ -145,35 +107,29 @@ final class GunBootServerImpl implements GunBootServer {
         }
         ServerSocketChannel var57;
         try {
-            var2c = Selector.open();
             var57 = ServerSocketChannel.open();
+            var2c = Selector.open();
             var57.bind(new InetSocketAddress(this.var3315)).configureBlocking(false);
             var57.register(var2c, SelectionKey.OP_ACCEPT);
         } catch (IOException e) {
             throw new GunException(e);
         }
+
         while (var2c.select() > 0) {
             Iterator keyIterator = var2c.selectedKeys().iterator();
             while (keyIterator.hasNext()) {
                 SelectionKey sk = (SelectionKey) keyIterator.next();
-                this.toDealConnection(var57, sk);
+                this.toDealConnection(sk);
                 keyIterator.remove();
-            }
-            if (var2c.selectedKeys().size() != 0) {
-                var2c.selectedKeys().clear();
             }
         }
     }
 
+
     @Override
-    public void setInforHander(GunInforHander hander) {
-        if (hander != null) {
-            this.var3.writeLock().lock();
-            this.gih = hander;
-            this.var3.writeLock().unlock();
-        } else {
-            throw new GunException("GunInforHander is null");
-        }
+    public void setExecuters(Executor acceptExector, Executor requestExector) {
+        this.acceptExector = acceptExector;
+        this.requestExector = requestExector;
     }
 
 

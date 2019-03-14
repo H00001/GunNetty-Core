@@ -7,6 +7,6 @@ import java.lang.annotation.Target;
 
 @Target(value = ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface Order {
+public @interface GunNetHanderOrder {
     int index() default 0;
 }

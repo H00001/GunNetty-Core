@@ -16,7 +16,7 @@ public class GunSyncGunInforHander implements GunInforHander {
     }
 
     @Override
-    public void doInformate(List<GunBootServer.GunNetHander> l, GunBootServer.GunNetHander.EventType t, GunBootServer.C3B4DTO c) {
+    public void doInformate(List<GunBootServer.GunNetHander> l, GunBootServer.GunNetHander.EventType t, GunBootServer.GunNettyRequestOnject c) {
         for (GunBootServer.GunNetHander g : l) {
             try {
                 g.dealevent(t, c);
