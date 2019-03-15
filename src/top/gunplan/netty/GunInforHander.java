@@ -8,13 +8,13 @@ import java.util.List;
 /**
  *
  */
-public interface GunInforHander extends GunH {
+public interface GunInforHander extends GunHandel {
     /**
-     * @param l GunBootServer.GunNetHander
-     * @param t GunBootServer.GunNetHander.EventType
+     * @param l GunBootServer.GunNetHandel
+     * @param t GunBootServer.GunNetHandel.EventType
      * @param c GunBootServer.GunNettyRequestOnject
      */
-    void doInformate(List<GunBootServer.GunNetHander> l, GunBootServer.GunNetHander.EventType t, GunBootServer.GunNettyRequestOnject c);
+    void doInformate(List<GunBootServer.GunNetHandel> l, GunBootServer.GunNetHandel.EventType t, GunBootServer.GunNettyRequestOnject c);
 
     /**
      *

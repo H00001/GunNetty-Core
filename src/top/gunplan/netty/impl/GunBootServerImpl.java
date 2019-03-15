@@ -3,7 +3,8 @@ package top.gunplan.netty.impl;
 import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunH;
+import top.gunplan.netty.GunHandel;
+import top.gunplan.netty.GunNettyFilter;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -11,9 +12,10 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.Iterator;
-import java.util.List;
+
 import java.util.concurrent.Executor;
 
 
@@ -36,7 +38,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private Executor requestExector;
 
-    private volatile GunNetHander dealhander = null;
+    private volatile GunNetHandel dealhander = null;
 
     private final List<GunNettyFilter> filters = new CopyOnWriteArrayList<>();
 
@@ -56,18 +58,19 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public synchronized GunBootServer infor(GunNetHander hander) {
-        if (hander != null) {
-            this.getAnnoAndInsert(hander);
+    public synchronized GunBootServer setHandel(GunNetHandel handel) {
+        if (handel != null) {
+            this.getAnnoAndInsert(handel);
         } else {
-            throw new GunException("GunNetHander is null");
+            throw new GunException("GunNetHandel is null");
         }
         return this;
     }
 
     @Override
-    public void addFilter(GunNettyFilter filter) {
+    public GunBootServer addFilter(GunNettyFilter filter) {
         this.filters.add(filter);
+        return this;
     }
 
 
@@ -82,16 +85,16 @@ final class GunBootServerImpl implements GunBootServer {
         }
     }
 
-    private void getAnnoAndInsert(GunBootServer.GunNetHander hander) {
+    private void getAnnoAndInsert(GunNetHandel hander) {
         this.dealhander = hander;
     }
 
     @Override
-    public void inintObject(Class<? extends GunH> clazz) throws IllegalAccessException, InstantiationException {
+    public void inintObject(Class<? extends GunHandel> clazz) throws IllegalAccessException, InstantiationException {
         if (clazz != null) {
-            GunH h = clazz.newInstance();
-            if (h instanceof GunBootServer.GunNetHander) {
-                getAnnoAndInsert((GunNetHander) h);
+            GunHandel h = clazz.newInstance();
+            if (h instanceof GunNetHandel) {
+                getAnnoAndInsert((GunNetHandel) h);
             }
         }
     }
@@ -103,7 +106,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public synchronized void sync() throws IOException {
         if (!this.initCheck()) {
-            throw new GunException("hander error or has been running");
+            throw new GunException("handel error or has been running");
         }
         ServerSocketChannel var57;
         try {
@@ -127,9 +130,10 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public void setExecuters(Executor acceptExector, Executor requestExector) {
-        this.acceptExector = acceptExector;
-        this.requestExector = requestExector;
+    public GunBootServer setExecuters(Executor acceptExecuters, Executor requestExecuters) {
+        this.acceptExector = acceptExecuters;
+        this.requestExector = requestExecuters;
+        return this;
     }
 
 

@@ -3,16 +3,17 @@ package top.gunplan.netty;
 import com.sun.istack.internal.NotNull;
 
 
+/**
+ * @author dosdrtt
+ */
 public class GunFilterDto {
     private final byte[] src;
     private Object object;
 
-    public GunFilterDto(@NotNull byte[] src)
-    {
+    GunFilterDto(@NotNull byte[] src) {
         this.src = src;
         this.object = null;
     }
-
     public GunFilterDto(@NotNull byte[] src, Object object) {
         this.src = src;
         this.object = object;
@@ -21,8 +22,6 @@ public class GunFilterDto {
     public byte[] getSrc() {
         return src;
     }
-
-
 
     public Object getObject() {
         return object;

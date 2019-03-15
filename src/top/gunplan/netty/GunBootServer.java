@@ -22,32 +22,42 @@ public interface GunBootServer {
      * @throws IOException syncing's exception
      */
 
+
     void sync() throws IOException;
 
     /**
-     * @param hander infor other {@link GunNetHander}
-     */
-
-    void setExecuters(@NotNull Executor acceptExector, @NotNull Executor requestExector);
-
-    /**
-     * set a deal hander implement <code>GunBootServer.GunNetHander</code>
+     * set the Thread pool that dispose the request
      *
-     * @param hander Execute Class
+     * @param acceptExecuters  this Executer is used to deal with accept request
+     * @param requestExecuters this Executer is used to deal with data request
      * @return this
      */
 
-    GunBootServer infor(@NotNull GunBootServer.GunNetHander hander);
+    GunBootServer setExecuters(@NotNull Executor acceptExecuters, @NotNull Executor requestExecuters);
+
+    /**
+     * set a deal handel implement <code>GunBootServer.GunNetHandel</code>
+     *
+     * @param handel Execute Class
+     * @return this
+     */
+
+    GunBootServer setHandel(@NotNull GunNetHandel handel);
 
 
-    void addFilter(GunNettyFilter filter);
+    /**
+     * the function is used to add filter
+     *
+     * @param filter filter, filter the request
+     */
+    GunBootServer addFilter(GunNettyFilter filter);
 
     /**
      * @param clazz class to deal
      * @throws ClassNotFoundException
      * @apiNote
      */
-    void inintObject(@NotNull Class<? extends GunH> clazz) throws Exception;
+    void inintObject(@NotNull Class<? extends GunHandel> clazz) throws Exception;
 
     /**
      *
@@ -75,7 +85,7 @@ public interface GunBootServer {
         }
     }
 
-    interface GunNetHander extends GunH {
+    interface GunNetHandel extends GunHandel {
         void dealevent(EventType t, GunNettyRequestOnject m) throws GunException, IOException;
 
         enum EventType {
@@ -90,41 +100,37 @@ public interface GunBootServer {
     }
 
 
-    interface GunNettyFilter {
-        void doFilter(GunFilterDto filterDto);
-    }
-
-    abstract class GunNettyWorker {
-        final GunBootServer.GunNetHander hander;
+    abstract class BaseGunNettyWorker {
+        final GunNetHandel handel;
         final SocketChannel channel;
 
-        GunNettyWorker(GunBootServer.GunNetHander gunNettyHanderl, SocketChannel channel) {
+        BaseGunNettyWorker(GunNetHandel gunNettyHanderl, SocketChannel channel) {
             this.channel = channel;
-            this.hander = gunNettyHanderl;
+            this.handel = gunNettyHanderl;
         }
     }
 
 
-    final class GunAcceptWorker extends GunNettyWorker implements Runnable {
-        public GunAcceptWorker(GunBootServer.GunNetHander l, SocketChannel channel) {
+    final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
+        public GunAcceptWorker(GunNetHandel l, SocketChannel channel) {
             super(l, channel);
         }
 
         @Override
         public synchronized void run() {
             try {
-                this.hander.dealevent(GunNetHander.EventType.CONNRCTED, new GunNettyRequestOnject(this.channel, null));
+                this.handel.dealevent(GunNetHandel.EventType.CONNRCTED, new GunNettyRequestOnject(this.channel, null));
             } catch (IOException e) {
                 throw new GunException(e);
             }
         }
     }
 
-    final class GunRequestWorker extends GunNettyWorker implements Runnable {
+    final class GunRequestWorker extends BaseGunNettyWorker implements Runnable {
 
-        private final List<GunBootServer.GunNettyFilter> filters;
+        private final List<GunNettyFilter> filters;
 
-        public GunRequestWorker(List<GunBootServer.GunNettyFilter> filters, GunBootServer.GunNetHander dealHanders, SocketChannel channel) {
+        public GunRequestWorker(List<GunNettyFilter> filters, GunNetHandel dealHanders, SocketChannel channel) {
             super(dealHanders, channel);
             this.filters = filters;
         }
@@ -136,7 +142,7 @@ public interface GunBootServer {
                 readbata = GunBytesUtil.readFromChannel(channel, 1024);
             } catch (Exception exp) {
                 try {
-                    hander.dealevent(GunNetHander.EventType.EXECPTION, null);
+                    handel.dealevent(GunNetHandel.EventType.EXECPTION, null);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -144,7 +150,7 @@ public interface GunBootServer {
 
             if (readbata == null) {
                 try {
-                    this.hander.dealevent(GunNetHander.EventType.CLOSEED, null);
+                    this.handel.dealevent(GunNetHandel.EventType.CLOSEED, null);
                     channel.close();
                 } catch (IOException e) {
                     throw new GunException(e);
@@ -153,12 +159,13 @@ public interface GunBootServer {
 
             } else {
                 final GunFilterDto gunFilterObj = new GunFilterDto(readbata);
-                this.filters.forEach(netty -> netty.doFilter(gunFilterObj));
+                this.filters.forEach(netty -> netty.doRequestFilter(gunFilterObj));
                 try {
-                    this.hander.dealevent(GunNetHander.EventType.RECEIVED, new GunNettyRequestOnject(channel, gunFilterObj));
+                    this.handel.dealevent(GunNetHandel.EventType.RECEIVED, new GunNettyRequestOnject(channel, gunFilterObj));
                 } catch (Exception e) {
                     throw new GunException(e);
                 }
+                this.filters.forEach(netty -> netty.doResponseFilter(gunFilterObj));
 
             }
         }
@@ -167,5 +174,3 @@ public interface GunBootServer {
     }
 }
 
-//      |
-//

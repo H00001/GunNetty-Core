@@ -2,22 +2,25 @@ package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.nio.utils.BaseGunLog;
-import top.gunplan.netty.anno.GunNetHanderOrder;
-import top.gunplan.nio.utils.ReadByteBuffer;
+import top.gunplan.netty.anno.GunNetFilterOrder;
 
 import java.io.IOException;
+import java.util.HashMap;
 
-@GunNetHanderOrder(index = 0)
-public class GunOutputHander implements GunBootServer.GunNetHander {
+@GunNetFilterOrder(index = 0)
+public class GunOutputHander implements GunBootServer.GunNetHandel {
     {
         BaseGunLog.setLevel(0);
     }
-
     @Override
     public void dealevent(EventType t, GunBootServer.GunNettyRequestOnject m) {
         switch (t) {
             case RECEIVED:
-                BaseGunLog.info("RECEIVED " + new String(m.requestObj().getSrc()));
+
+                for (String k : ((HashMap<String, String>) m.requestObj().getObject()).keySet()) {
+                    BaseGunLog.info("RECEIVED Host:" + k + ":");
+                }
+
                 break;
 
             case CONNRCTED:
@@ -30,7 +33,7 @@ public class GunOutputHander implements GunBootServer.GunNetHander {
             case CLOSEED:
                 BaseGunLog.info("CLOSED ");
                 break;
-                default:
+            default:
 
 
         }

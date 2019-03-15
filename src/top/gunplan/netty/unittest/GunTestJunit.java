@@ -2,17 +2,11 @@ package top.gunplan.netty.unittest;
 
 import org.junit.jupiter.api.Test;
 import top.gunplan.netty.GunBootServer;
+import top.gunplan.netty.filters.HttpModelFilter;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.example.GunOutputHander;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.net.ServerSocket;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.util.Set;
-import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.Executors;
 
 
@@ -26,8 +20,7 @@ public class GunTestJunit {
 //        latch.await();
 //        System.out.println("gg");
         GunBootServer server = GunBootServerFactory.getInstance(8822);
-        server.setExecuters(Executors.newFixedThreadPool(3),Executors.newFixedThreadPool(3));
-        server.infor(new GunOutputHander());
+        server.setExecuters(Executors.newFixedThreadPool(3),Executors.newFixedThreadPool(3)).addFilter(new HttpModelFilter()).setHandel(new GunOutputHander());
         server.sync();
     }
 
@@ -36,7 +29,7 @@ public class GunTestJunit {
     }
 //        GunBootServer server = GunBootServerFactory.getInstance(8822);
 //       // server.setExecuters(Executors.newFixedThreadPool(3),Executors.newFixedThreadPool(3));
-//        //server.infor(new GunOutputHander());
+//        //server.setHandel(new GunOutputHander());
 //        server.sync();
 
 }
