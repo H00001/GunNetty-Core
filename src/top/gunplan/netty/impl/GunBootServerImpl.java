@@ -5,8 +5,10 @@ import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunHandel;
 import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.anno.GunNetFilterOrder;
 
 import java.io.IOException;
+import java.lang.annotation.Annotation;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
@@ -32,7 +34,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile boolean runnable = false;
 
-    private Selector var2c;
+    private Selector bootSelector;
 
     private Executor acceptExector;
 
@@ -69,7 +71,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public GunBootServer addFilter(GunNettyFilter filter) {
-        this.filters.add(filter);
+        Annotation[] annotations = filter.getClass().getAnnotationsByType(GunNetFilterOrder.class);
+        this.filters.add(((GunNetFilterOrder) annotations[0]).index(), filter);
         return this;
     }
 
@@ -77,7 +80,7 @@ final class GunBootServerImpl implements GunBootServer {
     private void toDealConnection(@NotNull SelectionKey sk) throws IOException {
         if (sk.isAcceptable()) {
             SocketChannel socketChannel = ((ServerSocketChannel) sk.channel()).accept();
-            socketChannel.configureBlocking(false).register(this.var2c, SelectionKey.OP_READ);
+            socketChannel.configureBlocking(false).register(this.bootSelector, SelectionKey.OP_READ);
             this.acceptExector.execute(new GunAcceptWorker(dealhander, socketChannel));
         } else if (sk.isReadable()) {
             this.acceptExector.execute(new GunRequestWorker(filters, dealhander, (SocketChannel) sk.channel()));
@@ -108,18 +111,18 @@ final class GunBootServerImpl implements GunBootServer {
         if (!this.initCheck()) {
             throw new GunException("handel error or has been running");
         }
-        ServerSocketChannel var57;
+
         try {
-            var57 = ServerSocketChannel.open();
-            var2c = Selector.open();
+            ServerSocketChannel var57 = ServerSocketChannel.open();
+            this.bootSelector = Selector.open();
             var57.bind(new InetSocketAddress(this.var3315)).configureBlocking(false);
-            var57.register(var2c, SelectionKey.OP_ACCEPT);
+            var57.register(bootSelector, SelectionKey.OP_ACCEPT);
         } catch (IOException e) {
             throw new GunException(e);
         }
 
-        while (var2c.select() > 0) {
-            Iterator keyIterator = var2c.selectedKeys().iterator();
+        while (bootSelector.select() > 0) {
+            Iterator keyIterator = bootSelector.selectedKeys().iterator();
             while (keyIterator.hasNext()) {
                 SelectionKey sk = (SelectionKey) keyIterator.next();
                 this.toDealConnection(sk);

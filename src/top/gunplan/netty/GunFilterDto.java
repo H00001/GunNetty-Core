@@ -1,6 +1,7 @@
 package top.gunplan.netty;
 
 import com.sun.istack.internal.NotNull;
+import top.gunplan.netty.filters.GunRequestProtocl;
 
 
 /**
@@ -8,13 +9,14 @@ import com.sun.istack.internal.NotNull;
  */
 public class GunFilterDto {
     private final byte[] src;
-    private Object object;
+    private GunRequestProtocl object;
 
     GunFilterDto(@NotNull byte[] src) {
         this.src = src;
         this.object = null;
     }
-    public GunFilterDto(@NotNull byte[] src, Object object) {
+
+    public GunFilterDto(@NotNull byte[] src, GunRequestProtocl object) {
         this.src = src;
         this.object = object;
     }
@@ -23,11 +25,11 @@ public class GunFilterDto {
         return src;
     }
 
-    public Object getObject() {
+    public GunRequestProtocl getGunRequestProtoclObject() {
         return object;
     }
 
-    public void setObject(Object object) {
+    public void setObject(GunRequestProtocl object) {
         this.object = object;
     }
 }

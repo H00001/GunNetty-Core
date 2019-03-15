@@ -1,37 +1,38 @@
 package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.GunBootServer;
+import top.gunplan.netty.filters.protocls.GunHttpProtocl;
 import top.gunplan.nio.utils.BaseGunLog;
-import top.gunplan.netty.anno.GunNetFilterOrder;
 
 import java.io.IOException;
-import java.util.HashMap;
+import java.util.function.BiConsumer;
 
-@GunNetFilterOrder(index = 0)
 public class GunOutputHander implements GunBootServer.GunNetHandel {
     {
         BaseGunLog.setLevel(0);
     }
+
     @Override
-    public void dealevent(EventType t, GunBootServer.GunNettyRequestOnject m) {
+    public void dealevent(EventType t, GunBootServer.GunNettyRequestObject m) {
         switch (t) {
             case RECEIVED:
-
-                for (String k : ((HashMap<String, String>) m.requestObj().getObject()).keySet()) {
-                    BaseGunLog.info("RECEIVED Host:" + k + ":");
+                if (m.requestObj().getGunRequestProtoclObject() instanceof GunHttpProtocl) {
+                    GunHttpProtocl httpProtocl = ((GunHttpProtocl) m.requestObj().getGunRequestProtoclObject());
+                    httpProtocl.getRequstHead().forEach((s, s2) ->
+                            BaseGunLog.info(s + " " + "->" + " " + s2)
+                    );
                 }
-
                 break;
 
             case CONNRCTED:
                 try {
-                    BaseGunLog.info("CONNECTED " + m.getChannel().getRemoteAddress());
+                    BaseGunLog.error("CONNECTED " + m.getChannel().getRemoteAddress());
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 break;
             case CLOSEED:
-                BaseGunLog.info("CLOSED ");
+                BaseGunLog.error("CLOSED ");
                 break;
             default:
 

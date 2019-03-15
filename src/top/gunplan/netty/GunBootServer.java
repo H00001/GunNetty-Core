@@ -62,7 +62,7 @@ public interface GunBootServer {
     /**
      *
      */
-    class GunNettyRequestOnject {
+    class GunNettyRequestObject {
         @Override
         public String toString() {
             return "Gun error time:" + System.currentTimeMillis();
@@ -71,7 +71,7 @@ public interface GunBootServer {
         private final SocketChannel channel;
         private final GunFilterDto requestObj;
 
-        public GunNettyRequestOnject(@NotNull SocketChannel channel, @Nullable GunFilterDto requestObj) {
+        public GunNettyRequestObject(@NotNull SocketChannel channel, @Nullable GunFilterDto requestObj) {
             this.channel = channel;
             this.requestObj = requestObj;
         }
@@ -86,7 +86,7 @@ public interface GunBootServer {
     }
 
     interface GunNetHandel extends GunHandel {
-        void dealevent(EventType t, GunNettyRequestOnject m) throws GunException, IOException;
+        void dealevent(EventType t, GunNettyRequestObject m) throws GunException, IOException;
 
         enum EventType {
             /**
@@ -104,7 +104,7 @@ public interface GunBootServer {
         final GunNetHandel handel;
         final SocketChannel channel;
 
-        BaseGunNettyWorker(GunNetHandel gunNettyHanderl, SocketChannel channel) {
+        BaseGunNettyWorker(final GunNetHandel gunNettyHanderl, final SocketChannel channel) {
             this.channel = channel;
             this.handel = gunNettyHanderl;
         }
@@ -112,14 +112,14 @@ public interface GunBootServer {
 
 
     final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
-        public GunAcceptWorker(GunNetHandel l, SocketChannel channel) {
+        public GunAcceptWorker(final GunNetHandel l, final SocketChannel channel) {
             super(l, channel);
         }
 
         @Override
         public synchronized void run() {
             try {
-                this.handel.dealevent(GunNetHandel.EventType.CONNRCTED, new GunNettyRequestOnject(this.channel, null));
+                this.handel.dealevent(GunNetHandel.EventType.CONNRCTED, new GunNettyRequestObject(this.channel, null));
             } catch (IOException e) {
                 throw new GunException(e);
             }
@@ -130,7 +130,7 @@ public interface GunBootServer {
 
         private final List<GunNettyFilter> filters;
 
-        public GunRequestWorker(List<GunNettyFilter> filters, GunNetHandel dealHanders, SocketChannel channel) {
+        public GunRequestWorker(final List<GunNettyFilter> filters, final GunNetHandel dealHanders, final SocketChannel channel) {
             super(dealHanders, channel);
             this.filters = filters;
         }
@@ -140,7 +140,8 @@ public interface GunBootServer {
             byte[] readbata = null;
             try {
                 readbata = GunBytesUtil.readFromChannel(channel, 1024);
-            } catch (Exception exp) {
+            }
+            catch (Exception exp) {
                 try {
                     handel.dealevent(GunNetHandel.EventType.EXECPTION, null);
                 } catch (IOException e) {
@@ -155,13 +156,12 @@ public interface GunBootServer {
                 } catch (IOException e) {
                     throw new GunException(e);
                 }
-
-
-            } else {
+            }
+            else {
                 final GunFilterDto gunFilterObj = new GunFilterDto(readbata);
                 this.filters.forEach(netty -> netty.doRequestFilter(gunFilterObj));
                 try {
-                    this.handel.dealevent(GunNetHandel.EventType.RECEIVED, new GunNettyRequestOnject(channel, gunFilterObj));
+                    this.handel.dealevent(GunNetHandel.EventType.RECEIVED, new GunNettyRequestObject(channel, gunFilterObj));
                 } catch (Exception e) {
                     throw new GunException(e);
                 }
