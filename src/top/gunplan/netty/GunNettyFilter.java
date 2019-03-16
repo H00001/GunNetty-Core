@@ -3,7 +3,7 @@ package top.gunplan.netty;
 /**
  *
  */
-public interface GunNettyFilter extends GunHandel {
+public interface GunNettyFilter extends GunHandle {
     /**
      * doing filter when the request occur
      * @param filterDto input to the filter's deal Object

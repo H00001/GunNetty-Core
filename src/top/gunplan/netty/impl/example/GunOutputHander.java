@@ -5,9 +5,8 @@ import top.gunplan.netty.filters.protocls.GunHttpProtocl;
 import top.gunplan.nio.utils.BaseGunLog;
 
 import java.io.IOException;
-import java.util.function.BiConsumer;
 
-public class GunOutputHander implements GunBootServer.GunNetHandel {
+public class GunOutputHander implements GunBootServer.GunNetHandle {
     {
         BaseGunLog.setLevel(0);
     }

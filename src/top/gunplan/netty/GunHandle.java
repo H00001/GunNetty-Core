@@ -3,6 +3,6 @@ package top.gunplan.netty;
 /**
  * @author dosdrtt
  */
-public interface GunHandel {
+public interface GunHandle {
 
 }

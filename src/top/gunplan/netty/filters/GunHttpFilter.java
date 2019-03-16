@@ -4,9 +4,6 @@ import top.gunplan.netty.GunFilterDto;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filters.protocls.GunHttpProtocl;
-import top.gunplan.netty.unittest.GunTestJunit;
-
-import java.util.HashMap;
 
 @GunNetFilterOrder
 public class GunHttpFilter implements GunNettyFilter {

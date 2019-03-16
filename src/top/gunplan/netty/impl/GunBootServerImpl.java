@@ -3,7 +3,7 @@ package top.gunplan.netty.impl;
 import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunHandel;
+import top.gunplan.netty.GunHandle;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 
@@ -40,7 +40,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private Executor requestExector;
 
-    private volatile GunNetHandel dealhander = null;
+    private volatile GunNetHandle dealhander = null;
 
     private final List<GunNettyFilter> filters = new CopyOnWriteArrayList<>();
 
@@ -60,19 +60,19 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public synchronized GunBootServer setHandel(GunNetHandel handel) {
+    public synchronized GunBootServer setHandel(GunNetHandle handel) {
         if (handel != null) {
             this.getAnnoAndInsert(handel);
         } else {
-            throw new GunException("GunNetHandel is null");
+            throw new GunException("GunNetHandle is null");
         }
         return this;
     }
 
     @Override
     public GunBootServer addFilter(GunNettyFilter filter) {
-        Annotation[] annotations = filter.getClass().getAnnotationsByType(GunNetFilterOrder.class);
-        this.filters.add(((GunNetFilterOrder) annotations[0]).index(), filter);
+        GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
+        this.filters.add(order.index(), filter);
         return this;
     }
 
@@ -88,16 +88,16 @@ final class GunBootServerImpl implements GunBootServer {
         }
     }
 
-    private void getAnnoAndInsert(GunNetHandel hander) {
+    private void getAnnoAndInsert(GunNetHandle hander) {
         this.dealhander = hander;
     }
 
     @Override
-    public void inintObject(Class<? extends GunHandel> clazz) throws IllegalAccessException, InstantiationException {
+    public void inintObject(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException {
         if (clazz != null) {
-            GunHandel h = clazz.newInstance();
-            if (h instanceof GunNetHandel) {
-                getAnnoAndInsert((GunNetHandel) h);
+            GunHandle h = clazz.newInstance();
+            if (h instanceof GunNetHandle) {
+                getAnnoAndInsert((GunNetHandle) h);
             }
         }
     }
