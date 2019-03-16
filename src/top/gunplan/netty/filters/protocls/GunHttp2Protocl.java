@@ -3,14 +3,14 @@ package top.gunplan.netty.filters.protocls;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filters.GunRequestProtocl;
 
-
 import java.util.HashMap;
+
 
 /**
  * @author dosdrtt
  */
 @GunNetFilterOrder(index = 0)
-public class GunHttpProtocl implements GunRequestProtocl {
+public class GunHttp2Protocl implements GunRequestProtocl {
     enum GunHttpRequestType {
         /**
          *
@@ -32,23 +32,24 @@ public class GunHttpProtocl implements GunRequestProtocl {
         }
     }
 
-    public GunHttpProtocl() {
+    public GunHttp2Protocl() {
 
     }
 
-    public GunHttpProtocl(String requestHeadFirst, HashMap<String, String> requstHead, GunHttpRequestType method) {
-        this.requestHeadFirst = requestHeadFirst;
+    public GunHttp2Protocl(String requestHeadFirst, HashMap<String, String> requstHead, GunHttpRequestType method) {
         this.requstHead = requstHead;
         this.method = method;
     }
 
-    private String requestHeadFirst;
     private String requestBody;
     private HashMap<String, String> requstHead = new HashMap<>();
+    private HashMap<String, String> http2Parameter = new HashMap<>(2);
 
     public String getRequestBody() {
         return requestBody;
     }
+
+    private String requestUrl;
 
     public void setRequestBody(String requestBody) {
         this.requestBody = requestBody;
@@ -73,15 +74,6 @@ public class GunHttpProtocl implements GunRequestProtocl {
         this.method = method;
     }
 
-    public String getRequestHeadFirst() {
-
-        return requestHeadFirst;
-    }
-
-    public void setRequestHeadFirst(String requestHeadFirst) {
-        this.requestHeadFirst = requestHeadFirst;
-    }
-
     @Override
     public byte[] seriz() {
         return new byte[0];
@@ -92,16 +84,15 @@ public class GunHttpProtocl implements GunRequestProtocl {
         String httpconetnt = new String(in);
 
         int postion = httpconetnt.indexOf("\r\n");
-        this.requestHeadFirst = httpconetnt.substring(0, postion);
-        httpconetnt = httpconetnt.substring(postion + 2, httpconetnt.length());
+        this.analyzingHttpHeadFirst(httpconetnt.substring(0, postion));
         int spiltpoint = httpconetnt.indexOf("\r\n\r\n");
-        String[] httphead = httpconetnt.substring(0, spiltpoint).split("\r\n");
-        analyzingHttpHead(httphead);
+        this.analyzingHttpHead(httpconetnt.substring(postion + 2, spiltpoint).split("\r\n"));
 
-        if (requestHeadFirst.startsWith(GunHttpRequestType.GET.getVal())) {
+
+        if (method == GunHttpRequestType.GET) {
             this.method = GunHttpRequestType.GET;
 //            functionToDealGetMethod(httpconetnt);
-        } else if (requestHeadFirst.startsWith("POST")) {
+        } else if (method == GunHttpRequestType.POST) {
             this.method = GunHttpRequestType.POST;
             functionToDealPostMethod();
         }
@@ -113,6 +104,45 @@ public class GunHttpProtocl implements GunRequestProtocl {
 
     private void functionToDealPostMethod() {
 
+
+    }
+
+    private void analyzingHttpHeadFirst(final String httpHeadFirst) {
+        do {
+            if (httpHeadFirst.startsWith(GunHttpRequestType.GET.getVal())) {
+                this.method = GunHttpRequestType.GET;
+                break;
+            } else if (httpHeadFirst.startsWith(GunHttpRequestType.POST.getVal())) {
+                this.method = GunHttpRequestType.POST;
+                break;
+            }
+            if (httpHeadFirst.startsWith(GunHttpRequestType.PUT.getVal())) {
+                this.method = GunHttpRequestType.PUT;
+                break;
+            }
+            if (httpHeadFirst.startsWith(GunHttpRequestType.DELETE.getVal())) {
+                this.method = GunHttpRequestType.DELETE;
+                break;
+            }
+        } while (false);
+        String requrl = httpHeadFirst.split(" ")[1];
+        var3310:
+        if (requrl.contains("?")) {
+            this.requestUrl = requrl.split("\\?")[0];
+            String parameters[];
+            if (requrl.split("\\?")[1].contains("&")) {
+                parameters = requrl.split("&");
+            } else {
+                parameters = new String[1];
+                parameters[0] = requrl.split("\\?")[1];
+            }
+            for (String parameter : parameters) {
+                http2Parameter.put(parameter.split("=")[0], parameter.split("=")[1]);
+            }
+
+        } else {
+            this.requestUrl = requrl;
+        }
     }
 
 

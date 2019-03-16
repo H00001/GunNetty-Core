@@ -1,7 +1,8 @@
 package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.GunBootServer;
-import top.gunplan.netty.filters.protocls.GunHttpProtocl;
+import top.gunplan.netty.GunException;
+import top.gunplan.netty.filters.protocls.GunHttp2Protocl;
 import top.gunplan.nio.utils.BaseGunLog;
 
 import java.io.IOException;
@@ -12,11 +13,11 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
     }
 
     @Override
-    public void dealevent(EventType t, GunBootServer.GunNettyRequestObject m) {
+    public void dealDataEvent(EventType t, GunBootServer.GunNettyRequestObject m) {
         switch (t) {
             case RECEIVED:
-                if (m.requestObj().getGunRequestProtoclObject() instanceof GunHttpProtocl) {
-                    GunHttpProtocl httpProtocl = ((GunHttpProtocl) m.requestObj().getGunRequestProtoclObject());
+                if (m.requestObj().getGunRequestProtoclObject() instanceof GunHttp2Protocl) {
+                    GunHttp2Protocl httpProtocl = ((GunHttp2Protocl) m.requestObj().getGunRequestProtoclObject());
                     httpProtocl.getRequstHead().forEach((s, s2) ->
                             BaseGunLog.info(s + " " + "->" + " " + s2)
                     );
@@ -37,6 +38,21 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
 
 
         }
+
+    }
+
+    @Override
+    public void dealConnEvent(EventType t, GunBootServer.GunNettyRequestObject m) throws GunException, IOException {
+
+    }
+
+    @Override
+    public void dealCloseEvent(EventType t) throws GunException, IOException {
+
+    }
+
+    @Override
+    public void dealExceptionEvent(EventType t) {
 
     }
 }

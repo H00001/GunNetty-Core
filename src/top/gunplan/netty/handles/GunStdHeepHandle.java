@@ -3,7 +3,7 @@ package top.gunplan.netty.handles;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.anno.GunHttpmapping;
-import top.gunplan.netty.filters.protocls.GunHttpProtocl;
+import top.gunplan.netty.filters.protocls.GunHttp2Protocl;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.handles.http.GunHttpResponse;
 import top.gunplan.nio.utils.DirectoryUtils;
@@ -14,7 +14,7 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * this class need to rely on {@link top.gunplan.netty.filters.protocls.GunHttpProtocl}
+ * this class need to rely on {@link GunHttp2Protocl}
  */
 
 public class GunStdHeepHandle implements GunBootServer.GunNetHandle {
@@ -24,13 +24,11 @@ public class GunStdHeepHandle implements GunBootServer.GunNetHandle {
 
     public GunStdHeepHandle(final String handlePackName) {
         ClassLoader loader = this.getClass().getClassLoader();
-
-        //loader.getResource("").toString().replace("%20"," ") + handlePackName.replace(".", "/")
-        List<File> classfiles = null;
+        List<File> classfiles;
         try {
-            classfiles = DirectoryUtils.getAllFilesFromDirectory(loader.getResource("").getPath().replace("%20", " ") + handlePackName.replace(".", "/"));
+            classfiles = DirectoryUtils.scanAllFilesFromDirectory(loader.getResource("").getPath().replace("%20", " ") + handlePackName.replace(".", "/"));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new GunException(e);
         }
         assert classfiles != null;
         classfiles.forEach(classfilename -> {
@@ -43,13 +41,27 @@ public class GunStdHeepHandle implements GunBootServer.GunNetHandle {
                 throw new GunException(e);
             }
         });
+    }
+
+    @Override
+    public void dealDataEvent(EventType t, GunBootServer.GunNettyRequestObject m) throws GunException, IOException {
+        localUrlMapping.set(urlMapping);
+        ((GunHttp2Protocl) m.requestObj().getGunRequestProtoclObject()).getRequstHead();
+   //     localUrlMapping.get().
+    }
+
+    @Override
+    public void dealConnEvent(EventType t, GunBootServer.GunNettyRequestObject m) throws GunException, IOException {
 
     }
 
     @Override
-    public void dealevent(EventType t, GunBootServer.GunNettyRequestObject m) throws GunException, IOException {
-        localUrlMapping.set(urlMapping);
-        ((GunHttpProtocl) m.requestObj().getGunRequestProtoclObject()).getRequstHead();
+    public void dealCloseEvent(EventType t) throws GunException {
+
+    }
+
+    @Override
+    public void dealExceptionEvent(EventType t) {
 
     }
 }
