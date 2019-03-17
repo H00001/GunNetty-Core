@@ -47,13 +47,15 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
     }
 
     @Override
-    public void dealCloseEvent(EventType t) throws GunException, IOException {
+    public void dealCloseEvent() {
 
     }
 
     @Override
-    public void dealExceptionEvent(EventType t) {
+    public void dealExceptionEvent(Exception exp) {
 
     }
+
+
 }
 

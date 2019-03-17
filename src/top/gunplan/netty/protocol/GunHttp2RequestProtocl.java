@@ -1,6 +1,7 @@
 package top.gunplan.netty.protocol;
+
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.filters.GunRequestProtocl;
+
 import java.util.HashMap;
 
 
@@ -8,7 +9,7 @@ import java.util.HashMap;
  * @author dosdrtt
  */
 @GunNetFilterOrder(index = 0)
-final public class GunHttp2RequestProtocl implements GunRequestProtocl {
+final public class GunHttp2RequestProtocl implements GunRequestProtoclInterface {
     public GunHttp2RequestProtocl() {
 
     }
@@ -41,15 +42,10 @@ final public class GunHttp2RequestProtocl implements GunRequestProtocl {
         return method;
     }
 
-
     public void setMethod(GunHttpStdInfo.GunHttpRequestType method) {
         this.method = method;
     }
 
-    @Override
-    public byte[] seriz() {
-        return new byte[0];
-    }
 
     public String getRequestUrl() {
         return requestUrl;

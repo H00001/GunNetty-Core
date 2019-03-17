@@ -2,7 +2,7 @@ package top.gunplan.netty.unittest;
 
 import org.junit.jupiter.api.Test;
 import top.gunplan.netty.GunBootServer;
-import top.gunplan.netty.filters.GunHttpFilter;
+import top.gunplan.netty.filters.GunStdHttp2Filter;
 import top.gunplan.netty.handles.GunStdHttpHandle;
 import top.gunplan.netty.impl.GunBootServerFactory;
 
@@ -20,7 +20,7 @@ public class GunTestJunit {
 //        latch.await();
 //        System.out.println("gg");
         GunBootServer server = GunBootServerFactory.getInstance(8822);
-        server.setExecuters(Executors.newFixedThreadPool(3), Executors.newFixedThreadPool(3)).addFilter(new GunHttpFilter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
+        server.setExecuters(Executors.newFixedThreadPool(3), Executors.newFixedThreadPool(3)).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
         server.sync();
     }
 

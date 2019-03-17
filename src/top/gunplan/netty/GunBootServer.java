@@ -185,7 +185,7 @@ public interface GunBootServer {
                     if (gunFilterObj.getSrc() != null) {
                         super.channel.write(ByteBuffer.wrap(gunFilterObj.getSrc()));
                     }
-                } catch (IOException e) {
+                } catch (Exception e) {
                     this.handel.dealExceptionEvent(e);
                 }
             }

@@ -1,6 +1,6 @@
 package top.gunplan.netty.protocol;
 
-public interface GunHttp2Response {
+public interface GunHttp2ResponseInterface {
     String toResponse();
 
     byte[] serizResponse();
