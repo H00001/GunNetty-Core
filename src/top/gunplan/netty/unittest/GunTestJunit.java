@@ -3,9 +3,8 @@ package top.gunplan.netty.unittest;
 import org.junit.jupiter.api.Test;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.filters.GunHttpFilter;
-import top.gunplan.netty.handles.GunStdHeepHandle;
+import top.gunplan.netty.handles.GunStdHttpHandle;
 import top.gunplan.netty.impl.GunBootServerFactory;
-import top.gunplan.netty.impl.example.GunOutputHander;
 
 import java.io.IOException;
 import java.util.concurrent.Executors;
@@ -21,7 +20,7 @@ public class GunTestJunit {
 //        latch.await();
 //        System.out.println("gg");
         GunBootServer server = GunBootServerFactory.getInstance(8822);
-        server.setExecuters(Executors.newFixedThreadPool(3), Executors.newFixedThreadPool(3)).addFilter(new GunHttpFilter()).setHandel(new GunStdHeepHandle("top.gunplan.netty.test"));
+        server.setExecuters(Executors.newFixedThreadPool(3), Executors.newFixedThreadPool(3)).addFilter(new GunHttpFilter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
         server.sync();
     }
 

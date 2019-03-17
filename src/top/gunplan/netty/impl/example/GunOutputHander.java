@@ -2,7 +2,7 @@ package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.filters.protocls.GunHttp2Protocl;
+import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.nio.utils.BaseGunLog;
 
 import java.io.IOException;
@@ -16,8 +16,8 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
     public void dealDataEvent(EventType t, GunBootServer.GunNettyRequestObject m) {
         switch (t) {
             case RECEIVED:
-                if (m.requestObj().getGunRequestProtoclObject() instanceof GunHttp2Protocl) {
-                    GunHttp2Protocl httpProtocl = ((GunHttp2Protocl) m.requestObj().getGunRequestProtoclObject());
+                if (m.requestObj().getGunRequestProtoclObject() instanceof GunHttp2RequestProtocl) {
+                    GunHttp2RequestProtocl httpProtocl = ((GunHttp2RequestProtocl) m.requestObj().getGunRequestProtoclObject());
                     httpProtocl.getRequstHead().forEach((s, s2) ->
                             BaseGunLog.info(s + " " + "->" + " " + s2)
                     );

@@ -49,7 +49,7 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public boolean getRunnable() {
+    public boolean isRunnable() {
         return this.runnable;
     }
 

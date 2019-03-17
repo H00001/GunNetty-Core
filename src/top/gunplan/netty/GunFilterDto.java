@@ -8,12 +8,21 @@ import top.gunplan.netty.filters.GunRequestProtocl;
  * @author dosdrtt
  */
 public class GunFilterDto {
-    private final byte[] src;
+    private byte[] src;
+
+    public void setSrc(byte[] src) {
+        this.src = src;
+    }
+
     private GunRequestProtocl object;
 
     GunFilterDto(@NotNull byte[] src) {
         this.src = src;
         this.object = null;
+    }
+
+    public GunRequestProtocl getObject() {
+        return object;
     }
 
     public GunFilterDto(@NotNull byte[] src, GunRequestProtocl object) {

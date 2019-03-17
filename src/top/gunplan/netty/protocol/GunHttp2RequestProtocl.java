@@ -1,8 +1,6 @@
-package top.gunplan.netty.filters.protocls;
-
+package top.gunplan.netty.protocol;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filters.GunRequestProtocl;
-
 import java.util.HashMap;
 
 
@@ -10,40 +8,14 @@ import java.util.HashMap;
  * @author dosdrtt
  */
 @GunNetFilterOrder(index = 0)
-public class GunHttp2Protocl implements GunRequestProtocl {
-    enum GunHttpRequestType {
-        /**
-         *
-         *
-         */
-        GET("GET"), POST("POST"), DELETE("DELETE"), PUT("PUT");
-        private String val;
+final public class GunHttp2RequestProtocl implements GunRequestProtocl {
+    public GunHttp2RequestProtocl() {
 
-        GunHttpRequestType(String val) {
-            this.val = val;
-        }
-
-        public void setVal(String val) {
-            this.val = val;
-        }
-
-        public String getVal() {
-            return val;
-        }
-    }
-
-    public GunHttp2Protocl() {
-
-    }
-
-    public GunHttp2Protocl(String requestHeadFirst, HashMap<String, String> requstHead, GunHttpRequestType method) {
-        this.requstHead = requstHead;
-        this.method = method;
     }
 
     private String requestBody;
     private HashMap<String, String> requstHead = new HashMap<>();
-    private HashMap<String, String> http2Parameter = new HashMap<>(2);
+    private HashMap<String, String> http2Parameters = new HashMap<>(2);
 
     public String getRequestBody() {
         return requestBody;
@@ -55,7 +27,7 @@ public class GunHttp2Protocl implements GunRequestProtocl {
         this.requestBody = requestBody;
     }
 
-    private GunHttpRequestType method;
+    private GunHttpStdInfo.GunHttpRequestType method;
 
     public HashMap<String, String> getRequstHead() {
         return requstHead;
@@ -65,12 +37,12 @@ public class GunHttp2Protocl implements GunRequestProtocl {
         this.requstHead = requstHead;
     }
 
-    public GunHttpRequestType getMethod() {
+    public GunHttpStdInfo.GunHttpRequestType getMethod() {
         return method;
     }
 
 
-    public void setMethod(GunHttpRequestType method) {
+    public void setMethod(GunHttpStdInfo.GunHttpRequestType method) {
         this.method = method;
     }
 
@@ -79,25 +51,20 @@ public class GunHttp2Protocl implements GunRequestProtocl {
         return new byte[0];
     }
 
+    public String getRequestUrl() {
+        return requestUrl;
+    }
+
     @Override
     public boolean unSeriz(byte[] in) {
         String httpconetnt = new String(in);
-
         int postion = httpconetnt.indexOf("\r\n");
         this.analyzingHttpHeadFirst(httpconetnt.substring(0, postion));
         int spiltpoint = httpconetnt.indexOf("\r\n\r\n");
         this.analyzingHttpHead(httpconetnt.substring(postion + 2, spiltpoint).split("\r\n"));
-
-
-        if (method == GunHttpRequestType.GET) {
-            this.method = GunHttpRequestType.GET;
-//            functionToDealGetMethod(httpconetnt);
-        } else if (method == GunHttpRequestType.POST) {
-            this.method = GunHttpRequestType.POST;
+        if (this.method == GunHttpStdInfo.GunHttpRequestType.POST) {
             functionToDealPostMethod();
         }
-
-
         return true;
     }
 
@@ -109,19 +76,19 @@ public class GunHttp2Protocl implements GunRequestProtocl {
 
     private void analyzingHttpHeadFirst(final String httpHeadFirst) {
         do {
-            if (httpHeadFirst.startsWith(GunHttpRequestType.GET.getVal())) {
-                this.method = GunHttpRequestType.GET;
+            if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.GET.getVal())) {
+                this.method = GunHttpStdInfo.GunHttpRequestType.GET;
                 break;
-            } else if (httpHeadFirst.startsWith(GunHttpRequestType.POST.getVal())) {
-                this.method = GunHttpRequestType.POST;
-                break;
-            }
-            if (httpHeadFirst.startsWith(GunHttpRequestType.PUT.getVal())) {
-                this.method = GunHttpRequestType.PUT;
+            } else if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.POST.getVal())) {
+                this.method = GunHttpStdInfo.GunHttpRequestType.POST;
                 break;
             }
-            if (httpHeadFirst.startsWith(GunHttpRequestType.DELETE.getVal())) {
-                this.method = GunHttpRequestType.DELETE;
+            if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.PUT.getVal())) {
+                this.method = GunHttpStdInfo.GunHttpRequestType.PUT;
+                break;
+            }
+            if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.DELETE.getVal())) {
+                this.method = GunHttpStdInfo.GunHttpRequestType.DELETE;
                 break;
             }
         } while (false);
@@ -137,7 +104,7 @@ public class GunHttp2Protocl implements GunRequestProtocl {
                 parameters[0] = requrl.split("\\?")[1];
             }
             for (String parameter : parameters) {
-                http2Parameter.put(parameter.split("=")[0], parameter.split("=")[1]);
+                http2Parameters.put(parameter.split("=")[0], parameter.split("=")[1]);
             }
 
         } else {
