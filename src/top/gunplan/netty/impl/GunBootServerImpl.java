@@ -1,10 +1,7 @@
 package top.gunplan.netty.impl;
 
 import com.sun.istack.internal.NotNull;
-import top.gunplan.netty.GunBootServer;
-import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunHandle;
-import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 
 import java.io.IOException;
@@ -83,7 +80,7 @@ final class GunBootServerImpl implements GunBootServer {
             socketChannel.configureBlocking(false).register(this.bootSelector, SelectionKey.OP_READ);
             this.acceptExector.execute(new GunAcceptWorker(dealhander, socketChannel));
         } else if (sk.isReadable()) {
-            this.acceptExector.execute(new GunRequestWorker(filters, dealhander, (SocketChannel) sk.channel()));
+            this.acceptExector.execute(new GunCoreWorker(filters, dealhander, (SocketChannel) sk.channel()));
             sk.cancel();
         }
     }

@@ -1,6 +1,9 @@
 package top.gunplan.netty.handles;
+
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
+import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.anno.GunHttpmapping;
 
 import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
@@ -19,7 +22,7 @@ import java.util.List;
  */
 
 public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
-    private ThreadLocal<HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>>> localUrlMapping = new ThreadLocal<>();
+    private final ThreadLocal<HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>>> localUrlMapping = new ThreadLocal<>();
     private HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>> urlMapping = new HashMap<>();
 
     public GunStdHttpHandle(final String handlePackName) {
@@ -56,24 +59,20 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
     }
 
     @Override
-    public void dealDataEvent(EventType t, GunBootServer.GunNettyRequestObject m) throws GunException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         localUrlMapping.set(urlMapping);
         HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>> dealmap = localUrlMapping.get();
-        GunHttp2RequestProtocl req = ((GunHttp2RequestProtocl) m.requestObj().getGunRequestProtoclObject());
-        Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>> dealhandel = dealmap.get(req.getRequestUrl());
+        GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
+        Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>> dealhandel = dealmap.get(request.getRequestUrl());
         GunHttpMappingHandle<GunHttp2ResponseInterface> instance = dealhandel.getConstructor().newInstance();
-        byte[] b =  instance.doResponse().serizResponse();
-        m.requestObj().setSrc(b);
-        System.out .println("cc");
-        System.out .println("cc");
-        System.out .println("cc");
+        return instance.doResponse(request);
         //     localUrlMapping.get().
     }
 
     @Override
-    public void dealConnEvent(EventType t, GunBootServer.GunNettyRequestObject m) throws GunException, IOException {
-
+    public GunNetResponseInterface dealConnEvent(GunNetRequestInterface requestInterface) throws GunException {
+        return null;
     }
 
     @Override
@@ -83,7 +82,7 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
 
     @Override
     public void dealExceptionEvent(Exception exp) {
-
+        exp.printStackTrace();
     }
 
 }

@@ -1,10 +1,10 @@
 package top.gunplan.netty.test;
 
 import top.gunplan.netty.anno.GunHttpmapping;
-import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
-import top.gunplan.netty.protocol.CunBaseHttp2Response;
+import top.gunplan.netty.protocol.BaseGunHttp2Response;
 import top.gunplan.netty.protocol.GunHttp2ResponseInterface;
+import top.gunplan.netty.protocol.GunNetRequestInterface;
 
 @GunHttpmapping(mappingRule = "/index.jsp")
 public class BaseMapping implements GunHttpMappingHandle<GunHttp2ResponseInterface> {
@@ -13,13 +13,16 @@ public class BaseMapping implements GunHttpMappingHandle<GunHttp2ResponseInterfa
     }
 
     @Override
-    public GunHttp2ResponseInterface doResponse() {
-        CunBaseHttp2Response jj= new CunBaseHttp2Response(){
-
+    public GunHttp2ResponseInterface doResponse(GunNetRequestInterface protocl) {
+        BaseGunHttp2Response jj = new BaseGunHttp2Response() {
+            @Override
+            public String toResponse() {
+                return "hello world";
+            }
         };
-        byte[] b = jj.serizResponse();
+        jj.setIswrite(true);
 
-            return jj;
-       // return (;
+        return jj;
+        // return (;
     }
 }

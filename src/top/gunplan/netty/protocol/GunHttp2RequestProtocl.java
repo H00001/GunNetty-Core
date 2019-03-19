@@ -9,7 +9,7 @@ import java.util.HashMap;
  * @author dosdrtt
  */
 @GunNetFilterOrder(index = 0)
-final public class GunHttp2RequestProtocl implements GunRequestProtoclInterface {
+final public class GunHttp2RequestProtocl implements GunNetRequestInterface {
     public GunHttp2RequestProtocl() {
 
     }
@@ -52,7 +52,7 @@ final public class GunHttp2RequestProtocl implements GunRequestProtoclInterface 
     }
 
     @Override
-    public boolean unSeriz(byte[] in) {
+    public boolean unSerialize(byte[] in) {
         String httpconetnt = new String(in);
         int postion = httpconetnt.indexOf("\r\n");
         this.analyzingHttpHeadFirst(httpconetnt.substring(0, postion));
