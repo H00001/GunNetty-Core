@@ -105,7 +105,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public synchronized void sync() throws IOException {
         if (!this.initCheck()) {
-            throw new GunException("handel error or has been running");
+            throw new GunException("handel , executepool not set or has been running");
         }
         try {
             ServerSocketChannel var57 = ServerSocketChannel.open();

@@ -1,6 +1,6 @@
 package top.gunplan.netty;
 
-import jdk.nashorn.internal.codegen.CompilerConstants;
+
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.nio.utils.GunBytesUtil;
 import java.io.IOException;
@@ -8,8 +8,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
+
 
 /**
  *

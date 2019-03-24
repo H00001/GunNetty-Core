@@ -8,7 +8,6 @@ import top.gunplan.netty.protocol.GunNetResponseInterface;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.SocketChannel;
-import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 
 /**

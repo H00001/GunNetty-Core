@@ -59,6 +59,7 @@ public abstract class BaseGunHttp2Response implements GunHttp2ResponseInterface 
         http2resp.append("Content-Type:").append(contentType.getVal()).append("\r\n");
         http2resp.append("Content-Length:").append(this.toResponse().length()).append("\r\n\r\n");
         http2resp.append(this.toResponse());
+
         return http2resp.toString().getBytes();
 
     }

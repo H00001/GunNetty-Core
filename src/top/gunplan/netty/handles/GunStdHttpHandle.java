@@ -62,17 +62,30 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
     public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         localUrlMapping.set(urlMapping);
-        HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>> dealmap = localUrlMapping.get();
         GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
-        Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>> dealhandel = dealmap.get(request.getRequestUrl());
-        if (dealhandel == null)
-        {
-
-        }
-        GunHttpMappingHandle<GunHttp2ResponseInterface> instance = dealhandel.getConstructor().newInstance();
-        return instance.doResponse(request);
+        return findHandelandRun(request.getRequestUrl()).doResponse(request);
         //     localUrlMapping.get().
     }
+
+    private GunHttpMappingHandle<GunHttp2ResponseInterface> findHandelandRun(String requestUrl) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
+
+    {
+        HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>> dealmap = localUrlMapping.get();
+        Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>> dealhandel = dealmap.get(requestUrl);
+        int fg = 0;
+        if (dealhandel == null) {
+            for (int i = requestUrl.length() - 1; i >= 0; i--) {
+                if (requestUrl.charAt(i) == '/') {
+                    fg = i;
+                    break;
+                }
+            }
+            dealhandel = dealmap.get(requestUrl.substring(0, fg+1) + "*");
+        }
+        GunHttpMappingHandle<GunHttp2ResponseInterface> instance = dealhandel.getConstructor().newInstance();
+        return instance;
+    }
+
 
     @Override
     public GunNetResponseInterface dealConnEvent(GunNetRequestInterface requestInterface) throws GunException {

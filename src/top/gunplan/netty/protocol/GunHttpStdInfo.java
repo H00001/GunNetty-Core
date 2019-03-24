@@ -43,7 +43,7 @@ public class GunHttpStdInfo {
     }
 
 
-    enum statusCode {
+    public enum statusCode {
         /**
          *
          */
