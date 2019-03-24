@@ -1,17 +1,21 @@
 package top.gunplan.netty;
 
+import jdk.nashorn.internal.codegen.CompilerConstants;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.nio.utils.GunBytesUtil;
-
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.FutureTask;
 
 /**
  *
+ * @author dosdrtt
  */
+
 public final class GunCoreWorker extends GunBootServer.BaseGunNettyWorker implements Runnable {
 
     private final List<GunNettyFilter> filters;
@@ -19,8 +23,9 @@ public final class GunCoreWorker extends GunBootServer.BaseGunNettyWorker implem
     public GunCoreWorker(final List<GunNettyFilter> filters, final GunBootServer.GunNetHandle dealHanders, final SocketChannel channel) {
         super(dealHanders, channel);
         this.filters = filters;
-    }
 
+
+    }
     @Override
     public synchronized void run() {
         byte[] readbata = null;
@@ -33,7 +38,8 @@ public final class GunCoreWorker extends GunBootServer.BaseGunNettyWorker implem
         } catch (Exception e) {
             this.handel.dealExceptionEvent(e);
         }
-        if (readbata != null) {
+        if (readbata != null)
+        {
             final GunRequestFilterDto gunFilterObj = new GunRequestFilterDto(readbata);
             this.filters.forEach(netty -> netty.doRequestFilter(gunFilterObj));
             GunNetResponseInterface respObject = null;

@@ -3,7 +3,7 @@ package top.gunplan.netty;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 /**
- *
+ * @author dosdrtt
  */
 public interface GunNettyFilter extends GunHandle {
     /**

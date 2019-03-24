@@ -22,11 +22,11 @@ public class GunHttpStdInfo {
         }
     }
 
-    enum HttpProtoclType {
+    public enum HttpProtoclType {
         /**
          *
          */
-        HTTP1_1("HTTP/1.1"), HTTP2_0("HTTP/1.1");
+        HTTP1_1("HTTP/1.1"), HTTP2_0("HTTP/2.0");
         private String val;
 
         HttpProtoclType(String val) {
@@ -64,7 +64,7 @@ public class GunHttpStdInfo {
 
     }
 
-    enum ContentType {
+    public enum ContentType {
         /**
          *
          */

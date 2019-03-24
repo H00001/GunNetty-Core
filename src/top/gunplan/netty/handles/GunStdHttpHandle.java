@@ -59,12 +59,16 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
     }
 
     @Override
-    public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
 
         localUrlMapping.set(urlMapping);
         HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>> dealmap = localUrlMapping.get();
         GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
         Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>> dealhandel = dealmap.get(request.getRequestUrl());
+        if (dealhandel == null)
+        {
+
+        }
         GunHttpMappingHandle<GunHttp2ResponseInterface> instance = dealhandel.getConstructor().newInstance();
         return instance.doResponse(request);
         //     localUrlMapping.get().

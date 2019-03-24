@@ -4,14 +4,12 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
-import top.gunplan.nio.utils.GunBytesUtil;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
-import java.util.List;
 import java.util.concurrent.Executor;
+import java.util.concurrent.ExecutorService;
 
 /**
  * @author dosdrtt
@@ -39,7 +37,7 @@ public interface GunBootServer {
      * @return this
      */
 
-    GunBootServer setExecuters(@NotNull Executor acceptExecuters, @NotNull Executor requestExecuters);
+    GunBootServer setExecuters(@NotNull ExecutorService acceptExecuters, @NotNull ExecutorService requestExecuters);
 
     /**
      * set a deal handel implement <code>GunBootServer.GunNetHandle</code>
@@ -57,6 +55,7 @@ public interface GunBootServer {
      * @param filter filter, filter the request
      */
     GunBootServer addFilter(GunNettyFilter filter);
+
 
     /**
      * @param clazz class to deal
@@ -82,6 +81,10 @@ public interface GunBootServer {
             this.requestObj = requestObj;
         }
 
+        /**
+         * @return
+         */
+
         public GunRequestFilterDto requestObj() {
             return requestObj;
         }
@@ -96,7 +99,8 @@ public interface GunBootServer {
          * @throws GunException std exception
          * @throws IOException  error
          */
-        GunNetResponseInterface dealDataEvent(GunNetRequestInterface request) throws GunException, IOException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException;
+        GunNetResponseInterface dealDataEvent(GunNetRequestInterface request) throws GunException, IOException,
+                NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException;
 
         /**
          * @throws GunException
@@ -118,9 +122,7 @@ public interface GunBootServer {
             /**
              *
              */
-
-
-            RECEIVED, CONNRCTED, EXECPTION, CLOSEED;
+            RECEIVED;
         }
     }
 
@@ -141,7 +143,7 @@ public interface GunBootServer {
             super(l, channel);
         }
 
-        @Override
+
         public synchronized void run() {
             try {
                 this.handel.dealConnEvent(null);
@@ -150,7 +152,5 @@ public interface GunBootServer {
             }
         }
     }
-
-
 }
 

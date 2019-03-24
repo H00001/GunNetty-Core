@@ -12,16 +12,15 @@ import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.PriorityQueue;
+import java.util.concurrent.*;
 import java.util.Iterator;
-
-import java.util.concurrent.Executor;
 
 
 /**
  * @author Gunplan
- * @version 0.0.0.5
- * @apiNote 0.0.0.4
+ * @version 0.0.0.6
+ * @apiNote 0.0.0.5
  * @since 0.0.0.4
  */
 
@@ -33,9 +32,9 @@ final class GunBootServerImpl implements GunBootServer {
 
     private Selector bootSelector;
 
-    private Executor acceptExector;
+    private ExecutorService acceptExector;
 
-    private Executor requestExector;
+    private ExecutorService requestExector;
 
     private volatile GunNetHandle dealhander = null;
 
@@ -80,7 +79,7 @@ final class GunBootServerImpl implements GunBootServer {
             socketChannel.configureBlocking(false).register(this.bootSelector, SelectionKey.OP_READ);
             this.acceptExector.execute(new GunAcceptWorker(dealhander, socketChannel));
         } else if (sk.isReadable()) {
-            this.acceptExector.execute(new GunCoreWorker(filters, dealhander, (SocketChannel) sk.channel()));
+            this.acceptExector.submit(new GunCoreWorker(filters, dealhander, (SocketChannel) sk.channel()));
             sk.cancel();
         }
     }
@@ -108,7 +107,6 @@ final class GunBootServerImpl implements GunBootServer {
         if (!this.initCheck()) {
             throw new GunException("handel error or has been running");
         }
-
         try {
             ServerSocketChannel var57 = ServerSocketChannel.open();
             this.bootSelector = Selector.open();
@@ -130,7 +128,7 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunBootServer setExecuters(Executor acceptExecuters, Executor requestExecuters) {
+    public GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters) {
         this.acceptExector = acceptExecuters;
         this.requestExector = requestExecuters;
         return this;
