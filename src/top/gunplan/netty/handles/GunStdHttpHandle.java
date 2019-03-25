@@ -9,7 +9,9 @@ import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.GunHttp2ResponseInterface;
-import top.gunplan.nio.utils.DirectoryUtils;
+import top.gunplan.nio.utils.GunBaseLogUtil;
+import top.gunplan.nio.utils.GunDirectoryUtil;
+import top.gunplan.nio.utils.GunStringUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +31,7 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
         ClassLoader loader = this.getClass().getClassLoader();
         List<File> classfiles;
         try {
-            classfiles = DirectoryUtils.scanAllFilesFromDirectory(loader.getResource("").getPath().replace("%20", " ") + handlePackName.replace(".", "/"));
+            classfiles = GunDirectoryUtil.scanAllFilesFromDirectory(loader.getResource("").getPath().replace("%20", " ") + handlePackName.replace(".", "/"));
         } catch (IOException e) {
             throw new GunException(e);
         }
@@ -63,24 +65,25 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
 
         localUrlMapping.set(urlMapping);
         GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
-        return findHandelandRun(request.getRequestUrl()).doResponse(request);
+        GunHttpMappingHandle<GunHttp2ResponseInterface> runner = null;
+        try {
+            runner = findHandelandRun(request.getRequestUrl());
+        } catch (Exception exp) {
+            GunBaseLogUtil.error(exp.getMessage());
+        }
+        return runner.doResponse(request);
         //     localUrlMapping.get().
     }
 
-    private GunHttpMappingHandle<GunHttp2ResponseInterface> findHandelandRun(String requestUrl) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException
-
-    {
+    private GunHttpMappingHandle<GunHttp2ResponseInterface> findHandelandRun(String requestUrl) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
         HashMap<String, Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>>> dealmap = localUrlMapping.get();
         Class<? extends GunHttpMappingHandle<GunHttp2ResponseInterface>> dealhandel = dealmap.get(requestUrl);
-        int fg = 0;
-        if (dealhandel == null) {
-            for (int i = requestUrl.length() - 1; i >= 0; i--) {
-                if (requestUrl.charAt(i) == '/') {
-                    fg = i;
-                    break;
-                }
+        while (dealhandel == null) {
+            requestUrl = GunStringUtil.removeLastUrl(requestUrl);
+            dealhandel = dealmap.get(requestUrl + "*");
+            if ("/".equals(requestUrl) && dealhandel == null) {
+                throw new GunException("404 or 404 pages not found");
             }
-            dealhandel = dealmap.get(requestUrl.substring(0, fg+1) + "*");
         }
         GunHttpMappingHandle<GunHttp2ResponseInterface> instance = dealhandel.getConstructor().newInstance();
         return instance;

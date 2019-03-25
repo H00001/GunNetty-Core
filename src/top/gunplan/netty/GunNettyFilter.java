@@ -11,10 +11,10 @@ public interface GunNettyFilter extends GunHandle {
      *
      * @param filterDto input to the filter's deal Object
      */
-    void doRequestFilter(GunRequestFilterDto filterDto);
+    boolean doRequestFilter(GunRequestFilterDto filterDto);
 
     /**
      * @param filterDto input to the filter's deal Object
      */
-    void doResponseFilter(GunResponseFilterDto filterDto);
+    boolean doResponseFilter(GunResponseFilterDto filterDto);
 }

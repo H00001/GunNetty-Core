@@ -3,6 +3,7 @@ package top.gunplan.netty;
 
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.nio.utils.GunBytesUtil;
+
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.ByteBuffer;
@@ -11,7 +12,6 @@ import java.util.List;
 
 
 /**
- *
  * @author dosdrtt
  */
 
@@ -25,6 +25,7 @@ public final class GunCoreWorker extends GunBootServer.BaseGunNettyWorker implem
 
 
     }
+
     @Override
     public synchronized void run() {
         byte[] readbata = null;
@@ -37,10 +38,13 @@ public final class GunCoreWorker extends GunBootServer.BaseGunNettyWorker implem
         } catch (Exception e) {
             this.handel.dealExceptionEvent(e);
         }
-        if (readbata != null)
-        {
+        if (readbata != null) {
             final GunRequestFilterDto gunFilterObj = new GunRequestFilterDto(readbata);
-            this.filters.forEach(netty -> netty.doRequestFilter(gunFilterObj));
+            for (GunNettyFilter filter : this.filters) {
+                if (!filter.doRequestFilter(gunFilterObj)) {
+                    break;
+                }
+            }
             GunNetResponseInterface respObject = null;
             try {
                 respObject = this.handel.dealDataEvent(gunFilterObj.getObject());
@@ -48,7 +52,11 @@ public final class GunCoreWorker extends GunBootServer.BaseGunNettyWorker implem
                 this.handel.dealExceptionEvent(e);
             }
             GunResponseFilterDto responseFilterDto = new GunResponseFilterDto(respObject);
-            this.filters.forEach(netty -> netty.doResponseFilter(responseFilterDto));
+            for (GunNettyFilter filter : this.filters) {
+                if (!filter.doResponseFilter(responseFilterDto)) {
+                    break;
+                }
+            }
 
             if (responseFilterDto.getRespobj().isReturn()) {
                 try {

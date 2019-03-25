@@ -1,5 +1,7 @@
 package top.gunplan.netty.protocol;
 
+import java.util.*;
+
 /**
  * @author dosdrtt
  */
@@ -8,8 +10,27 @@ public abstract class BaseGunHttp2Response implements GunHttp2ResponseInterface 
     private GunHttpStdInfo.statusCode code = GunHttpStdInfo.statusCode.OK;
     private GunHttpStdInfo.ContentType contentType = GunHttpStdInfo.ContentType.TEXT_JSON;
 
+
+    public BaseGunHttp2Response() {
+        this.mmap.put("Server", "windos iis server 2003");
+        this.mmap.put("date", new Date().toString());
+        this.mmap.put("Connection", "keep-alive");
+        this.cookies.add(new GunHttpStdInfo.GunCookies("iisSession", UUID.randomUUID().toString()));
+
+    }
+
+    private Map<String, String> mmap = new HashMap<>(4);
+    private List<GunHttpStdInfo.GunCookies> cookies = new ArrayList<>(1);
+
     private boolean iswrite;
 
+    public Map<String, String> getMmap() {
+        return mmap;
+    }
+
+    public void setMmap(Map<String, String> mmap) {
+        this.mmap = mmap;
+    }
 
     public GunHttpStdInfo.HttpProtoclType getProtoclType() {
         return protoclType;
@@ -48,8 +69,17 @@ public abstract class BaseGunHttp2Response implements GunHttp2ResponseInterface 
         this.iswrite = iswrite;
     }
 
+    public List<GunHttpStdInfo.GunCookies> getCookies() {
+        return cookies;
+    }
+
+    public void addCookie(GunHttpStdInfo.GunCookies cookies) {
+        this.cookies.add(cookies);
+    }
+
     @Override
     public byte[] serialize() {
+        Map<String, String> httpHead = this.mmap;
         StringBuilder http2resp = new StringBuilder();
         http2resp.append(protoclType.getVal());
         http2resp.append(" ");
@@ -57,6 +87,13 @@ public abstract class BaseGunHttp2Response implements GunHttp2ResponseInterface 
         http2resp.append(" ");
         http2resp.append(code).append("\r\n");
         http2resp.append("Content-Type:").append(contentType.getVal()).append("\r\n");
+        for (String key : httpHead.keySet()) {
+            http2resp.append(key).append(":").append(httpHead.get(key)).append("\r\n");
+        }
+        for (GunHttpStdInfo.GunCookies cookie : cookies) {
+            http2resp.append("Set-Cookie").append(":").append(cookie.toString()).append("\r\n");
+        }
+
         http2resp.append("Content-Length:").append(this.toResponse().length()).append("\r\n\r\n");
         http2resp.append(this.toResponse());
 

@@ -8,18 +8,22 @@ import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
+/**
+ * @author dosdrtt
+ */
 @GunNetFilterOrder
 public class GunStdHttp2Filter implements GunNettyFilter {
     @Override
-    public void doRequestFilter(GunRequestFilterDto filterDto) {
+    public boolean doRequestFilter(GunRequestFilterDto filterDto) {
         GunNetRequestInterface protocl = new GunHttp2RequestProtocl();
         protocl.unSerialize(filterDto.getSrc());
         filterDto.setObject(protocl);
+        return true;
     }
 
     @Override
-    public void doResponseFilter(GunResponseFilterDto filterDto) {
-
+    public boolean doResponseFilter(GunResponseFilterDto filterDto) {
+        return true;
     }
 
 }

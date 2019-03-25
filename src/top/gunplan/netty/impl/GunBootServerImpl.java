@@ -3,6 +3,7 @@ package top.gunplan.netty.impl;
 import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
+import top.gunplan.nio.utils.GunBaseLogUtil;
 
 import java.io.IOException;
 import java.lang.annotation.Annotation;
@@ -118,10 +119,14 @@ final class GunBootServerImpl implements GunBootServer {
 
         while (bootSelector.select() > 0) {
             Iterator keyIterator = bootSelector.selectedKeys().iterator();
-            while (keyIterator.hasNext()) {
-                SelectionKey sk = (SelectionKey) keyIterator.next();
-                this.toDealConnection(sk);
-                keyIterator.remove();
+            try {
+                while (keyIterator.hasNext()) {
+                    SelectionKey sk = (SelectionKey) keyIterator.next();
+                    this.toDealConnection(sk);
+                    keyIterator.remove();
+                }
+            } catch (Exception exp) {
+                GunBaseLogUtil.error(exp.getLocalizedMessage());
             }
         }
     }

@@ -5,13 +5,11 @@ import top.gunplan.netty.GunException;
 import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
-import top.gunplan.nio.utils.BaseGunLog;
-
-import java.io.IOException;
+import top.gunplan.nio.utils.GunBaseLogUtil;
 
 public class GunOutputHander implements GunBootServer.GunNetHandle {
     {
-        BaseGunLog.setLevel(0);
+        GunBaseLogUtil.setLevel(0);
     }
 
     @Override
@@ -19,7 +17,7 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
         if (m instanceof GunHttp2RequestProtocl) {
             GunHttp2RequestProtocl httpProtocl = ((GunHttp2RequestProtocl) m);
             httpProtocl.getRequstHead().forEach((s, s2) ->
-                    BaseGunLog.info(s + " " + "->" + " " + s2)
+                    GunBaseLogUtil.info(s + " " + "->" + " " + s2)
             );
         }
         return null;
@@ -27,13 +25,13 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
 
     @Override
     public GunNetResponseInterface dealConnEvent(GunNetRequestInterface m) throws GunException {
-        BaseGunLog.error("CONNECTED ");
+        GunBaseLogUtil.error("CONNECTED ");
         return null;
     }
 
     @Override
     public void dealCloseEvent() {
-        BaseGunLog.error("CLOSED ");
+        GunBaseLogUtil.error("CLOSED ");
     }
 
     @Override

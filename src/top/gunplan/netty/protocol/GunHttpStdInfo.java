@@ -1,7 +1,62 @@
 package top.gunplan.netty.protocol;
 
 public class GunHttpStdInfo {
-    enum GunHttpRequestType {
+    public static class GunCookies {
+        private String key;
+        private String value;
+        private String path;
+        private String expries;
+
+        public GunCookies(String key, String value) {
+            this(key, value, "/", null);
+        }
+
+        public GunCookies(String key, String value, String path, String expries) {
+            this.key = key;
+            this.value = value;
+            this.path = path;
+            this.expries = expries;
+        }
+
+        public String getKey() {
+            return key;
+        }
+
+        public void setKey(String key) {
+            this.key = key;
+        }
+
+        public String getValue() {
+            return value;
+        }
+
+        public void setValue(String value) {
+            this.value = value;
+        }
+
+        public String getPath() {
+            return path;
+        }
+
+        public void setPath(String path) {
+            this.path = path;
+        }
+
+        public String getExpries() {
+            return expries;
+        }
+
+        public void setExpries(String expries) {
+            this.expries = expries;
+        }
+
+        @Override
+        public String toString() {
+            return this.key + "=" + this.value + ";" + "path=" + path + ";expries=" + expries;
+        }
+    }
+
+    public enum GunHttpRequestType {
         /**
          *
          *
