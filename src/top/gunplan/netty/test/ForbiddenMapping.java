@@ -3,14 +3,14 @@ package top.gunplan.netty.test;
 import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.BaseGunHttp2Response;
-import top.gunplan.netty.protocol.GunHttp2ResponseInterface;
+import top.gunplan.netty.protocol.AbstractGunHttp2Response;
 import top.gunplan.netty.protocol.GunHttpStdInfo;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 @GunHttpmapping(mappingRule = "/manage/*")
-public class ForbiddenMapping implements GunHttpMappingHandle<GunHttp2ResponseInterface> {
+public class ForbiddenMapping implements GunHttpMappingHandle<AbstractGunHttp2Response> {
 
     @Override
-    public GunHttp2ResponseInterface doResponse(GunNetRequestInterface protocl) {
+    public AbstractGunHttp2Response doResponse(GunNetRequestInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
 
             @Override

@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * @author dosdrtt
  */
-public abstract class BaseGunHttp2Response implements GunHttp2ResponseInterface {
+public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
     private GunHttpStdInfo.HttpProtoclType protoclType = GunHttpStdInfo.HttpProtoclType.HTTP1_1;
     private GunHttpStdInfo.statusCode code = GunHttpStdInfo.statusCode.OK;
     private GunHttpStdInfo.ContentType contentType = GunHttpStdInfo.ContentType.TEXT_JSON;
@@ -78,28 +78,26 @@ public abstract class BaseGunHttp2Response implements GunHttp2ResponseInterface 
     }
 
     @Override
-    public byte[] serialize() {
+    public String getResponseBody() {
         Map<String, String> httpHead = this.mmap;
         StringBuilder http2resp = new StringBuilder();
-        http2resp.append(protoclType.getVal());
-        http2resp.append(" ");
-        http2resp.append(code.getVal());
-        http2resp.append(" ");
-        http2resp.append(code).append("\r\n");
-        http2resp.append("Content-Type:").append(contentType.getVal()).append("\r\n");
+        http2resp.append(protoclType.getVal()).append(" ").append(code.getVal()).append(" ");
+        http2resp.append(code).append("\n");
+        http2resp.append("Content-Type:").append(contentType.getVal()).append("\n");
         for (String key : httpHead.keySet()) {
-            http2resp.append(key).append(":").append(httpHead.get(key)).append("\r\n");
+            http2resp.append(key).append(":").append(httpHead.get(key)).append("\n");
         }
         for (GunHttpStdInfo.GunCookies cookie : cookies) {
-            http2resp.append("Set-Cookie").append(":").append(cookie.toString()).append("\r\n");
+            http2resp.append("Set-Cookie").append(":").append(cookie.toString()).append("\n");
         }
 
-        http2resp.append("Content-Length:").append(this.toResponse().length()).append("\r\n\r\n");
+        http2resp.append("Content-Length:").append(this.toResponse().length()).append("\n\n");
         http2resp.append(this.toResponse());
 
-        return http2resp.toString().getBytes();
-
+        return http2resp.toString();
     }
+
+    public abstract String toResponse();
 
 
 }

@@ -1,18 +1,18 @@
-package top.gunplan.netty.test;
+package top.gunplan.netty.test.error;
 
 
 import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.BaseGunHttp2Response;
-import top.gunplan.netty.protocol.GunHttp2ResponseInterface;
+import top.gunplan.netty.protocol.AbstractGunHttp2Response;
 import top.gunplan.netty.protocol.GunHttpStdInfo;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 
 @GunHttpmapping(mappingRule = "/*")
-public class _404_Not_Found implements GunHttpMappingHandle<GunHttp2ResponseInterface> {
+public class _404_Not_Found implements GunHttpMappingHandle<AbstractGunHttp2Response> {
 
     @Override
-    public GunHttp2ResponseInterface doResponse(GunNetRequestInterface protocl) {
+    public AbstractGunHttp2Response doResponse(GunNetRequestInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
             @Override
             public String toResponse() {
@@ -30,6 +30,7 @@ public class _404_Not_Found implements GunHttpMappingHandle<GunHttp2ResponseInte
         response.setIswrite(true);
         response.setProtoclType(GunHttpStdInfo.HttpProtoclType.HTTP2_0);
         response.setContentType(GunHttpStdInfo.ContentType.TEXT_HTML);
+        response.setCode(GunHttpStdInfo.statusCode.NOTFOUND);
         return response;
     }
 }

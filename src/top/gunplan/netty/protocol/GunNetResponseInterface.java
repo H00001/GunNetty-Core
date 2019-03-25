@@ -1,18 +1,19 @@
 package top.gunplan.netty.protocol;
 
-import top.gunplan.netty.protocol.GunHttp2ResponseInterface;
+
 
 /**
  * @author dosdrtt
  */
 public interface GunNetResponseInterface {
     /**
-     * @return bytes[]
+     * @return bytes[] transfer to client
      */
     byte[] serialize();
 
     /**
-     * @return
+     * get is or not return
+     * @return is or not return to client
      */
     boolean isReturn();
 }
