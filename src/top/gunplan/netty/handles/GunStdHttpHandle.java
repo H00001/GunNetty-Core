@@ -24,6 +24,10 @@ import java.util.List;
  */
 
 public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
+
+    {
+        GunBaseLogUtil.setLevel(0);
+    }
     private final ThreadLocal<HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>>> localUrlMapping = new ThreadLocal<>();
     private HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> urlMapping = new HashMap<>();
 
@@ -56,10 +60,11 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
     }
 
     @Override
-    public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException, NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException{
 
         localUrlMapping.set(urlMapping);
         GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
+        GunBaseLogUtil.info("request:"+request.getRequestUrl());
         GunHttpMappingHandle<AbstractGunHttp2Response> runner = null;
         try {
             runner = findHandelandRun(request.getRequestUrl());

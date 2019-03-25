@@ -6,14 +6,12 @@ import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.nio.utils.GunBaseLogUtil;
 
 import java.io.IOException;
-import java.lang.annotation.Annotation;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.List;
-import java.util.PriorityQueue;
 import java.util.concurrent.*;
 import java.util.Iterator;
 
@@ -37,17 +35,18 @@ final class GunBootServerImpl implements GunBootServer {
 
     private ExecutorService requestExector;
 
-    private volatile GunNetHandle dealhander = null;
+    private volatile GunBootServer.GunNetHandle dealhander = null;
 
     private final List<GunNettyFilter> filters = new CopyOnWriteArrayList<>();
 
     private GunBootServerImpl() {
-        this(8888);
+        this(GunNettySupportParameter.Companion.getPort());
     }
 
     @Override
     public boolean isRunnable() {
         return this.runnable;
+
     }
 
 
@@ -78,9 +77,9 @@ final class GunBootServerImpl implements GunBootServer {
         if (sk.isAcceptable()) {
             SocketChannel socketChannel = ((ServerSocketChannel) sk.channel()).accept();
             socketChannel.configureBlocking(false).register(this.bootSelector, SelectionKey.OP_READ);
-            this.acceptExector.execute(new GunAcceptWorker(dealhander, socketChannel));
+            this.acceptExector.submit(new GunAcceptWorker(dealhander, socketChannel));
         } else if (sk.isReadable()) {
-            this.acceptExector.submit(new GunCoreWorker(filters, dealhander, (SocketChannel) sk.channel()));
+            this.requestExector.submit(new GunCoreWorker(filters, dealhander, (SocketChannel) sk.channel()));
             sk.cancel();
         }
     }

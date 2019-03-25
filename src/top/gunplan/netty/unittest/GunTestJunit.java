@@ -19,8 +19,8 @@ public class GunTestJunit {
 //        CountDownLatch latch = new CountDownLatch(1);
 //        latch.await();
 //        System.out.println("gg");
-        GunBootServer server = GunBootServerFactory.getInstance(8822);
-        server.setExecuters(Executors.newFixedThreadPool(3), Executors.newFixedThreadPool(3)).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
+        GunBootServer server = GunBootServerFactory.getInstance();
+        server.setExecuters(Executors.newFixedThreadPool(10), Executors.newFixedThreadPool(10)).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
         server.sync();
     }
 
