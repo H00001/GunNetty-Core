@@ -65,6 +65,7 @@ public interface GunBootServer {
 
     /**
      * GunNettyRequestObject is used to resopnse
+     * java bean
      */
     class GunNettyRequestObject {
         @Override
@@ -81,7 +82,7 @@ public interface GunBootServer {
         }
 
         /**
-         * @return
+         * @return GunRequestFilterDto
          */
 
         public GunRequestFilterDto requestObj() {

@@ -2,7 +2,12 @@ package top.gunplan.netty.protocol.resputil;
 
 import java.util.HashMap;
 
-public class GunMappingJsonResp extends HashMap<String, String> implements GunHttp2ResponseBody {
+
+/**
+ * @author dosdrtt
+ */
+public final class GunMappingJsonResp extends HashMap<String, String> implements GunHttp2ResponseBody {
+    private static final long serialVersionUID = -6884797417624222041L;
     @Override
     public String toTransfer() {
         StringBuilder json = new StringBuilder("{\"");
