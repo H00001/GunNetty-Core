@@ -8,13 +8,15 @@ import java.util.HashMap;
  */
 public final class GunMappingJsonResp extends HashMap<String, String> implements GunHttp2ResponseBody {
     private static final long serialVersionUID = -6884797417624222041L;
+
     @Override
     public String toTransfer() {
         StringBuilder json = new StringBuilder("{\"");
         for (String key : super.keySet()) {
             json.append(key).append("\":\"").append(super.get(key)).append("\",");
         }
-        json.append("}");
-        return json.toString();
+        String s = json.substring(0, json.length() - 1);
+        s += "}";
+        return s;
     }
 }

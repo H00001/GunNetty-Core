@@ -2,18 +2,21 @@ package top.gunplan.netty;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
+import top.gunplan.netty.impl.AbstractGunCoreThread;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 /**
  * @author dosdrtt
  */
 public interface GunBootServer {
+    AbstractGunCoreThread getADataThread();
     /**
      * @return the server 's status
      */
@@ -26,7 +29,7 @@ public interface GunBootServer {
      */
 
 
-    void sync() throws IOException;
+    void sync() throws IOException, ExecutionException, InterruptedException;
 
     /**
      * set the Thread pool that dispose the request
@@ -144,6 +147,7 @@ public interface GunBootServer {
         }
 
 
+        @Override
         public synchronized void run() {
             try {
                 this.handel.dealConnEvent(null);

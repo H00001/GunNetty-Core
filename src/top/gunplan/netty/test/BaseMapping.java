@@ -3,20 +3,17 @@ package top.gunplan.netty.test;
 import top.gunplan.netty.anno.GunHttpBaseContent;
 import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
-import top.gunplan.netty.protocol.BaseGunHttp2Response;
-import top.gunplan.netty.protocol.AbstractGunHttp2Response;
-import top.gunplan.netty.protocol.GunHttpStdInfo;
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.*;
 
 @GunHttpmapping(mappingRule = "/index.aspx")
 @GunHttpBaseContent
-public class BaseMapping implements GunHttpMappingHandle<AbstractGunHttp2Response> {
+public class BaseMapping implements GunHttpMappingHandle<GunNetResponseInterface> {
     public BaseMapping() {
 
     }
 
     @Override
-    public AbstractGunHttp2Response doResponse(GunNetRequestInterface protocl) {
+    public GunNetResponseInterface doResponse(GunNetRequestInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
             @Override
             public String toResponse() {

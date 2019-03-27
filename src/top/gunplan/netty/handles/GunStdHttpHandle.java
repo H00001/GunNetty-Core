@@ -98,11 +98,12 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
 
     @Override
     public void dealCloseEvent() {
-
+        GunBaseLogUtil.urgency("CLOSED");
     }
 
     @Override
     public void dealExceptionEvent(Exception exp) {
+        GunBaseLogUtil.urgency("CLOSED");
         exp.printStackTrace();
     }
 

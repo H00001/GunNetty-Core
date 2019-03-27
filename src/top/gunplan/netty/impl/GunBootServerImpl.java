@@ -1,19 +1,13 @@
 package top.gunplan.netty.impl;
 
-import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.nio.utils.GunBaseLogUtil;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-import java.nio.channels.ServerSocketChannel;
-import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.concurrent.*;
-import java.util.Iterator;
 
 
 /**
@@ -41,6 +35,16 @@ final class GunBootServerImpl implements GunBootServer {
 
     private GunBootServerImpl() {
         this(GunNettySupportParameter.Companion.getPort());
+    }
+
+    @Override
+    public AbstractGunCoreThread getADataThread() {
+        return null;
+    }
+
+
+    public static AbstractGunCoreThread getADataThread0() {
+        return null;
     }
 
     @Override
@@ -73,17 +77,6 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
 
-    private void toDealConnection(@NotNull SelectionKey sk) throws IOException {
-        if (sk.isAcceptable()) {
-            SocketChannel socketChannel = ((ServerSocketChannel) sk.channel()).accept();
-            socketChannel.configureBlocking(false).register(this.bootSelector, SelectionKey.OP_READ);
-            this.acceptExector.submit(new GunAcceptWorker(dealhander, socketChannel));
-        } else if (sk.isReadable()) {
-            this.requestExector.submit(new GunCoreWorker(filters, dealhander, (SocketChannel) sk.channel()));
-            sk.cancel();
-        }
-    }
-
     private void getAnnoAndInsert(GunNetHandle hander) {
         this.dealhander = hander;
     }
@@ -102,32 +95,23 @@ final class GunBootServerImpl implements GunBootServer {
         return this.acceptExector != null && requestExector != null && this.dealhander != null && !runnable;
     }
 
+
     @Override
-    public synchronized void sync() throws IOException {
+    public synchronized void sync() throws IOException, ExecutionException, InterruptedException {
+        GunBaseLogUtil.debug("Gun Gun Gun Gun Gun Gun Gun Gun Gun Gun Gun Gun");
         if (!this.initCheck()) {
             throw new GunException("handel , executepool not set or has been running");
         }
-        try {
-            ServerSocketChannel var57 = ServerSocketChannel.open();
-            this.bootSelector = Selector.open();
-            var57.bind(new InetSocketAddress(this.var3315)).configureBlocking(false);
-            var57.register(bootSelector, SelectionKey.OP_ACCEPT);
-        } catch (IOException e) {
-            throw new GunException(e);
+        GunBaseLogUtil.debug("Check parameters succeed");
+
+        if(CoreThreadManage.init(acceptExector,requestExector,filters,dealhander,var3315)) {
+           Future<Integer> result = CoreThreadManage.startAllAndWait();
+           result.get();
         }
 
-        while (bootSelector.select() > 0) {
-            Iterator keyIterator = bootSelector.selectedKeys().iterator();
-            try {
-                while (keyIterator.hasNext()) {
-                    SelectionKey sk = (SelectionKey) keyIterator.next();
-                    this.toDealConnection(sk);
-                    keyIterator.remove();
-                }
-            } catch (Exception exp) {
-                GunBaseLogUtil.error(exp.getLocalizedMessage());
-            }
-        }
+
+
+
     }
 
 

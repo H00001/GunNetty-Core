@@ -5,6 +5,7 @@ import top.gunplan.netty.GunException;
 import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunStdString;
 import top.gunplan.nio.utils.GunBaseLogUtil;
 
 public class GunOutputHander implements GunBootServer.GunNetHandle {
@@ -14,11 +15,10 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
 
     @Override
     public GunNetResponseInterface dealDataEvent(GunNetRequestInterface m) {
-        if (m instanceof GunHttp2RequestProtocl) {
-            GunHttp2RequestProtocl httpProtocl = ((GunHttp2RequestProtocl) m);
-            httpProtocl.getRequstHead().forEach((s, s2) ->
-                    GunBaseLogUtil.info(s + " " + "->" + " " + s2)
-            );
+        if (m instanceof GunStdString) {
+            GunStdString httpProtocl = ((GunStdString) m);
+            GunBaseLogUtil.urgency(httpProtocl.getS());
+
         }
         return null;
     }
