@@ -2,7 +2,6 @@ package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.protocol.GunStdString;
@@ -17,7 +16,7 @@ public class GunOutputHander implements GunBootServer.GunNetHandle {
     public GunNetResponseInterface dealDataEvent(GunNetRequestInterface m) {
         if (m instanceof GunStdString) {
             GunStdString httpProtocl = ((GunStdString) m);
-            GunBaseLogUtil.urgency(httpProtocl.getS());
+            GunBaseLogUtil.urgency(httpProtocl.getString());
 
         }
         return null;

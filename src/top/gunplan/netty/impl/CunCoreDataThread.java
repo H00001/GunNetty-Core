@@ -7,7 +7,7 @@ import top.gunplan.nio.utils.GunBaseLogUtil;
 import top.gunplan.nio.utils.GunBytesUtil;
 
 import java.io.IOException;
-import java.nio.channels.ClosedChannelException;
+
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -80,8 +80,6 @@ public class CunCoreDataThread extends AbstractGunCoreThread {
             } catch (IOException e) {
                 listionSize.decrementAndGet();
                 key.cancel();
-                e.printStackTrace();
-                GunBaseLogUtil.error("Client closed");
                 return;
             }
             if (readbata == null) {

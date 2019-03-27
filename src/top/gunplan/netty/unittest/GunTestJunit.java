@@ -9,23 +9,25 @@ import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.example.GunOutputHander;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
+import java.util.concurrent.*;
 
 
 /**
  * @author dosdrtt
  */
 public class GunTestJunit {
-    @Test
-    public void doTest() throws Exception {
 
-
-    }
 
     public static void main(String[] args) throws IOException {
         GunBootServer server = GunBootServerFactory.getInstance();
-        server.setExecuters(Executors.newFixedThreadPool(10), Executors.newFixedThreadPool(10)).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
+        ExecutorService es0= new ThreadPoolExecutor(4,4,
+                5L, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>());
+
+        ExecutorService es1= new ThreadPoolExecutor(4,4,
+                5L, TimeUnit.SECONDS,
+                new LinkedBlockingQueue<>());
+        server.setExecuters(es0, es1).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
         try {
             server.sync();
         } catch (ExecutionException e) {

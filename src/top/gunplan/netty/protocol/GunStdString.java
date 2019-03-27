@@ -1,14 +1,14 @@
 package top.gunplan.netty.protocol;
 
 public class GunStdString implements GunNetRequestInterface {
-    private String s=null;
+    private String value =null;
     @Override
     public boolean unSerialize(byte[] in) {
-        s = new String(in);
+        value = new String(in);
         return true;
     }
 
-    public String getS() {
-        return s;
+    public String getString() {
+        return value;
     }
 }

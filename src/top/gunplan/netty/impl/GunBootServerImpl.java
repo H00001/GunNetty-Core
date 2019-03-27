@@ -3,8 +3,6 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.nio.utils.GunBaseLogUtil;
-
-import java.io.IOException;
 import java.nio.channels.Selector;
 import java.util.List;
 import java.util.concurrent.*;
@@ -97,19 +95,16 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public synchronized void sync() throws IOException, ExecutionException, InterruptedException {
-        GunBaseLogUtil.debug("Gun Gun Gun Gun Gun Gun Gun Gun Gun Gun Gun Gun");
+    public synchronized void sync() throws ExecutionException, InterruptedException {
+        GunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
         if (!this.initCheck()) {
             throw new GunException("handel , executepool not set or has been running");
         }
         GunBaseLogUtil.debug("Check parameters succeed");
-
-        if(CoreThreadManage.init(acceptExector,requestExector,filters,dealhander,var3315)) {
-           Future<Integer> result = CoreThreadManage.startAllAndWait();
-           result.get();
+        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, var3315)) {
+            Future<Integer> result = CoreThreadManage.startAllAndWait();
+            result.get();
         }
-
-
 
 
     }
