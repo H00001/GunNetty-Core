@@ -2,11 +2,9 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.nio.utils.GunBaseLogUtil;
-
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
-
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
@@ -52,7 +50,7 @@ public class CunCoreConnetcionThread extends AbstractGunCoreThread {
 
     @Override
     public void dealEvent(SelectionKey key) throws Exception {
-        GunBaseLogUtil.urgency("connected....");
+        GunBaseLogUtil.debug("connected....","[CONNECTION]");
         SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
         CunCoreDataThread selectionThread = ((CunCoreDataThread) CoreThreadManage.getDealThread());
         selectionThread.registerKey(socketChannel);

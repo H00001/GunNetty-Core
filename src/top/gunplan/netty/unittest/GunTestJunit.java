@@ -9,6 +9,7 @@ import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.example.GunOutputHander;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.concurrent.*;
 
 
@@ -33,6 +34,12 @@ public class GunTestJunit {
         } catch (ExecutionException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        } catch (NoSuchFieldException e) {
             e.printStackTrace();
         }
     }

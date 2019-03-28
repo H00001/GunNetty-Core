@@ -3,6 +3,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunCoreCalculatorWorker;
 import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.common.GunNettyProperty;
 import top.gunplan.nio.utils.GunBaseLogUtil;
 import top.gunplan.nio.utils.GunBytesUtil;
 
@@ -55,7 +56,7 @@ public class CunCoreDataThread extends AbstractGunCoreThread {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
                 }
-                int val = bootSelector.select(1000);
+                int val = bootSelector.select(GunNettyProperty.getClientWaitTime());
                 if (val > 0) {
                     Iterator keyIterator = bootSelector.selectedKeys().iterator();
                     while (keyIterator.hasNext()) {
@@ -72,19 +73,21 @@ public class CunCoreDataThread extends AbstractGunCoreThread {
 
 
     @Override
-    public void dealEvent(SelectionKey key) {
+    public void dealEvent(SelectionKey key) throws IOException {
         byte[] readbata;
         if (key.isValid()) {
             try {
-                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), 1024);
+                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(),GunNettyProperty.getFileReadBufferMin());
             } catch (IOException e) {
                 listionSize.decrementAndGet();
+                key.channel().close();
                 key.cancel();
                 return;
             }
             if (readbata == null) {
                 listionSize.decrementAndGet();
-                GunBaseLogUtil.error("Client closed");
+                GunBaseLogUtil.debug("Client closed","[CONNECTION]");
+                key.channel().close();
                 key.cancel();
             } else {
                 this.deal.submit(new GunCoreCalculatorWorker(filters, dealHandle, (SocketChannel) key.channel(), readbata));

@@ -10,7 +10,9 @@ import top.gunplan.netty.protocol.GunNetResponseInterface;
  */
 public interface GunHttpMappingHandle<T extends GunNetResponseInterface> {
     /**
-     * @return
+     *
+     * @param protocl {@link GunNetRequestInterface}
+     * @return {@link GunNetResponseInterface}
      */
     T doResponse(GunNetRequestInterface protocl);
 }

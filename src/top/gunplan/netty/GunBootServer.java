@@ -2,12 +2,13 @@ package top.gunplan.netty;
 
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
-import top.gunplan.netty.impl.AbstractGunCoreThread;
+
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.net.URISyntaxException;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -16,7 +17,6 @@ import java.util.concurrent.ExecutorService;
  * @author dosdrtt
  */
 public interface GunBootServer {
-    AbstractGunCoreThread getADataThread();
     /**
      * @return the server 's status
      */
@@ -29,7 +29,7 @@ public interface GunBootServer {
      */
 
 
-    void sync() throws IOException, ExecutionException, InterruptedException;
+    void sync() throws IOException, ExecutionException, InterruptedException, URISyntaxException, NoSuchFieldException, IllegalAccessException;
 
     /**
      * set the Thread pool that dispose the request
@@ -42,7 +42,7 @@ public interface GunBootServer {
     GunBootServer setExecuters(@NotNull ExecutorService acceptExecuters, @NotNull ExecutorService requestExecuters);
 
     /**
-     * set a deal handel implement <code>GunBootServer.GunNetHandle</code>
+     * set a deal handel implement {@link GunBootServer.GunNetHandle }
      *
      * @param handel Execute Class
      * @return this chain style
@@ -120,13 +120,6 @@ public interface GunBootServer {
          * @param exp Exception
          */
         void dealExceptionEvent(Exception exp);
-
-        enum EventType {
-            /**
-             *
-             */
-            RECEIVED;
-        }
     }
 
 

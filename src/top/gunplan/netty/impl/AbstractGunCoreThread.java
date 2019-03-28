@@ -1,8 +1,6 @@
 package top.gunplan.netty.impl;
 
 
-
-
 import java.io.IOException;
 
 import java.nio.channels.SelectionKey;
@@ -17,11 +15,10 @@ public abstract class AbstractGunCoreThread implements Runnable {
     Selector bootSelector;
     ExecutorService deal;
 
-    public AbstractGunCoreThread(ExecutorService deal) throws IOException {
+    AbstractGunCoreThread(ExecutorService deal) throws IOException {
         bootSelector = Selector.open();
         this.deal = deal;
     }
-
 
     public abstract void dealEvent(SelectionKey key) throws Exception;
 }

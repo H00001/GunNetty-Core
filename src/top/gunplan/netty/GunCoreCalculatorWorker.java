@@ -1,13 +1,10 @@
 package top.gunplan.netty;
 
-
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
+
 import java.nio.ByteBuffer;
-
-
 import java.nio.channels.SocketChannel;
 import java.util.List;
 
@@ -38,7 +35,7 @@ public final class GunCoreCalculatorWorker extends GunBootServer.BaseGunNettyWor
         GunNetResponseInterface respObject = null;
         try {
             respObject = this.handel.dealDataEvent(gunFilterObj.getObject());
-        } catch (IOException | NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
+        } catch (Exception e) {
             this.handel.dealExceptionEvent(e);
         }
         GunResponseFilterDto responseFilterDto = new GunResponseFilterDto(respObject);

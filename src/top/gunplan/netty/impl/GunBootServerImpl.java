@@ -2,8 +2,12 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
+import top.gunplan.netty.common.GunNettyProperty;
 import top.gunplan.nio.utils.GunBaseLogUtil;
-import java.nio.channels.Selector;
+import top.gunplan.nio.utils.GunBytesUtil;
+
+import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -17,43 +21,24 @@ import java.util.concurrent.*;
 
 final class GunBootServerImpl implements GunBootServer {
 
-    private final int var3315;
-
     private volatile boolean runnable = false;
 
-    private Selector bootSelector;
+    private volatile ExecutorService acceptExector;
 
-    private ExecutorService acceptExector;
-
-    private ExecutorService requestExector;
+    private volatile ExecutorService requestExector;
 
     private volatile GunBootServer.GunNetHandle dealhander = null;
 
     private final List<GunNettyFilter> filters = new CopyOnWriteArrayList<>();
 
-    private GunBootServerImpl() {
-        this(GunNettySupportParameter.Companion.getPort());
+    GunBootServerImpl() {
     }
 
-    @Override
-    public AbstractGunCoreThread getADataThread() {
-        return null;
-    }
-
-
-    public static AbstractGunCoreThread getADataThread0() {
-        return null;
-    }
 
     @Override
     public boolean isRunnable() {
         return this.runnable;
 
-    }
-
-
-    GunBootServerImpl(int var3315) {
-        this.var3315 = var3315;
     }
 
 
@@ -75,8 +60,8 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
 
-    private void getAnnoAndInsert(GunNetHandle hander) {
-        this.dealhander = hander;
+    private void getAnnoAndInsert(GunNetHandle handle) {
+        this.dealhander = handle;
     }
 
     @Override
@@ -96,17 +81,17 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public synchronized void sync() throws ExecutionException, InterruptedException {
+        GunBaseLogUtil.setLevel(0);
         GunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
-        if (!this.initCheck()) {
-            throw new GunException("handel , executepool not set or has been running");
+        if (!this.initCheck() || !GunNettyProperty.getProperty()) {
+            throw new GunException("handel, execute pool not set or has been running");
         }
+        GunBytesUtil.init(GunNettyProperty.getFileReadBufferMin());
         GunBaseLogUtil.debug("Check parameters succeed");
-        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, var3315)) {
+        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, GunNettyProperty.getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             result.get();
         }
-
-
     }
 
 
@@ -116,6 +101,5 @@ final class GunBootServerImpl implements GunBootServer {
         this.requestExector = requestExecuters;
         return this;
     }
-
 
 }
