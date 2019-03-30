@@ -2,6 +2,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunCoreCalculatorWorker;
+import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.common.GunNettyProperty;
 import top.gunplan.nio.utils.GunBaseLogUtil;
@@ -21,24 +22,28 @@ import java.util.concurrent.locks.LockSupport;
 /**
  * @author dosdrtt
  */
-public class CunCoreDataThread extends AbstractGunCoreThread {
+public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     private final List<GunNettyFilter> filters;
     private final GunBootServer.GunNetHandle dealHandle;
     private AtomicInteger listionSize = new AtomicInteger(0);
-
+    private boolean runState = true;
     private volatile Thread nowRun = null;
 
-    public void contionue() {
+    public void setRunState(boolean runState) {
+        this.runState = runState;
+    }
+
+    void continueLoop() {
         LockSupport.unpark(nowRun);
     }
 
-    public CunCoreDataThread(ExecutorService deal, final List<GunNettyFilter> filters, final GunBootServer.GunNetHandle dealHandle) throws IOException {
+    CunCoreDataEventLoop(ExecutorService deal, final List<GunNettyFilter> filters, final GunBootServer.GunNetHandle dealHandle) throws IOException {
         super(deal);
         this.filters = filters;
         this.dealHandle = dealHandle;
     }
 
-    public void registerKey(SelectableChannel channel) throws IOException {
+    void registerReadKey(SelectableChannel channel) throws IOException {
         channel.configureBlocking(false);
         listionSize.incrementAndGet();
         channel.register(this.bootSelector, SelectionKey.OP_READ);
@@ -48,11 +53,9 @@ public class CunCoreDataThread extends AbstractGunCoreThread {
     @Override
     public synchronized void run() {
         try {
-
             nowRun = Thread.currentThread();
-            nowRun.setName("DataThread");
-            while (true) {
-
+            nowRun.setName(this.getClass().getSimpleName());
+            while (runState) {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
                 }
@@ -67,7 +70,7 @@ public class CunCoreDataThread extends AbstractGunCoreThread {
                 }
             }
         } catch (Exception exp) {
-            exp.printStackTrace();
+            throw new GunException(exp);
         }
     }
 
@@ -77,7 +80,7 @@ public class CunCoreDataThread extends AbstractGunCoreThread {
         byte[] readbata;
         if (key.isValid()) {
             try {
-                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(),GunNettyProperty.getFileReadBufferMin());
+                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyProperty.getFileReadBufferMin());
             } catch (IOException e) {
                 listionSize.decrementAndGet();
                 key.channel().close();
@@ -86,7 +89,7 @@ public class CunCoreDataThread extends AbstractGunCoreThread {
             }
             if (readbata == null) {
                 listionSize.decrementAndGet();
-                GunBaseLogUtil.debug("Client closed","[CONNECTION]");
+                GunBaseLogUtil.debug("Client closed", "[CONNECTION]");
                 key.channel().close();
                 key.cancel();
             } else {

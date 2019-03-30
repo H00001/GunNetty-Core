@@ -4,6 +4,7 @@ import top.gunplan.netty.GunBootServer;
 import top.gunplan.nio.utils.GunBaseLogUtil;
 import java.io.IOException;
 import java.net.InetSocketAddress;
+
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -13,7 +14,7 @@ import java.util.concurrent.ExecutorService;
 /**
  * @author dosdrtt
  */
-public class CunCoreConnetcionThread extends AbstractGunCoreThread {
+public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
     private final GunBootServer.GunNetHandle dealHandle;
 
     CunCoreConnetcionThread(ExecutorService deal, GunBootServer.GunNetHandle dealHandle, int port) throws IOException {
@@ -52,9 +53,9 @@ public class CunCoreConnetcionThread extends AbstractGunCoreThread {
     public void dealEvent(SelectionKey key) throws Exception {
         GunBaseLogUtil.debug("connected....","[CONNECTION]");
         SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-        CunCoreDataThread selectionThread = ((CunCoreDataThread) CoreThreadManage.getDealThread());
-        selectionThread.registerKey(socketChannel);
-        selectionThread.contionue();
+        CunCoreDataEventLoop selectionThread = ((CunCoreDataEventLoop) CoreThreadManage.getDealThread());
+        selectionThread.registerReadKey(socketChannel);
+        selectionThread.continueLoop();
         this.deal.submit(new GunBootServer.GunAcceptWorker(dealHandle, socketChannel));
     }
 }

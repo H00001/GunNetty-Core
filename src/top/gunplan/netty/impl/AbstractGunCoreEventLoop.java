@@ -11,11 +11,11 @@ import java.util.concurrent.ExecutorService;
 /**
  * @author dosdrtt
  */
-public abstract class AbstractGunCoreThread implements Runnable {
+public abstract class AbstractGunCoreEventLoop implements Runnable {
     Selector bootSelector;
     ExecutorService deal;
 
-    AbstractGunCoreThread(ExecutorService deal) throws IOException {
+    AbstractGunCoreEventLoop(ExecutorService deal) throws IOException {
         bootSelector = Selector.open();
         this.deal = deal;
     }
