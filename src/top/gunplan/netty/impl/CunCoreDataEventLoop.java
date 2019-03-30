@@ -20,6 +20,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
 
 /**
+ * this class used to loop to get the event like accept or read
  * @author dosdrtt
  */
 public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
@@ -82,20 +83,22 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
             try {
                 readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyProperty.getFileReadBufferMin());
             } catch (IOException e) {
-                listionSize.decrementAndGet();
-                key.channel().close();
-                key.cancel();
+                dealCloseEvent(key);
                 return;
             }
             if (readbata == null) {
-                listionSize.decrementAndGet();
-                GunBaseLogUtil.debug("Client closed", "[CONNECTION]");
-                key.channel().close();
-                key.cancel();
+                dealCloseEvent(key);
             } else {
                 this.deal.submit(new GunCoreCalculatorWorker(filters, dealHandle, (SocketChannel) key.channel(), readbata));
             }
         }
 
+    }
+
+    private void dealCloseEvent(SelectionKey key) throws IOException {
+        listionSize.decrementAndGet();
+        GunBaseLogUtil.debug("Client closed", "[CONNECTION]");
+        key.channel().close();
+        key.cancel();
     }
 }

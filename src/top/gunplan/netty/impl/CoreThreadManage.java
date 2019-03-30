@@ -16,7 +16,12 @@ import java.util.concurrent.Future;
 public class CoreThreadManage {
     private static final int MANAGE_THREAD_NUM = GunNettyProperty.getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
-    private volatile static AbstractGunCoreEventLoop[] dealdata = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
+    private volatile static AbstractGunCoreEventLoop[] dealdata;
+
+    static {
+        dealdata = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
+    }
+
     public static volatile ExecutorService server = Executors.newFixedThreadPool(MANAGE_THREAD_NUM ^ 1);
     private static int slelctSelctor = 0;
 

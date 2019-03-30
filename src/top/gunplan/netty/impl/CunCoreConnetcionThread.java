@@ -48,7 +48,6 @@ public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
 
     }
 
-
     @Override
     public void dealEvent(SelectionKey key) throws Exception {
         GunBaseLogUtil.debug("connected....","[CONNECTION]");
