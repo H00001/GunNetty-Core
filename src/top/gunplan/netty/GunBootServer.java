@@ -4,11 +4,8 @@ import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
 import top.gunplan.netty.impl.GunRequestFilterDto;
-
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.nio.channels.SocketChannel;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -16,18 +13,20 @@ import java.util.concurrent.ExecutorService;
  */
 public interface GunBootServer {
     /**
+     * get the status of server
+     *
      * @return the server 's status
      */
     boolean isRunnable();
 
     /**
-     * start sync waitting
+     * start sync server and wait
      *
      * @throws IOException syncing's exception
      */
 
 
-    void sync() throws IOException, ExecutionException, InterruptedException, URISyntaxException, NoSuchFieldException, IllegalAccessException;
+    void sync() throws Exception;
 
     /**
      * set the Thread pool that dispose the request

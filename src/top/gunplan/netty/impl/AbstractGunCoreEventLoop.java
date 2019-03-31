@@ -22,6 +22,7 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
      * @param key SelectionKey
      * @throws Exception unKnown Exception
      */
+    @Override
     public abstract void dealEvent(SelectionKey key) throws Exception;
 }
 

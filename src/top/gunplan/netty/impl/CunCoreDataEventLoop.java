@@ -83,7 +83,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
             try {
                 readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyProperty.getFileReadBufferMin());
             } catch (IOException e) {
-                dealCloseEvent(key);
+               dealCloseEvent(key);
                 return;
             }
             if (readbata == null) {

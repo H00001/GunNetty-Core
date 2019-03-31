@@ -33,18 +33,6 @@ public class GunNettyProperty {
     }
 
 
-//    {
-//        byte[] property = Files.readAllBytes(Paths.get(GunNettyProperty.class.getClassLoader().getResource("GunNetty.conf").toURI()));
-//        String[] propertys = new String(property).split("\n");
-//        for (String pro : propertys) {
-//            if (!pro.startsWith("#")) {
-//                Field fd = GunNettyProperty.class.getDeclaredField(pro.split("=")[0]);
-//                fd.setAccessible(false);
-//                fd.set(null, Integer.parseInt(pro.split("=")[1]));
-//            }
-//        }
-//    }
-
     public static boolean getProperty() {
         byte[] property;
         try {
@@ -53,7 +41,6 @@ public class GunNettyProperty {
             for (String pro : propertys) {
                 if (!pro.startsWith("#")) {
                     Field fd;
-
                     fd = GunNettyProperty.class.getDeclaredField(pro.split("=")[0]);
                     fd.setAccessible(false);
                     fd.set(null, Integer.parseInt(pro.split("=")[1]));

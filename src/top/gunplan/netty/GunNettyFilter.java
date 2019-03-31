@@ -5,6 +5,7 @@ import top.gunplan.netty.impl.GunRequestFilterDto;
 import top.gunplan.netty.impl.example.GunResponseFilterDto;
 
 /**
+ * filter is a type of handle
  * @author dosdrtt
  */
 public interface GunNettyFilter extends GunHandle {

@@ -21,25 +21,17 @@ public class GunTestJunit {
 
     public static void main(String[] args) throws IOException {
         GunBootServer server = GunBootServerFactory.getInstance();
-        ExecutorService es0= new ThreadPoolExecutor(4,4,
+        ExecutorService es0 = new ThreadPoolExecutor(4, 4,
                 5L, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
 
-        ExecutorService es1= new ThreadPoolExecutor(4,4,
+        ExecutorService es1 = new ThreadPoolExecutor(4, 4,
                 5L, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
         server.setExecuters(es0, es1).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
         try {
             server.sync();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-        } catch (NoSuchFieldException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 
 /**
+ * net handle is a handle interface used to deal event
+ *
  * @author dosdrtt
  */
 public interface GunNetHandle extends GunHandle {
@@ -19,7 +21,7 @@ public interface GunNetHandle extends GunHandle {
 
     /**
      * @throws GunException,IOException
-     * @throws IOException  conn failt
+     * @throws IOException              conn failt
      */
     GunNetResponseInterface dealConnEvent(GunNetRequestInterface request) throws GunException, IOException;
 

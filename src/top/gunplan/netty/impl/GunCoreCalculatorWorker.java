@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunBootServer;
+
 import top.gunplan.netty.GunNetHandle;
 import top.gunplan.netty.GunNettyFilter;
 
@@ -52,7 +52,9 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker implements
 
         if (responseFilterDto.getRespobj().isReturn()) {
             try {
-                super.channel.write(ByteBuffer.wrap(responseFilterDto.getRespobj().serialize()));
+                if (channel.isConnected()) {
+                    super.channel.write(ByteBuffer.wrap(responseFilterDto.getRespobj().serialize()));
+                }
             } catch (IOException e) {
                 this.handel.dealExceptionEvent(e);
             }
