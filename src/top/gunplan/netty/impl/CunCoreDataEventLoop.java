@@ -1,11 +1,10 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunBootServer;
-import top.gunplan.netty.GunCoreCalculatorWorker;
 import top.gunplan.netty.GunException;
+import top.gunplan.netty.GunNetHandle;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.common.GunNettyProperty;
-import top.gunplan.nio.utils.GunBaseLogUtil;
+import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
 import top.gunplan.nio.utils.GunBytesUtil;
 
 import java.io.IOException;
@@ -21,11 +20,12 @@ import java.util.concurrent.locks.LockSupport;
 
 /**
  * this class used to loop to get the event like accept or read
+ *
  * @author dosdrtt
  */
 public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     private final List<GunNettyFilter> filters;
-    private final GunBootServer.GunNetHandle dealHandle;
+    private final GunNetHandle dealHandle;
     private AtomicInteger listionSize = new AtomicInteger(0);
     private boolean runState = true;
     private volatile Thread nowRun = null;
@@ -38,7 +38,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         LockSupport.unpark(nowRun);
     }
 
-    CunCoreDataEventLoop(ExecutorService deal, final List<GunNettyFilter> filters, final GunBootServer.GunNetHandle dealHandle) throws IOException {
+    CunCoreDataEventLoop(ExecutorService deal, final List<GunNettyFilter> filters, final GunNetHandle dealHandle) throws IOException {
         super(deal);
         this.filters = filters;
         this.dealHandle = dealHandle;
@@ -97,7 +97,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
 
     private void dealCloseEvent(SelectionKey key) throws IOException {
         listionSize.decrementAndGet();
-        GunBaseLogUtil.debug("Client closed", "[CONNECTION]");
+        AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
         key.channel().close();
         key.cancel();
     }

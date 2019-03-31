@@ -1,7 +1,8 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunBootServer;
-import top.gunplan.nio.utils.GunBaseLogUtil;
+
+import top.gunplan.netty.GunNetHandle;
+import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
 import java.io.IOException;
 import java.net.InetSocketAddress;
 
@@ -15,9 +16,9 @@ import java.util.concurrent.ExecutorService;
  * @author dosdrtt
  */
 public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
-    private final GunBootServer.GunNetHandle dealHandle;
+    private final GunNetHandle dealHandle;
 
-    CunCoreConnetcionThread(ExecutorService deal, GunBootServer.GunNetHandle dealHandle, int port) throws IOException {
+    CunCoreConnetcionThread(ExecutorService deal, GunNetHandle dealHandle, int port) throws IOException {
         super(deal);
         this.dealHandle = dealHandle;
         try {
@@ -25,7 +26,7 @@ public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
             var57.bind(new InetSocketAddress(port)).configureBlocking(false);
             var57.register(bootSelector, SelectionKey.OP_ACCEPT);
         } catch (IOException e) {
-            GunBaseLogUtil.urgency(e.getMessage());
+            AbstractGunBaseLogUtil.urgency(e.getMessage());
         }
 
     }
@@ -50,11 +51,11 @@ public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
 
     @Override
     public void dealEvent(SelectionKey key) throws Exception {
-        GunBaseLogUtil.debug("connected....","[CONNECTION]");
+        AbstractGunBaseLogUtil.debug("connected....","[CONNECTION]");
         SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
         CunCoreDataEventLoop selectionThread = ((CunCoreDataEventLoop) CoreThreadManage.getDealThread());
         selectionThread.registerReadKey(socketChannel);
         selectionThread.continueLoop();
-        this.deal.submit(new GunBootServer.GunAcceptWorker(dealHandle, socketChannel));
+        this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));
     }
 }

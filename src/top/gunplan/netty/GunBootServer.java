@@ -3,11 +3,9 @@ package top.gunplan.netty;
 import com.sun.istack.internal.NotNull;
 import com.sun.istack.internal.Nullable;
 
-import top.gunplan.netty.protocol.GunNetRequestInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.impl.GunRequestFilterDto;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URISyntaxException;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutionException;
@@ -42,10 +40,10 @@ public interface GunBootServer {
     GunBootServer setExecuters(@NotNull ExecutorService acceptExecuters, @NotNull ExecutorService requestExecuters);
 
     /**
-     * set a deal handel implement {@link GunBootServer.GunNetHandle }
+     * set a deal handel implement {@link GunNetHandle }
      *
      * @param handel Execute Class
-     * @return this chain style
+     * @return GunBootServer:this chain style
      */
 
     GunBootServer setHandel(@NotNull GunNetHandle handel);
@@ -55,6 +53,7 @@ public interface GunBootServer {
      * the function is used to add filter
      *
      * @param filter filter, filter the request
+     * @return GunBootServer chain style
      */
     GunBootServer addFilter(GunNettyFilter filter);
 
@@ -97,57 +96,6 @@ public interface GunBootServer {
         }
     }
 
-    interface GunNetHandle extends GunHandle {
-        /**
-         * @throws GunException std exception
-         * @throws IOException  error
-         */
-        GunNetResponseInterface dealDataEvent(GunNetRequestInterface request) throws GunException, IOException,
-                NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException;
 
-        /**
-         * @throws GunException
-         * @throws IOException  conn failt
-         */
-        GunNetResponseInterface dealConnEvent(GunNetRequestInterface request) throws GunException, IOException;
-
-        /**
-         *
-         */
-        void dealCloseEvent();
-
-        /**
-         * @param exp Exception
-         */
-        void dealExceptionEvent(Exception exp);
-    }
-
-
-    abstract class BaseGunNettyWorker {
-        final GunNetHandle handel;
-        final SocketChannel channel;
-
-        BaseGunNettyWorker(final GunNetHandle gunNettyHanderl, final SocketChannel channel) {
-            this.channel = channel;
-            this.handel = gunNettyHanderl;
-        }
-    }
-
-
-    final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
-        public GunAcceptWorker(final GunNetHandle l, final SocketChannel channel) {
-            super(l, channel);
-        }
-
-
-        @Override
-        public synchronized void run() {
-            try {
-                this.handel.dealConnEvent(null);
-            } catch (IOException e) {
-                this.handel.dealExceptionEvent(e);
-            }
-        }
-    }
 }
 

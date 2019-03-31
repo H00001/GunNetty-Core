@@ -1,5 +1,10 @@
-package top.gunplan.netty;
+package top.gunplan.netty.impl;
 
+import top.gunplan.netty.GunBootServer;
+import top.gunplan.netty.GunNetHandle;
+import top.gunplan.netty.GunNettyFilter;
+
+import top.gunplan.netty.impl.example.GunResponseFilterDto;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 import java.io.IOException;
@@ -13,12 +18,12 @@ import java.util.List;
  * @author dosdrtt
  */
 
-public final class GunCoreCalculatorWorker extends GunBootServer.BaseGunNettyWorker implements Runnable {
+public final class GunCoreCalculatorWorker extends BaseGunNettyWorker implements Runnable {
 
     private final List<GunNettyFilter> filters;
     private final byte[] data;
 
-    public GunCoreCalculatorWorker(final List<GunNettyFilter> filters, final GunBootServer.GunNetHandle dealHanders, final SocketChannel channel, byte[] data) {
+    GunCoreCalculatorWorker(final List<GunNettyFilter> filters, final GunNetHandle dealHanders, final SocketChannel channel, byte[] data) {
         super(dealHanders, channel);
         this.filters = filters;
         this.data = data;

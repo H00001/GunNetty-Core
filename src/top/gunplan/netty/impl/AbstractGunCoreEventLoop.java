@@ -1,17 +1,15 @@
 package top.gunplan.netty.impl;
 
-
+import top.gunplan.netty.GunCoreEventLoopInterface;
 import java.io.IOException;
-
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
-
 import java.util.concurrent.ExecutorService;
 
 /**
  * @author dosdrtt
  */
-public abstract class AbstractGunCoreEventLoop implements Runnable {
+public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoopInterface {
     Selector bootSelector;
     ExecutorService deal;
 
@@ -20,6 +18,10 @@ public abstract class AbstractGunCoreEventLoop implements Runnable {
         this.deal = deal;
     }
 
+    /**
+     * @param key SelectionKey
+     * @throws Exception unKnown Exception
+     */
     public abstract void dealEvent(SelectionKey key) throws Exception;
 }
 

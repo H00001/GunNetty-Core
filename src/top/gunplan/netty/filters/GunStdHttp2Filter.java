@@ -1,12 +1,11 @@
 package top.gunplan.netty.filters;
 
-import top.gunplan.netty.GunRequestFilterDto;
+import top.gunplan.netty.impl.GunRequestFilterDto;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunResponseFilterDto;
+import top.gunplan.netty.impl.example.GunResponseFilterDto;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 /**
  * @author dosdrtt

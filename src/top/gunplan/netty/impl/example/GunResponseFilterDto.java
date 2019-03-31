@@ -1,8 +1,8 @@
-package top.gunplan.netty;
+package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
-public class GunResponseFilterDto {
+public final class GunResponseFilterDto {
     private GunNetResponseInterface respobj;
 
     public GunNetResponseInterface getRespobj() {

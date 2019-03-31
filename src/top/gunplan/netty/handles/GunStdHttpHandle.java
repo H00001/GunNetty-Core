@@ -1,14 +1,15 @@
 package top.gunplan.netty.handles;
 
-import top.gunplan.netty.GunBootServer;
+
 import top.gunplan.netty.GunException;
+import top.gunplan.netty.GunNetHandle;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.AbstractGunHttp2Response;
-import top.gunplan.nio.utils.GunBaseLogUtil;
+import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
 import top.gunplan.nio.utils.GunDirectoryUtil;
 import top.gunplan.nio.utils.GunStringUtil;
 
@@ -23,7 +24,7 @@ import java.util.List;
  * @author dosdrtt
  */
 
-public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
+public class GunStdHttpHandle implements GunNetHandle {
     private final ThreadLocal<HashMap<String, GunHttpMappingHandle<AbstractGunHttp2Response>>> localUrlMappingObject = new ThreadLocal<>();
     private final ThreadLocal<HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>>> localUrlMapping = new ThreadLocal<>();
     private HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> urlMapping = new HashMap<>();
@@ -62,12 +63,12 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
         localUrlMappingObject.set(urlMappingObject);
         localUrlMapping.set(urlMapping);
         GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
-        GunBaseLogUtil.debug("request:" + request.getRequestUrl(), "[CONNECTION][HTTP]");
+        AbstractGunBaseLogUtil.debug("request:" + request.getRequestUrl(), "[CONNECTION][HTTP]");
         GunHttpMappingHandle<AbstractGunHttp2Response> runner = null;
         try {
             runner = findHandelandRun(request.getRequestUrl());
         } catch (Exception exp) {
-            GunBaseLogUtil.error(exp.getMessage());
+            AbstractGunBaseLogUtil.error(exp.getMessage());
         }
         assert runner != null;
         return runner.doResponse(request);
@@ -95,12 +96,12 @@ public class GunStdHttpHandle implements GunBootServer.GunNetHandle {
 
     @Override
     public void dealCloseEvent() {
-        GunBaseLogUtil.urgency("CLOSED");
+        AbstractGunBaseLogUtil.urgency("CLOSED");
     }
 
     @Override
     public void dealExceptionEvent(Exception exp) {
-        GunBaseLogUtil.urgency("CLOSED");
+        AbstractGunBaseLogUtil.urgency("CLOSED");
         exp.printStackTrace();
     }
 

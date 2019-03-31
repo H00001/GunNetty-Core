@@ -3,7 +3,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyProperty;
-import top.gunplan.nio.utils.GunBaseLogUtil;
+import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
 import top.gunplan.nio.utils.GunBytesUtil;
 
 
@@ -29,7 +29,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExector;
 
-    private volatile GunBootServer.GunNetHandle dealhander = null;
+    private volatile GunNetHandle dealhander = null;
 
     private final List<GunNettyFilter> filters = new CopyOnWriteArrayList<>();
 
@@ -83,13 +83,13 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public synchronized void sync() throws ExecutionException, InterruptedException {
-        GunBaseLogUtil.setLevel(0);
-        GunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
+        AbstractGunBaseLogUtil.setLevel(0);
+        AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
         if (!this.initCheck() || !GunNettyProperty.getProperty()) {
             throw new GunException("handel, execute pool not set or has been running");
         }
         GunBytesUtil.init(GunNettyProperty.getFileReadBufferMin());
-        GunBaseLogUtil.debug("Check parameters succeed");
+        AbstractGunBaseLogUtil.debug("Check parameters succeed");
         if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, GunNettyProperty.getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             result.get();

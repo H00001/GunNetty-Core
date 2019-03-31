@@ -1,4 +1,4 @@
-package top.gunplan.netty;
+package top.gunplan.netty.impl;
 
 import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
@@ -26,7 +26,7 @@ public final class GunRequestFilterDto {
 
     private GunNetRequestInterface object;
 
-    GunRequestFilterDto(@NotNull byte[] src) {
+    public GunRequestFilterDto(@NotNull byte[] src) {
         this.src = src;
         this.object = null;
     }
