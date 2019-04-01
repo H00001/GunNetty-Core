@@ -60,7 +60,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
                 }
-                int val = bootSelector.select(GunNettyProperty.getClientWaitTime());
+                int val = bootSelector.select(GunNettyProperty.getCore().getClientWaitTime());
                 if (val > 0) {
                     Iterator keyIterator = bootSelector.selectedKeys().iterator();
                     while (keyIterator.hasNext()) {
@@ -81,7 +81,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         byte[] readbata;
         if (key.isValid()) {
             try {
-                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyProperty.getFileReadBufferMin());
+                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyProperty.getCore().getFileReadBufferMin());
             } catch (IOException e) {
                dealCloseEvent(key);
                 return;

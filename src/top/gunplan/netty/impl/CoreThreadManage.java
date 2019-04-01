@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
  * @author dosdrtt
  */
 public final class CoreThreadManage {
-    private static final int MANAGE_THREAD_NUM = GunNettyProperty.getMaxRunnningNum();
+    private static final int MANAGE_THREAD_NUM = GunNettyProperty.getCore().getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealdata;
 

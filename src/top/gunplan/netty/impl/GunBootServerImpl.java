@@ -89,9 +89,9 @@ final class GunBootServerImpl implements GunBootServer {
         if (!this.initCheck() || !GunNettyProperty.getProperty()) {
             throw new GunException("handel, execute pool not set or has been running");
         }
-        GunBytesUtil.init(GunNettyProperty.getFileReadBufferMin());
+        GunBytesUtil.init(GunNettyProperty.getCore().getFileReadBufferMin());
         AbstractGunBaseLogUtil.debug("Check parameters succeed");
-        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, GunNettyProperty.getPort())) {
+        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, GunNettyProperty.getCore().getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             result.get();
         }

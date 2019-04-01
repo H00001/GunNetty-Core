@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
 final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
-    public GunAcceptWorker(final GunNetHandle l, final SocketChannel channel) {
+    GunAcceptWorker(final GunNetHandle l, final SocketChannel channel) {
         super(l, channel);
     }
 
