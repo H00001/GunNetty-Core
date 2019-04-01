@@ -15,8 +15,9 @@ import java.util.concurrent.Future;
 
 
 /**
+ * GunBootServer's real implement ,this class is not public
  * @author Gunplan
- * @version 0.0.0.6
+ * @version 0.0.1.0
  * @apiNote 0.0.0.5
  * @since 0.0.0.4
  */

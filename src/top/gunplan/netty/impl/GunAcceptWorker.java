@@ -15,7 +15,7 @@ final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
     public synchronized void run() {
         try {
             this.handel.dealConnEvent(null);
-        } catch (IOException e) {
+        } catch (Exception e) {
             this.handel.dealExceptionEvent(e);
         }
     }

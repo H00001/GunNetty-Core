@@ -13,25 +13,21 @@ import java.lang.reflect.InvocationTargetException;
  */
 public interface GunNetHandle extends GunHandle {
     /**
-     * @param request
+     * @param request GunNetRequestInterface
      * @return GunNetResponseInterface
      * @throws GunException kinds of exception
-     * @throws IOException
-     * @throws NoSuchMethodException
-     * @throws IllegalAccessException
-     * @throws InvocationTargetException
-     * @throws InstantiationException
      */
-    GunNetResponseInterface dealDataEvent(GunNetRequestInterface request) throws GunException, IOException,
-            NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException;
+    GunNetResponseInterface dealDataEvent(GunNetRequestInterface request) throws GunException;
 
     /**
-     * @param request
+     * dealConnEvent connection event
+     *
+     * @param request request object
      * @return GunNetResponseInterface
-     * @throws GunException
-     * @throws IOException
+     * @throws GunException kinds of exception
+     * @throws IOException  IO error
      */
-    GunNetResponseInterface dealConnEvent(GunNetRequestInterface request) throws GunException, IOException;
+    GunNetResponseInterface dealConnEvent(GunNetRequestInterface request) throws GunException;
 
     /**
      *

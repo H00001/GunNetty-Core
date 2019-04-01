@@ -75,7 +75,7 @@ public class GunStdHttpHandle implements GunNetHandle {
         //     localUrlMapping.get().
     }
 
-    private GunHttpMappingHandle<AbstractGunHttp2Response> findHandelandRun(String requestUrl) throws NoSuchMethodException, IllegalAccessException, InvocationTargetException, InstantiationException {
+    private GunHttpMappingHandle<AbstractGunHttp2Response> findHandelandRun(String requestUrl) throws GunException {
         HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> dealmap = localUrlMapping.get();
         Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>> dealhandel = dealmap.get(requestUrl);
         while (dealhandel == null) {
@@ -85,7 +85,11 @@ public class GunStdHttpHandle implements GunNetHandle {
                 throw new GunException("404 or 404 pages not found");
             }
         }
-        return dealhandel.getConstructor().newInstance();
+        try {
+            return dealhandel.getConstructor().newInstance();
+        } catch (Exception e) {
+            throw new GunException(e);
+        }
     }
 
 

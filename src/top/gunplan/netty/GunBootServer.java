@@ -10,7 +10,10 @@ import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * server interface ,has kinds of implements but now we have only one
+ * {@link top.gunplan.netty.impl.GunBootServerImpl}
  * @author dosdrtt
+ * @since 0.0.0.1
  */
 public interface GunBootServer {
     /**
