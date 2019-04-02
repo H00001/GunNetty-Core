@@ -70,37 +70,6 @@ public interface GunBootServer {
      */
     void inintObject(@NotNull Class<? extends GunHandle> clazz) throws Exception;
 
-    /**
-     * GunNettyRequestObject is used to resopnse
-     * java bean
-     */
-    class GunNettyRequestObject {
-        @Override
-        public String toString() {
-            return "Gun error time:" + System.currentTimeMillis();
-        }
-
-        private final SocketChannel channel;
-        private final GunRequestFilterDto requestObj;
-
-        public GunNettyRequestObject(@NotNull SocketChannel channel, @Nullable GunRequestFilterDto requestObj) {
-            this.channel = channel;
-            this.requestObj = requestObj;
-        }
-
-        /**
-         * @return GunRequestFilterDto
-         */
-
-        public GunRequestFilterDto requestObj() {
-            return requestObj;
-        }
-
-        public SocketChannel getChannel() {
-            return channel;
-        }
-    }
-
 
 }
 
