@@ -6,6 +6,9 @@ import top.gunplan.netty.impl.example.GunResponseFilterDto;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.protocol.GunStdString;
 
+/**
+ * @author dosdrtt
+ */
 @GunNetFilterOrder
 public class GunStdToStringFilter implements GunNettyFilter {
     @Override

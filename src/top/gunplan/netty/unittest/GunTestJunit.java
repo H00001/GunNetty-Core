@@ -2,11 +2,13 @@ package top.gunplan.netty.unittest;
 
 import org.junit.jupiter.api.Test;
 import top.gunplan.netty.GunBootServer;
+import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.netty.filters.GunStdHttp2Filter;
 import top.gunplan.netty.filters.GunStdToStringFilter;
 import top.gunplan.netty.handles.GunStdHttpHandle;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.example.GunOutputHander;
+import top.gunplan.netty.impl.propertys.GunProPerty;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

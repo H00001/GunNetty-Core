@@ -3,12 +3,10 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNetHandle;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.common.GunNettyProperty;
+import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
 import top.gunplan.nio.utils.GunBytesUtil;
-
 import java.io.IOException;
-
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -60,7 +58,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
                 }
-                int val = bootSelector.select(GunNettyProperty.getCore().getClientWaitTime());
+                int val = bootSelector.select(GunNettyPropertyManager.getCore().getClientWaitTime());
                 if (val > 0) {
                     Iterator keyIterator = bootSelector.selectedKeys().iterator();
                     while (keyIterator.hasNext()) {
@@ -81,7 +79,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         byte[] readbata;
         if (key.isValid()) {
             try {
-                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyProperty.getCore().getFileReadBufferMin());
+                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyPropertyManager.getCore().getFileReadBufferMin());
             } catch (IOException e) {
                dealCloseEvent(key);
                 return;

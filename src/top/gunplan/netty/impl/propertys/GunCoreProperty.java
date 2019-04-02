@@ -1,24 +1,29 @@
 package top.gunplan.netty.impl.propertys;
 
-public class GunCoreProperty {
-    private volatile  int port;
-    private volatile  int maxRunnningNum;
-    private volatile  int clientWaitTime;
-    private volatile  int fileReadBufferMin;
+public class GunCoreProperty implements GunProPerty {
+    private volatile int port;
+    private volatile int maxRunnningNum;
+    private volatile int clientWaitTime;
+    private volatile int fileReadBufferMin;
+    private volatile String profileName;
 
-    public  int getFileReadBufferMin() {
+    public int getFileReadBufferMin() {
         return fileReadBufferMin;
     }
 
-    public  int getClientWaitTime() {
+    public int getClientWaitTime() {
         return clientWaitTime;
     }
 
-    public  int getPort() {
+    public String getProfileName() {
+        return profileName;
+    }
+
+    public int getPort() {
         return port;
     }
 
-    public  int getMaxRunnningNum() {
+    public int getMaxRunnningNum() {
         return maxRunnningNum;
     }
 

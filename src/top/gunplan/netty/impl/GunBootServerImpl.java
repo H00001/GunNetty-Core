@@ -2,7 +2,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.common.GunNettyProperty;
+import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
 import top.gunplan.nio.utils.GunBytesUtil;
 
@@ -16,6 +16,7 @@ import java.util.concurrent.Future;
 
 /**
  * GunBootServer's real implement ,this class is not public
+ *
  * @author Gunplan
  * @version 0.0.1.0
  * @apiNote 0.0.0.5
@@ -86,13 +87,13 @@ final class GunBootServerImpl implements GunBootServer {
     public synchronized void sync() throws ExecutionException, InterruptedException {
         AbstractGunBaseLogUtil.setLevel(0);
         AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
-        AbstractGunBaseLogUtil.outputFile("banner.txt");
-        if (!this.initCheck() || !GunNettyProperty.getProperty()) {
+        if (!this.initCheck() || !GunNettyPropertyManager.getProperty()) {
             throw new GunException("handel, execute pool not set or has been running");
         }
-        GunBytesUtil.init(GunNettyProperty.getCore().getFileReadBufferMin());
+        AbstractGunBaseLogUtil.outputFile(GunNettyPropertyManager.getCore().getProfileName());
+        GunBytesUtil.init(GunNettyPropertyManager.getCore().getFileReadBufferMin());
         AbstractGunBaseLogUtil.debug("Check parameters succeed");
-        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, GunNettyProperty.getCore().getPort())) {
+        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, GunNettyPropertyManager.getCore().getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             result.get();
         }
