@@ -5,7 +5,7 @@ import top.gunplan.netty.GunNetHandle;
 import top.gunplan.netty.protocol.GunNetRequestInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.protocol.GunStdString;
-import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 public class GunOutputHander implements GunNetHandle {
 

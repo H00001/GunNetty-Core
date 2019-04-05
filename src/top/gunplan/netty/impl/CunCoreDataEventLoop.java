@@ -4,8 +4,9 @@ import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNetHandle;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.common.GunNettyPropertyManager;
-import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
-import top.gunplan.nio.utils.GunBytesUtil;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
+import top.gunplan.utils.GunBytesUtil;
+
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -60,9 +61,9 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                 }
                 int val = bootSelector.select(GunNettyPropertyManager.getCore().getClientWaitTime());
                 if (val > 0) {
-                    Iterator keyIterator = bootSelector.selectedKeys().iterator();
+                    Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
                     while (keyIterator.hasNext()) {
-                        SelectionKey sk = (SelectionKey) keyIterator.next();
+                        final SelectionKey sk = keyIterator.next();
                         this.dealEvent(sk);
                         keyIterator.remove();
                     }
@@ -81,7 +82,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
             try {
                 readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyPropertyManager.getCore().getFileReadBufferMin());
             } catch (IOException e) {
-               dealCloseEvent(key);
+                dealCloseEvent(key);
                 return;
             }
             if (readbata == null) {

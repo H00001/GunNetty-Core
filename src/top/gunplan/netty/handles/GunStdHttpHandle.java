@@ -9,13 +9,15 @@ import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.AbstractGunHttp2Response;
-import top.gunplan.nio.utils.AbstractGunBaseLogUtil;
-import top.gunplan.nio.utils.GunDirectoryUtil;
-import top.gunplan.nio.utils.GunStringUtil;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
+import top.gunplan.utils.GunDirectoryUtil;
+import top.gunplan.utils.GunStringUtil;
 
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * this class need to rely on {@link GunHttp2RequestProtocl}
@@ -24,10 +26,8 @@ import java.util.List;
  */
 
 public class GunStdHttpHandle implements GunNetHandle {
-    private final ThreadLocal<HashMap<String, GunHttpMappingHandle<AbstractGunHttp2Response>>> localUrlMappingObject = new ThreadLocal<>();
-    private final ThreadLocal<HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>>> localUrlMapping = new ThreadLocal<>();
-    private HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> urlMapping = new HashMap<>();
-    private HashMap<String, GunHttpMappingHandle<AbstractGunHttp2Response>> urlMappingObject = new HashMap<>();
+    private Map<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> urlMapping = new HashMap<>();
+    private Map<String, GunHttpMappingHandle<AbstractGunHttp2Response>> urlMappingObject = new ConcurrentHashMap<>();
 
     public GunStdHttpHandle(final String handlePackName) {
         ClassLoader loader = this.getClass().getClassLoader();
@@ -38,14 +38,13 @@ public class GunStdHttpHandle implements GunNetHandle {
             throw new GunException(e);
         }
         assert classfiles != null;
-        classfiles.forEach(classname -> {
+        classfiles.parallelStream().forEach(classname -> {
             Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>> httpMapping;
             try {
                 /**
                  *
                  * warning：It could be inside class in Mappingclass with out GunHttpmapping Annotation(
                  */
-
                 httpMapping = (Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>) loader.loadClass(handlePackName + classname.getBase() + classname.getClcasfile().getName().replace(".class", ""));
                 if (httpMapping.isAnnotationPresent(GunHttpmapping.class)) {
                     urlMapping.put(httpMapping.getAnnotation(GunHttpmapping.class).mappingRule(), httpMapping);
@@ -59,8 +58,6 @@ public class GunStdHttpHandle implements GunNetHandle {
 
     @Override
     public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException {
-        localUrlMappingObject.set(urlMappingObject);
-        localUrlMapping.set(urlMapping);
         GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
         AbstractGunBaseLogUtil.debug("request:" + request.getRequestUrl(), "[CONNECTION][HTTP]");
         GunHttpMappingHandle<AbstractGunHttp2Response> runner = null;
@@ -75,17 +72,22 @@ public class GunStdHttpHandle implements GunNetHandle {
     }
 
     private GunHttpMappingHandle<AbstractGunHttp2Response> findHandelandRun(String requestUrl) throws GunException {
-        HashMap<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> dealmap = localUrlMapping.get();
-        Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>> dealhandel = dealmap.get(requestUrl);
+        Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>> dealhandel = urlMapping.get(requestUrl);
+        GunHttpMappingHandle<AbstractGunHttp2Response> instance0;
         while (dealhandel == null) {
             requestUrl = GunStringUtil.removeLastUrl(requestUrl);
-            dealhandel = dealmap.get(requestUrl + "*");
+            if ((instance0 = urlMappingObject.get(requestUrl + "*")) != null) {
+                return instance0;
+            }
+            dealhandel = urlMapping.get(requestUrl + "*");
             if ("/".equals(requestUrl) && dealhandel == null) {
                 throw new GunException("404 or 404 pages not found");
             }
         }
         try {
-            return dealhandel.getConstructor().newInstance();
+            final GunHttpMappingHandle<AbstractGunHttp2Response> instance = dealhandel.getConstructor().newInstance();
+            urlMappingObject.put(requestUrl, instance);
+            return instance;
         } catch (Exception e) {
             throw new GunException(e);
         }

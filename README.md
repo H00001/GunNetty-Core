@@ -11,7 +11,7 @@ public class GunTestJunit {
         GunBootServer server = GunBootServerFactory.getInstance();
         server.setExecuters(Executors.newFixedThreadPool(10), Executors.newFixedThreadPool(10)).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test"));
         server.sync();
- }
+}
  ```
  if you want to make it as a web server ,please use `GunStdHttp2Filter` as `GunNettyFilter` and use `GunStdHttpHandle` as `GunNettyhandle` ,
  even though you can writer the filter and headle that belong to you .

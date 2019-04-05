@@ -1,20 +1,17 @@
 package top.gunplan.netty.unittest;
 
-import org.junit.jupiter.api.Test;
+
 import top.gunplan.netty.GunBootServer;
-import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.netty.filters.GunStdHttp2Filter;
-import top.gunplan.netty.filters.GunStdToStringFilter;
 import top.gunplan.netty.handles.GunStdHttpHandle;
 import top.gunplan.netty.impl.GunBootServerFactory;
-import top.gunplan.netty.impl.example.GunOutputHander;
-import top.gunplan.netty.impl.propertys.GunProPerty;
-
 import java.io.IOException;
-import java.net.URISyntaxException;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
-
+//非常感谢对字节跳动的关注， 请在这里投递下简历吧，我们收到后会进行筛选，祝你好运 【投递简历： https://dwz.cn/8hFYq7YK】
 /**
  * @author dosdrtt
  */
@@ -22,6 +19,8 @@ public class GunTestJunit {
 
 
     public static void main(String[] args) throws IOException {
+
+
         GunBootServer server = GunBootServerFactory.getInstance();
         ExecutorService es0 = new ThreadPoolExecutor(4, 4,
                 5L, TimeUnit.SECONDS,
