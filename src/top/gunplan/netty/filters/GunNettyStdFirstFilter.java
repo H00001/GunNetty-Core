@@ -20,7 +20,6 @@ import java.nio.channels.SocketChannel;
 public class GunNettyStdFirstFilter implements GunNettyFilter {
 
     private void dealCloseEvent(SelectionKey key) throws IOException {
-        // listionSize.decrementAndGet();
         AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
         key.channel().close();
         key.cancel();
@@ -42,6 +41,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
                 dealCloseEvent(key);
                 return DealResult.CLOSE;
             } else {
+                filterDto.getKey().interestOps(SelectionKey.OP_READ);
                 return DealResult.NEXT;
             }
         } else {
@@ -54,7 +54,6 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     public DealResult doOutputFilter(GunOutputFilterDto filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
         channel.write(ByteBuffer.wrap(filterDto.getRespobj().serialize()));
-        filterDto.getKey().interestOps(SelectionKey.OP_READ);
         return DealResult.NEXT;
     }
 }
