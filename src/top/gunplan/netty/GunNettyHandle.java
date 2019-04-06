@@ -4,6 +4,7 @@ import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 import java.io.IOException;
+import java.nio.channels.SocketChannel;
 
 /**
  * net handle is a handle interface used to deal event
@@ -26,7 +27,7 @@ public interface GunNettyHandle extends GunHandle {
      * @throws GunException kinds of exception
      * @throws IOException  IO error
      */
-    GunNetResponseInterface dealConnEvent(GunNetInputInterface request) throws GunException;
+    GunNetResponseInterface dealConnEvent(SocketChannel request) throws GunException;
 
     /**
      *

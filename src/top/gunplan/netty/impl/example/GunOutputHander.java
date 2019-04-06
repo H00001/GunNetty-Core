@@ -6,7 +6,11 @@ import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.protocol.GunStdString;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
+import java.nio.channels.SocketChannel;
 
+/**
+ * GunOutputHander
+ */
 public class GunOutputHander implements GunNettyHandle {
 
 
@@ -20,7 +24,7 @@ public class GunOutputHander implements GunNettyHandle {
     }
 
     @Override
-    public GunNetResponseInterface dealConnEvent(GunNetInputInterface m) throws GunException {
+    public GunNetResponseInterface dealConnEvent(SocketChannel channel) throws GunException {
         AbstractGunBaseLogUtil.error("CONNECTED ");
         return null;
     }

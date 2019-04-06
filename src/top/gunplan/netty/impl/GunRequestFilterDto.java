@@ -5,6 +5,7 @@ import top.gunplan.netty.protocol.GunNetInputInterface;
 
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -12,9 +13,13 @@ import java.nio.channels.SocketChannel;
  */
 public final class GunRequestFilterDto {
     private SelectionKey key;
+    private AtomicInteger size;
+
+
 
     public GunRequestFilterDto(SelectionKey key) {
         this.key = key;
+        this.size = size;
     }
 
     public SelectionKey getKey() {
@@ -39,10 +44,6 @@ public final class GunRequestFilterDto {
 
     private GunNetInputInterface object;
 
-    public GunRequestFilterDto(@NotNull byte[] src) {
-        this.src = src;
-        this.object = null;
-    }
 
     public GunNetInputInterface getObject() {
         return object;

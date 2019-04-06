@@ -1,9 +1,5 @@
 package top.gunplan.netty.impl;
-
 import top.gunplan.netty.GunPilelineInterface;
-
-import java.nio.channels.Channel;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
@@ -17,7 +13,7 @@ final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
     @Override
     public synchronized void run() {
         try {
-            this.pileline.getHandel().dealConnEvent(null);
+            this.pileline.getHandel().dealConnEvent(channel);
         } catch (Exception e) {
             this.pileline.getHandel().dealExceptionEvent(e);
         }

@@ -1,7 +1,10 @@
 package top.gunplan.netty.impl;
+
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunPilelineInterface;
 import top.gunplan.netty.common.GunNettyPropertyManager;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
+
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
@@ -18,7 +21,7 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     private final GunPilelineInterface pileline;
-    private AtomicInteger listionSize = new AtomicInteger(0);
+    public AtomicInteger listionSize = new AtomicInteger(0);
     private boolean runState = true;
     private volatile Thread nowRun = null;
 
@@ -26,7 +29,12 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         this.runState = runState;
     }
 
-    void continueLoop() {
+    public void continueLoop() {
+        LockSupport.unpark(nowRun);
+    }
+
+    public void incrAndContinueLoop() {
+        listionSize.incrementAndGet();
         LockSupport.unpark(nowRun);
     }
 
@@ -38,8 +46,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
 
     void registerReadKey(SelectableChannel channel) throws IOException {
         channel.configureBlocking(false);
-        listionSize.incrementAndGet();
-        channel.register(this.bootSelector, SelectionKey.OP_READ);
+        channel.register(this.bootSelector, SelectionKey.OP_READ, this);
     }
 
 
@@ -52,6 +59,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
                 }
+                long time = System.currentTimeMillis();
                 int val = bootSelector.select(GunNettyPropertyManager.getCore().getClientWaitTime());
                 if (val > 0) {
                     Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
@@ -61,6 +69,8 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                         keyIterator.remove();
                     }
                 }
+                long timeend = System.currentTimeMillis();
+                AbstractGunBaseLogUtil.urgency(String.valueOf(timeend - time), "-------------", "std" + String.valueOf(time), "end:" + timeend);
             }
         } catch (Exception exp) {
             throw new GunException(exp);
@@ -69,10 +79,10 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
 
 
     @Override
-    public void dealEvent(SelectionKey key) throws IOException {
+    public void dealEvent(SelectionKey key) {
         key.interestOps(0);
+        listionSize.decrementAndGet();
         this.deal.submit(new GunCoreCalculatorWorker(pileline, key, listionSize));
     }
-
 
 }

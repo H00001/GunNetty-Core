@@ -12,11 +12,11 @@ public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
 
 
     public BaseGunHttp2Response() {
-        this.mmap.put("Server", "windos iis server 2003");
-        this.mmap.put("date", new Date().toString());
+        this.mmap.put("Server", "nginx/1.14.0 (Ubuntu)");
+        this.mmap.put("Date", new Date().toString());
         this.mmap.put("Connection", "keep-alive");
+        this.mmap.put("Accept-Ranges", "bytes");
         this.cookies.add(new GunHttpStdInfo.GunCookies("iisSession", UUID.randomUUID().toString()));
-
     }
 
     private Map<String, String> mmap = new HashMap<>(4);
@@ -82,16 +82,16 @@ public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
         Map<String, String> httpHead = this.mmap;
         StringBuilder http2resp = new StringBuilder();
         http2resp.append(protoclType.getVal()).append(" ").append(code.getVal()).append(" ");
-        http2resp.append(code).append("\n");
-        http2resp.append("Content-Type:").append(contentType.getVal()).append("\n");
+        http2resp.append(code).append("\r\n");
+        http2resp.append("Content-Type:").append(contentType.getVal()).append("\r\n");
         for (String key : httpHead.keySet()) {
-            http2resp.append(key).append(":").append(httpHead.get(key)).append("\n");
+            http2resp.append(key).append(":").append(httpHead.get(key)).append("\r\n");
         }
         for (GunHttpStdInfo.GunCookies cookie : cookies) {
-            http2resp.append("Set-Cookie").append(":").append(cookie.toString()).append("\n");
+            http2resp.append("Set-Cookie").append(":").append(cookie.toString()).append("\r\n");
         }
 
-        http2resp.append("Content-Length:").append(this.toResponse().length()).append("\n\n");
+        http2resp.append("Content-Length:").append(this.toResponse().length()).append("\r\n\r\n");
         http2resp.append(this.toResponse());
 
         return http2resp.toString();

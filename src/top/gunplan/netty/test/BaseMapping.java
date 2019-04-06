@@ -29,7 +29,7 @@ public class BaseMapping implements GunHttpMappingHandle<GunNetResponseInterface
             }
         };
         response.setIswrite(true);
-        response.setProtoclType(GunHttpStdInfo.HttpProtoclType.HTTP2_0);
+        response.setProtoclType(GunHttpStdInfo.HttpProtoclType.HTTP1_1);
         response.setContentType(GunHttpStdInfo.ContentType.TEXT_HTML);
 
         return response;

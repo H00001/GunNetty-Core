@@ -4,6 +4,7 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunPilelineInterface;
 import top.gunplan.netty.impl.example.GunOutputFilterDto;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.nio.channels.SelectionKey;
 import java.util.ListIterator;
@@ -39,7 +40,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             if (result == GunNettyFilter.DealResult.NOTDEALINPUT) {
                 break;
             } else if (result == GunNettyFilter.DealResult.CLOSE) {
-                waitSize.decrementAndGet();
+
                 return;
             } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
                 return;
@@ -70,6 +71,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
                 return;
             }
+
         }
 
     }

@@ -14,6 +14,7 @@ import top.gunplan.utils.GunDirectoryUtil;
 import top.gunplan.utils.GunStringUtil;
 
 import java.io.IOException;
+import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,8 +35,7 @@ public class GunStdHttpHandle implements GunNettyHandle {
         List<GunDirectoryUtil.GunHttpMappingFileReference> classfiles;
         try {
             classfiles = GunDirectoryUtil.scanAllFilesFromDirectory(loader.getResource("").getPath().replace("%20", " ") + handlePackName.replace(".", "/"));
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             throw new GunException(e);
         }
         assert classfiles != null;
@@ -96,7 +96,8 @@ public class GunStdHttpHandle implements GunNettyHandle {
 
 
     @Override
-    public GunNetResponseInterface dealConnEvent(GunNetInputInterface requestInterface) throws GunException {
+    public GunNetResponseInterface dealConnEvent(SocketChannel channel) throws GunException {
+        AbstractGunBaseLogUtil.debug("connected....", "[CONNECTION]");
         return null;
     }
 

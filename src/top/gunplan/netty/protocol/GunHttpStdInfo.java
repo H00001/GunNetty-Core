@@ -123,7 +123,7 @@ public class GunHttpStdInfo {
         /**
          *
          */
-        TEXT_HTML("text/html;charset=utf-8"), TEXT_JSON("text/json;charset=utf-8"), TEXT_PLAIN("text/plain");
+        TEXT_HTML("text/html"), TEXT_JSON("text/json"), TEXT_PLAIN("text/plain");
         private String val;
 
         ContentType(String val) {
