@@ -1,12 +1,16 @@
 package top.gunplan.netty;
 
 /**
- *
+ * @author dosdrtt
+ * Thread safe
  */
 public class GunPilelineCheckResult {
     public  enum CheckResult {
         /**
-         *
+         * ERROR    : do not have any filters or handls
+         * SAFE     : have been sat
+         * WARNNING :
+         * UNSAFE   :
          */
         ERROR, SAFE, WARNNING, UNSAFE
     }

@@ -26,7 +26,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
 
     @Override
     public synchronized void run() {
-        final GunRequestFilterDto gunFilterObj = new GunRequestFilterDto(key);
+        final GunInputFilterChecker gunFilterObj = new GunInputFilterChecker(key);
         for (GunNettyFilter filter : this.pileline.getFilters()) {
             GunNettyFilter.DealResult result = null;
             try {

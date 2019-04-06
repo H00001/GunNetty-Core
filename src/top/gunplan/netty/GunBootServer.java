@@ -8,7 +8,7 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * server interface ,has kinds of implements but now we have only one
- * {@link top.gunplan.netty.impl.GunBootServerImpl}
+ * it is NioStdServerImpl
  *
  * @author dosdrtt
  * @since 0.0.0.1
@@ -41,28 +41,30 @@ public interface GunBootServer {
     GunBootServer setExecuters(@NotNull ExecutorService acceptExecuters, @NotNull ExecutorService requestExecuters);
 
     /**
-     * set a deal handel implement {@link GunNettyHandle }
-     *
-     * @param handel Execute Class
-     * @return GunBootServer:this chain style
+     * this method return a {@link GunPilelineInterface} implements
+     * @return GunPilelineInterface
      */
     GunPilelineInterface getPipeline();
 
-    /**
-     * the function is used to add filter
-     *
-     * @param filter filter, filter the request
-     * @return GunBootServer chain style
-     */
-
-
-    /**
-     * @param clazz class to deal
-     * @throws ClassNotFoundException class not found
-     * @apiNote
-     */
+//    /**
+//     * the function is used to add filter
+//     *
+//     * @param filter filter, filter the request
+//     * @return GunBootServer chain style
+//     */
+//
+//
+//    /**
+//     * @param clazz class to deal
+//     * @throws ClassNotFoundException class not found
+//     * @apiNote
+//     */
 //    void inintObject(@NotNull Class<? extends GunHandle> clazz) throws Exception;
 
+    /**
+     * check it can or not be boot
+     * @return check result true is can be boot
+     */
     boolean initCheck();
 
 }

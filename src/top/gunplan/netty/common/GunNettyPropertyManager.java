@@ -12,6 +12,7 @@ import java.util.regex.Pattern;
 
 
 /**
+ * analyzing config information by reference
  * @author dosdrtt
  */
 public final class GunNettyPropertyManager {

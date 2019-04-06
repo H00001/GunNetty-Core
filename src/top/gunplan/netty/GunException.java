@@ -1,7 +1,7 @@
 package top.gunplan.netty;
 
 /**
- * std exception
+ * std exception in gun netty
  * @author dosdrtt
  */
 public class GunException extends RuntimeException {

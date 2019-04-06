@@ -11,13 +11,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author dosdrtt
  */
-public final class GunRequestFilterDto {
+public final class GunInputFilterChecker {
     private SelectionKey key;
     private AtomicInteger size;
 
 
 
-    public GunRequestFilterDto(SelectionKey key) {
+    public GunInputFilterChecker(SelectionKey key) {
         this.key = key;
         this.size = size;
     }
@@ -49,7 +49,7 @@ public final class GunRequestFilterDto {
         return object;
     }
 
-    public GunRequestFilterDto(@NotNull byte[] src, GunNetInputInterface object) {
+    public GunInputFilterChecker(@NotNull byte[] src, GunNetInputInterface object) {
         this.src = src;
         this.object = object;
     }

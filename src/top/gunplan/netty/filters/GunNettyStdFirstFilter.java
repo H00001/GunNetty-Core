@@ -4,7 +4,7 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.netty.impl.CunCoreDataEventLoop;
-import top.gunplan.netty.impl.GunRequestFilterDto;
+import top.gunplan.netty.impl.GunInputFilterChecker;
 import top.gunplan.netty.impl.example.GunOutputFilterDto;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
@@ -29,7 +29,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doInputFilter(GunRequestFilterDto filterDto) throws Exception {
+    public DealResult doInputFilter(GunInputFilterChecker filterDto) throws Exception {
         byte[] readbata;
         SelectionKey key = filterDto.getKey();
 
