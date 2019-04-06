@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl;
 
 import com.sun.istack.internal.NotNull;
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunNetInputInterface;
 
 
 /**
@@ -24,18 +24,18 @@ public final class GunRequestFilterDto {
         this.writeable = writeable;
     }
 
-    private GunNetRequestInterface object;
+    private GunNetInputInterface object;
 
     public GunRequestFilterDto(@NotNull byte[] src) {
         this.src = src;
         this.object = null;
     }
 
-    public GunNetRequestInterface getObject() {
+    public GunNetInputInterface getObject() {
         return object;
     }
 
-    public GunRequestFilterDto(@NotNull byte[] src, GunNetRequestInterface object) {
+    public GunRequestFilterDto(@NotNull byte[] src, GunNetInputInterface object) {
         this.src = src;
         this.object = object;
     }
@@ -44,11 +44,11 @@ public final class GunRequestFilterDto {
         return src;
     }
 
-    public GunNetRequestInterface getGunRequestProtoclObject() {
+    public GunNetInputInterface getGunRequestProtoclObject() {
         return object;
     }
 
-    public void setObject(GunNetRequestInterface object) {
+    public void setObject(GunNetInputInterface object) {
         this.object = object;
     }
 }

@@ -9,8 +9,8 @@ import java.util.HashMap;
  * @author dosdrtt
  */
 @GunNetFilterOrder(index = 0)
-final public class GunHttp2RequestProtocl implements GunNetRequestInterface {
-    public GunHttp2RequestProtocl() {
+final public class GunHttp2InputProtocl implements GunNetInputInterface {
+    public GunHttp2InputProtocl() {
 
     }
 
@@ -111,7 +111,7 @@ final public class GunHttp2RequestProtocl implements GunNetRequestInterface {
 
     private void analyzingHttpHead(String[] httphead) {
         for (String eachhead : httphead) {
-            requstHead.put(eachhead.split(":")[0], eachhead.split(":")[1]);
+            requstHead.put(eachhead.split(":")[0].trim(), eachhead.split(":")[1].trim());
         }
     }
 }

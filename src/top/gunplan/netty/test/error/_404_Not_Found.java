@@ -6,13 +6,13 @@ import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.BaseGunHttp2Response;
 import top.gunplan.netty.protocol.AbstractGunHttp2Response;
 import top.gunplan.netty.protocol.GunHttpStdInfo;
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunNetInputInterface;
 
 @GunHttpmapping(mappingRule = "/*")
 public class _404_Not_Found implements GunHttpMappingHandle<AbstractGunHttp2Response> {
 
     @Override
-    public AbstractGunHttp2Response doResponse(GunNetRequestInterface protocl) {
+    public AbstractGunHttp2Response doOutput(GunNetInputInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
             @Override
             public String toResponse() {

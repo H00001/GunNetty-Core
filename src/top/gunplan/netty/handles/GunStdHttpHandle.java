@@ -3,10 +3,10 @@ package top.gunplan.netty.handles;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNetHandle;
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.anno.GunHttpmapping;
-import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
+import top.gunplan.netty.protocol.GunHttp2InputProtocl;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.AbstractGunHttp2Response;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * this class need to rely on {@link GunHttp2RequestProtocl}
+ * this class need to rely on {@link GunHttp2InputProtocl}
  *
  * @author dosdrtt
  */
@@ -34,7 +34,8 @@ public class GunStdHttpHandle implements GunNetHandle {
         List<GunDirectoryUtil.GunHttpMappingFileReference> classfiles;
         try {
             classfiles = GunDirectoryUtil.scanAllFilesFromDirectory(loader.getResource("").getPath().replace("%20", " ") + handlePackName.replace(".", "/"));
-        } catch (IOException e) {
+        }
+        catch (IOException e) {
             throw new GunException(e);
         }
         assert classfiles != null;
@@ -57,8 +58,8 @@ public class GunStdHttpHandle implements GunNetHandle {
     }
 
     @Override
-    public GunNetResponseInterface dealDataEvent(GunNetRequestInterface requestInterface) throws GunException {
-        GunHttp2RequestProtocl request = ((GunHttp2RequestProtocl) requestInterface);
+    public GunNetResponseInterface dealDataEvent(GunNetInputInterface requestInterface) throws GunException {
+        GunHttp2InputProtocl request = ((GunHttp2InputProtocl) requestInterface);
         AbstractGunBaseLogUtil.debug("request:" + request.getRequestUrl(), "[CONNECTION][HTTP]");
         GunHttpMappingHandle<AbstractGunHttp2Response> runner = null;
         try {
@@ -67,7 +68,7 @@ public class GunStdHttpHandle implements GunNetHandle {
             AbstractGunBaseLogUtil.error(exp.getMessage());
         }
         assert runner != null;
-        return runner.doResponse(request);
+        return runner.doOutput(request);
         //     localUrlMapping.get().
     }
 
@@ -95,7 +96,7 @@ public class GunStdHttpHandle implements GunNetHandle {
 
 
     @Override
-    public GunNetResponseInterface dealConnEvent(GunNetRequestInterface requestInterface) throws GunException {
+    public GunNetResponseInterface dealConnEvent(GunNetInputInterface requestInterface) throws GunException {
         return null;
     }
 

@@ -2,7 +2,7 @@ package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNetHandle;
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.protocol.GunStdString;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
@@ -11,7 +11,7 @@ public class GunOutputHander implements GunNetHandle {
 
 
     @Override
-    public GunNetResponseInterface dealDataEvent(GunNetRequestInterface m) {
+    public GunNetResponseInterface dealDataEvent(GunNetInputInterface m) {
         if (m instanceof GunStdString) {
             GunStdString httpProtocl = ((GunStdString) m);
             AbstractGunBaseLogUtil.urgency(httpProtocl.getString());
@@ -20,7 +20,7 @@ public class GunOutputHander implements GunNetHandle {
     }
 
     @Override
-    public GunNetResponseInterface dealConnEvent(GunNetRequestInterface m) throws GunException {
+    public GunNetResponseInterface dealConnEvent(GunNetInputInterface m) throws GunException {
         AbstractGunBaseLogUtil.error("CONNECTED ");
         return null;
     }

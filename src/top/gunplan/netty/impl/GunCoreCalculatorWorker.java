@@ -18,7 +18,7 @@ import java.util.List;
  * @author dosdrtt
  */
 
-public final class GunCoreCalculatorWorker extends BaseGunNettyWorker implements Runnable {
+public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
 
     private final List<GunNettyFilter> filters;
     private final byte[] data;
@@ -33,8 +33,8 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker implements
     public synchronized void run() {
         final GunRequestFilterDto gunFilterObj = new GunRequestFilterDto(data);
         for (GunNettyFilter filter : this.filters) {
-            if (!filter.doRequestFilter(gunFilterObj)) {
-                break;
+            if (!filter.doInputFilter(gunFilterObj)) {
+                return;
             }
         }
         GunNetResponseInterface respObject = null;
@@ -45,8 +45,8 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker implements
         }
         GunResponseFilterDto responseFilterDto = new GunResponseFilterDto(respObject);
         for (GunNettyFilter filter : this.filters) {
-            if (!filter.doResponseFilter(responseFilterDto)) {
-                break;
+            if (!filter.doOutputFilter(responseFilterDto)) {
+                return;
             }
         }
 

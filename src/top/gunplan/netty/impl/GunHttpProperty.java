@@ -8,8 +8,15 @@ import top.gunplan.netty.impl.propertys.GunProPerty;
 public class GunHttpProperty implements GunProPerty {
     private String scannPacket = null;
 
+    private String  httphost = null;
+
+
     public String getScannPacket() {
         return scannPacket;
+    }
+
+    public String getHttphost() {
+        return httphost;
     }
 
     public GunHttpProperty() {

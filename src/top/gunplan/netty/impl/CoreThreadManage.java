@@ -27,7 +27,6 @@ public final class CoreThreadManage {
 
     static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, final List<GunNettyFilter> filters, GunNetHandle dealhander, int port) {
         AbstractGunBaseLogUtil.debug("server runnning on " + port);
-
         try {
             dealaccept = new CunCoreConnetcionThread(acceptExector, dealhander, port);
             for (int i = 0; i < MANAGE_THREAD_NUM; i++) {

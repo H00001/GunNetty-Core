@@ -3,7 +3,7 @@ package top.gunplan.netty.protocol;
 /**
  * @author dosdrtt
  */
-public interface GunNetRequestInterface {
+public interface GunNetInputInterface {
     /**
      * get the unSerialize result succeed or fail
      * @param in byte[]

@@ -5,8 +5,7 @@ import top.gunplan.netty.anno.GunHttpBaseContent;
 import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.BaseGunHttp2Response;
-import top.gunplan.netty.protocol.AbstractGunHttp2Response;
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.protocol.resputil.GunMappingJsonResp;
 
@@ -18,7 +17,7 @@ public class TimeServer implements GunHttpMappingHandle<GunNetResponseInterface>
 
 
     @Override
-    public GunNetResponseInterface doResponse(GunNetRequestInterface protocl) {
+    public GunNetResponseInterface doOutput(GunNetInputInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
             @Override
             public String toResponse() {

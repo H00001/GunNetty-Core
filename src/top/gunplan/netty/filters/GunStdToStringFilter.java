@@ -12,7 +12,7 @@ import top.gunplan.netty.protocol.GunStdString;
 @GunNetFilterOrder
 public class GunStdToStringFilter implements GunNettyFilter {
     @Override
-    public boolean doRequestFilter(GunRequestFilterDto filterDto) {
+    public boolean doInputFilter(GunRequestFilterDto filterDto) {
         GunStdString s = new GunStdString() ;
         s.unSerialize(filterDto.getSrc());
         filterDto.setObject(s);
@@ -20,7 +20,7 @@ public class GunStdToStringFilter implements GunNettyFilter {
     }
 
     @Override
-    public boolean doResponseFilter(GunResponseFilterDto filterDto) {
+    public boolean doOutputFilter(GunResponseFilterDto filterDto) {
         return false;
     }
 }

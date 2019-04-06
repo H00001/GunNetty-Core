@@ -1,6 +1,6 @@
 package top.gunplan.netty.protocol;
 
-public class GunStdString implements GunNetRequestInterface {
+public class GunStdString implements GunNetInputInterface {
     private String value =null;
     @Override
     public boolean unSerialize(byte[] in) {

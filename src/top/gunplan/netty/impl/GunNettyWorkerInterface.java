@@ -1,4 +1,7 @@
 package top.gunplan.netty.impl;
 
-public interface GunNettyWorkerInterface {
+/**
+ * @author dosdrtt
+ */
+public interface GunNettyWorkerInterface extends Runnable{
 }

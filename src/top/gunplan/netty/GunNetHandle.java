@@ -1,10 +1,9 @@
 package top.gunplan.netty;
 
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 
 /**
  * net handle is a handle interface used to deal event
@@ -13,11 +12,11 @@ import java.lang.reflect.InvocationTargetException;
  */
 public interface GunNetHandle extends GunHandle {
     /**
-     * @param request GunNetRequestInterface
+     * @param request GunNetInputInterface
      * @return GunNetResponseInterface
      * @throws GunException kinds of exception
      */
-    GunNetResponseInterface dealDataEvent(GunNetRequestInterface request) throws GunException;
+    GunNetResponseInterface dealDataEvent(GunNetInputInterface request) throws GunException;
 
     /**
      * dealConnEvent connection event
@@ -27,7 +26,7 @@ public interface GunNetHandle extends GunHandle {
      * @throws GunException kinds of exception
      * @throws IOException  IO error
      */
-    GunNetResponseInterface dealConnEvent(GunNetRequestInterface request) throws GunException;
+    GunNetResponseInterface dealConnEvent(GunNetInputInterface request) throws GunException;
 
     /**
      *

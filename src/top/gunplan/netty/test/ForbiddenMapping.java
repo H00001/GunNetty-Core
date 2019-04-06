@@ -10,7 +10,7 @@ import top.gunplan.netty.protocol.*;
 public class ForbiddenMapping implements GunHttpMappingHandle<GunNetResponseInterface> {
 
     @Override
-    public GunNetResponseInterface doResponse(GunNetRequestInterface protocl) {
+    public GunNetResponseInterface doOutput(GunNetInputInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
 
             @Override

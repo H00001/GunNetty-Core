@@ -16,12 +16,12 @@ public interface GunNettyFilter extends GunHandle {
      * @return filter result true:next false:break
      *
      */
-    boolean doRequestFilter(GunRequestFilterDto filterDto);
+    boolean doInputFilter(GunRequestFilterDto filterDto);
 
     /**
      * doing filter when the response occur
      * @param filterDto input to the filter's deal Object
      * @return filter result true:next false:break
      */
-    boolean doResponseFilter(GunResponseFilterDto filterDto);
+    boolean doOutputFilter(GunResponseFilterDto filterDto);
 }

@@ -57,7 +57,7 @@ public final class GunNettyPropertyManager {
                                     proname = propertys[now].replace(" ", "").split(assignmentchars);
                                     fd = obj.getClass().getDeclaredField(proname[0]);
                                     fd.setAccessible(true);
-                                    fd.set(obj, isInteger(proname[1]) ? Integer.valueOf(proname[1]) : proname[1]);
+                                    fd.set(obj, isInteger(proname[1].trim()) ? Integer.valueOf(proname[1].trim()) : proname[1].trim());
                                 }
                             } else {
                                 break;

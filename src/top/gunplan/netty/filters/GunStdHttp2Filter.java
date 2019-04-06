@@ -4,24 +4,24 @@ import top.gunplan.netty.impl.GunRequestFilterDto;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.impl.example.GunResponseFilterDto;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.protocol.GunHttp2RequestProtocl;
-import top.gunplan.netty.protocol.GunNetRequestInterface;
+import top.gunplan.netty.protocol.GunHttp2InputProtocl;
+import top.gunplan.netty.protocol.GunNetInputInterface;
 
 /**
  * @author dosdrtt
  */
-@GunNetFilterOrder
+@GunNetFilterOrder(index = 0)
 public class GunStdHttp2Filter implements GunNettyFilter {
     @Override
-    public boolean doRequestFilter(GunRequestFilterDto filterDto) {
-        GunNetRequestInterface protocl = new GunHttp2RequestProtocl();
+    public boolean doInputFilter(GunRequestFilterDto filterDto) {
+        GunNetInputInterface protocl = new GunHttp2InputProtocl();
         protocl.unSerialize(filterDto.getSrc());
         filterDto.setObject(protocl);
         return true;
     }
 
     @Override
-    public boolean doResponseFilter(GunResponseFilterDto filterDto) {
+    public boolean doOutputFilter(GunResponseFilterDto filterDto) {
         return true;
     }
 
