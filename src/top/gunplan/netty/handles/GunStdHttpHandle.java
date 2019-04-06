@@ -2,7 +2,7 @@ package top.gunplan.netty.handles;
 
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunNetHandle;
+import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.anno.GunHttpmapping;
@@ -25,7 +25,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @author dosdrtt
  */
 
-public class GunStdHttpHandle implements GunNetHandle {
+public class GunStdHttpHandle implements GunNettyHandle {
     private Map<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> urlMapping = new HashMap<>();
     private Map<String, GunHttpMappingHandle<AbstractGunHttp2Response>> urlMappingObject = new ConcurrentHashMap<>();
 

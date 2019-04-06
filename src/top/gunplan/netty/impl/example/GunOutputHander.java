@@ -1,13 +1,13 @@
 package top.gunplan.netty.impl.example;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunNetHandle;
+import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import top.gunplan.netty.protocol.GunStdString;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
-public class GunOutputHander implements GunNetHandle {
+public class GunOutputHander implements GunNettyHandle {
 
 
     @Override

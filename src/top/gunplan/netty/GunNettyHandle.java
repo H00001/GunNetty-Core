@@ -10,7 +10,7 @@ import java.io.IOException;
  *
  * @author dosdrtt
  */
-public interface GunNetHandle extends GunHandle {
+public interface GunNettyHandle extends GunHandle {
     /**
      * @param request GunNetInputInterface
      * @return GunNetResponseInterface

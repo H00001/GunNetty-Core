@@ -1,8 +1,9 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunNetHandle;
+import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.GunPilelineInterface;
 import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
@@ -23,8 +24,7 @@ import java.util.concurrent.locks.LockSupport;
  * @author dosdrtt
  */
 public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
-    private final List<GunNettyFilter> filters;
-    private final GunNetHandle dealHandle;
+    private final GunPilelineInterface pileline;
     private AtomicInteger listionSize = new AtomicInteger(0);
     private boolean runState = true;
     private volatile Thread nowRun = null;
@@ -37,10 +37,10 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         LockSupport.unpark(nowRun);
     }
 
-    CunCoreDataEventLoop(ExecutorService deal, final List<GunNettyFilter> filters, final GunNetHandle dealHandle) throws IOException {
+    CunCoreDataEventLoop(ExecutorService deal, final GunPilelineInterface pileline) throws IOException {
         super(deal);
-        this.filters = filters;
-        this.dealHandle = dealHandle;
+        this.pileline = pileline;
+
     }
 
     void registerReadKey(SelectableChannel channel) throws IOException {
@@ -88,7 +88,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
             if (readbata == null) {
                 dealCloseEvent(key);
             } else {
-                this.deal.submit(new GunCoreCalculatorWorker(filters, dealHandle, (SocketChannel) key.channel(), readbata));
+                this.deal.submit(new GunCoreCalculatorWorker(pileline, (SocketChannel) key.channel(), readbata));
             }
         }
 

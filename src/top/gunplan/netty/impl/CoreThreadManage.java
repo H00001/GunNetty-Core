@@ -1,7 +1,8 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunNetHandle;
+import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.GunPilelineInterface;
 import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
@@ -25,12 +26,12 @@ public final class CoreThreadManage {
     public static volatile ExecutorService server = Executors.newFixedThreadPool(MANAGE_THREAD_NUM ^ 1);
     private static int slelctSelctor = 0;
 
-    static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, final List<GunNettyFilter> filters, GunNetHandle dealhander, int port) {
+    static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, GunPilelineInterface pilepine, int port) {
         AbstractGunBaseLogUtil.debug("server runnning on " + port);
         try {
-            dealaccept = new CunCoreConnetcionThread(acceptExector, dealhander, port);
+            dealaccept = new CunCoreConnetcionThread(acceptExector, pilepine, port);
             for (int i = 0; i < MANAGE_THREAD_NUM; i++) {
-                dealdata[i] = new CunCoreDataEventLoop(dataExectuor, filters, dealhander);
+                dealdata[i] = new CunCoreDataEventLoop(dataExectuor, pilepine);
             }
         } catch (Exception e) {
             return false;

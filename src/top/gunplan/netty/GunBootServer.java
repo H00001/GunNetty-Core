@@ -1,12 +1,8 @@
 package top.gunplan.netty;
 
 import com.sun.istack.internal.NotNull;
-import com.sun.istack.internal.Nullable;
-
-import top.gunplan.netty.impl.GunRequestFilterDto;
 
 import java.io.IOException;
-import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 
 
@@ -45,14 +41,12 @@ public interface GunBootServer {
     GunBootServer setExecuters(@NotNull ExecutorService acceptExecuters, @NotNull ExecutorService requestExecuters);
 
     /**
-     * set a deal handel implement {@link GunNetHandle }
+     * set a deal handel implement {@link GunNettyHandle }
      *
      * @param handel Execute Class
      * @return GunBootServer:this chain style
      */
-
-    GunBootServer setHandel(@NotNull GunNetHandle handel);
-
+    GunPilelineInterface getPipeline();
 
     /**
      * the function is used to add filter
@@ -60,7 +54,6 @@ public interface GunBootServer {
      * @param filter filter, filter the request
      * @return GunBootServer chain style
      */
-    GunBootServer addFilter(GunNettyFilter filter);
 
 
     /**
@@ -68,8 +61,9 @@ public interface GunBootServer {
      * @throws ClassNotFoundException class not found
      * @apiNote
      */
-    void inintObject(@NotNull Class<? extends GunHandle> clazz) throws Exception;
+//    void inintObject(@NotNull Class<? extends GunHandle> clazz) throws Exception;
 
+    boolean initCheck();
 
 }
 

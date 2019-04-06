@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
  * GunBootServer's real implement ,this class is not public
  *
  * @author Gunplan
- * @version 0.0.1.0
+ * @version 0.0.1.1
  * @apiNote 0.0.0.5
  * @since 0.0.0.4
  */
@@ -31,9 +31,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExector;
 
-    private volatile GunNetHandle dealhander = null;
-
-    private final List<GunNettyFilter> filters = new CopyOnWriteArrayList<>();
+    private volatile GunPilelineInterface pileline = new GunPilelineImpl();
 
     GunBootServerImpl() {
     }
@@ -47,39 +45,13 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public synchronized GunBootServer setHandel(GunNetHandle handel) {
-        if (handel != null) {
-            this.getAnnoAndInsert(handel);
-        } else {
-            throw new GunException("GunNetHandle is null");
-        }
-        return this;
+    public GunPilelineInterface getPipeline() {
+        return pileline;
     }
 
     @Override
-    public GunBootServer addFilter(GunNettyFilter filter) {
-        GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
-        this.filters.add(order.index(), filter);
-        return this;
-    }
-
-
-    private void getAnnoAndInsert(GunNetHandle handle) {
-        this.dealhander = handle;
-    }
-
-    @Override
-    public void inintObject(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException {
-        if (clazz != null) {
-            GunHandle h = clazz.newInstance();
-            if (h instanceof GunNetHandle) {
-                getAnnoAndInsert((GunNetHandle) h);
-            }
-        }
-    }
-
-    private boolean initCheck() {
-        return this.acceptExector != null && requestExector != null && this.dealhander != null && !runnable;
+    public boolean initCheck() {
+        return this.acceptExector != null && requestExector != null && this.pileline.check().getResult() != GunPilelineCheckResult.CheckResult.ERROR && !runnable;
     }
 
 
@@ -93,12 +65,15 @@ final class GunBootServerImpl implements GunBootServer {
         AbstractGunBaseLogUtil.outputFile(GunNettyPropertyManager.getCore().getProfileName());
         GunBytesUtil.init(GunNettyPropertyManager.getCore().getFileReadBufferMin());
         AbstractGunBaseLogUtil.debug("Check parameters succeed");
-        if (CoreThreadManage.init(acceptExector, requestExector, filters, dealhander, GunNettyPropertyManager.getCore().getPort())) {
+        if (CoreThreadManage.init(acceptExector, requestExector, pileline, GunNettyPropertyManager.getCore().getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             result.get();
         }
     }
 
+    public GunPilelineInterface getPileline() {
+        return pileline;
+    }
 
     @Override
     public GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters) {

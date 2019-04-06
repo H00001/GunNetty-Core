@@ -32,7 +32,7 @@ public class GunTestJunit {
         ExecutorService es1 = new ThreadPoolExecutor(4, 4,
                 5L, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
-        server.setExecuters(es0, es1).addFilter(new GunStdHttp2Filter()).setHandel(new GunStdHttpHandle("top.gunplan.netty.test")).addFilter(new GunHttpdHostCheck());
+        server.setExecuters(es0, es1).getPipeline().addFilter(new GunStdHttp2Filter()).setHandle(new GunStdHttpHandle("top.gunplan.netty.test")).addFilter(new GunHttpdHostCheck());
         try {
             server.sync();
         } catch (Exception e) {
