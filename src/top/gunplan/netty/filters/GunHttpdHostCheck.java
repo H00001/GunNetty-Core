@@ -4,19 +4,19 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.netty.impl.GunRequestFilterDto;
-import top.gunplan.netty.impl.example.GunResponseFilterDto;
+import top.gunplan.netty.impl.example.GunOutputFilterDto;
 import top.gunplan.netty.protocol.GunHttp2InputProtocl;
 
-@GunNetFilterOrder(index = 1)
+@GunNetFilterOrder(index = 2)
 public class GunHttpdHostCheck implements GunNettyFilter {
     @Override
-    public boolean doInputFilter(GunRequestFilterDto filterDto) {
+    public DealResult doInputFilter(GunRequestFilterDto filterDto) {
         GunHttp2InputProtocl httpmessage = (GunHttp2InputProtocl) filterDto.getObject();
-        return httpmessage.getRequstHead().get("Host").equals(GunNettyPropertyManager.getHttp().getHttphost());
+        return httpmessage.getRequstHead().get("Host").equals(GunNettyPropertyManager.getHttp().getHttphost()) ? DealResult.NEXT : DealResult.NOTDEALALLNEXT;
     }
 
     @Override
-    public boolean doOutputFilter(GunResponseFilterDto filterDto) {
-        return true;
+    public DealResult doOutputFilter(GunOutputFilterDto filterDto) {
+        return DealResult.NEXT;
     }
 }

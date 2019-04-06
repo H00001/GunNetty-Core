@@ -1,13 +1,16 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.GunPilelineInterface;
 
+import java.nio.channels.Channel;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
+    private final SocketChannel channel;
     GunAcceptWorker(final GunPilelineInterface l, final SocketChannel channel) {
-        super(l, channel);
+        super(l);
+        this.channel = channel;
     }
 
 

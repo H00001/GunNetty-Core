@@ -2,11 +2,12 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunPilelineInterface;
-import top.gunplan.netty.impl.example.GunResponseFilterDto;
+import top.gunplan.netty.impl.example.GunOutputFilterDto;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.SocketChannel;
+
+import java.nio.channels.SelectionKey;
+import java.util.ListIterator;
+import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
@@ -14,18 +15,33 @@ import java.nio.channels.SocketChannel;
  */
 
 public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
-    private final byte[] data;
 
-    GunCoreCalculatorWorker(final GunPilelineInterface pileline, final SocketChannel channel, byte[] data) {
-        super(pileline, channel);
-        this.data = data;
+
+    private final AtomicInteger waitSize;
+    private SelectionKey key;
+
+    GunCoreCalculatorWorker(final GunPilelineInterface pileline, final SelectionKey channel, AtomicInteger waitSize) {
+        super(pileline);
+        this.key = channel;
+        this.waitSize = waitSize;
     }
 
     @Override
     public synchronized void run() {
-        final GunRequestFilterDto gunFilterObj = new GunRequestFilterDto(data);
+        final GunRequestFilterDto gunFilterObj = new GunRequestFilterDto(key);
         for (GunNettyFilter filter : this.pileline.getFilters()) {
-            if (!filter.doInputFilter(gunFilterObj)) {
+            GunNettyFilter.DealResult result = null;
+            try {
+                result = filter.doInputFilter(gunFilterObj);
+            } catch (Exception e) {
+                this.pileline.getHandel().dealExceptionEvent(e);
+            }
+            if (result == GunNettyFilter.DealResult.NOTDEALINPUT) {
+                break;
+            } else if (result == GunNettyFilter.DealResult.CLOSE) {
+                waitSize.decrementAndGet();
+                return;
+            } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
                 return;
             }
         }
@@ -35,22 +51,26 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         } catch (Exception e) {
             this.pileline.getHandel().dealExceptionEvent(e);
         }
-        GunResponseFilterDto responseFilterDto = new GunResponseFilterDto(respObject);
-        for (GunNettyFilter filter : this.pileline.getFilters()) {
-            if (!filter.doOutputFilter(responseFilterDto)) {
+        GunOutputFilterDto responseFilterDto = new GunOutputFilterDto(respObject);
+        responseFilterDto.setKey(gunFilterObj.getKey());
+        ListIterator<GunNettyFilter> filters = pileline.getFilters().listIterator(pileline.getFilters().size());
+
+        while (filters.hasPrevious()) {
+            GunNettyFilter.DealResult result = null;
+            try {
+                result = filters.previous().doOutputFilter(responseFilterDto);
+            } catch (Exception e) {
+                this.pileline.getHandel().dealExceptionEvent(e);
+            }
+            if (result == GunNettyFilter.DealResult.NOTDEALOUTPUT) {
+                break;
+            } else if (result == GunNettyFilter.DealResult.CLOSE) {
+                waitSize.decrementAndGet();
+                return;
+            } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
                 return;
             }
         }
 
-        if (responseFilterDto.getRespobj().isReturn()) {
-            try {
-                if (channel.isConnected()) {
-                    super.channel.write(ByteBuffer.wrap(responseFilterDto.getRespobj().serialize()));
-                }
-            } catch (IOException e) {
-                this.pileline.getHandel().dealExceptionEvent(e);
-            }
-
-        }
     }
 }

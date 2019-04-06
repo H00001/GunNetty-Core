@@ -3,6 +3,7 @@ package top.gunplan.netty.unittest;
 
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.filters.GunHttpdHostCheck;
+import top.gunplan.netty.filters.GunNettyStdFirstFilter;
 import top.gunplan.netty.filters.GunStdHttp2Filter;
 import top.gunplan.netty.handles.GunStdHttpHandle;
 import top.gunplan.netty.impl.GunBootServerFactory;
@@ -32,7 +33,10 @@ public class GunTestJunit {
         ExecutorService es1 = new ThreadPoolExecutor(4, 4,
                 5L, TimeUnit.SECONDS,
                 new LinkedBlockingQueue<>());
-        server.setExecuters(es0, es1).getPipeline().addFilter(new GunStdHttp2Filter()).setHandle(new GunStdHttpHandle("top.gunplan.netty.test")).addFilter(new GunHttpdHostCheck());
+        server.setExecuters(es0, es1).getPipeline().addFilter(new GunNettyStdFirstFilter()).
+                addFilter(new GunStdHttp2Filter()).
+                addFilter(new GunHttpdHostCheck()).
+                setHandle(new GunStdHttpHandle("top.gunplan.netty.test"));
         try {
             server.sync();
         } catch (Exception e) {

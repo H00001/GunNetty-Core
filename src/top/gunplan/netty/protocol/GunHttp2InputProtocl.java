@@ -8,7 +8,6 @@ import java.util.HashMap;
 /**
  * @author dosdrtt
  */
-@GunNetFilterOrder(index = 0)
 final public class GunHttp2InputProtocl implements GunNetInputInterface {
     public GunHttp2InputProtocl() {
 

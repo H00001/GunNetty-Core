@@ -2,10 +2,11 @@ package top.gunplan.netty;
 
 
 import top.gunplan.netty.impl.GunRequestFilterDto;
-import top.gunplan.netty.impl.example.GunResponseFilterDto;
+import top.gunplan.netty.impl.example.GunOutputFilterDto;
 
 /**
  * filter is a type of handle
+ *
  * @author dosdrtt
  */
 public interface GunNettyFilter extends GunHandle {
@@ -14,14 +15,22 @@ public interface GunNettyFilter extends GunHandle {
      *
      * @param filterDto input to the filter's deal Object
      * @return filter result true:next false:break
-     *
      */
-    boolean doInputFilter(GunRequestFilterDto filterDto);
+
+    public enum DealResult {
+        /**
+         *
+         */
+        NOTDEALINPUT, CLOSE, NEXT, NOTDEALOUTPUT, NOTDEALALLNEXT;
+    }
+
+    DealResult doInputFilter(GunRequestFilterDto filterDto) throws Exception;
 
     /**
      * doing filter when the response occur
+     *
      * @param filterDto input to the filter's deal Object
      * @return filter result true:next false:break
      */
-    boolean doOutputFilter(GunResponseFilterDto filterDto);
+    DealResult doOutputFilter(GunOutputFilterDto filterDto) throws Exception;
 }

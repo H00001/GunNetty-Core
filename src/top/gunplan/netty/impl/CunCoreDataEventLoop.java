@@ -1,19 +1,12 @@
 package top.gunplan.netty.impl;
-
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunNettyHandle;
-import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunPilelineInterface;
 import top.gunplan.netty.common.GunNettyPropertyManager;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
-import top.gunplan.utils.GunBytesUtil;
-
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
-import java.nio.channels.SocketChannel;
 import java.util.Iterator;
-import java.util.List;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
@@ -77,27 +70,9 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
 
     @Override
     public void dealEvent(SelectionKey key) throws IOException {
-        byte[] readbata;
-        if (key.isValid()) {
-            try {
-                readbata = GunBytesUtil.readFromChannel((SocketChannel) key.channel(), GunNettyPropertyManager.getCore().getFileReadBufferMin());
-            } catch (IOException e) {
-                dealCloseEvent(key);
-                return;
-            }
-            if (readbata == null) {
-                dealCloseEvent(key);
-            } else {
-                this.deal.submit(new GunCoreCalculatorWorker(pileline, (SocketChannel) key.channel(), readbata));
-            }
-        }
-
+        key.interestOps(0);
+        this.deal.submit(new GunCoreCalculatorWorker(pileline, key, listionSize));
     }
 
-    private void dealCloseEvent(SelectionKey key) throws IOException {
-        listionSize.decrementAndGet();
-        AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
-        key.channel().close();
-        key.cancel();
-    }
+
 }

@@ -3,11 +3,24 @@ package top.gunplan.netty.impl;
 import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.protocol.GunNetInputInterface;
 
+import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
+
 
 /**
  * @author dosdrtt
  */
 public final class GunRequestFilterDto {
+    private SelectionKey key;
+
+    public GunRequestFilterDto(SelectionKey key) {
+        this.key = key;
+    }
+
+    public SelectionKey getKey() {
+        return key;
+    }
+
     private byte[] src;
     private boolean writeable = true;
 
