@@ -1,11 +1,8 @@
 package top.gunplan.netty.impl;
-
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunPilelineInterface;
 import top.gunplan.netty.impl.example.GunOutputFilterDto;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
-
 import java.nio.channels.SelectionKey;
 import java.util.ListIterator;
 import java.util.concurrent.atomic.AtomicInteger;
