@@ -23,6 +23,6 @@ public class GunAmqpHeartProtocl extends AbstractGunAmqpProtocl {
 
     @Override
     public boolean isReturn() {
-        return false;
+        return true;
     }
 }

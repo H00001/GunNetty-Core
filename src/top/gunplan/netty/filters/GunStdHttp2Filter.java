@@ -15,9 +15,12 @@ public class GunStdHttp2Filter implements GunNettyFilter {
     @Override
     public DealResult doInputFilter(GunInputFilterChecker filterDto) {
         GunNetInputInterface protocl = new GunHttp2InputProtocl();
-        protocl.unSerialize(filterDto.getSrc());
-        filterDto.setObject(protocl);
-        return DealResult.NEXT;
+        if (protocl.unSerialize(filterDto.getSrc())) {
+            filterDto.setObject(protocl);
+            return DealResult.NEXT;
+        } else {
+            return DealResult.NOTDEALALLNEXT;
+        }
     }
 
     @Override

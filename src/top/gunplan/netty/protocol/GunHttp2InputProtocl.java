@@ -1,7 +1,5 @@
 package top.gunplan.netty.protocol;
 
-import top.gunplan.netty.anno.GunNetFilterOrder;
-
 import java.util.HashMap;
 
 
@@ -52,15 +50,20 @@ final public class GunHttp2InputProtocl implements GunNetInputInterface {
 
     @Override
     public boolean unSerialize(byte[] in) {
-        String httpconetnt = new String(in);
-        int postion = httpconetnt.indexOf("\r\n");
-        this.analyzingHttpHeadFirst(httpconetnt.substring(0, postion));
-        int spiltpoint = httpconetnt.indexOf("\r\n\r\n");
-        this.analyzingHttpHead(httpconetnt.substring(postion + 2, spiltpoint).split("\r\n"));
-        if (this.method == GunHttpStdInfo.GunHttpRequestType.POST) {
-            functionToDealPostMethod();
+        try {
+            String httpconetnt = new String(in);
+            int postion = httpconetnt.indexOf("\r\n");
+            this.analyzingHttpHeadFirst(httpconetnt.substring(0, postion));
+            int spiltpoint = httpconetnt.indexOf("\r\n\r\n");
+            this.analyzingHttpHead(httpconetnt.substring(postion + 2, spiltpoint).split("\r\n"));
+            if (this.method == GunHttpStdInfo.GunHttpRequestType.POST) {
+                functionToDealPostMethod();
+            }
+            return true;
+        } catch (Exception e) {
+            return false;
         }
-        return true;
+
     }
 
 
