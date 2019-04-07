@@ -70,7 +70,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                     }
                 }
                 long timeend = System.currentTimeMillis();
-                AbstractGunBaseLogUtil.urgency(String.valueOf(timeend - time), "-------------", "std" + String.valueOf(time), "end:" + timeend);
+                AbstractGunBaseLogUtil.info(String.valueOf(timeend - time), "time used ", "std" + String.valueOf(time), " end:" + timeend);
             }
         } catch (Exception exp) {
             throw new GunException(exp);

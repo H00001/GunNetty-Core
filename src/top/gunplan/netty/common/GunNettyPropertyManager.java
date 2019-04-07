@@ -3,6 +3,7 @@ package top.gunplan.netty.common;
 
 import top.gunplan.netty.impl.GunHttpProperty;
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
+import top.gunplan.netty.impl.propertys.GunLogProperty;
 
 import java.lang.reflect.Field;
 import java.nio.file.Files;
@@ -21,12 +22,17 @@ public final class GunNettyPropertyManager {
     public static String assignmentchars = "=";
     public static String[] openandclodechildpropertys = {"{", "}"};
 
+    public static GunLogProperty getLog() {
+        return log;
+    }
+
     public static GunHttpProperty getHttp() {
         return http;
     }
 
     private static GunCoreProperty core = null;
     private static GunHttpProperty http = null;
+    private static GunLogProperty log = null;
 
     public static GunCoreProperty getCore() {
         return core;

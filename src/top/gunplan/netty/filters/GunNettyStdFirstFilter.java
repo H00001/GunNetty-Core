@@ -72,6 +72,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
 
         if (GunNettyPropertyManager.getCore().getConnection() == GunCoreProperty.connectionType.CLOSE) {
             filterDto.getKey().channel().close();
+            AbstractGunBaseLogUtil.debug("close initiative");
         }
         //
         return DealResult.NEXT;

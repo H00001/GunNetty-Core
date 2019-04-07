@@ -1,14 +1,12 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
-import top.gunplan.netty.anno.GunNetFilterOrder;
+
 import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
 
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -57,11 +55,11 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public synchronized void sync() throws ExecutionException, InterruptedException {
-        AbstractGunBaseLogUtil.setLevel(0);
-        AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
         if (!this.initCheck() || !GunNettyPropertyManager.getProperty()) {
             throw new GunException("handel, execute pool not set or has been running");
         }
+        AbstractGunBaseLogUtil.setLevel(GunNettyPropertyManager.getLog().getOutputlevel());
+        AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
         AbstractGunBaseLogUtil.outputFile(GunNettyPropertyManager.getCore().getProfileName());
         GunBytesUtil.init(GunNettyPropertyManager.getCore().getFileReadBufferMin());
         AbstractGunBaseLogUtil.debug("Check parameters succeed");
