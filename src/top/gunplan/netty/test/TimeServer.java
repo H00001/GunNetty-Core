@@ -6,18 +6,18 @@ import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.BaseGunHttp2Response;
 import top.gunplan.netty.protocol.GunNetInputInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 import top.gunplan.netty.protocol.resputil.GunMappingJsonResp;
 
 @GunHttpmapping(mappingRule = "/time")
 @GunHttpBaseContent
-public class TimeServer implements GunHttpMappingHandle<GunNetResponseInterface> {
+public class TimeServer implements GunHttpMappingHandle<GunNetOutputInterface> {
     public TimeServer() {
     }
 
 
     @Override
-    public GunNetResponseInterface doOutput(GunNetInputInterface protocl) {
+    public GunNetOutputInterface doOutput(GunNetInputInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
             @Override
             public String toResponse() {

@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl.example;
 
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 
 import java.nio.channels.SelectionKey;
 
@@ -9,10 +9,10 @@ import java.nio.channels.SelectionKey;
  *
  */
 public final class GunOutputFilterChecker {
-    private GunNetResponseInterface respobj;
+    private GunNetOutputInterface respobj;
     private SelectionKey key;
 
-    public GunOutputFilterChecker(GunNetResponseInterface respobj, SelectionKey key) {
+    public GunOutputFilterChecker(GunNetOutputInterface respobj, SelectionKey key) {
         this.respobj = respobj;
         this.key = key;
     }
@@ -25,15 +25,15 @@ public final class GunOutputFilterChecker {
         this.key = key;
     }
 
-    public GunNetResponseInterface getRespobj() {
+    public GunNetOutputInterface getRespobj() {
         return respobj;
     }
 
-    public void setRespobj(GunNetResponseInterface respobj) {
+    public void setRespobj(GunNetOutputInterface respobj) {
         this.respobj = respobj;
     }
 
-    public GunOutputFilterChecker(GunNetResponseInterface respobj) {
+    public GunOutputFilterChecker(GunNetOutputInterface respobj) {
         this.respobj = respobj;
     }
 

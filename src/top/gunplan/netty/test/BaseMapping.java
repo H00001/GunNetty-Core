@@ -7,13 +7,13 @@ import top.gunplan.netty.protocol.*;
 
 @GunHttpmapping(mappingRule = "/index.aspx")
 @GunHttpBaseContent
-public class BaseMapping implements GunHttpMappingHandle<GunNetResponseInterface> {
+public class BaseMapping implements GunHttpMappingHandle<GunNetOutputInterface> {
     public BaseMapping() {
 
     }
 
     @Override
-    public GunNetResponseInterface doOutput(GunNetInputInterface protocl) {
+    public GunNetOutputInterface doOutput(GunNetInputInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
             @Override
             public String toResponse() {

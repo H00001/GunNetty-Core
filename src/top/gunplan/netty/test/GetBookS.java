@@ -5,17 +5,17 @@ import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.BaseGunHttp2Response;
 import top.gunplan.netty.protocol.GunHttpStdInfo;
 import top.gunplan.netty.protocol.GunNetInputInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 import top.gunplan.netty.protocol.resputil.GunMappingJsonResp;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @GunHttpmapping(mappingRule = "/getBooks.gmh")
-public class GetBookS implements GunHttpMappingHandle<GunNetResponseInterface> {
+public class GetBookS implements GunHttpMappingHandle<GunNetOutputInterface> {
 
     @Override
-    public GunNetResponseInterface doOutput(GunNetInputInterface protocl) {
+    public GunNetOutputInterface doOutput(GunNetInputInterface protocl) {
         BaseGunHttp2Response response = new BaseGunHttp2Response() {
 
             @Override

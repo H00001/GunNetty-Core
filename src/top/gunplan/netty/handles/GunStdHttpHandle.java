@@ -4,7 +4,7 @@ package top.gunplan.netty.handles;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.protocol.GunNetInputInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.protocol.GunHttp2InputProtocl;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
@@ -58,7 +58,7 @@ public class GunStdHttpHandle implements GunNettyHandle {
     }
 
     @Override
-    public GunNetResponseInterface dealDataEvent(GunNetInputInterface requestInterface) throws GunException {
+    public GunNetOutputInterface dealDataEvent(GunNetInputInterface requestInterface) throws GunException {
         GunHttp2InputProtocl request = ((GunHttp2InputProtocl) requestInterface);
         AbstractGunBaseLogUtil.debug("request:" + request.getRequestUrl(), "[CONNECTION][HTTP]");
         GunHttpMappingHandle<AbstractGunHttp2Response> runner = null;
@@ -96,7 +96,7 @@ public class GunStdHttpHandle implements GunNettyHandle {
 
 
     @Override
-    public GunNetResponseInterface dealConnEvent(SocketChannel channel) throws GunException {
+    public GunNetOutputInterface dealConnEvent(SocketChannel channel) throws GunException {
         AbstractGunBaseLogUtil.debug("connected....", "[CONNECTION]");
         return null;
     }

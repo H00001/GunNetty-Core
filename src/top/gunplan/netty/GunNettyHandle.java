@@ -1,7 +1,7 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.protocol.GunNetInputInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -14,20 +14,20 @@ import java.nio.channels.SocketChannel;
 public interface GunNettyHandle extends GunHandle {
     /**
      * @param request GunNetInputInterface
-     * @return GunNetResponseInterface
+     * @return GunNetOutputInterface
      * @throws GunException kinds of exception
      */
-    GunNetResponseInterface dealDataEvent(GunNetInputInterface request) throws GunException;
+    GunNetOutputInterface dealDataEvent(GunNetInputInterface request) throws GunException;
 
     /**
      * dealConnEvent connection event
      *
      * @param request request object
-     * @return GunNetResponseInterface
+     * @return GunNetOutputInterface
      * @throws GunException kinds of exception
      * @throws IOException  IO error
      */
-    GunNetResponseInterface dealConnEvent(SocketChannel request) throws GunException;
+    GunNetOutputInterface dealConnEvent(SocketChannel request) throws GunException;
 
     /**
      *

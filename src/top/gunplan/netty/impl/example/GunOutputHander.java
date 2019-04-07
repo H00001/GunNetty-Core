@@ -3,7 +3,7 @@ package top.gunplan.netty.impl.example;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.protocol.GunNetInputInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 import top.gunplan.netty.protocol.GunStdString;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import java.nio.channels.SocketChannel;
@@ -15,7 +15,7 @@ public class GunOutputHander implements GunNettyHandle {
 
 
     @Override
-    public GunNetResponseInterface dealDataEvent(GunNetInputInterface m) {
+    public GunNetOutputInterface dealDataEvent(GunNetInputInterface m) {
         if (m instanceof GunStdString) {
             GunStdString httpProtocl = ((GunStdString) m);
             AbstractGunBaseLogUtil.urgency(httpProtocl.getString());
@@ -24,7 +24,7 @@ public class GunOutputHander implements GunNettyHandle {
     }
 
     @Override
-    public GunNetResponseInterface dealConnEvent(SocketChannel channel) throws GunException {
+    public GunNetOutputInterface dealConnEvent(SocketChannel channel) throws GunException {
         AbstractGunBaseLogUtil.error("CONNECTED ");
         return null;
     }

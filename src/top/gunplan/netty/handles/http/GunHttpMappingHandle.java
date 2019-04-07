@@ -1,17 +1,17 @@
 package top.gunplan.netty.handles.http;
 
 import top.gunplan.netty.protocol.GunNetInputInterface;
-import top.gunplan.netty.protocol.GunNetResponseInterface;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 
 /**
  * @param <T>
  * @author dosdrtt
  */
-public interface GunHttpMappingHandle<T extends GunNetResponseInterface> {
+public interface GunHttpMappingHandle<T extends GunNetOutputInterface> {
     /**
      *
      * @param protocl {@link GunNetInputInterface}
-     * @return {@link GunNetResponseInterface}
+     * @return {@link GunNetOutputInterface}
      */
     T doOutput(GunNetInputInterface protocl);
 }

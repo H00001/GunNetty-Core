@@ -21,7 +21,7 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     private final GunPilelineInterface pileline;
-    public AtomicInteger listionSize = new AtomicInteger(0);
+    private AtomicInteger listionSize = new AtomicInteger(0);
     private boolean runState = true;
     private volatile Thread nowRun = null;
 
