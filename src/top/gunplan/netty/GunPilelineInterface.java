@@ -9,9 +9,9 @@ import java.util.List;
  */
 public interface GunPilelineInterface {
     /**
-     *
-     * @param handle
-     * @return
+     * register the handle in the chain
+     * @param handle register handle
+     * @return chain style is self
      */
     GunPilelineInterface register(GunHandle handle);
 

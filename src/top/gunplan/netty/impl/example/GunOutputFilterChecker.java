@@ -4,11 +4,15 @@ import top.gunplan.netty.protocol.GunNetResponseInterface;
 
 import java.nio.channels.SelectionKey;
 
-public final class GunOutputFilterDto {
+/**
+ * @author dosdrtt
+ *
+ */
+public final class GunOutputFilterChecker {
     private GunNetResponseInterface respobj;
     private SelectionKey key;
 
-    public GunOutputFilterDto(GunNetResponseInterface respobj, SelectionKey key) {
+    public GunOutputFilterChecker(GunNetResponseInterface respobj, SelectionKey key) {
         this.respobj = respobj;
         this.key = key;
     }
@@ -29,10 +33,10 @@ public final class GunOutputFilterDto {
         this.respobj = respobj;
     }
 
-    public GunOutputFilterDto(GunNetResponseInterface respobj) {
+    public GunOutputFilterChecker(GunNetResponseInterface respobj) {
         this.respobj = respobj;
     }
 
-    public GunOutputFilterDto() {
+    public GunOutputFilterChecker() {
     }
 }

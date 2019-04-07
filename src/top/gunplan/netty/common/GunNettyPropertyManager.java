@@ -13,6 +13,7 @@ import java.util.regex.Pattern;
 
 /**
  * analyzing config information by reference
+ *
  * @author dosdrtt
  */
 public final class GunNettyPropertyManager {
@@ -77,6 +78,9 @@ public final class GunNettyPropertyManager {
     }
 
     public static boolean isInteger(String str) {
+        if (str.startsWith("0x")) {
+            return true;
+        }
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
     }

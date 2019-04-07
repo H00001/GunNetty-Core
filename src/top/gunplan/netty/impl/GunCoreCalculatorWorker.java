@@ -1,7 +1,8 @@
 package top.gunplan.netty.impl;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunPilelineInterface;
-import top.gunplan.netty.impl.example.GunOutputFilterDto;
+import top.gunplan.netty.impl.example.GunInputFilterChecker;
+import top.gunplan.netty.impl.example.GunOutputFilterChecker;
 import top.gunplan.netty.protocol.GunNetResponseInterface;
 import java.nio.channels.SelectionKey;
 import java.util.ListIterator;
@@ -49,7 +50,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         } catch (Exception e) {
             this.pileline.getHandel().dealExceptionEvent(e);
         }
-        GunOutputFilterDto responseFilterDto = new GunOutputFilterDto(respObject);
+        GunOutputFilterChecker responseFilterDto = new GunOutputFilterChecker(respObject);
         responseFilterDto.setKey(gunFilterObj.getKey());
         ListIterator<GunNettyFilter> filters = pileline.getFilters().listIterator(pileline.getFilters().size());
 

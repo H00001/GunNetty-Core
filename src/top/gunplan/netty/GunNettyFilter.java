@@ -1,8 +1,8 @@
 package top.gunplan.netty;
 
 
-import top.gunplan.netty.impl.GunInputFilterChecker;
-import top.gunplan.netty.impl.example.GunOutputFilterDto;
+import top.gunplan.netty.impl.example.GunInputFilterChecker;
+import top.gunplan.netty.impl.example.GunOutputFilterChecker;
 
 /**
  * filter is a type of handle
@@ -37,5 +37,5 @@ public interface GunNettyFilter extends GunHandle {
      * @param filterDto input to the filter's deal Object
      * @return filter result true:next false:break
      */
-    DealResult doOutputFilter(GunOutputFilterDto filterDto) throws Exception;
+    DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws Exception;
 }

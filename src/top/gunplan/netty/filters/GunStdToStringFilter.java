@@ -1,8 +1,8 @@
 package top.gunplan.netty.filters;
 
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.impl.GunInputFilterChecker;
-import top.gunplan.netty.impl.example.GunOutputFilterDto;
+import top.gunplan.netty.impl.example.GunInputFilterChecker;
+import top.gunplan.netty.impl.example.GunOutputFilterChecker;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.protocol.GunStdString;
 
@@ -20,7 +20,7 @@ public class GunStdToStringFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doOutputFilter(GunOutputFilterDto filterDto) {
+    public DealResult doOutputFilter(GunOutputFilterChecker filterDto) {
         return DealResult.NEXT;
     }
 }

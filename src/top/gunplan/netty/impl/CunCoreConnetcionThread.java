@@ -50,6 +50,7 @@ public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
     public void dealEvent(SelectionKey key) throws Exception {
         SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
         CunCoreDataEventLoop selectionThread = ((CunCoreDataEventLoop) CoreThreadManage.getDealThread());
+        socketChannel.socket().setTcpNoDelay(true);
         selectionThread.registerReadKey(socketChannel);
         selectionThread.incrAndContinueLoop();
         this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));

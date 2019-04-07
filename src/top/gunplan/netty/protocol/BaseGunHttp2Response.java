@@ -1,5 +1,7 @@
 package top.gunplan.netty.protocol;
 
+import top.gunplan.netty.common.GunNettyPropertyManager;
+
 import java.util.*;
 
 /**
@@ -12,9 +14,9 @@ public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
 
 
     public BaseGunHttp2Response() {
-        this.mmap.put("Server", "nginx/1.14.0 (Ubuntu)");
+        this.mmap.put("Server", "windows server iis 1998");
         this.mmap.put("Date", new Date().toString());
-        this.mmap.put("Connection", "keep-alive");
+        this.mmap.put("Connection", GunNettyPropertyManager.getCore().getConnection().getSVal());
         this.mmap.put("Accept-Ranges", "bytes");
         this.cookies.add(new GunHttpStdInfo.GunCookies("iisSession", UUID.randomUUID().toString()));
     }
