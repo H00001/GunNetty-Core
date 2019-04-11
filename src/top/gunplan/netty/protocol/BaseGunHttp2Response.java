@@ -11,8 +11,6 @@ public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
     private GunHttpStdInfo.HttpProtoclType protoclType = GunHttpStdInfo.HttpProtoclType.HTTP1_1;
     private GunHttpStdInfo.statusCode code = GunHttpStdInfo.statusCode.OK;
     private GunHttpStdInfo.ContentType contentType = GunHttpStdInfo.ContentType.TEXT_JSON;
-
-
     public BaseGunHttp2Response() {
         this.mmap.put("Server", "windows server iis 1998");
         this.mmap.put("Date", new Date().toString());
@@ -20,28 +18,21 @@ public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
         this.mmap.put("Accept-Ranges", "bytes");
         this.cookies.add(new GunHttpStdInfo.GunCookies("iisSession", UUID.randomUUID().toString()));
     }
-
     private Map<String, String> mmap = new HashMap<>(4);
     private List<GunHttpStdInfo.GunCookies> cookies = new ArrayList<>(1);
-
     private boolean iswrite;
-
     public Map<String, String> getMmap() {
         return mmap;
     }
-
     public void setMmap(Map<String, String> mmap) {
         this.mmap = mmap;
     }
-
     public GunHttpStdInfo.HttpProtoclType getProtoclType() {
         return protoclType;
     }
-
     public void setProtoclType(GunHttpStdInfo.HttpProtoclType protoclType) {
         this.protoclType = protoclType;
     }
-
     public GunHttpStdInfo.statusCode getCode() {
         return code;
     }
@@ -98,8 +89,5 @@ public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
 
         return http2resp.toString();
     }
-
     public abstract String toResponse();
-
-
 }

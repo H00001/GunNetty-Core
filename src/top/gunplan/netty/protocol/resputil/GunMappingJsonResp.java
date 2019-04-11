@@ -6,7 +6,7 @@ import java.util.HashMap;
 /**
  * @author dosdrtt
  */
-public final class GunMappingJsonResp extends HashMap<String, String> implements GunHttp2ResponseBody {
+public class GunMappingJsonResp extends HashMap<String, String> implements GunHttp2ResponseBody {
 
     private static final long serialVersionUID = -6884797417624222041L;
 

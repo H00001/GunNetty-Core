@@ -1,5 +1,8 @@
 package top.gunplan.netty.protocol;
 
+/**
+ * @author dosdrtt
+ */
 public abstract class AbstractGunAmqpProtocl implements BaseAmqp, GunNetInputInterface, GunNetOutputInterface {
     public enum Lengths {
         /**

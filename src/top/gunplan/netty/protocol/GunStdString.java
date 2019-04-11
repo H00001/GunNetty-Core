@@ -1,7 +1,11 @@
 package top.gunplan.netty.protocol;
 
-public class GunStdString implements GunNetInputInterface {
-    private String value =null;
+/**
+ * @author dosdrtt
+ */
+public class GunStdString implements GunNetInputInterface, GunNetOutputInterface {
+    private String value = null;
+
     @Override
     public boolean unSerialize(byte[] in) {
         value = new String(in);
@@ -10,5 +14,10 @@ public class GunStdString implements GunNetInputInterface {
 
     public String getString() {
         return value;
+    }
+
+    @Override
+    public byte[] serialize() {
+        return value.getBytes();
     }
 }

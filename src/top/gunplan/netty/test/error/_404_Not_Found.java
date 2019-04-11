@@ -31,6 +31,8 @@ public class _404_Not_Found implements GunHttpMappingHandle<AbstractGunHttp2Resp
         response.setProtoclType(GunHttpStdInfo.HttpProtoclType.HTTP1_1);
         response.setContentType(GunHttpStdInfo.ContentType.TEXT_HTML);
         response.setCode(GunHttpStdInfo.statusCode.NOTFOUND);
+
+        GunJsonResult.GunJsonResult("hrllo");
         return response;
     }
 }

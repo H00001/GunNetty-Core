@@ -7,6 +7,7 @@ package top.gunplan.netty.protocol;
  */
 public interface GunNetOutputInterface {
     /**
+     * serialize the protoctol
      * @return bytes[] transfer to client
      */
     byte[] serialize();

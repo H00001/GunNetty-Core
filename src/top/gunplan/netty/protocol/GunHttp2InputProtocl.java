@@ -4,11 +4,16 @@ import java.util.HashMap;
 
 
 /**
+ * GunHttp2InputProtocl
  * @author dosdrtt
  */
 final public class GunHttp2InputProtocl implements GunNetInputInterface {
     public GunHttp2InputProtocl() {
 
+    }
+
+    private String getParameters(String name) {
+        return http2Parameters.get(name);
     }
 
     private String requestBody;
@@ -73,24 +78,9 @@ final public class GunHttp2InputProtocl implements GunNetInputInterface {
     }
 
     private void analyzingHttpHeadFirst(final String httpHeadFirst) {
-        do {
-            if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.GET.getVal())) {
-                this.method = GunHttpStdInfo.GunHttpRequestType.GET;
-                break;
-            } else if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.POST.getVal())) {
-                this.method = GunHttpStdInfo.GunHttpRequestType.POST;
-                break;
-            }
-            if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.PUT.getVal())) {
-                this.method = GunHttpStdInfo.GunHttpRequestType.PUT;
-                break;
-            }
-            if (httpHeadFirst.startsWith(GunHttpStdInfo.GunHttpRequestType.DELETE.getVal())) {
-                this.method = GunHttpStdInfo.GunHttpRequestType.DELETE;
-                break;
-            }
-        } while (false);
-        String requrl = httpHeadFirst.split(" ")[1];
+        final String[] block = httpHeadFirst.split(" ");
+        this.method = GunHttpStdInfo.GunHttpRequestType.getType(block[0]);
+        String requrl = block[1];
         var3310:
         if (requrl.contains("?")) {
             this.requestUrl = requrl.split("\\?")[0];
