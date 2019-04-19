@@ -1,5 +1,4 @@
 package top.gunplan.netty.filters;
-
 import top.gunplan.netty.impl.example.GunInputFilterChecker;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.impl.example.GunOutputFilterChecker;

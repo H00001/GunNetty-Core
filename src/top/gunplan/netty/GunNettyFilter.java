@@ -35,7 +35,7 @@ public interface GunNettyFilter extends GunHandle {
      * doing filter when the response occur
      *
      * @param filterDto input to the filter's deal Object
-     * @return filter result true:next false:break
+     * @return DealResult result true:next false:break
      */
     DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws Exception;
 }

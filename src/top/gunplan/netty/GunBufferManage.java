@@ -6,7 +6,7 @@ import sun.misc.Unsafe;
 /**
  * @author dosdrtt
  */
-public interface GunBuffer {
+public interface GunBufferManage {
     class UnsafeInstanse {
         private static volatile Unsafe instance = null;
 
@@ -22,13 +22,20 @@ public interface GunBuffer {
         }
     }
 
+    void addEvent();
+
+
+    void descEvent();
 
     default Unsafe newUnsafe() throws Exception {
         return UnsafeInstanse.newUnsafe();
     }
 
-    byte[] malloc(int size, int len) throws Exception;
-
-    byte[] malloc(int len) throws Exception;
+    /**
+     * @param len length
+     * @return {@link GunLinkedData} data
+     * @throws Exception kinds of exception
+     */
+    GunLinkedData malloc(int len) throws Exception;
 
 }

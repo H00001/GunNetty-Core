@@ -15,9 +15,7 @@ import top.gunplan.utils.GunStringUtil;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -30,7 +28,15 @@ public class GunStdHttpHandle implements GunNettyHandle {
     private Map<String, Class<? extends GunHttpMappingHandle<AbstractGunHttp2Response>>> urlMapping = new HashMap<>();
     private Map<String, GunHttpMappingHandle<AbstractGunHttp2Response>> urlMappingObject = new ConcurrentHashMap<>();
 
+//    private void loadServicesTest() {
+ //      ServiceLoader<GunHttpMappingHandle> services = ServiceLoader.load(GunHttpMappingHandle.class);
+//
+//        Iterator<GunHttpMappingHandle<? extends GunNetOutputInterface>> handel = services.iterator();
+//    }
+
     public GunStdHttpHandle(final String handlePackName) {
+
+      //  loadServicesTest();
         ClassLoader loader = this.getClass().getClassLoader();
         List<GunDirectoryUtil.GunHttpMappingFileReference> classfiles;
         try {

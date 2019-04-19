@@ -7,4 +7,40 @@ package top.gunplan.netty;
  * @since 0.0.0.3
  */
 public interface GunHandle {
+    /**
+     * nothing it it
+     */
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 }

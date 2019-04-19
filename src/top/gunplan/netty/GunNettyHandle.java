@@ -30,11 +30,12 @@ public interface GunNettyHandle extends GunHandle {
     GunNetOutputInterface dealConnEvent(SocketChannel request) throws GunException;
 
     /**
-     *
+     * when close event happened ,the method will be called
      */
     void dealCloseEvent();
 
     /**
+     * when exception event happened ,the method will be called
      * @param exp Exception
      */
     void dealExceptionEvent(Exception exp);

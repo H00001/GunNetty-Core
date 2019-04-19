@@ -7,6 +7,9 @@ import top.gunplan.netty.impl.example.GunInputFilterChecker;
 import top.gunplan.netty.impl.example.GunOutputFilterChecker;
 import top.gunplan.netty.protocol.GunHttp2InputProtocl;
 
+/**
+ * @author dosdrtt
+ */
 @GunNetFilterOrder(index = 2)
 public class GunHttpdHostCheck implements GunNettyFilter {
     @Override
