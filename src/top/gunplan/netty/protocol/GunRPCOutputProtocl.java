@@ -27,11 +27,12 @@ public class GunRPCOutputProtocl extends AbstractGunRPCProtocl {
 
     @Override
     public byte[] serialize() {
-        int len = returnValue instanceof Integer ? 6 + 5 : ((String) returnValue).length() + 2;
+        int len = returnValue instanceof Integer ? 6 + 5 : 6 + ((String) returnValue).length() + 2;
         byte[] serize = new byte[len];
         GunBytesUtil.GunWriteByteUtil serizUtil = new GunBytesUtil.GunWriteByteUtil(serize);
         publicSet(serizUtil);
         writeOnceParam(serizUtil, returnValue);
+        serizUtil.write(endFlage);
         return serize;
     }
 }

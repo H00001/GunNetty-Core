@@ -16,8 +16,6 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
-
-
     private final AtomicInteger waitSize;
     private SelectionKey key;
 

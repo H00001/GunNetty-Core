@@ -5,9 +5,6 @@ import top.gunplan.netty.anno.GunHttpmapping;
 import top.gunplan.netty.handles.http.GunHttpMappingHandle;
 import top.gunplan.netty.protocol.*;
 
-import java.util.Iterator;
-import java.util.Map;
-
 @GunHttpmapping(mappingRule = "/*")
 public class _404_Not_Found implements GunHttpMappingHandle<AbstractGunHttp2Response> {
 
@@ -31,8 +28,6 @@ public class _404_Not_Found implements GunHttpMappingHandle<AbstractGunHttp2Resp
         response.setProtoclType(GunHttpStdInfo.HttpProtoclType.HTTP1_1);
         response.setContentType(GunHttpStdInfo.ContentType.TEXT_HTML);
         response.setCode(GunHttpStdInfo.statusCode.NOTFOUND);
-
-        GunJsonResult.GunJsonResult("hrllo");
         return response;
     }
 }

@@ -6,11 +6,11 @@ import java.io.IOException;
  * @author dosdrtt
  */
 @FunctionalInterface
-public interface GunFUnctionMappingInterFace<F, T> {
+public interface GunFunctionMappingInterFace<F, T> {
     /**
-     * @param from
-     * @return
-     * @throws IOException
+     * @param from from
+     * @return to
+     * @throws IOException exp
      */
     T readBytes(F from) throws IOException;
 }

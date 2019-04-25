@@ -6,27 +6,22 @@ import java.util.Collection;
 import java.util.Map;
 
 /**
- *
+ * @author dosdrtt
  */
 public class GunJsonResult extends GunMappingJsonResp {
-    public static <T extends Collection> GunMappingJsonResp GunJsonResult(T object) {
-        if (object instanceof Collection) {
+    private static final long serialVersionUID = 3828767872076068786L;
 
-        }
+    @Deprecated
+    public static <T extends Collection> GunMappingJsonResp gunJsonResult(T object) {
+
         return null;
     }
 
-    public static <T extends Map> GunMappingJsonResp GunJsonResult(T object) {
-        if (object instanceof Collection) {
-
-        }
+    public static <T extends Map> GunMappingJsonResp gunJsonResult(T object) {
         return null;
     }
 
-    public static <T extends CharSequence> GunMappingJsonResp GunJsonResult(T object) {
-        if (object instanceof Collection) {
-
-        }
+    public static <T extends CharSequence> GunMappingJsonResp gunJsonResult(T object) {
         return null;
     }
 

@@ -2,6 +2,7 @@ package top.gunplan.netty.protocol;
 
 /**
  * @author dosdrtt
+ * @version 0.0.0.1
  */
 public abstract class AbstractGunHttp2Response implements GunNetOutputInterface, GunProtoclContorl {
 

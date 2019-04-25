@@ -2,6 +2,10 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunPilelineInterface;
 import java.nio.channels.SocketChannel;
 
+/**
+ * @author dosdrtt
+ * @date
+ */
 final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
     private final SocketChannel channel;
     GunAcceptWorker(final GunPilelineInterface l, final SocketChannel channel) {

@@ -2,7 +2,6 @@ package top.gunplan.netty.unittest;
 
 
 import top.gunplan.netty.GunBootServer;
-import top.gunplan.netty.filters.GunHttpdHostCheck;
 import top.gunplan.netty.filters.GunNettyStdFirstFilter;
 import top.gunplan.netty.filters.GunStdHttp2Filter;
 import top.gunplan.netty.handles.GunStdHttpHandle;
@@ -14,7 +13,6 @@ import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-//非常感谢对字节跳动的关注， 请在这里投递下简历吧，我们收到后会进行筛选，祝你好运 【投递简历： https://dwz.cn/8hFYq7YK】
 
 /**
  * @author dosdrtt
@@ -22,7 +20,7 @@ import java.util.concurrent.TimeUnit;
 public class GunTestJunit {
 
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
 
         GunBootServer server = GunBootServerFactory.getInstance();
@@ -35,8 +33,8 @@ public class GunTestJunit {
                 new LinkedBlockingQueue<>());
         server.setExecuters(es0, es1).getPipeline().addFilter(new GunNettyStdFirstFilter()).
                 addFilter(new GunStdHttp2Filter()).
-              //  addFilter(new GunHttpdHostCheck()).
-                setHandle(new GunStdHttpHandle("top.gunplan.netty.test"));
+                //  addFilter(new GunHttpdHostCheck()).
+                        setHandle(new GunStdHttpHandle("top.gunplan.netty.test"));
         try {
             server.sync();
         } catch (Exception e) {

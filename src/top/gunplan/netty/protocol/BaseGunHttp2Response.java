@@ -11,7 +11,7 @@ public abstract class BaseGunHttp2Response extends AbstractGunHttp2Response {
     private GunHttpStdInfo.HttpProtoclType protoclType = GunHttpStdInfo.HttpProtoclType.HTTP1_1;
     private GunHttpStdInfo.statusCode code = GunHttpStdInfo.statusCode.OK;
     private GunHttpStdInfo.ContentType contentType = GunHttpStdInfo.ContentType.TEXT_JSON;
-    public BaseGunHttp2Response() {
+    protected BaseGunHttp2Response() {
         this.mmap.put("Server", "windows server iis 1998");
         this.mmap.put("Date", new Date().toString());
         this.mmap.put("Connection", GunNettyPropertyManager.getCore().getConnection().getSVal());

@@ -1,7 +1,7 @@
 package top.gunplan.netty.filters;
 
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunFUnctionMappingInterFace;
+import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.netty.impl.CunCoreDataEventLoop;
@@ -22,7 +22,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author dosdrtt
  */
-@GunNetFilterOrder(index = 0)
+@GunNetFilterOrder
 public class GunNettyStdFirstFilter implements GunNettyFilter {
 
     private void dealCloseEvent(SelectionKey key) throws IOException {
@@ -38,7 +38,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
         SelectionKey key = filterDto.getKey();
         if (key.isValid()) {
             try {
-                GunFUnctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
+                GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
                 readbata = reader.readBytes((SocketChannel) key.channel());
                 filterDto.setSrc(readbata);
             } catch (IOException e) {

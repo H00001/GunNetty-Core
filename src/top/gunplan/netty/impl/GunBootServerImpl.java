@@ -29,7 +29,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExector;
 
-    private volatile GunPilelineInterface pileline = new GunPilelineImpl();
+    private final GunPilelineInterface pileline = new GunPilelineImpl();
 
     GunBootServerImpl() {
     }

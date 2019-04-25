@@ -1,7 +1,7 @@
 package top.gunplan.netty.common;
 
 
-import top.gunplan.netty.impl.GunHttpProperty;
+import top.gunplan.netty.impl.propertys.GunHttpProperty;
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
 
@@ -18,9 +18,21 @@ import java.util.regex.Pattern;
  * @author dosdrtt
  */
 public final class GunNettyPropertyManager {
-    public static String unusefulchars = "#";
-    public static String assignmentchars = "=";
-    public static String[] openandclodechildpropertys = {"{", "}"};
+    private static String unusefulchars = "#";
+    private static String assignmentchars = "=";
+    private static String[] openandclodechildpropertys = {"{", "}"};
+
+    public static void setUnusefulchars(String unusefulchars) {
+        GunNettyPropertyManager.unusefulchars = unusefulchars;
+    }
+
+    public static void setAssignmentchars(String assignmentchars) {
+        GunNettyPropertyManager.assignmentchars = assignmentchars;
+    }
+
+    public static void setOpenandclodechildpropertys(String[] openandclodechildpropertys) {
+        GunNettyPropertyManager.openandclodechildpropertys = openandclodechildpropertys;
+    }
 
     public static GunLogProperty getLog() {
         return log;
@@ -50,7 +62,7 @@ public final class GunNettyPropertyManager {
                             getResource("GunNetty.conf")).toURI()))).
                     split("\n");
             Field fd;
-            String proname[];
+            String[] proname;
             for (int now = 0; now < propertys.length; now++) {
                 if (!propertys[now].startsWith(unusefulchars)) {
                     if (propertys[now].endsWith(openandclodechildpropertys[0])) {
@@ -83,7 +95,7 @@ public final class GunNettyPropertyManager {
         return true;
     }
 
-    public static boolean isInteger(String str) {
+    private static boolean isInteger(String str) {
         if (str.startsWith("0x")) {
             return true;
         }
