@@ -1,4 +1,4 @@
-package top.gunplan.netty.impl.example;
+package top.gunplan.netty.impl;
 
 import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.protocol.GunNetInputInterface;
@@ -10,19 +10,8 @@ import java.util.concurrent.atomic.AtomicInteger;
 /**
  * @author dosdrtt
  */
-public final class GunInputFilterChecker {
-    private SelectionKey key;
-    private AtomicInteger size;
+public final class GunInputFilterChecker extends AbstractGunChecker {
 
-
-    public GunInputFilterChecker(SelectionKey key) {
-        this.key = key;
-        this.size = size;
-    }
-
-    public SelectionKey getKey() {
-        return key;
-    }
 
     private byte[] src;
     private boolean writeable = true;
@@ -42,12 +31,16 @@ public final class GunInputFilterChecker {
 
     private GunNetInputInterface object;
 
+    public GunInputFilterChecker(final SelectionKey key) {
+        super(key);
+    }
 
     public GunNetInputInterface getObject() {
         return object;
     }
 
     public GunInputFilterChecker(@NotNull byte[] src, GunNetInputInterface object) {
+        super(null);
         this.src = src;
         this.object = object;
     }
