@@ -1,4 +1,4 @@
-package top.gunplan.netty.filters;
+package top.gunplan.netty.filter;
 
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;

@@ -7,7 +7,7 @@ package top.gunplan.netty;
 public class GunPilelineCheckResult {
     public  enum CheckResult {
         /**
-         * ERROR    : do not have any filters or handls
+         * ERROR    : do not have any filter or handls
          * SAFE     : have been sat
          * WARNNING :
          * UNSAFE   :
