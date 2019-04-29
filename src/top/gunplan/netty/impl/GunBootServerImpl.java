@@ -56,7 +56,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public synchronized void sync() throws ExecutionException, InterruptedException {
         if (!this.initCheck() || !GunNettyPropertyManager.getProperty()) {
-            throw new GunException("handel, execute pool not set or has been running");
+            throw new GunException("Handel, execute pool not set or has been running");
         }
         AbstractGunBaseLogUtil.setLevel(GunNettyPropertyManager.getLog().getOutputlevel());
         AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
