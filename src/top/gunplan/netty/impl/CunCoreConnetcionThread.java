@@ -43,18 +43,22 @@ public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
                 }
             }
         } catch (Exception exp) {
-            exp.printStackTrace();
+            AbstractGunBaseLogUtil.error(exp.getMessage());
         }
 
     }
 
     @Override
-    public void dealEvent(SelectionKey key) throws Exception {
-        SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-        CunCoreDataEventLoop selectionThread = ((CunCoreDataEventLoop) CoreThreadManage.getDealThread());
-        socketChannel.socket().setTcpNoDelay(true);
-        selectionThread.registerReadKey(socketChannel);
-        selectionThread.incrAndContinueLoop();
-        this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));
+    public void dealEvent(SelectionKey key) {
+        try {
+            SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
+            CunCoreDataEventLoop selectionThread = ((CunCoreDataEventLoop) CoreThreadManage.getDealThread());
+            socketChannel.socket().setTcpNoDelay(true);
+            selectionThread.registerReadKey(socketChannel);
+            selectionThread.incrAndContinueLoop();
+            this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));
+        } catch (Exception exp) {
+            AbstractGunBaseLogUtil.error(exp.getMessage());
+        }
     }
 }
