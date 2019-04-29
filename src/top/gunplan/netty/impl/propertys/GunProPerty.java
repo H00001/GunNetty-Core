@@ -1,5 +1,5 @@
 package top.gunplan.netty.impl.propertys;
 
 
- interface GunProPerty {
+public interface GunProPerty {
 }

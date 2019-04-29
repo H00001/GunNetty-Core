@@ -3,7 +3,7 @@ package top.gunplan.netty.filter;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.common.GunNettyPropertyManager;
+import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.CunCoreDataEventLoop;
 import top.gunplan.netty.impl.GunInputFilterChecker;
 import top.gunplan.netty.impl.GunOutputFilterChecker;
@@ -25,17 +25,25 @@ import java.nio.channels.SocketChannel;
 @GunNetFilterOrder
 public class GunNettyStdFirstFilter implements GunNettyFilter {
 
+    public GunNettyStdFirstFilter() {
+        coreProperty = GunNettyPropertyManagerImpl.getProperty("core");
+    }
+
+
     private void dealCloseEvent(SelectionKey key) throws IOException {
         AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
         key.channel().close();
         key.cancel();
     }
 
+    private GunCoreProperty coreProperty;
+
     @Override
     public DealResult doInputFilter(GunInputFilterChecker filterDto) throws Exception {
 
         byte[] readbata;
         SelectionKey key = filterDto.getKey();
+
         if (key.isValid()) {
             try {
                 GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
@@ -50,9 +58,9 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
                 dealCloseEvent(key);
                 return DealResult.CLOSE;
             } else {
-                if (GunNettyPropertyManager.getCore().getConnection() == GunCoreProperty.connectionType.CLOSE) {
+                if (coreProperty.getConnection() == GunCoreProperty.connectionType.CLOSE) {
                     filterDto.getKey().cancel();
-                } else if (GunNettyPropertyManager.getCore().getConnection() == GunCoreProperty.connectionType.KEEP_ALIVE) {
+                } else if (coreProperty.getConnection() == GunCoreProperty.connectionType.KEEP_ALIVE) {
                     key.interestOps(SelectionKey.OP_READ);
                     ((CunCoreDataEventLoop) key.attachment()).incrAndContinueLoop();
 
@@ -69,13 +77,10 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     public DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
         channel.write(ByteBuffer.wrap(filterDto.getRespobj().serialize()));
-        //
-
-        if (GunNettyPropertyManager.getCore().getConnection() == GunCoreProperty.connectionType.CLOSE) {
+        if (coreProperty.getConnection() == GunCoreProperty.connectionType.CLOSE) {
             filterDto.getKey().channel().close();
             AbstractGunBaseLogUtil.debug("close initiative");
         }
-        //
         return DealResult.NEXT;
     }
 }

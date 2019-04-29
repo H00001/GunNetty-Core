@@ -2,8 +2,6 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunPilelineInterface;
-import top.gunplan.netty.common.GunNettyPropertyManager;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
@@ -59,7 +57,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
                 }
-                int val = GunNettyPropertyManager.getCore().getClientWaitTime() == -1 ? bootSelector.select() : bootSelector.select(GunNettyPropertyManager.getCore().getClientWaitTime());
+                int val = coreProperty.getClientWaitTime() == -1 ? bootSelector.select() : bootSelector.select(coreProperty.getClientWaitTime());
                 if (val > 0) {
                     Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
                     while (keyIterator.hasNext()) {

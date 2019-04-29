@@ -1,6 +1,5 @@
 package top.gunplan.netty.impl.propertys;
 
-import top.gunplan.netty.impl.propertys.GunProPerty;
 
 /**
  * @author dosdrtt
