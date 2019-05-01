@@ -2,6 +2,7 @@ package top.gunplan.netty;
 
 import com.sun.istack.internal.NotNull;
 
+
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
@@ -14,6 +15,7 @@ import java.util.concurrent.ExecutorService;
  * @since 0.0.0.1
  */
 public interface GunBootServer {
+    void registerObserve(GunNettyObserve observe);
     /**
      * get the status of server
      *

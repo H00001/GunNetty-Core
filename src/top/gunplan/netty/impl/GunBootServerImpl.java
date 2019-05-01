@@ -27,6 +27,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile boolean runnable = false;
 
+    private volatile GunNettyObserve observe = new GunNettyDefaultObserveImpl();
+
     private volatile ExecutorService acceptExector;
 
     private volatile ExecutorService requestExector;
@@ -36,6 +38,11 @@ final class GunBootServerImpl implements GunBootServer {
     GunBootServerImpl() {
     }
 
+
+    @Override
+    public void registerObserve(GunNettyObserve observe) {
+        this.observe = observe;
+    }
 
     @Override
     public boolean isRunnable() {
@@ -61,14 +68,16 @@ final class GunBootServerImpl implements GunBootServer {
             throw new GunException("Handel, execute pool not set or has been running");
         }
         AbstractGunBaseLogUtil.setLevel(((GunLogProperty) GunNettyPropertyManagerImpl.getProperty("log")).getOutputlevel());
-        AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
         final GunCoreProperty coreproperty = GunNettyPropertyManagerImpl.getProperty("core");
-        AbstractGunBaseLogUtil.outputFile(coreproperty.getProfileName());
+        assert coreproperty != null;
         GunBytesUtil.init(coreproperty.getFileReadBufferMin());
         AbstractGunBaseLogUtil.debug("Check parameters succeed");
+        this.observe.onBoot(coreproperty);
         if (CoreThreadManage.init(acceptExector, requestExector, pileline, coreproperty.getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             result.get();
+            this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
+            this.observe.onStop(coreproperty);
         }
     }
 
