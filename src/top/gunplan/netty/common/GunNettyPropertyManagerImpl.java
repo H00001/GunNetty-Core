@@ -2,7 +2,6 @@ package top.gunplan.netty.common;
 
 
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
-import top.gunplan.netty.impl.propertys.GunHttpProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
 import top.gunplan.netty.impl.propertys.GunProPerty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
@@ -34,7 +33,7 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     static {
         registerProperty("core", new GunCoreProperty());
         registerProperty("log", new GunLogProperty());
-        registerProperty("http", new GunHttpProperty());
+
     }
 
 
