@@ -1,7 +1,5 @@
 package top.gunplan.netty;
 
-import com.sun.istack.internal.NotNull;
-
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -16,6 +14,7 @@ import java.util.concurrent.ExecutorService;
  */
 public interface GunBootServer {
     void registerObserve(GunNettyObserve observe);
+
     /**
      * get the status of server
      *
@@ -40,10 +39,11 @@ public interface GunBootServer {
      * @return this
      */
 
-    GunBootServer setExecuters(@NotNull ExecutorService acceptExecuters, @NotNull ExecutorService requestExecuters);
+    GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters);
 
     /**
      * this method return a {@link GunPilelineInterface} implements
+     *
      * @return GunPilelineInterface
      */
     GunPilelineInterface getPipeline();
@@ -65,6 +65,7 @@ public interface GunBootServer {
 
     /**
      * check it can or not be boot
+     *
      * @return check result true is can be boot
      */
     boolean initCheck();

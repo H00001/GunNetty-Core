@@ -1,7 +1,5 @@
 package top.gunplan.netty.impl;
 
-
-import com.sun.istack.internal.NotNull;
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 
@@ -13,7 +11,7 @@ final class GunPilelineImpl implements GunPilelineInterface {
     private List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
 
     @Override
-    public GunPilelineInterface register(@NotNull GunHandle handle) {
+    public GunPilelineInterface register(GunHandle handle) {
         assert handle != null;
         if (handle instanceof GunNettyHandle) {
             setHandle0((GunNettyHandle) handle);
@@ -24,12 +22,12 @@ final class GunPilelineImpl implements GunPilelineInterface {
         return this;
     }
 
-    private void addFilter0(@NotNull GunNettyFilter filter) {
+    private void addFilter0(GunNettyFilter filter) {
         GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
         this.filterChain.add(order.index(), filter);
     }
 
-    private void setHandle0(@NotNull GunNettyHandle handle) {
+    private void setHandle0(GunNettyHandle handle) {
         if (handle != null) {
             this.handle = handle;
         }

@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl.propertys;
 
-import sun.jvm.hotspot.debugger.cdbg.EnumType;
+
 
 public class GunCoreProperty implements GunProPerty {
     public enum connectionType {
