@@ -28,9 +28,7 @@ final class GunPilelineImpl implements GunPilelineInterface {
     }
 
     private void setHandle0(GunNettyHandle handle) {
-        if (handle != null) {
-            this.handle = handle;
-        }
+        this.handle = handle;
     }
 
     @Override
@@ -41,7 +39,9 @@ final class GunPilelineImpl implements GunPilelineInterface {
 
     @Override
     public GunPilelineInterface setHandle(GunNettyHandle handle) {
-        setHandle0(handle);
+        if (handle != null) {
+            setHandle0(handle);
+        }
         return this;
     }
 

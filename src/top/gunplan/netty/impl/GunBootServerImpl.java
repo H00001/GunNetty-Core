@@ -18,7 +18,7 @@ import java.util.concurrent.Future;
  * GunBootServer's real implement ,this class is not public
  *
  * @author Gunplan
- * @version 0.0.1.1
+ * @version 0.0.1.2
  * @apiNote 0.0.0.5
  * @since 0.0.0.4
  */
@@ -33,15 +33,18 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExector;
 
-    private final GunPilelineInterface pileline = new GunPilelineImpl();
+    private volatile GunPilelineInterface pileline = new GunPilelineImpl();
 
     GunBootServerImpl() {
     }
 
 
     @Override
-    public void registerObserve(GunNettyObserve observe) {
-        this.observe = observe;
+    public GunBootServer registerObserve(GunNettyObserve observe) {
+        if (observe != null) {
+            this.observe = observe;
+        }
+        return this;
     }
 
     @Override
@@ -54,6 +57,14 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public GunPilelineInterface getPipeline() {
         return pileline;
+    }
+
+    public void setPileline(GunPilelineInterface pileline) {
+        if (pileline != null) {
+            this.pileline = pileline;
+        } else {
+            throw new GunException("GunPilelineInterface is null");
+        }
     }
 
     @Override
@@ -81,9 +92,6 @@ final class GunBootServerImpl implements GunBootServer {
         }
     }
 
-    public GunPilelineInterface getPileline() {
-        return pileline;
-    }
 
     @Override
     public GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters) {

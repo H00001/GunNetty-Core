@@ -13,7 +13,7 @@ import java.util.concurrent.ExecutorService;
  * @since 0.0.0.1
  */
 public interface GunBootServer {
-    void registerObserve(GunNettyObserve observe);
+    GunBootServer registerObserve(GunNettyObserve observe);
 
     /**
      * get the status of server

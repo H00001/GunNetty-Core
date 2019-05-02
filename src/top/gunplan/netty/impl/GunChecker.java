@@ -5,6 +5,6 @@ import java.nio.channels.SelectionKey;
 /**
  *
  */
-interface GunChecker {
+public interface GunChecker {
     SelectionKey getKey();
 }
