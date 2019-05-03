@@ -86,37 +86,40 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
                     requireNonNull(GunNettyPropertyManagerImpl.class.getClassLoader().
                             getResource("GunNetty.conf")).toURI()))).
                     split("\n");
-            Field fd;
-            String[] proname;
-            for (int now = 0; now < propertys.length; now++) {
-                if (!propertys[now].startsWith(unusefulchars)) {
-                    if (propertys[now].endsWith(openandclodechildpropertys[0])) {
-                        final String prohead = propertys[now].replace(openandclodechildpropertys[0], "").trim();
-                        final Object obj = propertysmap.get(prohead);
-                        now++;
-                        for (; now < propertys.length; now++) {
-                            if (!propertys[now].trim().endsWith(openandclodechildpropertys[1])) {
-                                if (!propertys[now].startsWith(unusefulchars)) {
-                                    proname = propertys[now].replace(" ", "").split(assignmentchars);
-                                    fd = obj.getClass().getDeclaredField(proname[0]);
-                                    AbstractGunBaseLogUtil.info(proname[0] + ":" + proname[1].trim(),"[PROPERTY]");
-                                    fd.setAccessible(true);
-                                    fd.set(obj, isInteger(proname[1].trim()) ? Integer.valueOf(proname[1].trim()) : proname[1].trim());
-                                }
-                            } else {
-                                break;
-                            }
-                        }
-
-                    }
-                }
-            }
+            realAnalyPropertys(propertys);
         } catch (Exception e) {
-            e.printStackTrace();
             return false;
         }
 
         return true;
+    }
+
+    private static void realAnalyPropertys(String[] propertys) throws NoSuchFieldException, IllegalAccessException {
+        String[] proname;
+        Field fd;
+        for (int now = 0; now < propertys.length; now++) {
+            if (!propertys[now].startsWith(unusefulchars)) {
+                if (propertys[now].endsWith(openandclodechildpropertys[0])) {
+                    final String prohead = propertys[now].replace(openandclodechildpropertys[0], "").trim();
+                    final Object obj = propertysmap.get(prohead);
+                    now++;
+                    for (; now < propertys.length; now++) {
+                        if (!propertys[now].trim().endsWith(openandclodechildpropertys[1])) {
+                            if (!propertys[now].startsWith(unusefulchars)) {
+                                proname = propertys[now].replace(" ", "").split(assignmentchars);
+                                fd = obj.getClass().getDeclaredField(proname[0]);
+                                AbstractGunBaseLogUtil.info(proname[0] + ":" + proname[1].trim(), "[PROPERTY]");
+                                fd.setAccessible(true);
+                                fd.set(obj, isInteger(proname[1].trim()) ? Integer.valueOf(proname[1].trim()) : proname[1].trim());
+                            }
+                        } else {
+                            break;
+                        }
+                    }
+
+                }
+            }
+        }
     }
 
     private static boolean isInteger(String str) {
