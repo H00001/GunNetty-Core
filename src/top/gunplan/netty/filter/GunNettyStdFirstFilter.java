@@ -76,7 +76,9 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     public DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
-        channel.write(ByteBuffer.wrap(filterDto.getRespobj().serialize()));
+        if (filterDto.getRespobj() != null) {
+            channel.write(ByteBuffer.wrap(filterDto.getRespobj().serialize()));
+        }
         if (coreProperty.getConnection() == GunCoreProperty.connectionType.CLOSE) {
             filterDto.getKey().channel().close();
             AbstractGunBaseLogUtil.debug("close initiative");
