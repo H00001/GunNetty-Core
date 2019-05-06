@@ -22,7 +22,7 @@ final class CoreThreadManage {
         dealdata = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
     }
 
-    private static volatile ExecutorService server = Executors.newFixedThreadPool(MANAGE_THREAD_NUM ^ 1);
+    private static volatile ExecutorService serverPool = Executors.newFixedThreadPool(MANAGE_THREAD_NUM ^ 1);
     private static int slelctSelctor = 0;
 
     static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, GunPilelineInterface pilepine, int port) {
@@ -44,8 +44,13 @@ final class CoreThreadManage {
 
     static Future<Integer> startAllAndWait() {
         for (AbstractGunCoreEventLoop dat : dealdata) {
-            server.submit(dat);
+            serverPool.submit(dat);
         }
-        return server.submit(dealaccept, 1);
+        return serverPool.submit(dealaccept, 1);
+    }
+
+    static boolean stopAllandWait() {
+        serverPool.shutdown();
+        return serverPool.isTerminated();
     }
 }

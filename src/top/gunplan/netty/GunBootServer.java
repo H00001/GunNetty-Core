@@ -70,5 +70,8 @@ public interface GunBootServer {
      */
     boolean initCheck();
 
+
+    void stop();
+
 }
 
