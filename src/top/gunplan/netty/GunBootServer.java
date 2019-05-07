@@ -42,11 +42,11 @@ public interface GunBootServer {
     GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters);
 
     /**
-     * this method return a {@link GunPilelineInterface} implements
+     * this method return a {@link GunPileline} implements
      *
-     * @return GunPilelineInterface
+     * @return GunPileline
      */
-    GunPilelineInterface getPipeline();
+    GunPileline getPipeline();
 
 //    /**
 //     * the function is used to add filter

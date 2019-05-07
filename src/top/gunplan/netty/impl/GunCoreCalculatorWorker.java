@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunPilelineInterface;
+import top.gunplan.netty.GunPileline;
 import top.gunplan.netty.protocol.GunNetOutputInterface;
 
 import java.nio.channels.SelectionKey;
@@ -17,7 +17,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
     private final AtomicInteger waitSize;
     private SelectionKey key;
 
-    GunCoreCalculatorWorker(final GunPilelineInterface pileline, final SelectionKey channel, AtomicInteger waitSize) {
+    GunCoreCalculatorWorker(final GunPileline pileline, final SelectionKey channel, AtomicInteger waitSize) {
         super(pileline);
         this.key = channel;
         this.waitSize = waitSize;

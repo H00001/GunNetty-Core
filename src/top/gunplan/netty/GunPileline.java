@@ -2,32 +2,39 @@ package top.gunplan.netty;
 
 
 import java.util.List;
+import java.util.Timer;
 
 /**
  * @author dosdrtt
  * @since 1.0.0.1
  */
-public interface GunPilelineInterface {
+public interface GunPileline {
     /**
      * register the handle in the chain
      * @param handle register handle
      * @return chain style is self
      */
-    GunPilelineInterface register(GunHandle handle);
+    GunPileline register(GunHandle handle);
 
     /**
      *
-     * @param filter
-     * @return
+     * @param timer {@link GunTimer}
+     * @return this,chain style
      */
-    GunPilelineInterface addFilter(GunNettyFilter filter);
+    GunPileline addTimer(GunTimer timer);
+    /**
+     *
+     * @param filter {@link GunNettyFilter}
+     * @return this, chain style
+     */
+    GunPileline addFilter(GunNettyFilter filter);
 
     /**
      *
      * @param handle
      * @return
      */
-    GunPilelineInterface setHandle(GunNettyHandle handle);
+    GunPileline setHandle(GunNettyHandle handle);
 
     /**
      *
@@ -36,7 +43,7 @@ public interface GunPilelineInterface {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    GunPilelineInterface refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException;
+    GunPileline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException;
 
     /**
      * check the pileline model avilable
@@ -52,8 +59,6 @@ public interface GunPilelineInterface {
     GunNettyHandle getHandel();
 
 
-
-
-
+    List<GunTimer> getTimer();
 
 }

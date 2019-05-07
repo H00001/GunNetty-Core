@@ -2,16 +2,16 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-final class GunPilelineImpl implements GunPilelineInterface {
+final class GunPilelineImpl implements GunPileline {
     private GunNettyHandle handle;
-    private List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
+    private final List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
+    private final List<GunTimer> timers = new CopyOnWriteArrayList<>();
 
     @Override
-    public GunPilelineInterface register(GunHandle handle) {
+    public GunPileline register(GunHandle handle) {
         assert handle != null;
         if (handle instanceof GunNettyHandle) {
             setHandle0((GunNettyHandle) handle);
@@ -21,6 +21,15 @@ final class GunPilelineImpl implements GunPilelineInterface {
 
         return this;
     }
+
+    @Override
+    public GunPileline addTimer(GunTimer timer) {
+        if (timer != null) {
+            timers.add(timer);
+        }
+        return null;
+    }
+
 
     private void addFilter0(GunNettyFilter filter) {
         GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
@@ -32,13 +41,13 @@ final class GunPilelineImpl implements GunPilelineInterface {
     }
 
     @Override
-    public GunPilelineInterface addFilter(GunNettyFilter filter) {
+    public GunPileline addFilter(GunNettyFilter filter) {
         addFilter0(filter);
         return this;
     }
 
     @Override
-    public GunPilelineInterface setHandle(GunNettyHandle handle) {
+    public GunPileline setHandle(GunNettyHandle handle) {
         if (handle != null) {
             setHandle0(handle);
         }
@@ -47,7 +56,7 @@ final class GunPilelineImpl implements GunPilelineInterface {
 
 
     @Override
-    public GunPilelineInterface refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException {
+    public GunPileline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException {
         if (clazz != null) {
             GunHandle h = clazz.newInstance();
             if (h instanceof GunNettyHandle) {
@@ -80,6 +89,11 @@ final class GunPilelineImpl implements GunPilelineInterface {
     @Override
     public GunNettyHandle getHandel() {
         return handle;
+    }
+
+    @Override
+    public List<GunTimer> getTimer() {
+        return timers;
     }
 
 }

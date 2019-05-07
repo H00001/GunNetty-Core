@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunPilelineInterface;
+import top.gunplan.netty.GunPileline;
 
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
@@ -18,7 +18,7 @@ import java.util.concurrent.locks.LockSupport;
  * @author dosdrtt
  */
 public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
-    private final GunPilelineInterface pileline;
+    private final GunPileline pileline;
     private AtomicInteger listionSize = new AtomicInteger(0);
     private boolean runState = true;
     private volatile Thread nowRun = null;
@@ -36,7 +36,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         LockSupport.unpark(nowRun);
     }
 
-    CunCoreDataEventLoop(ExecutorService deal, final GunPilelineInterface pileline) throws IOException {
+    CunCoreDataEventLoop(ExecutorService deal, final GunPileline pileline) throws IOException {
         super(deal);
         this.pileline = pileline;
 

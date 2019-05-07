@@ -16,12 +16,12 @@ class GunNettyDefaultObserveImpl implements GunNettyObserve {
 
     @Override
     public boolean onBooting(GunProPerty proPerty) {
+
         return true;
     }
 
     @Override
     public void onStop(GunProPerty proPerty) {
-
 
     }
 

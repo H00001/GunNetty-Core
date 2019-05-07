@@ -33,7 +33,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExector;
 
-    private volatile GunPilelineInterface pileline = new GunPilelineImpl();
+    private volatile GunPileline pileline = new GunPilelineImpl();
 
     GunBootServerImpl() {
     }
@@ -55,11 +55,11 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunPilelineInterface getPipeline() {
+    public GunPileline getPipeline() {
         return pileline;
     }
 
-    public void setPileline(GunPilelineInterface pileline) {
+    public void setPileline(GunPileline pileline) {
         if (pileline != null) {
             this.pileline = pileline;
         } else {
