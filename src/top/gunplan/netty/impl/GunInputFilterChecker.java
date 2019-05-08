@@ -27,7 +27,7 @@ public final class GunInputFilterChecker extends AbstractGunChecker {
 
     private GunNetInputInterface object;
 
-    public GunInputFilterChecker(final SelectionKey key) {
+    GunInputFilterChecker(final SelectionKey key) {
         super(key);
     }
 

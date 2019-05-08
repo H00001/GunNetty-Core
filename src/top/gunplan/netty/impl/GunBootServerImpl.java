@@ -5,6 +5,7 @@ import top.gunplan.netty.*;
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
+import top.gunplan.netty.impl.propertys.GunProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
 
@@ -85,9 +86,8 @@ final class GunBootServerImpl implements GunBootServer {
         if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
             throw new GunException("Handel, Execute pool not set or Server has been running");
         }
-        AbstractGunBaseLogUtil.setLevel(((GunLogProperty) GunNettyPropertyManagerImpl.getProperty("log")).getOutputlevel());
-        final GunCoreProperty coreproperty = GunNettyPropertyManagerImpl.getProperty("core");
-        assert coreproperty != null;
+        initLogPlug(GunNettyPropertyManagerImpl.logProperty());
+        final GunCoreProperty coreproperty = GunNettyPropertyManagerImpl.coreProperty();
         GunBytesUtil.init(coreproperty.getFileReadBufferMin());
         AbstractGunBaseLogUtil.debug("Check parameters succeed");
         if (this.observe.onBooting(coreproperty) && CoreThreadManage.init(acceptExector, requestExector, pileline, coreproperty.getPort())) {
@@ -98,6 +98,19 @@ final class GunBootServerImpl implements GunBootServer {
             this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
             this.observe.onStop(coreproperty);
         }
+    }
+
+    private void initLogPlug(GunLogProperty log) {
+        if (log == null) {
+            AbstractGunBaseLogUtil.setLevel(0);
+        } else {
+            String direct = log.getDirect();
+            if (direct.startsWith("file:")) {
+
+            }
+
+        }
+
     }
 
 

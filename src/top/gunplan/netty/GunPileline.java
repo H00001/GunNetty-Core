@@ -1,6 +1,7 @@
 package top.gunplan.netty;
 
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Timer;
 
@@ -43,7 +44,7 @@ public interface GunPileline {
      * @throws IllegalAccessException
      * @throws InstantiationException
      */
-    GunPileline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException;
+    GunPileline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 
     /**
      * check the pileline model avilable

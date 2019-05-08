@@ -4,7 +4,7 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
-import top.gunplan.netty.impl.CunCoreDataEventLoop;
+import top.gunplan.netty.impl.GunCoreDataEventLoop;
 import top.gunplan.netty.impl.GunInputFilterChecker;
 import top.gunplan.netty.impl.GunOutputFilterChecker;
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
@@ -62,7 +62,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
                     filterDto.getKey().cancel();
                 } else if (coreProperty.getConnection() == GunCoreProperty.connectionType.KEEP_ALIVE) {
                     key.interestOps(SelectionKey.OP_READ);
-                    ((CunCoreDataEventLoop) key.attachment()).incrAndContinueLoop();
+                    ((GunCoreDataEventLoop) key.attachment()).incrAndContinueLoop();
 
                 }
                 return DealResult.NEXT;

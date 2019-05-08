@@ -2,6 +2,8 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
+
+import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -18,7 +20,6 @@ final class GunPilelineImpl implements GunPileline {
         } else if (handle instanceof GunNettyFilter) {
             addFilter((GunNettyFilter) handle);
         }
-
         return this;
     }
 
@@ -56,9 +57,9 @@ final class GunPilelineImpl implements GunPileline {
 
 
     @Override
-    public GunPileline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException {
+    public GunPileline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         if (clazz != null) {
-            GunHandle h = clazz.newInstance();
+            GunHandle h = clazz.getDeclaredConstructor().newInstance();
             if (h instanceof GunNettyHandle) {
                 setHandle0((GunNettyHandle) h);
             } else if (h instanceof GunNettyFilter) {

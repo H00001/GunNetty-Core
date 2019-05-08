@@ -6,6 +6,7 @@ import java.nio.channels.SelectionKey;
 
 /**
  * @author dosdrtt
+ * @see top.gunplan.netty.impl.GunChecker
  */
 public final class GunOutputFilterChecker extends AbstractGunChecker {
 

@@ -14,10 +14,10 @@ import java.util.concurrent.ExecutorService;
 /**
  * @author dosdrtt
  */
-public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
+public class GunCoreConnetcionThread extends AbstractGunCoreEventLoop {
     private final GunPileline dealHandle;
 
-    CunCoreConnetcionThread(ExecutorService deal, GunPileline dealHandle, int port) throws IOException {
+    GunCoreConnetcionThread(ExecutorService deal, GunPileline dealHandle, int port) throws IOException {
         super(deal);
         this.dealHandle = dealHandle;
         try {
@@ -52,7 +52,7 @@ public class CunCoreConnetcionThread extends AbstractGunCoreEventLoop {
     public void dealEvent(SelectionKey key) {
         try {
             SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-            CunCoreDataEventLoop selectionThread = ((CunCoreDataEventLoop) CoreThreadManage.getDealThread());
+            GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) CoreThreadManage.getDealThread());
             socketChannel.socket().setTcpNoDelay(true);
             selectionThread.registerReadKey(socketChannel);
             selectionThread.incrAndContinueLoop();

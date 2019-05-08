@@ -6,6 +6,7 @@ import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
+import java.util.Objects;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -14,24 +15,29 @@ import java.util.concurrent.Future;
  * @author dosdrtt
  */
 final class CoreThreadManage {
-    private static final int MANAGE_THREAD_NUM = ((GunCoreProperty) GunNettyPropertyManagerImpl.getProperty("core")).getMaxRunnningNum();
+    private static final int MANAGE_THREAD_NUM = ((GunCoreProperty) Objects.requireNonNull(GunNettyPropertyManagerImpl.getProperty("core"))).getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealdata;
+    private volatile static GunTimerTaskEventLoop dealtime;
 
     static {
         dealdata = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
     }
 
-    private static volatile ExecutorService serverPool = Executors.newFixedThreadPool(MANAGE_THREAD_NUM ^ 1);
+    private static final ExecutorService SERVER_POOL = Executors.newFixedThreadPool(MANAGE_THREAD_NUM ^ 1);
+    private static final ExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
+
     private static int slelctSelctor = 0;
 
     static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, GunPileline pilepine, int port) {
         AbstractGunBaseLogUtil.debug("Server running on " + port);
         try {
-            dealaccept = new CunCoreConnetcionThread(acceptExector, pilepine, port);
+            dealaccept = new GunCoreConnetcionThread(acceptExector, pilepine, port);
             for (int i = 0; i < MANAGE_THREAD_NUM; i++) {
-                dealdata[i] = new CunCoreDataEventLoop(dataExectuor, pilepine);
+                dealdata[i] = new GunCoreDataEventLoop(dataExectuor, pilepine);
             }
+            //todo
+          //  dealtime = new GunTimerTaskEventLoop(pilepine.getTimer());
         } catch (Exception e) {
             return false;
         }
@@ -44,13 +50,14 @@ final class CoreThreadManage {
 
     static Future<Integer> startAllAndWait() {
         for (AbstractGunCoreEventLoop dat : dealdata) {
-            serverPool.submit(dat);
+            SERVER_POOL.submit(dat);
         }
-        return serverPool.submit(dealaccept, 1);
+        //TIMER_POOL.execute();
+        return SERVER_POOL.submit(dealaccept, 1);
     }
 
     static boolean stopAllandWait() {
-        serverPool.shutdown();
-        return serverPool.isTerminated();
+        SERVER_POOL.shutdown();
+        return SERVER_POOL.isTerminated();
     }
 }

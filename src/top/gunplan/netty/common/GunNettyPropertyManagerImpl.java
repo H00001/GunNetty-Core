@@ -3,7 +3,7 @@ package top.gunplan.netty.common;
 
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
-import top.gunplan.netty.impl.propertys.GunProPerty;
+import top.gunplan.netty.impl.propertys.GunProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.lang.reflect.Field;
@@ -25,25 +25,32 @@ import java.util.regex.Pattern;
 public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
 
     private static String unusefulchars = "#";
-
     private static String assignmentchars = "=";
     private static String[] openandclodechildpropertys = {"{", "}"};
-    private static Map<String, GunProPerty> propertysmap = new HashMap<>();
+    private static String BASE_CORE = "core";
+    private static String BASE_LOG = "log";
+    private static Map<String, GunProperty> propertysmap = new HashMap<>();
 
     static {
-        registerProperty("core", new GunCoreProperty());
-        registerProperty("log", new GunLogProperty());
-
+        registerProperty(BASE_CORE, new GunCoreProperty());
+        registerProperty(BASE_LOG, new GunLogProperty());
     }
 
+    public static GunCoreProperty coreProperty() {
+        return getProperty(BASE_CORE);
+    }
 
-    public static void registerProperty(String name, GunProPerty proPerty) {
+    public  static GunLogProperty logProperty() {
+        return getProperty(BASE_LOG);
+    }
+
+    public static void registerProperty(String name, GunProperty proPerty) {
         propertysmap.put(name, proPerty);
     }
 
-    public static <T extends GunProPerty> T getProperty(String name) {
-        final GunProPerty proPerty = propertysmap.get(name);
-        return proPerty != null ? (T) proPerty : null;
+    public static <T extends GunProperty> T getProperty(/*unchecked */ String name) {
+        final GunProperty proPerty = propertysmap.get(name);
+        return proPerty != null ? (T) (proPerty) : null;
     }
 
     public static void setUnusefulchars(String unusefulchars) {

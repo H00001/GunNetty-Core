@@ -1,8 +1,12 @@
 package top.gunplan.netty.impl.propertys;
 
 
+public class GunCoreProperty implements GunProperty {
+    @Override
+    public boolean isAvailable() {
+        return true;
+    }
 
-public class GunCoreProperty implements GunProPerty {
     public enum connectionType {
         /**
          *

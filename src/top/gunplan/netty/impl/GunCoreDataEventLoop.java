@@ -17,7 +17,7 @@ import java.util.concurrent.locks.LockSupport;
  *
  * @author dosdrtt
  */
-public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
+public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     private final GunPileline pileline;
     private AtomicInteger listionSize = new AtomicInteger(0);
     private boolean runState = true;
@@ -36,7 +36,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         LockSupport.unpark(nowRun);
     }
 
-    CunCoreDataEventLoop(ExecutorService deal, final GunPileline pileline) throws IOException {
+    GunCoreDataEventLoop(ExecutorService deal, final GunPileline pileline) throws IOException {
         super(deal);
         this.pileline = pileline;
 
@@ -57,6 +57,7 @@ public class CunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
                 }
+                assert coreProperty != null;
                 int val = coreProperty.getClientWaitTime() == -1 ? bootSelector.select() : bootSelector.select(coreProperty.getClientWaitTime());
                 if (val > 0) {
                     Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
