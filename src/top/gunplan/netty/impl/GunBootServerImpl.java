@@ -82,28 +82,30 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public synchronized void sync() throws ExecutionException, InterruptedException {
+    public synchronized int sync() throws ExecutionException, InterruptedException {
         if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
             throw new GunException("Handel, Execute pool not set or Server has been running");
         }
         initLogPlug(GunNettyPropertyManagerImpl.logProperty());
         final GunCoreProperty coreproperty = GunNettyPropertyManagerImpl.coreProperty();
         GunBytesUtil.init(coreproperty.getFileReadBufferMin());
-        AbstractGunBaseLogUtil.debug("Check parameters succeed");
         if (this.observe.onBooting(coreproperty) && CoreThreadManage.init(acceptExector, requestExector, pileline, coreproperty.getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             this.observe.onBooted(coreproperty);
             this.runnable = true;
-            result.get();
+            int val = result.get();
             this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
             this.observe.onStop(coreproperty);
+            return val;
         }
+        return -1;
     }
 
     private void initLogPlug(GunLogProperty log) {
         if (log == null) {
             AbstractGunBaseLogUtil.setLevel(0);
         } else {
+            AbstractGunBaseLogUtil.debug("Check parameters succeed");
             String direct = log.getDirect();
             if (direct.startsWith("file:")) {
 

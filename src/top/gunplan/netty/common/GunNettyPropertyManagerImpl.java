@@ -40,7 +40,7 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
         return getProperty(BASE_CORE);
     }
 
-    public  static GunLogProperty logProperty() {
+    public static GunLogProperty logProperty() {
         return getProperty(BASE_LOG);
     }
 
@@ -54,33 +54,24 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     }
 
     public static void setUnusefulchars(String unusefulchars) {
-        GunNettyPropertyManagerImpl.unusefulchars = unusefulchars;
+        if (GunNettyStringUtil.isEmpty0(unusefulchars)) {
+            GunNettyPropertyManagerImpl.unusefulchars = unusefulchars;
+        }
     }
 
     public static void setAssignmentchars(String assignmentchars) {
-        GunNettyPropertyManagerImpl.assignmentchars = assignmentchars;
+        if (GunNettyStringUtil.isEmpty0(assignmentchars)) {
+            GunNettyPropertyManagerImpl.assignmentchars = assignmentchars;
+        }
     }
 
     public static void setOpenandclodechildpropertys(String[] openandclodechildpropertys) {
-        GunNettyPropertyManagerImpl.openandclodechildpropertys = openandclodechildpropertys;
+        if (!GunNettyStringUtil.isEmpty0(openandclodechildpropertys)) {
+            GunNettyPropertyManagerImpl.openandclodechildpropertys = openandclodechildpropertys;
+        }
+
     }
 
-
-//    public static GunLogProperty getLog() {
-//        return log;
-//    }
-//
-//    public static GunHttpProperty getHttp() {
-//        return http;
-//    }
-
-//    private static GunCoreProperty core = null;
-//    private static GunHttpProperty http = null;
-//    private static GunLogProperty log = null;
-
-//    public static GunCoreProperty getCore() {
-//        return core;
-//    }
 
     /**
      * reference to get propertys

@@ -1,7 +1,5 @@
 package top.gunplan.netty;
 
-
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 
 
@@ -12,7 +10,7 @@ import java.util.concurrent.ExecutorService;
  * @author dosdrtt
  * @since 0.0.0.1
  */
-public interface GunBootServer {
+public interface GunBootServer extends GunBootServerBase {
     GunBootServer registerObserve(GunNettyObserve observe);
 
     /**
@@ -22,14 +20,6 @@ public interface GunBootServer {
      */
     boolean isRunnable();
 
-    /**
-     * start sync server and wait
-     *
-     * @throws IOException syncing's exception
-     */
-
-
-    void sync() throws Exception;
 
     /**
      * set the Thread pool that dispose the request
