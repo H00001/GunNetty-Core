@@ -7,13 +7,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-final class GunPilelineImpl implements GunPileline {
+final class GunPilelineImpl implements GunPipeline {
     private GunNettyHandle handle;
     private final List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
     private final List<GunTimer> timers = new CopyOnWriteArrayList<>();
 
     @Override
-    public GunPileline register(GunHandle handle) {
+    public GunPipeline register(GunHandle handle) {
         assert handle != null;
         if (handle instanceof GunNettyHandle) {
             setHandle0((GunNettyHandle) handle);
@@ -24,7 +24,7 @@ final class GunPilelineImpl implements GunPileline {
     }
 
     @Override
-    public GunPileline addTimer(GunTimer timer) {
+    public GunPipeline addTimer(GunTimer timer) {
         if (timer != null) {
             timers.add(timer);
         }
@@ -42,13 +42,13 @@ final class GunPilelineImpl implements GunPileline {
     }
 
     @Override
-    public GunPileline addFilter(GunNettyFilter filter) {
+    public GunPipeline addFilter(GunNettyFilter filter) {
         addFilter0(filter);
         return this;
     }
 
     @Override
-    public GunPileline setHandle(GunNettyHandle handle) {
+    public GunPipeline setHandle(GunNettyHandle handle) {
         if (handle != null) {
             setHandle0(handle);
         }
@@ -57,7 +57,7 @@ final class GunPilelineImpl implements GunPileline {
 
 
     @Override
-    public GunPileline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public GunPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         if (clazz != null) {
             GunHandle h = clazz.getDeclaredConstructor().newInstance();
             if (h instanceof GunNettyHandle) {

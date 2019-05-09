@@ -25,7 +25,7 @@ public interface GunNettyHandle extends GunHandle {
      * @param request request object
      * @return GunNetOutputInterface
      * @throws GunException kinds of exception
-     * @throws IOException  IO error
+     * @throws GunException  IO error
      */
     GunNetOutputInterface dealConnEvent(SocketChannel request) throws GunException;
 

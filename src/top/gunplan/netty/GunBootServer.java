@@ -32,11 +32,11 @@ public interface GunBootServer extends GunBootServerBase {
     GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters);
 
     /**
-     * this method return a {@link GunPileline} implements
+     * this method return a {@link GunPipeline} implements
      *
-     * @return GunPileline
+     * @return GunPipeline
      */
-    GunPileline getPipeline();
+    GunPipeline getPipeline();
 
 //    /**
 //     * the function is used to add filter

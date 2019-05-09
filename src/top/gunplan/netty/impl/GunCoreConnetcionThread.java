@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunPileline;
+import top.gunplan.netty.GunPipeline;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
@@ -15,9 +15,9 @@ import java.util.concurrent.ExecutorService;
  * @author dosdrtt
  */
 public class GunCoreConnetcionThread extends AbstractGunCoreEventLoop {
-    private final GunPileline dealHandle;
+    private final GunPipeline dealHandle;
 
-    GunCoreConnetcionThread(ExecutorService deal, GunPileline dealHandle, int port) throws IOException {
+    GunCoreConnetcionThread(ExecutorService deal, GunPipeline dealHandle, int port) throws IOException {
         super(deal);
         this.dealHandle = dealHandle;
         try {

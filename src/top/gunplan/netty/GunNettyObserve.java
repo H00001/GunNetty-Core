@@ -10,24 +10,31 @@ import top.gunplan.netty.impl.propertys.GunProperty;
  */
 public interface GunNettyObserve extends GunHandle {
     /**
-     * @param proPerty Boot proPerty
+     * onBooted execute
+     * @param property Boot proPerty
      */
-    void onBooted(GunProperty proPerty);
-
-
-    boolean onBooting(GunProperty proPerty);
+    void onBooted(GunProperty property);
 
     /**
-     * @param proPerty Stop proPerty
+     * onBooting execute
+     * @param property GunProperty
+     * @return can or not can boot
      */
-    void onStop(GunProperty proPerty);
+
+    boolean onBooting(GunProperty property);
+
+    /**
+     * onStop execute
+     * @param property Stop proPerty
+     */
+    void onStop(GunProperty property);
 
     /**
      * @param status changed status
      */
     void onStatusChanged(GunNettyStatus status);
 
-    public enum GunNettyStatus {
+    enum GunNettyStatus {
         RUNTOSTOP, STOPTORUN
     }
 }

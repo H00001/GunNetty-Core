@@ -5,7 +5,6 @@ import top.gunplan.netty.*;
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
-import top.gunplan.netty.impl.propertys.GunProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
 
@@ -34,7 +33,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExector;
 
-    private volatile GunPileline pileline = new GunPilelineImpl();
+    private volatile GunPipeline pileline = new GunPilelineImpl();
 
     GunBootServerImpl() {
     }
@@ -56,15 +55,15 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunPileline getPipeline() {
+    public GunPipeline getPipeline() {
         return pileline;
     }
 
-    public void setPileline(GunPileline pileline) {
+    public void setPileline(GunPipeline pileline) {
         if (pileline != null) {
             this.pileline = pileline;
         } else {
-            throw new GunException("Your GunPileline is null");
+            throw new GunException("Your GunPipeline is null");
         }
     }
 

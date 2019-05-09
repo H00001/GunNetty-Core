@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl;
 
 
-import top.gunplan.netty.GunPileline;
+import top.gunplan.netty.GunPipeline;
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
@@ -29,7 +29,7 @@ final class CoreThreadManage {
 
     private static int slelctSelctor = 0;
 
-    static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, GunPileline pilepine, int port) {
+    static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, GunPipeline pilepine, int port) {
         AbstractGunBaseLogUtil.debug("Server running on " + port);
         try {
             dealaccept = new GunCoreConnetcionThread(acceptExector, pilepine, port);
