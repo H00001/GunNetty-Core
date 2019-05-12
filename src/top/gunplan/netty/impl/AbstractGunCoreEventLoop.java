@@ -10,6 +10,9 @@ import java.nio.channels.Selector;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * AbstractGunCoreEventLoop
+ * @see GunCoreDataEventLoop
+ * @see GunCoreConnectionEventLoop
  * @author dosdrtt
  */
 public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoopInterface {

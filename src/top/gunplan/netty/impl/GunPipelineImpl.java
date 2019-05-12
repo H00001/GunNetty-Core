@@ -7,7 +7,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-final class GunPilelineImpl implements GunPipeline {
+/**
+ * GunPipelineImpl
+ *
+ * @see GunPipeline
+ */
+final class GunPipelineImpl implements GunPipeline {
+
     private GunNettyHandle handle;
     private final List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
     private final List<GunTimer> timers = new CopyOnWriteArrayList<>();

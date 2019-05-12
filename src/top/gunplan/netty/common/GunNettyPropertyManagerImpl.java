@@ -21,6 +21,8 @@ import java.util.regex.Pattern;
  * analyzing config information by reference
  *
  * @author dosdrtt
+ * @date 2019/04/22
+ * @see GunNettyPropertyManager
  */
 
 public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {

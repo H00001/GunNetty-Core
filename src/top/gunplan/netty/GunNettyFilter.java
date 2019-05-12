@@ -25,7 +25,7 @@ public interface GunNettyFilter extends GunHandle {
     }
 
     /**
-     *
+     * doInputFilter
      * @param filterDto input filter dto
      * @return deal result {@link DealResult};
      * @throws Exception kinds of exception

@@ -3,10 +3,13 @@ package top.gunplan.netty.impl;
 import java.nio.channels.SelectionKey;
 
 /**
+ * AbstractGunChecker checker transfer object
+ *
  * @author dosdrtt
  * @see top.gunplan.netty.impl.GunChecker
  */
-public abstract class AbstractGunChecker implements GunChecker {
+abstract class AbstractGunChecker implements GunChecker {
+
 
     private volatile SelectionKey key;
 

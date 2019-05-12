@@ -8,7 +8,9 @@ import java.lang.reflect.Method;
 import java.nio.channels.SelectionKey;
 
 /**
- *
+ * todo
+ * GunTimerTaskEventLoop
+ * @author dosdrtt
  */
 public class GunTimerTaskEventLoop implements GunCoreEventLoopInterface {
     private final GunTimer timer;

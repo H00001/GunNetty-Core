@@ -1,6 +1,9 @@
 package top.gunplan.netty.common;
 
-final class GunNettyStringUtil {
+/**
+ * @author dosdrtt
+ */
+public final class GunNettyStringUtil {
     static boolean isEmpty0(String in) {
         return in != null && !in.equals("") && !in.trim().equals("");
     }

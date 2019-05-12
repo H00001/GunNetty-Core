@@ -44,8 +44,8 @@ public interface GunPipeline {
     /**
      * @param clazz refSetHandle
      * @return this,chain style
-     * @throws IllegalAccessException
-     * @throws InstantiationException
+     * @throws IllegalAccessException exc
+     * @throws InstantiationException exc
      */
     GunPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 

@@ -6,7 +6,10 @@ import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.nio.channels.SelectionKey;
 
-public class GunTImerImpl implements GunTimer {
+/**
+ * @author dosdrtt
+ */
+public class GunTimerImpl implements GunTimer {
     @GunTimeAnno(interval = 3000)
     public void exec0(SelectionKey[] keylist) {
         AbstractGunBaseLogUtil.info(keylist.length + " has been alived");

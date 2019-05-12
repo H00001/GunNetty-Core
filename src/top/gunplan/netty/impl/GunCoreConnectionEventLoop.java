@@ -12,12 +12,14 @@ import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 
 /**
+ * GunCoreConnectionEventLoop deal connection event
  * @author dosdrtt
+ * @see AbstractGunCoreEventLoop
  */
-public class GunCoreConnetcionThread extends AbstractGunCoreEventLoop {
+public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     private final GunPipeline dealHandle;
 
-    GunCoreConnetcionThread(ExecutorService deal, GunPipeline dealHandle, int port) throws IOException {
+    GunCoreConnectionEventLoop(ExecutorService deal, GunPipeline dealHandle, int port) throws IOException {
         super(deal);
         this.dealHandle = dealHandle;
         try {

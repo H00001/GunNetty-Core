@@ -4,13 +4,8 @@ import top.gunplan.netty.*;
 
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
-import top.gunplan.netty.impl.propertys.GunLogProperty;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
-import top.gunplan.utils.GunBytesUtil;
 
 
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -19,8 +14,9 @@ import java.util.concurrent.Future;
 /**
  * GunBootServer's real implement ,this class is not public
  *
+ * @see GunBootServer
  * @author Gunplan
- * @version 0.0.1.2
+ * @version 0.0.1.3
  * @apiNote 0.0.0.5
  * @since 0.0.0.4
  */
@@ -36,7 +32,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExector;
 
-    private volatile GunPipeline pileline = new GunPilelineImpl();
+    private volatile GunPipeline pileline = new GunPipelineImpl();
 
     GunBootServerImpl() {
     }

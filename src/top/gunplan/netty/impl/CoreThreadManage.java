@@ -32,7 +32,7 @@ final class CoreThreadManage {
     static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, GunPipeline pilepine, int port) {
         AbstractGunBaseLogUtil.debug("Server running on " + port);
         try {
-            dealaccept = new GunCoreConnetcionThread(acceptExector, pilepine, port);
+            dealaccept = new GunCoreConnectionEventLoop(acceptExector, pilepine, port);
             for (int i = 0; i < MANAGE_THREAD_NUM; i++) {
                 dealdata[i] = new GunCoreDataEventLoop(dataExectuor, pilepine);
             }

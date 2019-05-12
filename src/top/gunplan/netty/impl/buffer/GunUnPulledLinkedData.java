@@ -8,7 +8,7 @@ import top.gunplan.netty.GunLinkedData;
 public class GunUnPulledLinkedData implements GunLinkedData {
     private final byte[] data;
 
-    public GunUnPulledLinkedData(byte[] data) {
+    GunUnPulledLinkedData(byte[] data) {
         this.data = data;
     }
 
