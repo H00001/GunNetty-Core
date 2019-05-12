@@ -1,10 +1,27 @@
 package top.gunplan.netty.impl.propertys;
 
 
-public class GunCoreProperty implements GunProperty {
+import top.gunplan.utils.GunBytesUtil;
+
+/**
+ * core property
+ *
+ * @author dosdrtt
+ */
+public class GunNettyCoreProperty implements GunProperty {
     @Override
     public boolean isAvailable() {
         return true;
+    }
+
+    @Override
+    public boolean doRegex() {
+        if (isAvailable()) {
+            GunBytesUtil.init(fileReadBufferMin);
+            return true;
+        } else {
+            return false;
+        }
     }
 
     public enum connectionType {

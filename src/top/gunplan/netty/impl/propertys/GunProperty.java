@@ -13,7 +13,18 @@ package top.gunplan.netty.impl.propertys;
 public interface GunProperty {
     /**
      * check is available
+     *
      * @return is this property object available
      */
     boolean isAvailable();
+
+    /**
+     * do regex
+     *
+     * @return regex the object
+     */
+
+    default boolean doRegex() {
+        return isAvailable();
+    }
 }

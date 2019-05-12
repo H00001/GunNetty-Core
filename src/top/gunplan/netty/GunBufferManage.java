@@ -22,9 +22,14 @@ public interface GunBufferManage {
 //        }
 //    }
 
+    /**
+     * addEvent
+     */
     void addEvent();
 
-
+    /**
+     * descEvent
+     */
     void descEvent();
 
 //    default Unsafe newUnsafe() throws Exception {

@@ -7,7 +7,7 @@ import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.GunCoreDataEventLoop;
 import top.gunplan.netty.impl.GunInputFilterChecker;
 import top.gunplan.netty.impl.GunOutputFilterChecker;
-import top.gunplan.netty.impl.propertys.GunCoreProperty;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
 
@@ -36,7 +36,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
         key.cancel();
     }
 
-    private GunCoreProperty coreProperty;
+    private GunNettyCoreProperty coreProperty;
 
     @Override
     public DealResult doInputFilter(GunInputFilterChecker filterDto) throws Exception {
@@ -58,9 +58,9 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
                 dealCloseEvent(key);
                 return DealResult.CLOSE;
             } else {
-                if (coreProperty.getConnection() == GunCoreProperty.connectionType.CLOSE) {
+                if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
                     filterDto.getKey().cancel();
-                } else if (coreProperty.getConnection() == GunCoreProperty.connectionType.KEEP_ALIVE) {
+                } else if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.KEEP_ALIVE) {
                     key.interestOps(SelectionKey.OP_READ);
                     ((GunCoreDataEventLoop) key.attachment()).incrAndContinueLoop();
 
@@ -79,7 +79,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
         if (filterDto.getRespobj() != null) {
             channel.write(ByteBuffer.wrap(filterDto.getRespobj().serialize()));
         }
-        if (coreProperty.getConnection() == GunCoreProperty.connectionType.CLOSE) {
+        if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
             filterDto.getKey().channel().close();
             AbstractGunBaseLogUtil.debug("close initiative");
         }

@@ -3,12 +3,14 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.*;
 
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
-import top.gunplan.netty.impl.propertys.GunCoreProperty;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
 
 
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -24,6 +26,7 @@ import java.util.concurrent.Future;
  */
 
 final class GunBootServerImpl implements GunBootServer {
+
 
     private volatile boolean runnable = false;
 
@@ -85,9 +88,7 @@ final class GunBootServerImpl implements GunBootServer {
         if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
             throw new GunException("Handel, Execute pool not set or Server has been running");
         }
-        initLogPlug(GunNettyPropertyManagerImpl.logProperty());
-        final GunCoreProperty coreproperty = GunNettyPropertyManagerImpl.coreProperty();
-        GunBytesUtil.init(coreproperty.getFileReadBufferMin());
+        final GunNettyCoreProperty coreproperty = GunNettyPropertyManagerImpl.coreProperty();
         if (this.observe.onBooting(coreproperty) && CoreThreadManage.init(acceptExector, requestExector, pileline, coreproperty.getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             this.observe.onBooted(coreproperty);
@@ -98,20 +99,6 @@ final class GunBootServerImpl implements GunBootServer {
             return val;
         }
         return -1;
-    }
-
-    private void initLogPlug(GunLogProperty log) {
-        if (log == null) {
-            AbstractGunBaseLogUtil.setLevel(0);
-        } else {
-            AbstractGunBaseLogUtil.debug("Check parameters succeed");
-            String direct = log.getDirect();
-            if (direct.startsWith("file:")) {
-
-            }
-
-        }
-
     }
 
 

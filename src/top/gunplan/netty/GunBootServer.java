@@ -21,6 +21,9 @@ public interface GunBootServer extends GunBootServerBase {
     boolean isRunnable();
 
 
+    @Override
+    int sync() throws Exception;
+
     /**
      * set the Thread pool that dispose the request
      *

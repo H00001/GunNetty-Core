@@ -3,7 +3,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunPipeline;
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
-import top.gunplan.netty.impl.propertys.GunCoreProperty;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.util.Objects;
@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * @author dosdrtt
  */
 final class CoreThreadManage {
-    private static final int MANAGE_THREAD_NUM = ((GunCoreProperty) Objects.requireNonNull(GunNettyPropertyManagerImpl.getProperty("core"))).getMaxRunnningNum();
+    private static final int MANAGE_THREAD_NUM = ((GunNettyCoreProperty) Objects.requireNonNull(GunNettyPropertyManagerImpl.getProperty("core"))).getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealdata;
     private volatile static GunTimerTaskEventLoop dealtime;

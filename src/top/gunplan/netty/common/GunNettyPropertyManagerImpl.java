@@ -1,7 +1,8 @@
 package top.gunplan.netty.common;
 
 
-import top.gunplan.netty.impl.propertys.GunCoreProperty;
+import top.gunplan.netty.GunException;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
 import top.gunplan.netty.impl.propertys.GunProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
@@ -32,11 +33,11 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     private static Map<String, GunProperty> propertysmap = new HashMap<>();
 
     static {
-        registerProperty(BASE_CORE, new GunCoreProperty());
+        registerProperty(BASE_CORE, new GunNettyCoreProperty());
         registerProperty(BASE_LOG, new GunLogProperty());
     }
 
-    public static GunCoreProperty coreProperty() {
+    public static GunNettyCoreProperty coreProperty() {
         return getProperty(BASE_CORE);
     }
 
@@ -99,7 +100,7 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
             if (!propertys[now].startsWith(unusefulchars)) {
                 if (propertys[now].endsWith(openandclodechildpropertys[0])) {
                     final String prohead = propertys[now].replace(openandclodechildpropertys[0], "").trim();
-                    final Object obj = propertysmap.get(prohead);
+                    final GunProperty obj = propertysmap.get(prohead);
                     now++;
                     for (; now < propertys.length; now++) {
                         if (!propertys[now].trim().endsWith(openandclodechildpropertys[1])) {
@@ -110,11 +111,14 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
                                 fd.setAccessible(true);
                                 fd.set(obj, isInteger(proname[1].trim()) ? Integer.valueOf(proname[1].trim()) : proname[1].trim());
                             }
+
                         } else {
                             break;
                         }
                     }
-
+                    if (!obj.doRegex()) {
+                        throw new GunException("property regex error:" + obj.getClass());
+                    }
                 }
             }
         }

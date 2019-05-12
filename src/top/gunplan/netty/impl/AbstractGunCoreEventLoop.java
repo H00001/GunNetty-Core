@@ -2,7 +2,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunCoreEventLoopInterface;
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
-import top.gunplan.netty.impl.propertys.GunCoreProperty;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoopInterface {
     Selector bootSelector;
     ExecutorService deal;
-    final GunCoreProperty coreProperty = GunNettyPropertyManagerImpl.getProperty("core");
+    final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.getProperty("core");
 
     AbstractGunCoreEventLoop(ExecutorService deal) throws IOException {
         bootSelector = Selector.open();
