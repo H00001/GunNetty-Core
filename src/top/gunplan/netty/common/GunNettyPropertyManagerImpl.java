@@ -2,6 +2,7 @@ package top.gunplan.netty.common;
 
 
 import top.gunplan.netty.GunException;
+import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
 import top.gunplan.netty.impl.propertys.GunProperty;
@@ -30,25 +31,28 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     private static String unusefulchars = "#";
     private static String assignmentchars = "=";
     private static String[] openandclodechildpropertys = {"{", "}"};
-    private static String BASE_CORE = "core";
-    private static String BASE_LOG = "log";
     private static Map<String, GunProperty> propertysmap = new HashMap<>();
 
     static {
-        registerProperty(BASE_CORE, new GunNettyCoreProperty());
-        registerProperty(BASE_LOG, new GunLogProperty());
+        registerProperty(new GunNettyCoreProperty());
+        registerProperty(new GunLogProperty());
     }
 
     public static GunNettyCoreProperty coreProperty() {
-        return getProperty(BASE_CORE);
+        return getProperty("core");
     }
 
     public static GunLogProperty logProperty() {
-        return getProperty(BASE_LOG);
+        return getProperty("log");
     }
 
-    public static void registerProperty(String name, GunProperty proPerty) {
-        propertysmap.put(name, proPerty);
+    public static void registerProperty(String name, GunProperty property) {
+        propertysmap.put(name, property);
+    }
+
+    public static void registerProperty(GunProperty property) {
+        GunPropertyMap propertyMap = property.getClass().getAnnotation(GunPropertyMap.class);
+        registerProperty(propertyMap.name(), property);
     }
 
     public static <T extends GunProperty> T getProperty(/*unchecked */ String name) {

@@ -1,6 +1,7 @@
 package top.gunplan.netty.impl.propertys;
 
 
+import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.utils.GunBytesUtil;
 
 /**
@@ -8,6 +9,7 @@ import top.gunplan.utils.GunBytesUtil;
  *
  * @author dosdrtt
  */
+@GunPropertyMap(name = "core")
 public class GunNettyCoreProperty implements GunProperty {
     @Override
     public boolean isAvailable() {

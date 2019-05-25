@@ -17,7 +17,7 @@ public interface GunNettyObserve extends GunHandle {
 
     /**
      * onBooting execute
-     * @param property GunProperty
+     * @param property GunPropertyMap
      * @return can or not can boot
      */
 
