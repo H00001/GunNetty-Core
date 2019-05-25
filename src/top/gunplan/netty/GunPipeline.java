@@ -54,7 +54,7 @@ public interface GunPipeline {
      *
      * @return check result
      */
-    GunPilelineCheckResult check();
+    GunPipelineCheckResult check();
 
 
     List<GunNettyFilter> getFilters();

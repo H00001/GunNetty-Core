@@ -68,7 +68,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public boolean initCheck() {
-        return this.acceptExector != null && requestExector != null && this.pileline.check().getResult() != GunPilelineCheckResult.CheckResult.ERROR && !runnable;
+        return this.acceptExector != null && requestExector != null && this.pileline.check().getResult() != GunPipelineCheckResult.CheckResult.ERROR && !runnable;
     }
 
     @Override

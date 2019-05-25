@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunCoreEventLoopInterface;
+import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
  * @see GunCoreConnectionEventLoop
  * @author dosdrtt
  */
-public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoopInterface {
+public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoop {
     Selector bootSelector;
     ExecutorService deal;
     final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.getProperty("core");

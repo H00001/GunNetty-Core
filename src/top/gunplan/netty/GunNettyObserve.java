@@ -11,7 +11,7 @@ import top.gunplan.netty.impl.propertys.GunProperty;
 public interface GunNettyObserve extends GunHandle {
     /**
      * onBooted execute
-     * @param property Boot proPerty
+     * @param property Boot property
      */
     void onBooted(GunProperty property);
 
@@ -35,6 +35,9 @@ public interface GunNettyObserve extends GunHandle {
     void onStatusChanged(GunNettyStatus status);
 
     enum GunNettyStatus {
+        /**
+         * RUNTOSTOP run status to stop status
+         */
         RUNTOSTOP, STOPTORUN
     }
 }

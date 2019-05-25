@@ -76,15 +76,15 @@ final class GunPipelineImpl implements GunPipeline {
     }
 
     @Override
-    public GunPilelineCheckResult check() {
+    public GunPipelineCheckResult check() {
         if (handle != null && filterChain.size() > 0) {
-            return new GunPilelineCheckResult(GunPilelineCheckResult.CheckResult.SAFE);
+            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.SAFE);
         } else if (handle == null && filterChain.size() > 0) {
-            return new GunPilelineCheckResult(GunPilelineCheckResult.CheckResult.UNSAFE);
+            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.UNSAFE);
         } else if (handle != null) {
-            return new GunPilelineCheckResult(GunPilelineCheckResult.CheckResult.WARNNING);
+            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.WARNNING);
         } else {
-            return new GunPilelineCheckResult(GunPilelineCheckResult.CheckResult.ERROR, "please set handle and filter");
+            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.ERROR, "please set handle and filter");
         }
     }
 

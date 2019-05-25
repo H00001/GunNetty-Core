@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunCoreEventLoopInterface;
+import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunTimer;
 import top.gunplan.netty.anno.GunTimeAnno;
 
@@ -12,7 +12,7 @@ import java.nio.channels.SelectionKey;
  * GunTimerTaskEventLoop
  * @author dosdrtt
  */
-public class GunTimerTaskEventLoop implements GunCoreEventLoopInterface {
+public class GunTimerTaskEventLoop implements GunCoreEventLoop {
     private final GunTimer timer;
     private final long ci = 0;
 

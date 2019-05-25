@@ -4,7 +4,7 @@ package top.gunplan.netty;
  * @author dosdrtt
  * Thread safe
  */
-public class GunPilelineCheckResult {
+public class GunPipelineCheckResult {
     public  enum CheckResult {
         /**
          * ERROR    : do not have any filter or handls
@@ -15,19 +15,19 @@ public class GunPilelineCheckResult {
         ERROR, SAFE, WARNNING, UNSAFE
     }
 
-    public GunPilelineCheckResult(CheckResult result) {
+    public GunPipelineCheckResult(CheckResult result) {
         this.result = result;
     }
 
     private CheckResult result;
     private String resaon;
 
-    public GunPilelineCheckResult(CheckResult result, String resaon) {
+    public GunPipelineCheckResult(CheckResult result, String resaon) {
         this.result = result;
         this.resaon = resaon;
     }
 
-    public GunPilelineCheckResult() {
+    public GunPipelineCheckResult() {
     }
 
     public CheckResult getResult() {

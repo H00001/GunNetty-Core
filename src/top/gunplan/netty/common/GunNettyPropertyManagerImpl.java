@@ -89,6 +89,8 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
                     split("\n");
             realAnalyPropertys(propertys);
         } catch (Exception e) {
+            AbstractGunBaseLogUtil.error("Gun property init fail", "[PROPERTY]");
+            AbstractGunBaseLogUtil.error(e);
             return false;
         }
 
