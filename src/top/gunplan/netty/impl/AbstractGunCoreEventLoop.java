@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoop {
     Selector bootSelector;
     ExecutorService deal;
-    final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.getProperty("core");
+    final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
 
     AbstractGunCoreEventLoop(ExecutorService deal) throws IOException {
         bootSelector = Selector.open();

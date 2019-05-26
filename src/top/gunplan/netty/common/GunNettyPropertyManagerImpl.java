@@ -39,14 +39,15 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     }
 
     public static GunNettyCoreProperty coreProperty() {
-        return getProperty("core");
+        return getProperty(GunNettyCoreProperty.class);
     }
 
     public static GunLogProperty logProperty() {
-        return getProperty("log");
+        return getProperty(GunLogProperty.class);
     }
 
-    public static void registerProperty(String name, GunProperty property) {
+
+    private static void registerProperty(String name, GunProperty property) {
         propertysmap.put(name, property);
     }
 
@@ -55,9 +56,11 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
         registerProperty(propertyMap.name(), property);
     }
 
-    public static <T extends GunProperty> T getProperty(/*unchecked */ String name) {
-        final GunProperty proPerty = propertysmap.get(name);
-        return proPerty != null ? (T) (proPerty) : null;
+
+    public static <T extends GunProperty> T getProperty(Class<T> clazz) {
+        GunPropertyMap mmap = clazz.getAnnotation(GunPropertyMap.class);
+        final GunProperty property = propertysmap.get(mmap.name());
+        return clazz.cast(property);
     }
 
     public static void setUnusefulchars(String unusefulchars) {
@@ -87,10 +90,10 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
      */
     public static boolean initProperty() {
         try {
-            String[] propertys = new String(Files.readAllBytes(Paths.get(Objects.
+            byte[] read = Files.readAllBytes(Paths.get(Objects.
                     requireNonNull(GunNettyPropertyManagerImpl.class.getClassLoader().
-                            getResource("GunNetty.conf")).toURI()))).
-                    split("\n");
+                            getResource("GunNetty.conf")).toURI()));
+            String[] propertys = new String(read).split("\n");
             realAnalyPropertys(propertys);
         } catch (Exception e) {
             AbstractGunBaseLogUtil.error("Gun property init fail", "[PROPERTY]");

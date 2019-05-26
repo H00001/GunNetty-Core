@@ -5,7 +5,12 @@ import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
-class GunNettyDefaultObserveImpl implements GunNettyObserve {
+/**
+ * GunNettyDefaultObserveImpl
+ *
+ * @author dosdrtt
+ */
+public class GunNettyDefaultObserveImpl implements GunNettyObserve {
     @Override
     public void onBooted(GunProperty proPerty) {
         AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");

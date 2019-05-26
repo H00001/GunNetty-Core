@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * @author dosdrtt
  */
 final class CoreThreadManage {
-    private static final int MANAGE_THREAD_NUM = ((GunNettyCoreProperty) Objects.requireNonNull(GunNettyPropertyManagerImpl.getProperty("core"))).getMaxRunnningNum();
+    private static final int MANAGE_THREAD_NUM = Objects.requireNonNull(GunNettyPropertyManagerImpl.coreProperty()).getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealdata;
     private volatile static GunTimerTaskEventLoop dealtime;
@@ -37,7 +37,7 @@ final class CoreThreadManage {
                 dealdata[i] = new GunCoreDataEventLoop(dataExectuor, pilepine);
             }
             //todo
-          //  dealtime = new GunTimerTaskEventLoop(pilepine.getTimer());
+            //  dealtime = new GunTimerTaskEventLoop(pilepine.getTimer());
         } catch (Exception e) {
             return false;
         }

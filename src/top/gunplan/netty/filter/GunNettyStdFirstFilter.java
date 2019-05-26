@@ -26,7 +26,7 @@ import java.nio.channels.SocketChannel;
 public class GunNettyStdFirstFilter implements GunNettyFilter {
 
     public GunNettyStdFirstFilter() {
-        coreProperty = GunNettyPropertyManagerImpl.getProperty("core");
+        coreProperty = GunNettyPropertyManagerImpl.coreProperty();
     }
 
 
