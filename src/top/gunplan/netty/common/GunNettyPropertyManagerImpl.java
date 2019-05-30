@@ -89,10 +89,15 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
      * @return ture or false to get field
      */
     public static boolean initProperty() {
+
+        return initRealProperty("GunNetty.conf");
+    }
+
+    private static boolean initRealProperty(String filename) {
         try {
             byte[] read = Files.readAllBytes(Paths.get(Objects.
                     requireNonNull(GunNettyPropertyManagerImpl.class.getClassLoader().
-                            getResource("GunNetty.conf")).toURI()));
+                            getResource(filename)).toURI()));
             String[] propertys = new String(read).split("\n");
             realAnalyPropertys(propertys);
         } catch (Exception e) {
@@ -100,7 +105,6 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
             AbstractGunBaseLogUtil.error(e);
             return false;
         }
-
         return true;
     }
 
@@ -122,7 +126,6 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
                                 fd.setAccessible(true);
                                 fd.set(obj, isInteger(proname[1].trim()) ? Integer.valueOf(proname[1].trim()) : proname[1].trim());
                             }
-
                         } else {
                             break;
                         }
@@ -131,6 +134,9 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
                         throw new GunException("property regex error:" + obj.getClass());
                     }
                 }
+            }
+            if (propertys[now].startsWith("+")) {
+                initRealProperty(propertys[now].replace("+", "").trim());
             }
         }
     }
