@@ -2,15 +2,17 @@ package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.GunException;
+import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.common.GunNettyPropertyManager;
 import top.gunplan.netty.common.GunNettyStringUtil;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
-import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
@@ -33,10 +35,16 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     private static String unusefulchars = "#";
     private static String assignmentchars = "=";
     private static String[] openandclodechildpropertys = {"{", "}"};
-    private static Map<String, GunCoreProperty> propertysmap = new HashMap<>();
+    private static Map<String, GunProperty> propertysmap = new HashMap<>();
 
     static {
-        registerProperty(new GunNettyCoreProperty());
+        try {
+            Constructor<GunNettyCoreProperty> cons = GunNettyCoreProperty.class.getDeclaredConstructor();
+            cons.setAccessible(true);
+            registerProperty(cons.newInstance());
+        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+            throw new GunException(e);
+        }
         registerProperty(new GunLogProperty());
     }
 
@@ -49,19 +57,19 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     }
 
 
-    private static void registerProperty(String name, GunCoreProperty property) {
+    private static void registerProperty(String name, GunProperty property) {
         propertysmap.put(name, property);
     }
 
-    public static void registerProperty(GunCoreProperty property) {
+    public static void registerProperty(GunProperty property) {
         GunPropertyMap propertyMap = property.getClass().getAnnotation(GunPropertyMap.class);
         registerProperty(propertyMap.name(), property);
     }
 
 
-    public static <T extends GunCoreProperty> T getProperty(Class<T> clazz) {
+    public static <T extends GunProperty> T getProperty(Class<T> clazz) {
         GunPropertyMap mmap = clazz.getAnnotation(GunPropertyMap.class);
-        final GunCoreProperty property = propertysmap.get(mmap.name());
+        final GunProperty property = propertysmap.get(mmap.name());
         return clazz.cast(property);
     }
 
@@ -117,7 +125,7 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
             if (!propertys[now].startsWith(unusefulchars)) {
                 if (propertys[now].endsWith(openandclodechildpropertys[0])) {
                     final String prohead = propertys[now].replace(openandclodechildpropertys[0], "").trim();
-                    final GunCoreProperty obj = propertysmap.get(prohead);
+                    final GunProperty obj = propertysmap.get(prohead);
                     now++;
                     for (; now < propertys.length; now++) {
                         if (!propertys[now].trim().endsWith(openandclodechildpropertys[1])) {

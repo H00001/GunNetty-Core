@@ -1,7 +1,6 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyObserve;
-import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 

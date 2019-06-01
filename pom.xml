@@ -6,7 +6,7 @@
 
     <groupId>top.gunplan</groupId>
     <artifactId>gunnetty</artifactId>
-    <version>1.2.0.3</version>
+    <version>1.2.0.4</version>
 
 
     <build>

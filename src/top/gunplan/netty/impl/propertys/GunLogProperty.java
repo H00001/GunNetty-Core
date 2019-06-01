@@ -1,6 +1,7 @@
 package top.gunplan.netty.impl.propertys;
 
 import top.gunplan.netty.anno.GunPropertyMap;
+import top.gunplan.netty.GunProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.FileNotFoundException;
@@ -8,10 +9,10 @@ import java.io.FileOutputStream;
 
 /**
  * @author dosdrtt
- * @see GunCoreProperty
+ * @see GunProperty
  */
 @GunPropertyMap(name = "log")
-public class GunLogProperty implements GunCoreProperty {
+public class GunLogProperty implements GunProperty {
     private int outputlevel;
     private String direct;
 

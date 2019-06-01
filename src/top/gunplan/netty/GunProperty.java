@@ -1,4 +1,4 @@
-package top.gunplan.netty.impl.propertys;
+package top.gunplan.netty;
 
 /**
  * this is a property interface
@@ -10,7 +10,7 @@ package top.gunplan.netty.impl.propertys;
  *
  * @author dosdrtt
  */
-public interface GunCoreProperty {
+public interface GunProperty {
     /**
      * check is available
      *
