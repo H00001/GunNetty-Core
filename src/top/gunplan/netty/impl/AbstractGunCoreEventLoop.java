@@ -1,7 +1,6 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
 import java.io.IOException;

@@ -1,9 +1,9 @@
-package top.gunplan.netty.filter;
+package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
+import top.gunplan.netty.impl.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.GunCoreDataEventLoop;
 import top.gunplan.netty.impl.GunInputFilterChecker;
 import top.gunplan.netty.impl.GunOutputFilterChecker;

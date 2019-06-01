@@ -1,11 +1,13 @@
-package top.gunplan.netty.common;
+package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.anno.GunPropertyMap;
+import top.gunplan.netty.common.GunNettyPropertyManager;
+import top.gunplan.netty.common.GunNettyStringUtil;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
-import top.gunplan.netty.impl.propertys.GunProperty;
+import top.gunplan.netty.impl.propertys.GunCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.lang.reflect.Field;
@@ -31,14 +33,14 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     private static String unusefulchars = "#";
     private static String assignmentchars = "=";
     private static String[] openandclodechildpropertys = {"{", "}"};
-    private static Map<String, GunProperty> propertysmap = new HashMap<>();
+    private static Map<String, GunCoreProperty> propertysmap = new HashMap<>();
 
     static {
         registerProperty(new GunNettyCoreProperty());
         registerProperty(new GunLogProperty());
     }
 
-    public static GunNettyCoreProperty coreProperty() {
+    protected static GunNettyCoreProperty coreProperty() {
         return getProperty(GunNettyCoreProperty.class);
     }
 
@@ -47,19 +49,19 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
     }
 
 
-    private static void registerProperty(String name, GunProperty property) {
+    private static void registerProperty(String name, GunCoreProperty property) {
         propertysmap.put(name, property);
     }
 
-    public static void registerProperty(GunProperty property) {
+    public static void registerProperty(GunCoreProperty property) {
         GunPropertyMap propertyMap = property.getClass().getAnnotation(GunPropertyMap.class);
         registerProperty(propertyMap.name(), property);
     }
 
 
-    public static <T extends GunProperty> T getProperty(Class<T> clazz) {
+    public static <T extends GunCoreProperty> T getProperty(Class<T> clazz) {
         GunPropertyMap mmap = clazz.getAnnotation(GunPropertyMap.class);
-        final GunProperty property = propertysmap.get(mmap.name());
+        final GunCoreProperty property = propertysmap.get(mmap.name());
         return clazz.cast(property);
     }
 
@@ -115,7 +117,7 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
             if (!propertys[now].startsWith(unusefulchars)) {
                 if (propertys[now].endsWith(openandclodechildpropertys[0])) {
                     final String prohead = propertys[now].replace(openandclodechildpropertys[0], "").trim();
-                    final GunProperty obj = propertysmap.get(prohead);
+                    final GunCoreProperty obj = propertysmap.get(prohead);
                     now++;
                     for (; now < propertys.length; now++) {
                         if (!propertys[now].trim().endsWith(openandclodechildpropertys[1])) {

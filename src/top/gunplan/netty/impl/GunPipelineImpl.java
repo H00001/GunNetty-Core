@@ -82,7 +82,7 @@ final class GunPipelineImpl implements GunPipeline {
         } else if (handle == null && filterChain.size() > 0) {
             return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.UNSAFE);
         } else if (handle != null) {
-            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.WARNNING);
+            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.WARNING);
         } else {
             return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.ERROR, "please set handle and filter");
         }

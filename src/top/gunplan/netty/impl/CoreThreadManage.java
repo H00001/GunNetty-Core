@@ -3,7 +3,6 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunPipeline;
 import top.gunplan.netty.GunTimeExecute;
-import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.nio.channels.SelectionKey;

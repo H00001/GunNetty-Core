@@ -10,7 +10,7 @@ package top.gunplan.netty.impl.propertys;
  *
  * @author dosdrtt
  */
-public interface GunProperty {
+public interface GunCoreProperty {
     /**
      * check is available
      *

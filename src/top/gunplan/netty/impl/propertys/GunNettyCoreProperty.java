@@ -10,7 +10,7 @@ import top.gunplan.utils.GunBytesUtil;
  * @author dosdrtt
  */
 @GunPropertyMap(name = "core")
-public class GunNettyCoreProperty implements GunProperty {
+public class GunNettyCoreProperty implements GunCoreProperty {
     @Override
     public boolean isAvailable() {
         return true;

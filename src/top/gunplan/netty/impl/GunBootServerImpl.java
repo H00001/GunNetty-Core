@@ -2,7 +2,6 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 
-import top.gunplan.netty.common.GunNettyPropertyManagerImpl;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
 
@@ -84,14 +83,14 @@ final class GunBootServerImpl implements GunBootServer {
         if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
             throw new GunException("Handel, Execute pool not set or Server has been running");
         }
-        final GunNettyCoreProperty coreproperty = GunNettyPropertyManagerImpl.coreProperty();
-        if (this.observe.onBooting(coreproperty) && CoreThreadManage.init(acceptExector, requestExector, pileline, coreproperty.getPort())) {
+        final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
+        if (this.observe.onBooting(coreProperty) && CoreThreadManage.init(acceptExector, requestExector, pileline, coreProperty.getPort())) {
             Future<Integer> result = CoreThreadManage.startAllAndWait();
-            this.observe.onBooted(coreproperty);
+            this.observe.onBooted(coreProperty);
             this.runnable = true;
             int val = result.get();
             this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
-            this.observe.onStop(coreproperty);
+            this.observe.onStop(coreProperty);
             return val;
         }
         return -1;

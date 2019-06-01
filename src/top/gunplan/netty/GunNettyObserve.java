@@ -1,6 +1,6 @@
 package top.gunplan.netty;
 
-import top.gunplan.netty.impl.propertys.GunProperty;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
 /**
  * GunNettyObserve
@@ -13,7 +13,7 @@ public interface GunNettyObserve extends GunHandle {
      * onBooted execute
      * @param property Boot property
      */
-    void onBooted(GunProperty property);
+    void onBooted(GunNettyCoreProperty property);
 
     /**
      * onBooting execute
@@ -21,13 +21,13 @@ public interface GunNettyObserve extends GunHandle {
      * @return can or not can boot
      */
 
-    boolean onBooting(GunProperty property);
+    boolean onBooting(GunNettyCoreProperty property);
 
     /**
      * onStop execute
      * @param property Stop proPerty
      */
-    void onStop(GunProperty property);
+    void onStop(GunNettyCoreProperty property);
 
     /**
      * @param status changed status

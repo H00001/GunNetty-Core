@@ -5,26 +5,20 @@ package top.gunplan.netty;
  * Thread safe
  */
 public class GunPipelineCheckResult {
-    public  enum CheckResult {
-        /**
-         * ERROR    : do not have any filter or handls
-         * SAFE     : have been sat
-         * WARNNING :
-         * UNSAFE   :
-         */
-        ERROR, SAFE, WARNNING, UNSAFE
-    }
+    private String reason;
 
     public GunPipelineCheckResult(CheckResult result) {
         this.result = result;
     }
 
     private CheckResult result;
-    private String resaon;
-
     public GunPipelineCheckResult(CheckResult result, String resaon) {
         this.result = result;
-        this.resaon = resaon;
+        this.reason = resaon;
+    }
+
+    public String getReason() {
+        return reason;
     }
 
     public GunPipelineCheckResult() {
@@ -38,11 +32,17 @@ public class GunPipelineCheckResult {
         this.result = result;
     }
 
-    public String getResaon() {
-        return resaon;
+    public void setReason(String reason) {
+        this.reason = reason;
     }
 
-    public void setResaon(String resaon) {
-        this.resaon = resaon;
+    public enum CheckResult {
+        /**
+         * ERROR    : do not have any filter or handls
+         * SAFE     : have been sat
+         * WARNING  : you should notice it
+         * UNSAFE   : it is unsafe
+         */
+        ERROR, SAFE, WARNING, UNSAFE
     }
 }

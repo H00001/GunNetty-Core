@@ -8,10 +8,10 @@ import java.io.FileOutputStream;
 
 /**
  * @author dosdrtt
- * @see GunProperty
+ * @see GunCoreProperty
  */
 @GunPropertyMap(name = "log")
-public class GunLogProperty implements GunProperty {
+public class GunLogProperty implements GunCoreProperty {
     private int outputlevel;
     private String direct;
 
