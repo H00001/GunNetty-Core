@@ -31,6 +31,9 @@ public class GunNettyCoreProperty implements GunProperty {
         }
     }
 
+    private volatile int initWait;
+    private volatile int minInterval;
+
     public enum connectionType {
         /**
          *
@@ -59,6 +62,14 @@ public class GunNettyCoreProperty implements GunProperty {
     }
 
     private volatile int port;
+
+    public long initWait() {
+        return initWait;
+    }
+
+    public long minInterval() {
+        return minInterval;
+    }
     private volatile int maxRunnningNum;
     private volatile int clientWaitTime;
     private volatile int fileReadBufferMin;

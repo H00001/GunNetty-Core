@@ -3,10 +3,10 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunPipeline;
 import top.gunplan.netty.GunTimeExecute;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.nio.channels.SelectionKey;
-import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.*;
 
@@ -16,7 +16,8 @@ import java.util.concurrent.*;
  * @apiNote 1.0.0.4
  */
 final class CoreThreadManage {
-    private static final int MANAGE_THREAD_NUM = Objects.requireNonNull(GunNettyPropertyManagerImpl.coreProperty()).getMaxRunnningNum();
+    private static final GunNettyCoreProperty CORE_PROPERTY = GunNettyPropertyManagerImpl.coreProperty();
+    private static final int MANAGE_THREAD_NUM = CORE_PROPERTY.getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealdata;
     private static final ScheduledExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
@@ -53,7 +54,7 @@ final class CoreThreadManage {
         for (AbstractGunCoreEventLoop dat : dealdata) {
             SERVER_POOL.submit(dat);
         }
-        TIMER_POOL.scheduleAtFixedRate(timeExecute, 100, 1000, TimeUnit.MILLISECONDS);
+        TIMER_POOL.scheduleAtFixedRate(timeExecute, CORE_PROPERTY.initWait(), CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
         return SERVER_POOL.submit(dealaccept, 1);
     }
 

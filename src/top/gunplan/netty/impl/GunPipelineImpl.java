@@ -34,7 +34,7 @@ final class GunPipelineImpl implements GunPipeline {
         if (timer != null) {
             timers.add(timer);
         }
-        return null;
+        return this;
     }
 
 
