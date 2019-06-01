@@ -8,6 +8,7 @@ import java.io.IOException;
 @FunctionalInterface
 public interface GunFunctionMappingInterFace<F, T> {
     /**
+     * readBytes
      * @param from from
      * @return to
      * @throws IOException exp

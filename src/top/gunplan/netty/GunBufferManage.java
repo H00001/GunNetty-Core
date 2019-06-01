@@ -37,6 +37,7 @@ public interface GunBufferManage {
 //    }
 
     /**
+     * malloc like c
      * @param len length
      * @return {@link GunLinkedData} data
      * @throws Exception kinds of exception
