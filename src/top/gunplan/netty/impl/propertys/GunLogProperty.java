@@ -15,17 +15,12 @@ import java.io.FileOutputStream;
 public class GunLogProperty implements GunProperty {
     private int outputlevel;
     private String direct;
+    private String format = null;
 
-    public String getDirect() {
-        return direct;
-    }
 
     public GunLogProperty() {
     }
 
-    public int getOutputlevel() {
-        return outputlevel;
-    }
 
     @Override
     public boolean isAvailable() {
@@ -37,13 +32,18 @@ public class GunLogProperty implements GunProperty {
         if (isAvailable()) {
             AbstractGunBaseLogUtil.setLevel(outputlevel);
             AbstractGunBaseLogUtil.debug("Check parameters succeed");
+            if (format != null) {
+                AbstractGunBaseLogUtil.setFormat(format);
+            }
             final String direct = this.direct;
             if (direct.startsWith("file:")) {
                 String[] prfile = direct.replace("file:", "").split(",");
                 try {
                     AbstractGunBaseLogUtil.setStdoutput(new FileOutputStream(prfile[0], true));
                     AbstractGunBaseLogUtil.setErroutput(new FileOutputStream(prfile[1], true));
+
                 } catch (FileNotFoundException e) {
+
                     AbstractGunBaseLogUtil.error(e);
                     return false;
                 }

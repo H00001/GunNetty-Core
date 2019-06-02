@@ -84,6 +84,7 @@ final class GunBootServerImpl implements GunBootServer {
         }
         final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
         if (this.observe.onBooting(coreProperty) && CoreThreadManage.init(acceptExector, requestExector, pileline, coreProperty.getPort())) {
+            pileline.init();
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;

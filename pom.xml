@@ -6,7 +6,7 @@
 
     <groupId>top.gunplan</groupId>
     <artifactId>gunnetty</artifactId>
-    <version>1.2.0.4</version>
+    <version>1.2.0.5</version>
 
 
     <build>
@@ -34,8 +34,8 @@
                     </execution>
                 </executions>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <source>13</source>
+                    <target>13</target>
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>

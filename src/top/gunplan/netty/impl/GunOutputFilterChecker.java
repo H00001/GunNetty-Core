@@ -33,12 +33,12 @@ public final class GunOutputFilterChecker extends AbstractGunChecker {
         this.respobj = respobj;
     }
 
-    public GunOutputFilterChecker(GunNetOutputInterface respobj) {
+    GunOutputFilterChecker(GunNetOutputInterface respobj) {
         super(null);
         this.respobj = respobj;
     }
 
-    public GunOutputFilterChecker() {
+    GunOutputFilterChecker() {
         super(null);
     }
 }

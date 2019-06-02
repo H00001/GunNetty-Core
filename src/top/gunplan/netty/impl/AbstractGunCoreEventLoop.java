@@ -29,7 +29,7 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
      * get all of avaliable keys
      * async invoke
      */
-    public Set<SelectionKey> getAvaliableSelectionKey() {
+    Set<SelectionKey> getAvaliableSelectionKey() {
         return bootSelector.keys();
     }
     /**

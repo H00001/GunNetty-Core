@@ -3,6 +3,12 @@ package top.gunplan.netty;
 
 import top.gunplan.netty.impl.GunInputFilterChecker;
 import top.gunplan.netty.impl.GunOutputFilterChecker;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
+
+import java.nio.ByteBuffer;
+import java.nio.channels.Channel;
+import java.nio.channels.SocketChannel;
 
 
 /**
@@ -26,6 +32,7 @@ public interface GunNettyFilter extends GunHandle {
 
     /**
      * doInputFilter
+     *
      * @param filterDto input filter dto
      * @return deal result {@link DealResult};
      * @throws Exception kinds of exception
@@ -40,4 +47,29 @@ public interface GunNettyFilter extends GunHandle {
      * @throws Exception kinds of exception
      */
     DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws Exception;
+
+
+    /**
+     * doConnFilter
+     *
+     * @param ch channel
+     * @return is or not continue
+     * @apiNote 0.1.2.3
+     */
+    default boolean doConnFilter(Channel ch) {
+        return true;
+    }
+
+
+    /**
+     * doOutputFilter
+     *
+     * @param filterDto filter dto
+     * @param channel   channel to transfer
+     * @return deal result
+     * @throws Exception kind os exception
+     */
+    default DealResult doOutputFilter(GunOutputFilterChecker filterDto, SocketChannel channel) throws Exception {
+        return DealResult.NEXT;
+    }
 }

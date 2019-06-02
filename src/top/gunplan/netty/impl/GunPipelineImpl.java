@@ -9,12 +9,12 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
  * GunPipelineImpl
- *
+ * @author dosdrtt
  * @see GunPipeline
  */
 final class GunPipelineImpl implements GunPipeline {
 
-    private GunNettyHandle handle;
+    private volatile GunNettyHandle handle;
     private final List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
     private final List<GunTimer> timers = new CopyOnWriteArrayList<>();
 
@@ -103,4 +103,12 @@ final class GunPipelineImpl implements GunPipeline {
         return timers;
     }
 
+
+    @Override
+    public int init() {
+        filterChain.parallelStream().forEach(GunHandle::init);
+        timers.parallelStream().forEach(GunHandle::init);
+        handle.init();
+        return 0;
+    }
 }

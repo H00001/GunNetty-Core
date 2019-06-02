@@ -12,6 +12,7 @@ import java.util.Set;
 public interface GunTimer extends GunHandle {
     /**
      * get interval
+     *
      * @return -1 is always
      */
     int interval();
@@ -25,6 +26,22 @@ public interface GunTimer extends GunHandle {
     int runingTimes();
 
 
+    /**
+     * avaliable keys
+     *
+     * @param keys selection keys set
+     * @return work result
+     */
     int doWork(Set<SelectionKey> keys);
+
+
+    /**
+     * ifKeyEmptyExec
+     *
+     * @return is or not exec
+     */
+    default boolean ifKeyEmptyExec() {
+        return true;
+    }
 
 }

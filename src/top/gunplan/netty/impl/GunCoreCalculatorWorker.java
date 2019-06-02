@@ -15,23 +15,25 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
     private final AtomicInteger waitSize;
-    private SelectionKey key;
+    private final SelectionKey key;
 
-    GunCoreCalculatorWorker(final GunPipeline pileline, final SelectionKey channel, AtomicInteger waitSize) {
-        super(pileline);
-        this.key = channel;
+
+    GunCoreCalculatorWorker(final GunPipeline pipeline
+            , final SelectionKey key, AtomicInteger waitSize) {
+        super(pipeline);
+        this.key = key;
         this.waitSize = waitSize;
     }
 
     @Override
     public void run() {
         final GunInputFilterChecker gunFilterObj = new GunInputFilterChecker(key);
-        for (GunNettyFilter filter : this.pileline.getFilters()) {
+        for (GunNettyFilter filter : this.pipeline.getFilters()) {
             GunNettyFilter.DealResult result = null;
             try {
                 result = filter.doInputFilter(gunFilterObj);
             } catch (Exception e) {
-                this.pileline.getHandel().dealExceptionEvent(e);
+                this.pipeline.getHandel().dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NOTDEALINPUT) {
                 break;
@@ -44,20 +46,20 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         }
         GunNetOutputInterface respObject = null;
         try {
-            respObject = this.pileline.getHandel().dealDataEvent(gunFilterObj.getObject());
+            respObject = this.pipeline.getHandel().dealDataEvent(gunFilterObj.getObject());
         } catch (Exception e) {
-            this.pileline.getHandel().dealExceptionEvent(e);
+            this.pipeline.getHandel().dealExceptionEvent(e);
         }
         GunOutputFilterChecker responseFilterDto = new GunOutputFilterChecker(respObject);
         responseFilterDto.setKey(gunFilterObj.getKey());
-        ListIterator<GunNettyFilter> filters = pileline.getFilters().listIterator(pileline.getFilters().size());
+        ListIterator<GunNettyFilter> filters = pipeline.getFilters().listIterator(pipeline.getFilters().size());
 
         while (filters.hasPrevious()) {
             GunNettyFilter.DealResult result = null;
             try {
                 result = filters.previous().doOutputFilter(responseFilterDto);
             } catch (Exception e) {
-                this.pileline.getHandel().dealExceptionEvent(e);
+                this.pipeline.getHandel().dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NOTDEALOUTPUT) {
                 break;

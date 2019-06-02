@@ -4,11 +4,13 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
+import top.gunplan.netty.protocol.GunNetOutputInterface;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
@@ -29,7 +31,6 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     private void dealCloseEvent(SelectionKey key) throws IOException {
         AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
         key.channel().close();
-        key.cancel();
     }
 
     private GunNettyCoreProperty coreProperty;
@@ -37,20 +38,20 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     public DealResult doInputFilter(GunInputFilterChecker filterDto) throws Exception {
 
-        byte[] readbata;
+        byte[] data;
         SelectionKey key = filterDto.getKey();
 
         if (key.isValid()) {
             try {
                 GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
-                readbata = reader.readBytes((SocketChannel) key.channel());
-                filterDto.setSrc(readbata);
+                data = reader.readBytes((SocketChannel) key.channel());
+                filterDto.setSrc(data);
             } catch (IOException e) {
                 dealCloseEvent(key);
-                e.printStackTrace();
+                AbstractGunBaseLogUtil.error(e);
                 return DealResult.CLOSE;
             }
-            if (readbata == null) {
+            if (data == null) {
                 dealCloseEvent(key);
                 return DealResult.CLOSE;
             } else {
@@ -72,13 +73,25 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     public DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
-        if (filterDto.getRespobj() != null) {
-            channel.write(ByteBuffer.wrap(filterDto.getRespobj().serialize()));
-        }
+        sendMessage(filterDto.getRespobj(), channel);
         if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
-            filterDto.getKey().channel().close();
+            channel.close();
             AbstractGunBaseLogUtil.debug("close initiative");
         }
+        return DealResult.NEXT;
+    }
+
+    private void sendMessage(GunNetOutputInterface opt, SocketChannel channel) throws IOException {
+        if (opt != null) {
+            if (channel.isOpen()) {
+                channel.write(ByteBuffer.wrap(opt.serialize()));
+            }
+        }
+    }
+
+    @Override
+    public DealResult doOutputFilter(GunOutputFilterChecker filterDto, SocketChannel channel) throws Exception {
+        sendMessage(filterDto.getRespobj(), channel);
         return DealResult.NEXT;
     }
 }

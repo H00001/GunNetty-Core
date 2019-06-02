@@ -13,6 +13,7 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * GunCoreConnectionEventLoop deal connection event
+ *
  * @author dosdrtt
  * @see AbstractGunCoreEventLoop
  */
@@ -53,12 +54,13 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     @Override
     public void dealEvent(SelectionKey key) {
         try {
-            SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
+            final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
             GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) CoreThreadManage.getDealThread());
             socketChannel.socket().setTcpNoDelay(true);
             selectionThread.registerReadKey(socketChannel);
             selectionThread.incrAndContinueLoop();
             this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));
+
         } catch (Exception exp) {
             AbstractGunBaseLogUtil.error(exp.getMessage());
         }

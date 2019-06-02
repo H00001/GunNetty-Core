@@ -65,4 +65,7 @@ public interface GunPipeline {
 
     List<GunTimer> getTimer();
 
+
+    int init();
+
 }

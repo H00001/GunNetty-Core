@@ -4,6 +4,7 @@ import top.gunplan.netty.protocol.GunNetInputInterface;
 import top.gunplan.netty.protocol.GunNetOutputInterface;
 
 import java.io.IOException;
+import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -13,6 +14,8 @@ import java.nio.channels.SocketChannel;
  */
 public interface GunNettyHandle extends GunHandle {
     /**
+     * dealDataEvent
+     *
      * @param request GunNetInputInterface
      * @return GunNetOutputInterface
      * @throws GunException kinds of exception
@@ -22,12 +25,12 @@ public interface GunNettyHandle extends GunHandle {
     /**
      * dealConnEvent connection event
      *
-     * @param request request object
+     * @param address request address information
      * @return GunNetOutputInterface
      * @throws GunException kinds of exception
-     * @throws GunException  IO error
+     * @throws GunException IO error
      */
-    GunNetOutputInterface dealConnEvent(SocketChannel request) throws GunException;
+    GunNetOutputInterface dealConnEvent(SocketAddress address) throws GunException;
 
     /**
      * when close event happened ,the method will be called
@@ -36,6 +39,7 @@ public interface GunNettyHandle extends GunHandle {
 
     /**
      * when exception event happened ,the method will be called
+     *
      * @param exp Exception
      */
     void dealExceptionEvent(Exception exp);

@@ -18,7 +18,7 @@ import java.util.concurrent.locks.LockSupport;
  * @author dosdrtt
  */
 public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
-    private final GunPipeline pileline;
+    private final GunPipeline pipeline;
     private AtomicInteger listionSize = new AtomicInteger(0);
     private boolean runState = true;
     private volatile Thread nowRun = null;
@@ -38,7 +38,7 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
 
     GunCoreDataEventLoop(ExecutorService deal, final GunPipeline pileline) throws IOException {
         super(deal);
-        this.pileline = pileline;
+        this.pipeline = pileline;
 
     }
 
@@ -78,7 +78,7 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     public void dealEvent(SelectionKey key) {
         key.interestOps(0);
         listionSize.decrementAndGet();
-        this.deal.submit(new GunCoreCalculatorWorker(pileline, key, listionSize));
+        this.deal.submit(new GunCoreCalculatorWorker(pipeline, key, listionSize));
     }
 
 }
