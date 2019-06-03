@@ -14,7 +14,7 @@ import java.util.concurrent.Future;
  *
  * @see GunBootServer
  * @author Gunplan
- * @version 0.0.1.3
+ * @version 0.0.1.4
  * @apiNote 0.0.0.5
  * @since 0.0.0.4
  */
@@ -26,11 +26,11 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile GunNettyObserve observe = new GunNettyDefaultObserveImpl();
 
-    private volatile ExecutorService acceptExector;
+    private volatile ExecutorService acceptExecutor;
 
-    private volatile ExecutorService requestExector;
+    private volatile ExecutorService requestExecutor;
 
-    private volatile GunPipeline pileline = new GunPipelineImpl();
+    private volatile GunPipeline pipeline = new GunPipelineImpl();
 
     GunBootServerImpl() {
     }
@@ -53,20 +53,21 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public GunPipeline getPipeline() {
-        return pileline;
+        return pipeline;
     }
 
-    public void setPileline(GunPipeline pileline) {
-        if (pileline != null) {
-            this.pileline = pileline;
+    @Override
+    public void setPipeline(GunPipeline pipeline) {
+        if (pipeline != null) {
+            this.pipeline = pipeline;
         } else {
-            throw new GunException("Your GunPipeline is null");
+            throw new GunException(GunExceptionTypes.NULLPTR, "Your GunPipeline is null");
         }
     }
 
     @Override
     public boolean initCheck() {
-        return this.acceptExector != null && requestExector != null && this.pileline.check().getResult() != GunPipelineCheckResult.CheckResult.ERROR && !runnable;
+        return this.acceptExecutor != null && requestExecutor != null && this.pipeline.check().getResult() != GunPipelineCheckResult.CheckResult.ERROR && !runnable;
     }
 
     @Override
@@ -83,8 +84,8 @@ final class GunBootServerImpl implements GunBootServer {
             throw new GunException("Handel, Execute pool not set or Server has been running");
         }
         final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
-        if (this.observe.onBooting(coreProperty) && CoreThreadManage.init(acceptExector, requestExector, pileline, coreProperty.getPort())) {
-            pileline.init();
+        if (this.observe.onBooting(coreProperty) && CoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
+            pipeline.init();
             Future<Integer> result = CoreThreadManage.startAllAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
@@ -99,8 +100,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters) {
-        this.acceptExector = acceptExecuters;
-        this.requestExector = requestExecuters;
+        this.acceptExecutor = acceptExecuters;
+        this.requestExecutor = requestExecuters;
         return this;
     }
 

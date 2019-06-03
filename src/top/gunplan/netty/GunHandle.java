@@ -9,9 +9,11 @@ package top.gunplan.netty;
  */
 public interface GunHandle {
     /**
+     * <p></p>
      * nothing it it
      * <p>
-     * /
+     * @return int init result 0:succeed
+     *                         1:error
      */
     default int init() {
         return 0;

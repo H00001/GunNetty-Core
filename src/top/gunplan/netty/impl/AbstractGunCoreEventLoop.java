@@ -33,6 +33,8 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
         return bootSelector.keys();
     }
     /**
+     * dealEvent
+     *
      * @param key SelectionKey
      * @throws Exception unKnown Exception
      */

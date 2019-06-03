@@ -7,6 +7,9 @@ package top.gunplan.netty.impl;
  * @see java.lang.Runnable
  */
 interface GunNettyWorkerInterface extends Runnable {
+    /**
+     * run
+     */
     @Override
     void run();
 }

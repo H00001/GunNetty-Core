@@ -8,11 +8,14 @@ import java.util.List;
  */
 
 public interface GunTimeExecute extends Runnable {
+    /**
+     * run
+     */
     @Override
     void run();
 
     /**
-     * registerWorker
+     * register Worker
      *
      * @param works add time works
      */

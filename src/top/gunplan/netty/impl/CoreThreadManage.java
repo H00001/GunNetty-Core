@@ -13,7 +13,7 @@ import java.util.concurrent.*;
 /**
  * @author dosdrtt
  * @concurrent
- * @apiNote 1.0.0.4
+ * @apiNote 1.0.0.5
  */
 final class CoreThreadManage {
     private static final GunNettyCoreProperty CORE_PROPERTY = GunNettyPropertyManagerImpl.coreProperty();
@@ -26,7 +26,9 @@ final class CoreThreadManage {
         dealdata = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
     }
 
-    private static final ExecutorService SERVER_POOL = Executors.newFixedThreadPool(MANAGE_THREAD_NUM ^ 1);
+    private static final ExecutorService SERVER_POOL = new ThreadPoolExecutor(MANAGE_THREAD_NUM ^ 1, MANAGE_THREAD_NUM ^ 1,
+            0L, TimeUnit.MILLISECONDS,
+            new LinkedBlockingQueue<>(10), new GunNettyThreadFactory("CoreThread"));
     private volatile static GunTimeExecute timeExecute = null;
 
     private static int slelctSelctor = 0;

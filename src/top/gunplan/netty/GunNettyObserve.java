@@ -25,18 +25,20 @@ public interface GunNettyObserve extends GunHandle {
 
     /**
      * onStop execute
-     * @param property Stop proPerty
+     * @param property Stop property
      */
     void onStop(GunNettyCoreProperty property);
 
     /**
+     * onStatusChanged
+     * on status  changed happens
      * @param status changed status
      */
     void onStatusChanged(GunNettyStatus status);
 
     enum GunNettyStatus {
         /**
-         * RUNTOSTOP run status to stop status
+         * RUN TO STOP run status to stop status
          */
         RUNTOSTOP, STOPTORUN
     }

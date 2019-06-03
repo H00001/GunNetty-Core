@@ -36,7 +36,6 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     @Override
     public synchronized void run() {
         try {
-            Thread.currentThread().setName("accept Thread");
             while (bootSelector.select() > 0) {
                 Iterator keyIterator = bootSelector.selectedKeys().iterator();
                 while (keyIterator.hasNext()) {

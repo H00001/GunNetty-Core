@@ -57,15 +57,37 @@ public interface GunPipeline {
     GunPipelineCheckResult check();
 
 
+    /**
+     * getFilters
+     *
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
     List<GunNettyFilter> getFilters();
 
 
+    /**
+     * getHandel
+     *
+     * @return GunNettyHandle
+     */
     GunNettyHandle getHandel();
 
 
+    /**
+     * getTimer
+     *
+     * @return List<GunTimer>
+     */
     List<GunTimer> getTimer();
 
 
+    /**
+     * init
+     * <p>
+     * be called at init
+     *
+     * @return int
+     */
     int init();
 
 }

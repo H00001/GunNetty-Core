@@ -11,6 +11,12 @@ import java.util.concurrent.ExecutorService;
  * @since 0.0.0.1
  */
 public interface GunBootServer extends GunBootServerBase {
+    /**
+     * register observe
+     *
+     * @param observe observe object
+     * @return GunBootServer
+     */
     GunBootServer registerObserve(GunNettyObserve observe);
 
     /**
@@ -64,7 +70,21 @@ public interface GunBootServer extends GunBootServerBase {
     boolean initCheck();
 
 
+    /**
+     * stop
+     *
+     * stop the server
+     */
     void stop();
+
+    /**
+     * set pipeline
+     *
+     * @param pipeline pipeline
+     * @see GunPipeline
+     */
+
+    void setPipeline(GunPipeline pipeline);
 
 }
 

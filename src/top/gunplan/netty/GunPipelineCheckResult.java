@@ -12,9 +12,11 @@ public class GunPipelineCheckResult {
     }
 
     private CheckResult result;
-    public GunPipelineCheckResult(CheckResult result, String resaon) {
+
+    public GunPipelineCheckResult(CheckResult result, String reason) {
+
         this.result = result;
-        this.reason = resaon;
+        this.reason = reason;
     }
 
     public String getReason() {

@@ -7,8 +7,9 @@ package top.gunplan.netty;
  */
 public interface GunBootServerBase {
     /**
+     * sync
      * start sync server and wait
-     * @return int boot resuk=lt
+     * @return int boot result
      * @throws Exception  syncing's exception
      */
 

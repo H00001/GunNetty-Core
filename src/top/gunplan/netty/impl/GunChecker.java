@@ -10,7 +10,8 @@ import java.nio.channels.SelectionKey;
  */
 public interface GunChecker {
     /**
-     *
+     * getKey
+     * get selectionKey
      * @return SelectionKey
      */
     SelectionKey getKey();

@@ -3,6 +3,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunBootServer;
 
 /**
+ * GunBootServerFactory
  * create GunBootServer
  *
  * @author dosdrtt

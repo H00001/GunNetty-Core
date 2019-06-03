@@ -52,7 +52,6 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     public synchronized void run() {
         try {
             nowRun = Thread.currentThread();
-            nowRun.setName(this.getClass().getSimpleName());
             while (runState) {
                 if (listionSize.get() == 0) {
                     LockSupport.park();
