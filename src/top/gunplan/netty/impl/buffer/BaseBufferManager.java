@@ -14,13 +14,15 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * @date 2019-06-08 15:37
  */
 public abstract class BaseBufferManager implements GunBufferManage, GunBufferObserve {
-    private Queue<GunNettyBufferStream> using = new ConcurrentLinkedDeque<>();
-    private Queue<SoftReference<GunNettyBufferStream>> operatored = new ConcurrentLinkedDeque<>();
+    private Queue<GunNettyBufferStream> using;
+    private Queue<SoftReference<GunNettyBufferStream>> operatored;
     private GunNettyBufferManageStrategy strategy;
 
 
     public BaseBufferManager(boolean sstrategy) {
-        strategy = sstrategy ? new GunNettyBufferManageConcurrentStrategy() : new GunNettyBufferManagePriortyQueueStrategy();
+        strategy = sstrategy ? new GunNettyBufferManageConcurrentStrategy() : new GunNettyBufferManagePriorityQueueStrategy();
+        operatored = strategy.acquireSoftQueue();
+        using = strategy.acquireStrongQueue();
     }
 
     @Override

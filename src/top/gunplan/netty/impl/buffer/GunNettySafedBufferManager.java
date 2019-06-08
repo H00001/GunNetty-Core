@@ -1,23 +1,25 @@
 package top.gunplan.netty.impl.buffer;
 
 
-import top.gunplan.netty.GunBufferManage;
-
 /**
+ * GunNettySafedBufferManager
  *
+ * @author frank albert
+ * @date 2019-06-08 19:11
+ *
+ * @version 0.0.0.1
  */
 public class GunNettySafedBufferManager extends BaseBufferManager {
 
 
-
-
-    private byte[] malloc(int size, int len) throws Exception {
-        return new byte[size * len];
+    public GunNettySafedBufferManager(boolean sstrategy) {
+        super(sstrategy);
     }
+
 
     @Override
     public GunNettyBufferStream getBuffer(int size) {
-        return null;
+        return new GunNettySafeBuffer(size);
     }
 
 }

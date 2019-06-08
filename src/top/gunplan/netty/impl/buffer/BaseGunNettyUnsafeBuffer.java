@@ -1,77 +1,64 @@
 package top.gunplan.netty.impl.buffer;
 
-import top.gunplan.netty.GunException;
-
-import static top.gunplan.netty.GunExceptionTypes.OUT_POSITION;
+import sun.misc.Unsafe;
 
 /**
  * BaseGunNettyUnsafeBuffer
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 14:15
+ * @date 2019-06-08 18:52
  */
-public abstract class BaseGunNettyUnsafeBuffer implements GunNettyBufferStream {
-    long maxlen;
-    long readPoint;
-    long writePoint;
-    private GunBufferObserve observe;
-    private boolean isLink;
+public abstract class BaseGunNettyUnsafeBuffer extends BaseGunNettyBuffer {
+    final long memorySegmentAddress;
+    final Unsafe unsafe;
 
-    public BaseGunNettyUnsafeBuffer(int len) {
-        this.maxlen = len;
+
+    BaseGunNettyUnsafeBuffer(long memoryAddress, int len, Unsafe unsafe) {
+        super(len);
+        this.memorySegmentAddress = memoryAddress;
+        this.unsafe = unsafe;
     }
 
+    /**
+     * write
+     *
+     * @param bin bytes to write
+     */
     @Override
-    public long maxLen() {
-        return maxlen;
-    }
+    public abstract void write(byte[] bin);
 
+    /**
+     * write
+     * @param bin byte will be write
+     */
     @Override
-    public long readPoint() {
+    public abstract void write(byte bin);
 
-        return readPoint;
-    }
-
+    /**
+     * read
+     *
+     * @return read result
+     */
     @Override
-    public long writePoint() {
-        return writePoint;
-    }
+    public abstract byte read();
 
+    /**
+     * read
+     *
+     * @param len length of bytes will be read
+     * @return read result
+     */
     @Override
-    public void setReadPosition(long postion) {
-        if (postion > this.maxlen) {
-            throw new GunException(OUT_POSITION, BaseGunNettyUnsafeBuffer.class.getSimpleName());
-        }
-        this.readPoint = postion;
-    }
+    public abstract byte[] read(int len);
 
-
+    /**
+     * flushData
+     */
     @Override
-    public void flushPoint() {
-        this.readPoint = 0;
-        this.writePoint = 0;
+    public void flushData() {
+        unsafe.setMemory(memorySegmentAddress, maxlen, (byte) 0);
     }
 
-    @Override
-    public void setWritePostion(long postion) {
-        if (postion > this.maxlen) {
-            throw new GunException(OUT_POSITION, BaseGunNettyUnsafeBuffer.class.getSimpleName());
-        }
-        this.writePoint = postion;
-    }
-
-
-    @Override
-    public void release() {
-        isLink = false;
-        this.observe.onRelease(this);
-    }
-
-    @Override
-    public GunNettyBufferStream registerObs(GunBufferObserve observe) {
-        this.observe = observe;
-        return this;
-    }
 
 }

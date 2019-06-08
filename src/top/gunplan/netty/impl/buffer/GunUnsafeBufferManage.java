@@ -17,7 +17,8 @@ public class GunUnsafeBufferManage extends BaseBufferManager implements GunBuffe
     private static final String TOKEN = "theUnsafe";
     private static Unsafe unsafe = null;
 
-    GunUnsafeBufferManage() {
+    GunUnsafeBufferManage(boolean s) {
+        super(s);
         try {
             Field getUnsafe = Unsafe.class.getDeclaredField(TOKEN);
             getUnsafe.setAccessible(true);

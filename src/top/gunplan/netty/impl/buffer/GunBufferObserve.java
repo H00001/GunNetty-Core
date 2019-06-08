@@ -8,5 +8,10 @@ package top.gunplan.netty.impl.buffer;
  * @date 2019-06-08 15:17
  */
 public interface GunBufferObserve {
+    /**
+     * on release execute
+     *
+     * @param stream GunNettyBufferStream
+     */
     void onRelease(GunNettyBufferStream stream);
 }

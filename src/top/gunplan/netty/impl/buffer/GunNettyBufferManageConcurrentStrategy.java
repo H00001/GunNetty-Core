@@ -3,6 +3,7 @@ package top.gunplan.netty.impl.buffer;
 import java.lang.ref.SoftReference;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * GunNettyBufferManageConcurrentStrategy
@@ -38,5 +39,15 @@ public class GunNettyBufferManageConcurrentStrategy implements GunNettyBufferMan
             }
         }
         return null;
+    }
+
+    @Override
+    public Queue<SoftReference<GunNettyBufferStream>> acquireSoftQueue() {
+        return new ConcurrentLinkedDeque<>();
+    }
+
+    @Override
+    public Queue<GunNettyBufferStream> acquireStrongQueue() {
+        return new ConcurrentLinkedDeque<>();
     }
 }

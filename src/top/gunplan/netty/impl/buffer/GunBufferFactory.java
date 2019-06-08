@@ -10,19 +10,23 @@ import top.gunplan.netty.GunBufferManage;
  * @date 2019-06-08 14:56
  */
 public final class GunBufferFactory {
-    public static final class safeInstance {
-        private static final GunBufferManage HINSTANCE = new GunUnsafeBufferManage();
+    /**
+     * SafeInstance
+     * safe version
+     */
+    public static final class SafeInstance {
+        private static final GunBufferManage HINDRANCE = new GunUnsafeBufferManage(true);
 
         public GunBufferManage getHinstance() {
-            return HINSTANCE;
+            return HINDRANCE;
         }
     }
 
-    public static final class unSafeInstance {
-        private static final GunBufferManage HINSTAANCE = new GunUnsafeBufferManage();
+    public static final class UnSafeInstance {
+        private static final GunBufferManage HINDRANCE = new GunUnsafeBufferManage(true);
 
         public GunBufferManage getHinstance() {
-            return HINSTAANCE;
+            return HINDRANCE;
         }
     }
 

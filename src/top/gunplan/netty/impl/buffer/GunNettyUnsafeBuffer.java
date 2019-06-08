@@ -6,14 +6,9 @@ import top.gunplan.netty.GunExceptionTypes;
 
 class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
 
-    private final long memorySegmentAddress;
-    private final Unsafe unsafe;
-
 
     GunNettyUnsafeBuffer(long memoryAddress, int len, Unsafe unsafe) {
-        super(len);
-        this.memorySegmentAddress = memoryAddress;
-        this.unsafe = unsafe;
+        super(memoryAddress, len, unsafe);
     }
 
     @Override

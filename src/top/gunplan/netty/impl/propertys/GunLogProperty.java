@@ -29,6 +29,7 @@ public class GunLogProperty implements GunProperty {
 
     @Override
     public boolean doRegex() {
+        String f = "file:";
         if (isAvailable()) {
             AbstractGunBaseLogUtil.setLevel(outputlevel);
             AbstractGunBaseLogUtil.debug("Check parameters succeed");
@@ -36,7 +37,7 @@ public class GunLogProperty implements GunProperty {
                 AbstractGunBaseLogUtil.setFormat(format);
             }
             final String direct = this.direct;
-            if (direct.startsWith("file:")) {
+            if (direct.startsWith(f)) {
                 String[] prfile = direct.replace("file:", "").split(",");
                 try {
                     AbstractGunBaseLogUtil.setStdoutput(new FileOutputStream(prfile[0], true));

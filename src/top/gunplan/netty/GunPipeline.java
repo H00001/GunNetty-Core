@@ -49,6 +49,7 @@ public interface GunPipeline {
      * @throws IllegalAccessException exc
      * @throws InstantiationException exc
      * @throws InvocationTargetException exc
+     * @throws NoSuchMethodException can not find this method
      */
     GunPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 
