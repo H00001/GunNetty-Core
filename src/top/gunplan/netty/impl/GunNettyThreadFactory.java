@@ -2,6 +2,9 @@ package top.gunplan.netty.impl;
 
 import java.util.concurrent.ThreadFactory;
 
+/**
+ * @author dosdrtt
+ */
 public class GunNettyThreadFactory implements ThreadFactory {
     private String poolName;
 

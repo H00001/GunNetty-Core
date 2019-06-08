@@ -152,12 +152,13 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
         }
     }
 
+    public static final String NUM_16_STA = "0x";
+
     private static boolean isInteger(String str) {
-        if (str.startsWith("0x")) {
+        if (str.startsWith(NUM_16_STA)) {
             return true;
         }
         Pattern pattern = Pattern.compile("^[-\\+]?[\\d]*$");
         return pattern.matcher(str).matches();
     }
-
 }

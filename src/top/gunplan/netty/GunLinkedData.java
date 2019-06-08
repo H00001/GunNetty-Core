@@ -10,8 +10,14 @@ public interface GunLinkedData {
      */
     byte[] getData();
 
+    /**
+     * release resource
+     */
     void release();
 
+    /**
+     * add resource linked
+     */
     void addLink();
 
 }

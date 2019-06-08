@@ -72,7 +72,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public void stop() {
-        if (CoreThreadManage.stopAllandWait()) {
+        if (CoreThreadManage.stopAllAndWait()) {
             this.runnable = false;
         }
     }

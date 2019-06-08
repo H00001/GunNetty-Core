@@ -12,6 +12,10 @@ public abstract class AbstractGunTimeExecute implements GunTimeExecute {
     protected volatile List<GunTimer> works = null;
     protected volatile LongAdder sum = new LongAdder();
 
+
+    /**
+     * when event loop execute
+     */
     @Override
     public abstract void run();
 

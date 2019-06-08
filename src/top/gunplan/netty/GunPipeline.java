@@ -42,10 +42,13 @@ public interface GunPipeline {
     GunPipeline setHandle(GunNettyHandle handle);
 
     /**
+     * ref to set the handle
+     *
      * @param clazz refSetHandle
-     * @return this,chain style
+     * @return GunPipeline this,chain style
      * @throws IllegalAccessException exc
      * @throws InstantiationException exc
+     * @throws InvocationTargetException exc
      */
     GunPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 

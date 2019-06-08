@@ -26,22 +26,26 @@ final class CoreThreadManage {
         dealdata = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
     }
 
-    private static final ExecutorService SERVER_POOL = new ThreadPoolExecutor(MANAGE_THREAD_NUM ^ 1, MANAGE_THREAD_NUM ^ 1,
+    private static final ExecutorService SERVER_POOL = new ThreadPoolExecutor(MANAGE_THREAD_NUM, MANAGE_THREAD_NUM,
             0L, TimeUnit.MILLISECONDS,
-            new LinkedBlockingQueue<>(10), new GunNettyThreadFactory("CoreThread"));
+            new SynchronousQueue<>(), new GunNettyThreadFactory("CoreDataThread"));
+
+    private static final ExecutorService ACCEPT_POOL = new ThreadPoolExecutor(1, 1,
+            0L, TimeUnit.MILLISECONDS,
+            new SynchronousQueue<>(), new GunNettyThreadFactory("CoreAcceptThread"));
     private volatile static GunTimeExecute timeExecute = null;
 
-    private static int slelctSelctor = 0;
+    private static int selectSelctor = 0;
 
-    static boolean init(ExecutorService acceptExector, ExecutorService dataExectuor, GunPipeline pilepine, int port) {
+    static boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunPipeline pipepine, int port) {
         AbstractGunBaseLogUtil.debug("Server running on " + port);
         try {
-            dealaccept = new GunCoreConnectionEventLoop(acceptExector, pilepine, port);
+            dealaccept = new GunCoreConnectionEventLoop(acceptExecutor, pipepine, port);
             for (int i = 0; i < MANAGE_THREAD_NUM; i++) {
-                dealdata[i] = new GunCoreDataEventLoop(dataExectuor, pilepine);
+                dealdata[i] = new GunCoreDataEventLoop(dataExecutor, pipepine);
             }
             timeExecute = new GunTimeExecuteImpl();
-            timeExecute.registerWorker(pilepine.getTimer());
+            timeExecute.registerWorker(pipepine.getTimer());
         } catch (Exception e) {
             return false;
         }
@@ -49,7 +53,7 @@ final class CoreThreadManage {
     }
 
     static AbstractGunCoreEventLoop getDealThread() {
-        return dealdata[slelctSelctor++ & (MANAGE_THREAD_NUM - 1)];
+        return dealdata[selectSelctor++ & (MANAGE_THREAD_NUM - 1)];
     }
 
     static Future<Integer> startAllAndWait() {
@@ -57,12 +61,14 @@ final class CoreThreadManage {
             SERVER_POOL.submit(dat);
         }
         TIMER_POOL.scheduleAtFixedRate(timeExecute, CORE_PROPERTY.initWait(), CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
-        return SERVER_POOL.submit(dealaccept, 1);
+        return ACCEPT_POOL.submit(dealaccept, 1);
     }
 
-    static boolean stopAllandWait() {
+    static boolean stopAllAndWait() {
         SERVER_POOL.shutdown();
-        return SERVER_POOL.isTerminated();
+        ACCEPT_POOL.shutdown();
+        return (SERVER_POOL.isTerminated() && ACCEPT_POOL.isTerminated());
+
     }
 
     static Set<SelectionKey> getAllofAvaliableClannel(long i) {

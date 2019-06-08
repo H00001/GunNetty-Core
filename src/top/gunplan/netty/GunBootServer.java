@@ -27,6 +27,13 @@ public interface GunBootServer extends GunBootServerBase {
     boolean isRunnable();
 
 
+    /**
+     * sync
+     * boot by synchorized
+     *
+     * @return sync result
+     * @throws Exception exp
+     */
     @Override
     int sync() throws Exception;
 
