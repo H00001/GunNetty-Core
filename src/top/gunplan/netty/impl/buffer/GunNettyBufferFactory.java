@@ -11,7 +11,7 @@ import top.gunplan.netty.GunBufferManage;
  */
 public final class GunNettyBufferFactory {
     /**
-     * SafeProiortyInstance
+     * SafeConcurrentInstance
      * safe version
      */
     public static final class SafeConcurrentInstance {
