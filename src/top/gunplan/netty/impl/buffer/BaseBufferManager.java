@@ -4,7 +4,6 @@ import top.gunplan.netty.GunBufferManage;
 
 import java.lang.ref.SoftReference;
 import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedDeque;
 
 /**
  * BaseBufferManager
@@ -18,11 +17,27 @@ public abstract class BaseBufferManager implements GunBufferManage, GunBufferObs
     private Queue<SoftReference<GunNettyBufferStream>> operatored;
     private GunNettyBufferManageStrategy strategy;
 
-
-    public BaseBufferManager(boolean sstrategy) {
-        strategy = sstrategy ? new GunNettyBufferManageConcurrentStrategy() : new GunNettyBufferManagePriorityQueueStrategy();
+    BaseBufferManager(BufferPoolStrategy s) {
+        strategy = s.getStrategy();
         operatored = strategy.acquireSoftQueue();
         using = strategy.acquireStrongQueue();
+    }
+
+
+    public enum BufferPoolStrategy {
+        /**
+         * PriorityQueueStrategy
+         */
+        PriorityQueueStrategy(new GunNettyBufferManagePriorityQueueStrategy()), ConcurrentStrategy(new GunNettyBufferManageConcurrentStrategy());
+        private GunNettyBufferManageStrategy strategy;
+
+        BufferPoolStrategy(GunNettyBufferManageStrategy strategy) {
+            this.strategy = strategy;
+        }
+
+        public GunNettyBufferManageStrategy getStrategy() {
+            return strategy;
+        }
     }
 
     @Override
