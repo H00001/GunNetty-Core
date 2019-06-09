@@ -15,4 +15,10 @@ public interface GunBufferManage {
      */
     GunNettyBufferStream getBuffer(int size);
 
+    /**
+     * usingCount
+     *
+     * @return int buffer count
+     */
+    int usingCount();
 }

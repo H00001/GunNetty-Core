@@ -19,7 +19,7 @@ import java.util.concurrent.locks.LockSupport;
  */
 public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     private final GunPipeline pipeline;
-    private AtomicInteger listionSize = new AtomicInteger(0);
+    private AtomicInteger listenSize = new AtomicInteger(0);
     private boolean runState = true;
     private volatile Thread nowRun = null;
 
@@ -31,8 +31,8 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         LockSupport.unpark(nowRun);
     }
 
-    public void incrAndContinueLoop() {
-        listionSize.incrementAndGet();
+    void incrAndContinueLoop() {
+        listenSize.incrementAndGet();
         LockSupport.unpark(nowRun);
     }
 
@@ -53,7 +53,7 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
         try {
             nowRun = Thread.currentThread();
             while (runState) {
-                if (listionSize.get() == 0) {
+                if (listenSize.get() == 0) {
                     LockSupport.park();
                 }
                 assert coreProperty != null;
@@ -76,8 +76,8 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     @Override
     public void dealEvent(SelectionKey key) {
         key.interestOps(0);
-        listionSize.decrementAndGet();
-        this.deal.submit(new GunCoreCalculatorWorker(pipeline, key, listionSize));
+        listenSize.decrementAndGet();
+        this.deal.submit(new GunCoreCalculatorWorker(pipeline, key, listenSize));
     }
 
 }

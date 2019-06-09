@@ -95,10 +95,10 @@ public interface GunNettyBufferStream {
      * registerObs
      *
      * register objects
-     * @param observe GunBufferObserve
+     * @param observe GunNettyBufferObserve
      * @return return this chain style
      */
-    GunNettyBufferStream registerObs(GunBufferObserve observe);
+    GunNettyBufferStream registerObs(GunNettyBufferObserve observe);
 
     /**
      * remove data

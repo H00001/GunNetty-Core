@@ -6,18 +6,18 @@ import java.lang.ref.SoftReference;
 import java.util.Queue;
 
 /**
- * BaseBufferManager
+ * BaseNettyBufferManager
  *
  * @author frank albert
  * @version 0.0.0.1
  * @date 2019-06-08 15:37
  */
-public abstract class BaseBufferManager implements GunBufferManage, GunBufferObserve {
+public abstract class BaseNettyBufferManager implements GunBufferManage, GunNettyBufferObserve {
     private Queue<GunNettyBufferStream> using;
     private Queue<SoftReference<GunNettyBufferStream>> operatored;
     private GunNettyBufferManageStrategy strategy;
 
-    BaseBufferManager(BufferPoolStrategy s) {
+    BaseNettyBufferManager(BufferPoolStrategy s) {
         strategy = s.getStrategy();
         operatored = strategy.acquireSoftQueue();
         using = strategy.acquireStrongQueue();
@@ -55,9 +55,22 @@ public abstract class BaseBufferManager implements GunBufferManage, GunBufferObs
     public GunNettyBufferStream getBuffer(int size) {
         GunNettyBufferStream s = strategy.onNeed(operatored, using, size);
         if (strategy == null) {
-            s = getBuffer(size);
+            s = realGetBuffer(size);
             using.offer(s);
         }
         return s;
+    }
+
+    /**
+     * real create buffer method
+     *
+     * @param size size
+     * @return GunNettyBufferStream
+     */
+    abstract GunNettyBufferStream realGetBuffer(int size);
+
+    @Override
+    public int usingCount() {
+        return using.size();
     }
 }

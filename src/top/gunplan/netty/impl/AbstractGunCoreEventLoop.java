@@ -11,13 +11,14 @@ import java.util.concurrent.ExecutorService;
 
 /**
  * AbstractGunCoreEventLoop
+ *
+ * @author dosdrtt
  * @see GunCoreDataEventLoop
  * @see GunCoreConnectionEventLoop
- * @author dosdrtt
  */
 public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoop {
-    Selector bootSelector;
-    ExecutorService deal;
+    final ExecutorService deal;
+    volatile Selector bootSelector;
     final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
 
     AbstractGunCoreEventLoop(ExecutorService deal) throws IOException {
@@ -32,6 +33,7 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
     Set<SelectionKey> getAvaliableSelectionKey() {
         return bootSelector.keys();
     }
+
     /**
      * dealEvent
      *

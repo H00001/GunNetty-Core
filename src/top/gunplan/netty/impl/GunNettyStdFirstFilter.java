@@ -10,7 +10,6 @@ import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
@@ -73,7 +72,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     public DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
-        sendMessage(filterDto.getRespobj(), channel);
+        sendMessage(filterDto.getOutputObject(), channel);
         if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
             channel.close();
             AbstractGunBaseLogUtil.debug("close initiative");
@@ -91,7 +90,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
 
     @Override
     public DealResult doOutputFilter(GunOutputFilterChecker filterDto, SocketChannel channel) throws Exception {
-        sendMessage(filterDto.getRespobj(), channel);
+        sendMessage(filterDto.getOutputObject(), channel);
         return DealResult.NEXT;
     }
 }

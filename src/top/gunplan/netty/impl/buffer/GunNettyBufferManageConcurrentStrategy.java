@@ -4,6 +4,7 @@ import java.lang.ref.SoftReference;
 import java.util.Objects;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedDeque;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * GunNettyBufferManageConcurrentStrategy
@@ -12,12 +13,10 @@ import java.util.concurrent.ConcurrentLinkedDeque;
  * @version 0.0.0.1
  * @date 2019-06-08 16:06
  */
-public class GunNettyBufferManageConcurrentStrategy implements GunNettyBufferManageStrategy {
+class GunNettyBufferManageConcurrentStrategy extends BaseGunNettyBufferManageStrategy {
     @Override
     public void onRelease(GunNettyBufferStream stream, Queue<SoftReference<GunNettyBufferStream>> operator, Queue<GunNettyBufferStream> using) {
-        stream.flushPoint();
-        stream.flushData();
-        using.remove(stream);
+        super.onRelease(stream, operator, using);
         operator.offer(new SoftReference<>(stream));
     }
 
@@ -31,7 +30,7 @@ public class GunNettyBufferManageConcurrentStrategy implements GunNettyBufferMan
                 break;
             }
             assert stream != null;
-            if (stream.maxLen() < size + 5 && stream.maxLen() > size - 5) {
+            if (stream.maxLen() < size + 10 && stream.maxLen() > size) {
                 using.offer(stream);
                 return stream;
             } else {
@@ -43,11 +42,11 @@ public class GunNettyBufferManageConcurrentStrategy implements GunNettyBufferMan
 
     @Override
     public Queue<SoftReference<GunNettyBufferStream>> acquireSoftQueue() {
-        return new ConcurrentLinkedDeque<>();
+        return new ConcurrentLinkedQueue<>();
     }
 
     @Override
     public Queue<GunNettyBufferStream> acquireStrongQueue() {
-        return new ConcurrentLinkedDeque<>();
+        return new ConcurrentLinkedQueue<>();
     }
 }

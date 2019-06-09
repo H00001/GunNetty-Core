@@ -11,11 +11,11 @@ import java.util.concurrent.PriorityBlockingQueue;
  * @version 0.0.0.1
  * @date 2019-06-08 16:10
  */
-public class GunNettyBufferManagePriorityQueueStrategy implements GunNettyBufferManageStrategy {
+class GunNettyBufferManagePriorityQueueStrategy extends BaseGunNettyBufferManageStrategy {
 
     @Override
     public void onRelease(GunNettyBufferStream stream, Queue<SoftReference<GunNettyBufferStream>> operator, Queue<GunNettyBufferStream> using) {
-
+        super.onRelease(stream, operator, using);
     }
 
     @Override

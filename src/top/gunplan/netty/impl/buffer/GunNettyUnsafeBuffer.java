@@ -13,7 +13,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
 
     @Override
     public void write(byte[] bin) {
-        if (maxlen - writePoint > bin.length) {
+        if (maxLen - writePoint > bin.length) {
             for (byte b : bin) {
                 write(b);
             }
@@ -24,7 +24,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
 
     @Override
     public void write(byte bin) {
-        if (maxlen - writePoint >= 1) {
+        if (maxLen - writePoint >= 1) {
             unsafe.putByte(memorySegmentAddress + writePoint, bin);
             writePoint++;
         } else {
@@ -35,7 +35,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
     @Override
     public byte read() {
         byte b;
-        if (maxlen - readPoint >= 1) {
+        if (maxLen - readPoint >= 1) {
             b = unsafe.getByte(memorySegmentAddress + readPoint);
             readPoint++;
         } else {
@@ -47,7 +47,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
     @Override
     public byte[] read(int len) {
         byte[] b = new byte[len];
-        if (maxlen - readPoint > len) {
+        if (maxLen - readPoint > len) {
             for (int i = 0; i < len; i++) {
                 b[i] = read();
             }

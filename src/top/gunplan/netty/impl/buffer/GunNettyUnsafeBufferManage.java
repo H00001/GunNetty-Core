@@ -7,17 +7,17 @@ import java.lang.reflect.Field;
 
 
 /**
- * GunUnsafeBufferManage
+ * GunNettyUnsafeBufferManage
  *
  * @author frank albert
  * @version 0.0.0.1
  * @date 2019-06-08 15:05
  */
-public class GunUnsafeBufferManage extends BaseBufferManager implements GunBufferObserve {
+public class GunNettyUnsafeBufferManage extends BaseNettyBufferManager implements GunNettyBufferObserve {
     private static final String TOKEN = "theUnsafe";
     private static Unsafe unsafe = null;
 
-    GunUnsafeBufferManage(boolean s) {
+    GunNettyUnsafeBufferManage(BufferPoolStrategy s) {
         super(s);
         try {
             Field getUnsafe = Unsafe.class.getDeclaredField(TOKEN);
@@ -38,7 +38,7 @@ public class GunUnsafeBufferManage extends BaseBufferManager implements GunBuffe
 
 
     @Override
-    public GunNettyBufferStream getBuffer(int size) {
+    public GunNettyBufferStream realGetBuffer(int size) {
         long address = malloc(size);
         return new GunNettyUnsafeBuffer(address, size, unsafe)
                 .registerObs(this);

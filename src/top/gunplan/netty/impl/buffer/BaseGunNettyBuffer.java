@@ -12,19 +12,19 @@ import static top.gunplan.netty.GunExceptionTypes.OUT_POSITION;
  * @date 2019-06-08 14:15
  */
 public abstract class BaseGunNettyBuffer implements GunNettyBufferStream {
-    long maxlen;
+    final long maxLen;
     long readPoint;
     long writePoint;
-    private GunBufferObserve observe;
+    private GunNettyBufferObserve observe;
     private boolean isLink;
 
     public BaseGunNettyBuffer(int len) {
-        this.maxlen = len;
+        this.maxLen = len;
     }
 
     @Override
     public long maxLen() {
-        return maxlen;
+        return maxLen;
     }
 
     @Override
@@ -40,7 +40,7 @@ public abstract class BaseGunNettyBuffer implements GunNettyBufferStream {
 
     @Override
     public void setReadPosition(long postion) {
-        if (postion > this.maxlen) {
+        if (postion > this.maxLen) {
             throw new GunException(OUT_POSITION, BaseGunNettyBuffer.class.getSimpleName());
         }
         this.readPoint = postion;
@@ -55,7 +55,7 @@ public abstract class BaseGunNettyBuffer implements GunNettyBufferStream {
 
     @Override
     public void setWritePosition(long postion) {
-        if (postion > this.maxlen) {
+        if (postion > this.maxLen) {
             throw new GunException(OUT_POSITION, BaseGunNettyBuffer.class.getSimpleName());
         }
         this.writePoint = postion;
@@ -69,7 +69,7 @@ public abstract class BaseGunNettyBuffer implements GunNettyBufferStream {
     }
 
     @Override
-    public GunNettyBufferStream registerObs(GunBufferObserve observe) {
+    public GunNettyBufferStream registerObs(GunNettyBufferObserve observe) {
         this.observe = observe;
         return this;
     }

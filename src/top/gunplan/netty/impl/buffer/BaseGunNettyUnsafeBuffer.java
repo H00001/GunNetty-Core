@@ -57,7 +57,7 @@ public abstract class BaseGunNettyUnsafeBuffer extends BaseGunNettyBuffer {
      */
     @Override
     public void flushData() {
-        unsafe.setMemory(memorySegmentAddress, maxlen, (byte) 0);
+        unsafe.setMemory(memorySegmentAddress, maxLen, (byte) 0);
     }
 
 
