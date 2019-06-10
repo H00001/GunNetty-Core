@@ -36,7 +36,7 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     @Override
     public synchronized void run() {
         try {
-            while (bootSelector.select() > 0) {
+            while (bootSelector.select() > 0 && CoreThreadManage.status) {
                 Iterator keyIterator = bootSelector.selectedKeys().iterator();
                 while (keyIterator.hasNext()) {
                     SelectionKey sk = (SelectionKey) keyIterator.next();
@@ -54,12 +54,8 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     public void dealEvent(SelectionKey key) {
         try {
             final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-            GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) CoreThreadManage.getDealThread());
-            socketChannel.socket().setTcpNoDelay(true);
-            selectionThread.registerReadKey(socketChannel);
-            selectionThread.incrAndContinueLoop();
+            CoreThreadManage.keyQueue().offer(socketChannel);
             this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));
-
         } catch (Exception exp) {
             AbstractGunBaseLogUtil.error(exp.getMessage());
         }

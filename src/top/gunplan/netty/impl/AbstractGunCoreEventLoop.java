@@ -2,6 +2,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -30,7 +31,8 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
      * get all of avaliable keys
      * async invoke
      */
-    Set<SelectionKey> getAvaliableSelectionKey() {
+    Set<SelectionKey> getAvailableSelectionKey() {
+        bootSelector.wakeup();
         return bootSelector.keys();
     }
 

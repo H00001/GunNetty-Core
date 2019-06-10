@@ -23,6 +23,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="Maven: top.gunplan:gunplan-netty-utils:1.2.0.7" level="project" />
+    <orderEntry type="module" module-name="GunNetty-Utils" />
   </component>
 </module>

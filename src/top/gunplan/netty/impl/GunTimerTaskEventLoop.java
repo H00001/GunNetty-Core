@@ -35,4 +35,9 @@ public class GunTimerTaskEventLoop implements GunCoreEventLoop {
             }
         }
     }
+
+    @Override
+    public void run() {
+
+    }
 }

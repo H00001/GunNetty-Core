@@ -30,6 +30,8 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     private void dealCloseEvent(SelectionKey key) throws IOException {
         AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
         key.channel().close();
+        key.selector().selectNow();
+
     }
 
     private GunNettyCoreProperty coreProperty;

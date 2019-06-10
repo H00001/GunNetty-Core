@@ -2,6 +2,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunPipeline;
+import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
@@ -20,12 +21,8 @@ import java.util.concurrent.locks.LockSupport;
 public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     private final GunPipeline pipeline;
     private AtomicInteger listenSize = new AtomicInteger(0);
-    private boolean runState = true;
     private volatile Thread nowRun = null;
 
-    public void setRunState(boolean runState) {
-        this.runState = runState;
-    }
 
     public void continueLoop() {
         LockSupport.unpark(nowRun);
@@ -42,9 +39,10 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
 
     }
 
-    void registerReadKey(SelectableChannel channel) throws IOException {
-        channel.configureBlocking(false);
-        channel.register(this.bootSelector, SelectionKey.OP_READ, this);
+    SelectionKey registerReadKey(SelectableChannel channel) throws IOException {
+        final SelectionKey key = channel.register(this.bootSelector, SelectionKey.OP_READ, this);
+        this.incrAndContinueLoop();
+        return key;
     }
 
 
@@ -52,7 +50,8 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
     public synchronized void run() {
         try {
             nowRun = Thread.currentThread();
-            while (runState) {
+            while (CoreThreadManage.status) {
+
                 if (listenSize.get() == 0) {
                     LockSupport.park();
                 }
@@ -65,8 +64,11 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                         this.dealEvent(sk);
                         keyIterator.remove();
                     }
+
                 }
+                bootSelector.selectNow();
             }
+            bootSelector.close();
         } catch (Exception exp) {
             throw new GunException(exp);
         }

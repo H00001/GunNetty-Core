@@ -2,14 +2,14 @@ package top.gunplan.netty.impl.aio;
 
 import sun.nio.ch.BsdAsynchronousChannelProvider;
 import top.gunplan.netty.GunPipeline;
-import top.gunplan.netty.impl.GunNettyThreadFactory;
+
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.nio.channels.AsynchronousServerSocketChannel;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.ServerSocketChannel;
+
+
 import java.nio.channels.spi.AsynchronousChannelProvider;
 
 import java.util.concurrent.ExecutorService;

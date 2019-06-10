@@ -13,14 +13,16 @@ import java.util.Set;
 public final class GunTimeExecuteImpl extends AbstractGunTimeExecute {
     @Override
     public void run() {
-        Thread.currentThread().setName(getClass().getName());
         sum.increment();
-        final Set<SelectionKey> keys = CoreThreadManage.getAllofAvaliableClannel(sum.longValue());
+
+        final Set<SelectionKey> keys = CoreThreadManage.getAvailableClannel(sum.longValue());
+
         works.parallelStream().forEach(k -> {
             if (k.ifKeyEmptyExec() || keys.size() != 0) {
                 new GunTimeWorkFunc(keys, sum.longValue()).execute(k);
             }
         });
+
     }
 
     /**

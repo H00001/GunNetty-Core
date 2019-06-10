@@ -19,7 +19,7 @@ public final class GunOutputFilterChecker extends AbstractGunChecker {
      * @param outputObject GunNetOutputInterface
      * @param key     SelectionKey
      */
-    public GunOutputFilterChecker(GunNetOutputInterface outputObject, SelectionKey key) {
+    GunOutputFilterChecker(GunNetOutputInterface outputObject, SelectionKey key) {
         super(key);
         this.outputObject = outputObject;
     }
