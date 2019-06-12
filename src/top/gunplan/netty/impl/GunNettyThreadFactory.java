@@ -7,7 +7,7 @@ import java.util.concurrent.ThreadFactory;
 public class GunNettyThreadFactory implements ThreadFactory {
     private String poolName;
 
-    public GunNettyThreadFactory(String poolName) {
+    GunNettyThreadFactory(String poolName) {
         this.poolName = poolName;
     }
 

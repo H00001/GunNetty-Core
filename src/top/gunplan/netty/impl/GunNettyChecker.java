@@ -3,12 +3,12 @@ package top.gunplan.netty.impl;
 import java.nio.channels.SelectionKey;
 
 /**
- * GunChecker
+ * GunNettyChecker
  * Checker filters's transfer Object interface
  * @author dosdrtt
- * @version 0.0.0.1
+ * @version 0.0.0.2
  */
-public interface GunChecker {
+public interface GunNettyChecker {
     /**
      * getKey
      * get selectionKey

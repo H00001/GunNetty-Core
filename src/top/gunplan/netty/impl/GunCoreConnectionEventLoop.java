@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunPipeline;
+import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
@@ -18,9 +18,9 @@ import java.util.concurrent.ExecutorService;
  * @see AbstractGunCoreEventLoop
  */
 public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
-    private final GunPipeline dealHandle;
+    private final GunNettyPipeline dealHandle;
 
-    GunCoreConnectionEventLoop(ExecutorService deal, GunPipeline dealHandle, int port) throws IOException {
+    GunCoreConnectionEventLoop(ExecutorService deal, GunNettyPipeline dealHandle, int port) throws IOException {
         super(deal);
         this.dealHandle = dealHandle;
         try {
@@ -36,7 +36,7 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     @Override
     public synchronized void run() {
         try {
-            while (bootSelector.select() > 0 && CoreThreadManage.status) {
+            while (bootSelector.select() > 0 && GunNettyCoreThreadManage.status) {
                 Iterator keyIterator = bootSelector.selectedKeys().iterator();
                 while (keyIterator.hasNext()) {
                     SelectionKey sk = (SelectionKey) keyIterator.next();
@@ -54,7 +54,7 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     public void dealEvent(SelectionKey key) {
         try {
             final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-            CoreThreadManage.keyQueue().offer(socketChannel);
+            GunNettyCoreThreadManage.keyQueue().offer(socketChannel);
             this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));
         } catch (Exception exp) {
             AbstractGunBaseLogUtil.error(exp.getMessage());

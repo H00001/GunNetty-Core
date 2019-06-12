@@ -2,7 +2,7 @@ package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunPipeline;
+import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.GunTimeExecute;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
@@ -16,9 +16,9 @@ import java.util.concurrent.*;
 /**
  * @author dosdrtt
  * @concurrent
- * @apiNote 1.0.0.7
+ * @apiNote 1.0.0.8
  */
-final class CoreThreadManage {
+final class GunNettyCoreThreadManage {
     private static final GunNettyCoreProperty CORE_PROPERTY = GunNettyPropertyManagerImpl.coreProperty();
     private static final int MANAGE_THREAD_NUM = CORE_PROPERTY.getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
@@ -46,10 +46,10 @@ final class CoreThreadManage {
         return KEY_QUEUE;
     }
 
-    static boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunPipeline pipepine, int port) {
-        AbstractGunBaseLogUtil.debug("Server running on " + port);
+    static boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipepine, int port) {
+        AbstractGunBaseLogUtil.debug("Server running on :" + port);
         transfer = new GunNettyTransferEventLoop(KEY_QUEUE);
-        timeExecute = new GunTimeExecuteImpl();
+        timeExecute = new GunNettyTimeExecuteImpl();
         try {
             dealaccept = new GunCoreConnectionEventLoop(acceptExecutor, pipepine, port);
             for (int i = 0; i < dealdata.length; i++) {
@@ -57,6 +57,7 @@ final class CoreThreadManage {
             }
             timeExecute.registerWorker(pipepine.getTimer());
         } catch (Exception e) {
+            AbstractGunBaseLogUtil.error(e);
             return false;
         }
         return true;
@@ -80,7 +81,7 @@ final class CoreThreadManage {
         SERVER_POOL.shutdown();
         ACCEPT_POOL.shutdown();
         TIMER_POOL.shutdown();
-        while (SERVER_POOL.isTerminated() && ACCEPT_POOL.isTerminated() && TIMER_POOL.isTerminated()) {
+        for (; SERVER_POOL.isTerminated() && ACCEPT_POOL.isTerminated() && TIMER_POOL.isTerminated(); ) {
         }
         return true;
 
@@ -88,6 +89,5 @@ final class CoreThreadManage {
 
     static Set<SelectionKey> getAvailableClannel(long i) {
         return dealdata[(int) (i & (MANAGE_THREAD_NUM - 1))].getAvailableSelectionKey();
-
     }
 }

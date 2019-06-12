@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl.aio;
 
 import sun.nio.ch.BsdAsynchronousChannelProvider;
-import top.gunplan.netty.GunPipeline;
+import top.gunplan.netty.GunNettyPipeline;
 
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
@@ -24,9 +24,9 @@ import java.util.concurrent.ExecutorService;
 public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLoop {
     private final AsynchronousServerSocketChannel var57;
     private AsynchronousChannelProvider provider = new BsdAsynchronousChannelProvider();
-    private GunPipeline pipeline;
+    private GunNettyPipeline pipeline;
 
-    GunCoreAioConnectionEventLoopImpl(ExecutorService deal, GunPipeline dealHandle, int port) throws IOException {
+    GunCoreAioConnectionEventLoopImpl(ExecutorService deal, GunNettyPipeline dealHandle, int port) throws IOException {
         this.pipeline = dealHandle;
         var57 = provider.openAsynchronousServerSocketChannel(provider.openAsynchronousChannelGroup(deal, 10));
         try {

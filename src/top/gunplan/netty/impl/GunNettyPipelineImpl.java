@@ -8,29 +8,32 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * GunPipelineImpl
+ * GunNettyPipelineImpl
+ *
  * @author dosdrtt
- * @see GunPipeline
+ * @see GunNettyPipeline
  */
-final class GunPipelineImpl implements GunPipeline {
+final class GunNettyPipelineImpl implements GunNettyPipeline {
 
     private volatile GunNettyHandle handle;
     private final List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
-    private final List<GunTimer> timers = new CopyOnWriteArrayList<>();
+    private final List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
 
     @Override
-    public GunPipeline register(GunHandle handle) {
+    public GunNettyPipeline register(GunHandle handle) {
         assert handle != null;
         if (handle instanceof GunNettyHandle) {
             setHandle0((GunNettyHandle) handle);
         } else if (handle instanceof GunNettyFilter) {
             addFilter((GunNettyFilter) handle);
+        } else if (handle instanceof GunNettyTimer) {
+            addTimer((GunNettyTimer) handle);
         }
         return this;
     }
 
     @Override
-    public GunPipeline addTimer(GunTimer timer) {
+    public GunNettyPipeline addTimer(GunNettyTimer timer) {
         if (timer != null) {
             timers.add(timer);
         }
@@ -48,13 +51,13 @@ final class GunPipelineImpl implements GunPipeline {
     }
 
     @Override
-    public GunPipeline addFilter(GunNettyFilter filter) {
+    public GunNettyPipeline addFilter(GunNettyFilter filter) {
         addFilter0(filter);
         return this;
     }
 
     @Override
-    public GunPipeline setHandle(GunNettyHandle handle) {
+    public GunNettyPipeline setHandle(GunNettyHandle handle) {
         if (handle != null) {
             setHandle0(handle);
         }
@@ -63,7 +66,7 @@ final class GunPipelineImpl implements GunPipeline {
 
 
     @Override
-    public GunPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
+    public GunNettyPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
         if (clazz != null) {
             GunHandle h = clazz.getDeclaredConstructor().newInstance();
             if (h instanceof GunNettyHandle) {
@@ -99,7 +102,7 @@ final class GunPipelineImpl implements GunPipeline {
     }
 
     @Override
-    public List<GunTimer> getTimer() {
+    public List<GunNettyTimer> getTimer() {
         return timers;
     }
 

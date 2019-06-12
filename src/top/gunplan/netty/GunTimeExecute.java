@@ -19,7 +19,7 @@ public interface GunTimeExecute extends Runnable {
      *
      * @param works add time works
      */
-    void registerWorker(List<GunTimer> works);
+    void registerWorker(List<GunNettyTimer> works);
 
 
     /**
@@ -27,5 +27,5 @@ public interface GunTimeExecute extends Runnable {
      *
      * @param work work
      */
-    void addWorker(GunTimer work);
+    void addWorker(GunNettyTimer work);
 }

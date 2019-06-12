@@ -4,10 +4,8 @@ import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
-import java.net.SocketException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.Queue;
 import java.util.concurrent.BlockingQueue;
 
 /**
@@ -33,9 +31,9 @@ public class GunNettyTransferEventLoop implements GunCoreEventLoop {
     @Override
     public void run() {
         try {
-            for (; CoreThreadManage.status; ) {
+            for (; GunNettyCoreThreadManage.status; ) {
                 SocketChannel socketChannel = kQueue.take();
-                GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) CoreThreadManage.getDealThread());
+                GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) GunNettyCoreThreadManage.getDealThread());
                 socketChannel.socket().setTcpNoDelay(true);
                 socketChannel.configureBlocking(false);
                 final SelectionKey key = selectionThread.registerReadKey(socketChannel);

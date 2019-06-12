@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunPipeline;
+import top.gunplan.netty.GunNettyPipeline;
 
 
 /**
@@ -9,10 +9,10 @@ import top.gunplan.netty.GunPipeline;
  * @author frank albert
  */
 abstract class BaseGunNettyWorker implements GunNettyWorkerInterface {
-    final GunPipeline pipeline;
+    final GunNettyPipeline pipeline;
 
 
-    BaseGunNettyWorker(final GunPipeline pipeline) {
+    BaseGunNettyWorker(final GunNettyPipeline pipeline) {
         this.pipeline = pipeline;
 
     }

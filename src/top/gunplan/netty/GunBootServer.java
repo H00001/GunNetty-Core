@@ -48,26 +48,12 @@ public interface GunBootServer extends GunBootServerBase {
     GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters);
 
     /**
-     * this method return a {@link GunPipeline} implements
+     * this method return a {@link GunNettyPipeline} implements
      *
-     * @return GunPipeline
+     * @return GunNettyPipeline
      */
-    GunPipeline getPipeline();
+    GunNettyPipeline getPipeline();
 
-//    /**
-//     * the function is used to add filter
-//     *
-//     * @param filter filter, filter the request
-//     * @return GunBootServer chain style
-//     */
-//
-//
-//    /**
-//     * @param clazz class to deal
-//     * @throws ClassNotFoundException class not found
-//     * @apiNote
-//     */
-//    void inintObject(@NotNull Class<? extends GunHandle> clazz) throws Exception;
 
     /**
      * check it can or not be boot
@@ -88,10 +74,10 @@ public interface GunBootServer extends GunBootServerBase {
      * set pipeline
      *
      * @param pipeline pipeline
-     * @see GunPipeline
+     * @see GunNettyPipeline
      */
 
-    void setPipeline(GunPipeline pipeline);
+    void setPipeline(GunNettyPipeline pipeline);
 
 }
 

@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunPipeline;
+import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.protocol.GunNetOutputInterface;
 
 import java.nio.channels.SelectionKey;
@@ -18,7 +18,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
     private final SelectionKey key;
 
 
-    GunCoreCalculatorWorker(final GunPipeline pipeline
+    GunCoreCalculatorWorker(final GunNettyPipeline pipeline
             , final SelectionKey key, AtomicInteger waitSize) {
         super(pipeline);
         this.key = key;
@@ -27,7 +27,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
 
     @Override
     public void run() {
-        final GunInputFilterChecker gunFilterObj = new GunInputFilterChecker(key);
+        final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(key);
         for (GunNettyFilter filter : this.pipeline.getFilters()) {
             GunNettyFilter.DealResult result = null;
             try {
@@ -35,7 +35,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             } catch (Exception e) {
                 this.pipeline.getHandel().dealExceptionEvent(e);
             }
-            if (result == GunNettyFilter.DealResult.NOTDEALINPUT) {
+            if (result == GunNettyFilter.DealResult.NATALINA) {
                 break;
             } else if (result == GunNettyFilter.DealResult.CLOSE) {
 
@@ -50,7 +50,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         } catch (Exception e) {
             this.pipeline.getHandel().dealExceptionEvent(e);
         }
-        GunOutputFilterChecker responseFilterDto = new GunOutputFilterChecker(respObject);
+        GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(respObject);
         responseFilterDto.setKey(gunFilterObj.getKey());
         ListIterator<GunNettyFilter> filters = pipeline.getFilters().listIterator(pipeline.getFilters().size());
 

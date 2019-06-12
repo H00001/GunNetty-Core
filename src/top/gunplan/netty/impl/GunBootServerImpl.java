@@ -30,7 +30,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService requestExecutor;
 
-    private volatile GunPipeline pipeline = new GunPipelineImpl();
+    private volatile GunNettyPipeline pipeline = new GunNettyPipelineImpl();
 
     GunBootServerImpl() {
     }
@@ -52,16 +52,16 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunPipeline getPipeline() {
+    public GunNettyPipeline getPipeline() {
         return pipeline;
     }
 
     @Override
-    public void setPipeline(GunPipeline pipeline) {
+    public void setPipeline(GunNettyPipeline pipeline) {
         if (pipeline != null) {
             this.pipeline = pipeline;
         } else {
-            throw new GunException(GunExceptionTypes.NULLPTR, "Your GunPipeline is null");
+            throw new GunException(GunExceptionTypes.NULLPTR, "Your GunNettyPipeline is null");
         }
     }
 
@@ -72,7 +72,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public void stop() {
-        if (CoreThreadManage.stopAllAndWait()) {
+        if (GunNettyCoreThreadManage.stopAllAndWait()) {
             this.runnable = false;
         }
     }
@@ -84,9 +84,9 @@ final class GunBootServerImpl implements GunBootServer {
             throw new GunException("Handel, Execute pool not set or Server has been running");
         }
         final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
-        if (this.observe.onBooting(coreProperty) && CoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
+        if (this.observe.onBooting(coreProperty) && GunNettyCoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
             pipeline.init();
-            Future<Integer> result = CoreThreadManage.startAllAndWait();
+            Future<Integer> result = GunNettyCoreThreadManage.startAllAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
             int val = result.get();

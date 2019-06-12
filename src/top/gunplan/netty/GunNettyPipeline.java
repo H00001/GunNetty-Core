@@ -8,22 +8,22 @@ import java.util.List;
  * @author dosdrtt
  * @since 1.0.0.1
  */
-public interface GunPipeline {
+public interface GunNettyPipeline {
     /**
      * register the handle in the chain
      *
      * @param handle register handle
      * @return chain style is self
      */
-    GunPipeline register(GunHandle handle);
+    GunNettyPipeline register(GunHandle handle);
 
     /**
      * addTimer
      *
-     * @param timer {@link GunTimer}
+     * @param timer {@link GunNettyTimer}
      * @return this, chain style
      */
-    GunPipeline addTimer(GunTimer timer);
+    GunNettyPipeline addTimer(GunNettyTimer timer);
 
     /**
      * addFilter
@@ -31,7 +31,7 @@ public interface GunPipeline {
      * @param filter {@link GunNettyFilter}
      * @return this, chain style
      */
-    GunPipeline addFilter(GunNettyFilter filter);
+    GunNettyPipeline addFilter(GunNettyFilter filter);
 
     /**
      * setHandle
@@ -39,19 +39,19 @@ public interface GunPipeline {
      * @param handle GunNettyHandle
      * @return this.chain style
      */
-    GunPipeline setHandle(GunNettyHandle handle);
+    GunNettyPipeline setHandle(GunNettyHandle handle);
 
     /**
      * ref to set the handle
      *
      * @param clazz refSetHandle
-     * @return GunPipeline this,chain style
+     * @return GunNettyPipeline this,chain style
      * @throws IllegalAccessException exc
      * @throws InstantiationException exc
      * @throws InvocationTargetException exc
      * @throws NoSuchMethodException can not find this method
      */
-    GunPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
+    GunNettyPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 
     /**
      * check the pileline model avilable
@@ -80,9 +80,9 @@ public interface GunPipeline {
     /**
      * getTimer
      *
-     * @return List<GunTimer>
+     * @return List<GunNettyTimer>
      */
-    List<GunTimer> getTimer();
+    List<GunNettyTimer> getTimer();
 
 
     /**

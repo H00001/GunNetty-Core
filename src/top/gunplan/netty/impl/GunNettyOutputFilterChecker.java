@@ -6,26 +6,26 @@ import java.nio.channels.SelectionKey;
 
 /**
  * @author dosdrtt
- * @see top.gunplan.netty.impl.GunChecker
+ * @see GunNettyChecker
  */
-public final class GunOutputFilterChecker extends AbstractGunChecker {
+public final class GunNettyOutputFilterChecker extends AbstractGunChecker {
 
     private GunNetOutputInterface outputObject;
 
 
     /**
-     * GunOutputFilterChecker
+     * GunNettyOutputFilterChecker
      *
      * @param outputObject GunNetOutputInterface
      * @param key     SelectionKey
      */
-    GunOutputFilterChecker(GunNetOutputInterface outputObject, SelectionKey key) {
+    GunNettyOutputFilterChecker(GunNetOutputInterface outputObject, SelectionKey key) {
         super(key);
         this.outputObject = outputObject;
     }
 
 
-    GunOutputFilterChecker(GunNetOutputInterface outputObject) {
+    GunNettyOutputFilterChecker(GunNetOutputInterface outputObject) {
         super(null);
         this.outputObject = outputObject;
     }
@@ -38,7 +38,7 @@ public final class GunOutputFilterChecker extends AbstractGunChecker {
         this.outputObject = outputObject;
     }
 
-    GunOutputFilterChecker() {
+    GunNettyOutputFilterChecker() {
         super(null);
     }
 }

@@ -16,7 +16,8 @@ public class GunNettyDefaultObserveImpl implements GunNettyObserve {
         try {
             AbstractGunBaseLogUtil.outputFile(property.getProfileName());
         } catch (Exception e) {
-            e.printStackTrace();
+            AbstractGunBaseLogUtil.error(e);
+
         }
 
     }

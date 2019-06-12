@@ -9,7 +9,7 @@ import java.util.concurrent.atomic.LongAdder;
  * @date 2019/05/30
  */
 public abstract class AbstractGunTimeExecute implements GunTimeExecute {
-    protected volatile List<GunTimer> works = null;
+    protected volatile List<GunNettyTimer> works = null;
     protected volatile LongAdder sum = new LongAdder();
 
 
@@ -20,12 +20,12 @@ public abstract class AbstractGunTimeExecute implements GunTimeExecute {
     public abstract void run();
 
     @Override
-    public void registerWorker(List<GunTimer> works) {
+    public void registerWorker(List<GunNettyTimer> works) {
         this.works = works;
     }
 
     @Override
-    public void addWorker(GunTimer work) {
+    public void addWorker(GunNettyTimer work) {
         assert work != null;
         this.works.add(work);
     }

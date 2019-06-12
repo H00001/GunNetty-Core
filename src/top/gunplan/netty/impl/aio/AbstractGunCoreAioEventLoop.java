@@ -16,6 +16,9 @@ import java.nio.channels.Selector;
 
 public abstract class AbstractGunCoreAioEventLoop implements GunCoreEventLoop, Runnable {
 
+    /**
+     * aio running method
+     */
     @Override
     abstract public void run();
 

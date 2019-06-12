@@ -6,9 +6,9 @@ import java.nio.channels.SelectionKey;
  * AbstractGunChecker checker transfer object
  *
  * @author dosdrtt
- * @see top.gunplan.netty.impl.GunChecker
+ * @see GunNettyChecker
  */
-abstract class AbstractGunChecker implements GunChecker {
+abstract class AbstractGunChecker implements GunNettyChecker {
 
 
     private volatile SelectionKey key;

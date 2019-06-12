@@ -9,7 +9,7 @@ import java.util.Set;
  * this is a time execute interface
  * you can use this with {@link }
  */
-public interface GunTimer extends GunHandle {
+public interface GunNettyTimer extends GunHandle {
     /**
      * get interval
      *

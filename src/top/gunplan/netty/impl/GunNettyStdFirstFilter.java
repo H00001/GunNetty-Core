@@ -30,6 +30,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     private void dealCloseEvent(SelectionKey key) throws IOException {
         AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
         key.channel().close();
+        key.selector().wakeup();
         key.selector().selectNow();
 
     }
@@ -37,7 +38,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     private GunNettyCoreProperty coreProperty;
 
     @Override
-    public DealResult doInputFilter(GunInputFilterChecker filterDto) throws Exception {
+    public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws Exception {
 
         byte[] data;
         SelectionKey key = filterDto.getKey();
@@ -72,7 +73,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doOutputFilter(GunOutputFilterChecker filterDto) throws IOException {
+    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
         sendMessage(filterDto.getOutputObject(), channel);
         if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
@@ -91,7 +92,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doOutputFilter(GunOutputFilterChecker filterDto, SocketChannel channel) throws Exception {
+    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws Exception {
         sendMessage(filterDto.getOutputObject(), channel);
         return DealResult.NEXT;
     }
