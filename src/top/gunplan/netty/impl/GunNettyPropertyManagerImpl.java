@@ -99,8 +99,7 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
      *
      * @return ture or false to get field
      */
-    public static boolean initProperty() {
-
+    static boolean initProperty() {
         return initRealProperty("GunNetty.conf");
     }
 

@@ -8,14 +8,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
+import static top.gunplan.netty.GunExceptionTypes.EXC_INIT;
+
 
 /**
  * GunBootServer's real implement ,this class is not public
  *
- * @see GunBootServer
  * @author Gunplan
  * @version 0.0.1.4
  * @apiNote 0.0.0.5
+ * @see GunBootServer
  * @since 0.0.0.4
  */
 
@@ -81,7 +83,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public synchronized int sync() throws ExecutionException, InterruptedException {
         if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
-            throw new GunException("Handel, Execute pool not set or Server has been running");
+            throw new GunException(EXC_INIT, "Handel, Execute pool not set or Server has been running");
         }
         final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
         if (this.observe.onBooting(coreProperty) && GunNettyCoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
