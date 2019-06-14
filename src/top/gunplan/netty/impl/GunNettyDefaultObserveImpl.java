@@ -12,7 +12,7 @@ import top.gunplan.utils.AbstractGunBaseLogUtil;
 public class GunNettyDefaultObserveImpl implements GunNettyObserve {
     @Override
     public void onBooted(GunNettyCoreProperty property) {
-        AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server");
+        AbstractGunBaseLogUtil.debug("A high performance net server and a reverse proxy server", "BOOTED");
         try {
             AbstractGunBaseLogUtil.outputFile(property.getProfileName());
         } catch (Exception e) {
@@ -29,7 +29,7 @@ public class GunNettyDefaultObserveImpl implements GunNettyObserve {
 
     @Override
     public void onStop(GunNettyCoreProperty property) {
-
+        AbstractGunBaseLogUtil.info("SERVER STOP");
     }
 
     @Override
