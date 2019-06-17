@@ -1,5 +1,7 @@
 package top.gunplan.netty.impl.buffer;
 
+import java.util.Comparator;
+
 /**
  * GunNettyBufferStream
  *
@@ -7,7 +9,7 @@ package top.gunplan.netty.impl.buffer;
  * @version 0.0.0.1
  * @date 2019-06-08 14:12
  */
-public interface GunNettyBufferStream {
+public interface GunNettyBufferStream extends Comparable<GunNettyBufferStream> {
 
     /**
      * maxLen
@@ -65,6 +67,7 @@ public interface GunNettyBufferStream {
     /**
      * write
      * write a byte
+     *
      * @param bin byte will be write
      */
     void write(byte bin);
@@ -73,12 +76,14 @@ public interface GunNettyBufferStream {
     /**
      * read
      * read a byte
+     *
      * @return read result
      */
     byte read();
 
     /**
      * read
+     *
      * @param len length of bytes will be read
      * @return read result
      */
@@ -93,8 +98,9 @@ public interface GunNettyBufferStream {
 
     /**
      * registerObs
-     *
+     * <p>
      * register objects
+     *
      * @param observe GunNettyBufferObserve
      * @return return this chain style
      */
@@ -105,4 +111,24 @@ public interface GunNettyBufferStream {
      */
     void flushData();
 
+
+    /**
+     * get buffer status
+     *
+     * @return true: using
+     * false : not using
+     */
+    boolean getStatus();
+
+    /**
+     * set status
+     */
+
+    void setUsed();
+
+
+    @Override
+    default int compareTo(GunNettyBufferStream o) {
+        return Long.compare(this.maxLen(), o.maxLen());
+    }
 }

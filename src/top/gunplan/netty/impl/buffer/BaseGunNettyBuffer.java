@@ -68,10 +68,21 @@ public abstract class BaseGunNettyBuffer implements GunNettyBufferStream {
         this.observe.onRelease(this);
     }
 
+
+    @Override
+    public void setUsed() {
+        this.isLink = true;
+    }
+
     @Override
     public GunNettyBufferStream registerObs(GunNettyBufferObserve observe) {
         this.observe = observe;
         return this;
     }
 
+
+    @Override
+    public boolean getStatus() {
+        return this.isLink;
+    }
 }

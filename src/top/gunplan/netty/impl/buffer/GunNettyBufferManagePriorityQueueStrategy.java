@@ -20,6 +20,7 @@ class GunNettyBufferManagePriorityQueueStrategy extends BaseGunNettyBufferManage
 
     @Override
     public GunNettyBufferStream onNeed(Queue<SoftReference<GunNettyBufferStream>> operator, Queue<GunNettyBufferStream> using, int size) {
+
         return null;
     }
 

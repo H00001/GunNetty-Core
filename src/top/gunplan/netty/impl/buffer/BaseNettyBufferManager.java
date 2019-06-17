@@ -54,8 +54,9 @@ public abstract class BaseNettyBufferManager implements GunBufferManage, GunNett
     @Override
     public GunNettyBufferStream getBuffer(int size) {
         GunNettyBufferStream s = strategy.onNeed(operatored, using, size);
-        if (strategy == null) {
+        if (s == null) {
             s = realGetBuffer(size);
+            s.setUsed();
             using.offer(s);
         }
         return s;

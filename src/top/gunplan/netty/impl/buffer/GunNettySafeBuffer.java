@@ -9,6 +9,7 @@ package top.gunplan.netty.impl.buffer;
  */
 public class GunNettySafeBuffer extends BaseGunNettyBuffer {
 
+
     private final byte[] save;
 
     public GunNettySafeBuffer(int len) {
@@ -19,7 +20,6 @@ public class GunNettySafeBuffer extends BaseGunNettyBuffer {
 
     @Override
     public void write(byte[] bin) {
-
     }
 
     @Override
@@ -41,4 +41,5 @@ public class GunNettySafeBuffer extends BaseGunNettyBuffer {
     public void flushData() {
 
     }
+
 }
