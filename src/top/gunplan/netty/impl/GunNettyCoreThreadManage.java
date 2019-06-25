@@ -1,13 +1,15 @@
 package top.gunplan.netty.impl;
 
 
-import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.GunTimeExecute;
+import top.gunplan.netty.common.GunNettyThreadFactory;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.nio.channels.SelectionKey;
+
+
 import java.nio.channels.SocketChannel;
 import java.util.Queue;
 import java.util.Set;
@@ -23,9 +25,8 @@ final class GunNettyCoreThreadManage {
     private static final int MANAGE_THREAD_NUM = CORE_PROPERTY.getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealaccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealdata;
-    private static final BlockingQueue<SocketChannel> KEY_QUEUE = new LinkedBlockingQueue<>();
     static volatile boolean status = true;
-    private volatile static GunCoreEventLoop transfer;
+    private volatile static GunNettyTransfer transfer;
     private static final ScheduledExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
 
     static {
@@ -42,13 +43,14 @@ final class GunNettyCoreThreadManage {
     private static int selectSelector = 0;
     private volatile static GunTimeExecute timeExecute = null;
 
-    static Queue<SocketChannel> keyQueue() {
-        return KEY_QUEUE;
+
+    public static Queue<SocketChannel> keyQueue() {
+        return transfer.kQueue();
     }
 
     static boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipepine, int port) {
         AbstractGunBaseLogUtil.debug("Server running on :" + port);
-        transfer = new GunNettyTransferEventLoop(KEY_QUEUE);
+        transfer = new GunNettyTransferEventLoop<SocketChannel>();
         timeExecute = new GunNettyTimeExecuteImpl();
         try {
             dealaccept = new GunCoreConnectionEventLoop(acceptExecutor, pipepine, port);

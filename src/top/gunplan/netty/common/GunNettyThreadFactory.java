@@ -1,4 +1,4 @@
-package top.gunplan.netty.impl;
+package top.gunplan.netty.common;
 
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.LongAdder;
@@ -10,7 +10,7 @@ public class GunNettyThreadFactory implements ThreadFactory {
     private String poolName;
     private LongAdder haveUsedCount = new LongAdder();
 
-    GunNettyThreadFactory(String poolName) {
+    public GunNettyThreadFactory(String poolName) {
         this.poolName = poolName;
     }
 
