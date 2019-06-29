@@ -27,15 +27,13 @@ public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNet
         this.to = outputObject;
     }
 
-    public GunNetOutputInterface getOutput() {
-        return to;
-    }
-
-    public void setOutputObject(GunNetOutputInterface outputObject) {
-        this.to = outputObject;
-    }
-
-    GunNettyOutputFilterChecker() {
+    public GunNettyOutputFilterChecker() {
         super(null);
+    }
+
+
+    @Override
+    public void translate() {
+        this.src = to.serialize();
     }
 }

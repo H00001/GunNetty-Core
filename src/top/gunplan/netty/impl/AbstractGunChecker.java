@@ -8,8 +8,22 @@ import java.nio.channels.SelectionKey;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-abstract class AbstractGunChecker<Transfer extends GunNetInputOutputInterface> implements GunNettyChecker {
+abstract class AbstractGunChecker<Transfer extends GunNetInputOutputInterface> implements GunNettyChecker, GunTranSlator {
 
+
+    byte[] src;
+
+    @Override
+    public abstract void translate();
+
+
+    public byte[] source() {
+        return src;
+    }
+
+    public void setSource(byte[] src) {
+        this.src = src;
+    }
 
     Transfer to;
     private volatile SelectionKey key;

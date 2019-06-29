@@ -41,7 +41,7 @@ public interface GunNettyFilter extends GunHandle {
      * @param filterDto filter dto
      * @param channel   channel to transfer
      * @return deal result
-     * @throws Exception kind os exception
+     * @throws IOException i/o exception
      */
     default DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws IOException {
         return DealResult.NEXT;
@@ -60,7 +60,7 @@ public interface GunNettyFilter extends GunHandle {
     }
 
 
-    enum DealResult {
+    public enum DealResult {
         /**
          * NATALINA  :do not deal input filter ,go for handle right away
          * CLOSE         :do not deal any filter or handle

@@ -52,7 +52,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
             try {
                 GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
                 data = reader.readBytes((SocketChannel) key.channel());
-                filterDto.setSrc(data);
+                filterDto.setSource(data);
             } catch (IOException e) {
                 dealCloseEvent(key);
                 AbstractGunBaseLogUtil.error(e);
@@ -80,7 +80,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
-        sendMessage(filterDto.getOutput(), channel);
+        sendMessage(filterDto.getTransfer(), channel);
         if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
             channel.close();
             AbstractGunBaseLogUtil.debug("close initiative");
@@ -98,7 +98,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
 
     @Override
     public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws IOException {
-        sendMessage(filterDto.getOutput(), channel);
+        sendMessage(filterDto.getTransfer(), channel);
         return DealResult.NEXT;
     }
 }

@@ -6,20 +6,21 @@ import java.nio.channels.SelectionKey;
 
 
 /**
+ * GunNettyInputFilterChecker
+ *
  * @author dosdrtt
  */
 public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInputInterface> {
 
 
-    private byte[] src;
-    private boolean writable = true;
-
-    public void setSrc(byte[] src) {
-        this.src = src;
-    }
-
     GunNettyInputFilterChecker(final SelectionKey key) {
         super(key);
+    }
+
+
+    @Override
+    public void translate() {
+        this.to.unSerialize(src);
     }
 
     public GunNettyInputFilterChecker(byte[] src, GunNetInputInterface object) {
@@ -28,17 +29,4 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetI
         this.to = object;
     }
 
-
-    public boolean isWritable() {
-        return writable;
-    }
-
-    public void setWritable(boolean writable) {
-
-        this.writable = writable;
-    }
-
-    public byte[] getSrc() {
-        return src;
-    }
 }

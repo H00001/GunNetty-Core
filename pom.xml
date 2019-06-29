@@ -5,8 +5,8 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>top.gunplan</groupId>
-    <artifactId>gun-netty</artifactId>
-    <version>1.2.0.7</version>
+    <artifactId>gunplan-netty</artifactId>
+    <version>1.2.0.8</version>
 
     <dependencies>
         <dependency>
