@@ -15,7 +15,7 @@ public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute {
     public void run() {
         sum.increment();
 
-        final Set<SelectionKey> keys = GunNettyCoreThreadManage.getAvailableClannel(sum.longValue());
+        final Set<SelectionKey> keys = GunNettyCoreThreadManage.getAvailableChannel(sum.longValue());
         works.parallelStream().forEach(k -> {
             if (k.ifKeyEmptyExec() || keys.size() != 0) {
                 new GunTimeWorkFunc(keys, sum.longValue()).execute(k);

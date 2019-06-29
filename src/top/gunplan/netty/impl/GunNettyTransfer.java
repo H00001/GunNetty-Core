@@ -21,6 +21,4 @@ public interface GunNettyTransfer<U extends SocketChannel> extends GunCoreEventL
      * @return a queue
      */
     Queue<U> kQueue();
-
-
 }

@@ -7,11 +7,18 @@ import java.util.concurrent.ExecutorService;
  * server interface ,has kinds of implements but now we have only one
  * it is NioStdServerImpl
  *
- * @date 2019-04-21
  * @author dosdrtt
+ * @date 2019-04-21
  * @since 0.0.0.1
  */
 public interface GunBootServer extends GunBootServerBase {
+    /**
+     * stop
+     * <p>
+     * stop the server
+     */
+    void stop() throws InterruptedException;
+
     /**
      * register observe
      *
@@ -64,12 +71,23 @@ public interface GunBootServer extends GunBootServerBase {
     boolean initCheck();
 
 
-    /**
-     * stop
-     *
-     * stop the server
-     */
-    void stop();
+    enum GunNettyWorkState {
+
+
+        /**
+         *
+         */
+
+
+        STOP(0b0001), SYNC(STOP.state >> 1), ASYNC(STOP.state << 1), RUNNING(STOP.state << 3), BOOT_ERROR_1(-1);
+
+
+        public int state;
+
+        GunNettyWorkState(int state) {
+            this.state = state;
+        }
+    }
 
     /**
      * set pipeline

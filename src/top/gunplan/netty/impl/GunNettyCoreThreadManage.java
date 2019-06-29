@@ -23,14 +23,14 @@ import java.util.concurrent.*;
 final class GunNettyCoreThreadManage {
     private static final GunNettyCoreProperty CORE_PROPERTY = GunNettyPropertyManagerImpl.coreProperty();
     private static final int MANAGE_THREAD_NUM = CORE_PROPERTY.getMaxRunnningNum();
-    private volatile static AbstractGunCoreEventLoop dealaccept = null;
-    private volatile static AbstractGunCoreEventLoop[] dealdata;
+    private volatile static AbstractGunCoreEventLoop dealAccept = null;
+    private volatile static AbstractGunCoreEventLoop[] dealData;
     static volatile boolean status = true;
-    private volatile static GunNettyTransfer transfer;
+    private volatile static GunNettyTransfer<SocketChannel> transfer;
     private static final ScheduledExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
 
     static {
-        dealdata = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
+        dealData = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
     }
 
     private static SynchronousQueue<Runnable> sync = new SynchronousQueue<>();
@@ -44,18 +44,18 @@ final class GunNettyCoreThreadManage {
     private volatile static GunTimeExecute timeExecute = null;
 
 
-    public static Queue<SocketChannel> keyQueue() {
+    static Queue<SocketChannel> keyQueue() {
         return transfer.kQueue();
     }
 
     static boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipepine, int port) {
         AbstractGunBaseLogUtil.debug("Server running on :" + port);
-        transfer = new GunNettyTransferEventLoop<SocketChannel>();
+        transfer = new GunNettyTransferEventLoop<>();
         timeExecute = new GunNettyTimeExecuteImpl();
         try {
-            dealaccept = new GunCoreConnectionEventLoop(acceptExecutor, pipepine, port);
-            for (int i = 0; i < dealdata.length; i++) {
-                dealdata[i] = new GunCoreDataEventLoop(dataExecutor, pipepine);
+            dealAccept = new GunCoreConnectionEventLoop(acceptExecutor, pipepine, port);
+            for (int i = 0; i < dealData.length; i++) {
+                dealData[i] = new GunCoreDataEventLoop(dataExecutor, pipepine);
             }
             timeExecute.registerWorker(pipepine.getTimer());
         } catch (Exception e) {
@@ -66,30 +66,37 @@ final class GunNettyCoreThreadManage {
     }
 
     static AbstractGunCoreEventLoop getDealThread() {
-        return dealdata[selectSelector++ & (MANAGE_THREAD_NUM - 1)];
+        return dealData[selectSelector++ & (MANAGE_THREAD_NUM - 1)];
     }
 
     static Future<Integer> startAllAndWait() {
-        for (AbstractGunCoreEventLoop dat : dealdata) {
+        for (AbstractGunCoreEventLoop dat : dealData) {
             SERVER_POOL.submit(dat);
         }
         TRANSFER_POOL.submit(transfer);
         TIMER_POOL.scheduleAtFixedRate(timeExecute, CORE_PROPERTY.initWait(), CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
-        return ACCEPT_POOL.submit(dealaccept, 1);
+        return ACCEPT_POOL.submit(dealAccept, 1);
     }
 
-    static boolean stopAllAndWait() {
+    static boolean stopAllAndWait() throws InterruptedException {
         status = false;
         SERVER_POOL.shutdown();
         ACCEPT_POOL.shutdown();
         TIMER_POOL.shutdown();
         for (; SERVER_POOL.isTerminated() && ACCEPT_POOL.isTerminated() && TIMER_POOL.isTerminated(); ) {
+            if (!SERVER_POOL.isTerminated()) {
+                SERVER_POOL.awaitTermination(1, TimeUnit.MINUTES);
+            } else if (!ACCEPT_POOL.isTerminated()) {
+                ACCEPT_POOL.awaitTermination(1, TimeUnit.MINUTES);
+            } else if (!TIMER_POOL.isTerminated()) {
+                TIMER_POOL.awaitTermination(1, TimeUnit.MINUTES);
+            }
         }
         return true;
 
     }
 
-    static Set<SelectionKey> getAvailableClannel(long i) {
-        return dealdata[(int) (i & (MANAGE_THREAD_NUM - 1))].getAvailableSelectionKey();
+    static Set<SelectionKey> getAvailableChannel(long i) {
+        return dealData[(int) (i & (MANAGE_THREAD_NUM - 1))].getAvailableSelectionKey();
     }
 }

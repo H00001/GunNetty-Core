@@ -12,11 +12,11 @@ import java.util.concurrent.Future;
 /**
  * GunBootServer's real implement ,this class is not public
  *
- * @see GunBootServer
  * @author Gunplan
  * @version 0.0.1.4
  * @apiNote 0.0.0.5
- * @since 0.0.0.4
+ * @see GunBootServer
+ * @since 0.0.0.5
  */
 
 final class GunBootServerImpl implements GunBootServer {
@@ -71,7 +71,7 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public void stop() {
+    public void stop() throws InterruptedException {
         if (GunNettyCoreThreadManage.stopAllAndWait()) {
             this.runnable = false;
         }
@@ -81,7 +81,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public synchronized int sync() throws ExecutionException, InterruptedException {
         if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
-            throw new GunException("Handel, Execute pool not set or Server has been running");
+            throw new GunException(GunExceptionType.EXC0, "Handel, Execute pool not set or Server has been running");
         }
         final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
         if (this.observe.onBooting(coreProperty) && GunNettyCoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
@@ -89,12 +89,16 @@ final class GunBootServerImpl implements GunBootServer {
             Future<Integer> result = GunNettyCoreThreadManage.startAllAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
-            int val = result.get();
-            this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
-            this.observe.onStop(coreProperty);
-            return val;
+            if (isSync()) {
+                int val = result.get();
+                this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
+                this.observe.onStop(coreProperty);
+                return val;
+            } else {
+                return (GunNettyWorkState.ASYNC.state | GunNettyWorkState.RUNNING.state);
+            }
         }
-        return -1;
+        return GunNettyWorkState.BOOT_ERROR_1.state;
     }
 
 

@@ -15,4 +15,9 @@ public interface GunBootServerBase {
      */
 
     int sync() throws Exception;
+
+
+    default boolean isSync() {
+        return true;
+    }
 }

@@ -10,9 +10,6 @@ public class GunException extends RuntimeException {
 
     private final GunExceptionType type;
 
-    public GunException(String why) {
-        this(GunExceptionType.EXC3, why);
-    }
 
     public GunException(GunExceptionType type, String why) {
         super(why);
