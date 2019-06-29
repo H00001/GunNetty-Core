@@ -46,7 +46,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         }
         GunNetOutputInterface respObject = null;
         try {
-            respObject = this.pipeline.getHandel().dealDataEvent(gunFilterObj.getObject());
+            respObject = this.pipeline.getHandel().dealDataEvent(gunFilterObj.getTransfer());
         } catch (Exception e) {
             this.pipeline.getHandel().dealExceptionEvent(e);
         }

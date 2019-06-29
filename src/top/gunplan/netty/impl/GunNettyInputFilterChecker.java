@@ -8,7 +8,7 @@ import java.nio.channels.SelectionKey;
 /**
  * @author dosdrtt
  */
-public final class GunNettyInputFilterChecker extends AbstractGunChecker {
+public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInputInterface> {
 
 
     private byte[] src;
@@ -25,17 +25,12 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker {
     public GunNettyInputFilterChecker(byte[] src, GunNetInputInterface object) {
         super(null);
         this.src = src;
-        this.object = object;
+        this.to = object;
     }
 
-    private GunNetInputInterface object;
 
     public boolean isWritable() {
         return writable;
-    }
-
-    public GunNetInputInterface getObject() {
-        return object;
     }
 
     public void setWritable(boolean writable) {
@@ -45,13 +40,5 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker {
 
     public byte[] getSrc() {
         return src;
-    }
-
-    public GunNetInputInterface getGunRequestProtoclObject() {
-        return object;
-    }
-
-    public void setObject(GunNetInputInterface object) {
-        this.object = object;
     }
 }

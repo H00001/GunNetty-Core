@@ -10,6 +10,7 @@ import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
+import java.nio.channels.Channel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
@@ -21,21 +22,25 @@ import java.nio.channels.SocketChannel;
  */
 @GunNetFilterOrder
 public class GunNettyStdFirstFilter implements GunNettyFilter {
+    private GunNettyCoreProperty coreProperty;
 
     public GunNettyStdFirstFilter() {
         coreProperty = GunNettyPropertyManagerImpl.coreProperty();
     }
 
 
+    @Override
+    public boolean doConnFilter(Channel ch) {
+        return true;
+    }
+
     private void dealCloseEvent(SelectionKey key) throws IOException {
         AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
         key.channel().close();
         key.selector().wakeup();
         key.selector().selectNow();
-
     }
 
-    private GunNettyCoreProperty coreProperty;
 
     @Override
     public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws Exception {
@@ -75,7 +80,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
-        sendMessage(filterDto.getOutputObject(), channel);
+        sendMessage(filterDto.getOutput(), channel);
         if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
             channel.close();
             AbstractGunBaseLogUtil.debug("close initiative");
@@ -92,8 +97,8 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws Exception {
-        sendMessage(filterDto.getOutputObject(), channel);
+    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws IOException {
+        sendMessage(filterDto.getOutput(), channel);
         return DealResult.NEXT;
     }
 }

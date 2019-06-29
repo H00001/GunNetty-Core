@@ -1,12 +1,12 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionTypes;
+import top.gunplan.netty.GunExceptionType;
 
 public class GunBootException extends GunException {
     private boolean canBoot = true;
 
-    public GunBootException(GunExceptionTypes type, boolean canBoot, String why) {
+    public GunBootException(GunExceptionType type, boolean canBoot, String why) {
         super(type, why);
         this.canBoot = canBoot;
     }

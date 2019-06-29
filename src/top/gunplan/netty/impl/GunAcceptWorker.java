@@ -5,6 +5,7 @@ import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.protocol.GunNetOutputInterface;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
+import java.io.IOException;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -22,23 +23,24 @@ final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
 
     @Override
     public synchronized void run() {
-        try {
-            for (GunNettyFilter filter : pipeline.getFilters()) {
-                if (!filter.doConnFilter(channel)) {
-                    return;
-                }
+
+        for (GunNettyFilter filter : pipeline.getFilters()) {
+            if (!filter.doConnFilter(channel)) {
+                return;
             }
+        }
+        try {
             final GunNetOutputInterface ob = this.pipeline.getHandel().dealConnEvent(channel.getRemoteAddress());
             pipeline.getFilters().forEach(f -> {
                 try {
                     if (f.doOutputFilter(new GunNettyOutputFilterChecker(ob, null), channel) == GunNettyFilter.DealResult.CLOSE) {
                         channel.close();
                     }
-                } catch (Exception e) {
-                    AbstractGunBaseLogUtil.error(e);
+                } catch (IOException e) {
+                    AbstractGunBaseLogUtil.error(e.getMessage(), "IO ERROR");
                 }
             });
-        } catch (Exception e) {
+        } catch (IOException e) {
             this.pipeline.getHandel().dealExceptionEvent(e);
         }
     }

@@ -2,7 +2,7 @@ package top.gunplan.netty.impl.buffer;
 
 import top.gunplan.netty.GunException;
 
-import static top.gunplan.netty.GunExceptionTypes.OUT_POSITION;
+import static top.gunplan.netty.GunExceptionType.OUT_POSITION;
 
 /**
  * BaseGunNettyBuffer

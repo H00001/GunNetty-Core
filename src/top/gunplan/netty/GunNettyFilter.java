@@ -4,6 +4,7 @@ package top.gunplan.netty;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
 
+import java.io.IOException;
 import java.nio.channels.Channel;
 import java.nio.channels.SocketChannel;
 
@@ -42,7 +43,7 @@ public interface GunNettyFilter extends GunHandle {
      * @return deal result
      * @throws Exception kind os exception
      */
-    default DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws Exception {
+    default DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws IOException {
         return DealResult.NEXT;
     }
 

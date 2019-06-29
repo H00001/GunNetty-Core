@@ -2,7 +2,7 @@ package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionTypes;
+import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.common.GunNettyPropertyManager;
@@ -37,7 +37,7 @@ public final class GunNettyPropertyManagerImpl implements GunNettyPropertyManage
             cons.setAccessible(true);
             registerProperty(cons.newInstance());
         } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
-            throw new GunException(GunExceptionTypes.REF, e);
+            throw new GunException(GunExceptionType.REF, e);
         }
         registerProperty(new GunLogProperty());
     }

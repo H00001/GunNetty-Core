@@ -5,13 +5,16 @@ import java.nio.channels.SelectionKey;
 /**
  * GunNettyChecker
  * Checker filters's transfer Object interface
+ *
  * @author dosdrtt
  * @version 0.0.0.2
  */
+@FunctionalInterface
 public interface GunNettyChecker {
     /**
      * getKey
      * get selectionKey
+     *
      * @return SelectionKey
      */
     SelectionKey getKey();

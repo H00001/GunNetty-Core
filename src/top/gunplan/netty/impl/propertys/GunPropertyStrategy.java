@@ -15,8 +15,11 @@ import java.util.Map;
  * @version 0.0.0.1
  * @date 2019-06-25 20:45
  */
+@FunctionalInterface
 public interface GunPropertyStrategy {
     /**
+     * settingProperties
+     *
      * @param propertyMap propertyMap to Set
      * @return set result
      */

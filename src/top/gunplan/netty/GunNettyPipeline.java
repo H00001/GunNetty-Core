@@ -8,7 +8,7 @@ import java.util.List;
  * @author dosdrtt
  * @since 1.0.0.1
  */
-public interface GunNettyPipeline {
+public interface GunNettyPipeline extends GunHandle {
     /**
      * register the handle in the chain
      *
@@ -46,10 +46,10 @@ public interface GunNettyPipeline {
      *
      * @param clazz refSetHandle
      * @return GunNettyPipeline this,chain style
-     * @throws IllegalAccessException exc
-     * @throws InstantiationException exc
+     * @throws IllegalAccessException    exc
+     * @throws InstantiationException    exc
      * @throws InvocationTargetException exc
-     * @throws NoSuchMethodException can not find this method
+     * @throws NoSuchMethodException     can not find this method
      */
     GunNettyPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
 
@@ -92,6 +92,7 @@ public interface GunNettyPipeline {
      *
      * @return int
      */
+    @Override
     int init();
 
 }

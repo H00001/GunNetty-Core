@@ -8,34 +8,31 @@ import java.nio.channels.SelectionKey;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-public final class GunNettyOutputFilterChecker extends AbstractGunChecker {
-
-    private GunNetOutputInterface outputObject;
-
+public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNetOutputInterface> {
 
     /**
      * GunNettyOutputFilterChecker
      *
      * @param outputObject GunNetOutputInterface
-     * @param key     SelectionKey
+     * @param key          SelectionKey
      */
     GunNettyOutputFilterChecker(GunNetOutputInterface outputObject, SelectionKey key) {
         super(key);
-        this.outputObject = outputObject;
+        this.to = outputObject;
     }
 
 
     GunNettyOutputFilterChecker(GunNetOutputInterface outputObject) {
         super(null);
-        this.outputObject = outputObject;
+        this.to = outputObject;
     }
 
-    public GunNetOutputInterface getOutputObject() {
-        return outputObject;
+    public GunNetOutputInterface getOutput() {
+        return to;
     }
 
     public void setOutputObject(GunNetOutputInterface outputObject) {
-        this.outputObject = outputObject;
+        this.to = outputObject;
     }
 
     GunNettyOutputFilterChecker() {
