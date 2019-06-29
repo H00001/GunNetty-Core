@@ -80,25 +80,28 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws IOException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
-        sendMessage(filterDto.getTransfer(), channel);
-        if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
-            channel.close();
-            AbstractGunBaseLogUtil.debug("close initiative");
-        }
-        return DealResult.NEXT;
+        return doOutputFilter(filterDto, channel);
     }
 
-    private void sendMessage(GunNetOutputInterface opt, SocketChannel channel) throws IOException {
-        if (opt != null) {
+    private void sendMessage(byte[] src, SocketChannel channel) throws IOException {
+        if (src != null && src.length > 0) {
             if (channel.isOpen()) {
-                channel.write(ByteBuffer.wrap(opt.serialize()));
+                channel.write(ByteBuffer.wrap(src));
+            } else {
+                throw new IOException("socket close" + ":" + channel.getRemoteAddress());
             }
         }
     }
 
     @Override
-    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) throws IOException {
-        sendMessage(filterDto.getTransfer(), channel);
-        return DealResult.NEXT;
+    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) {
+        try {
+            filterDto.translate();
+            sendMessage(filterDto.source(), channel);
+            return DealResult.NEXT;
+        } catch (IOException exp) {
+            AbstractGunBaseLogUtil.error(exp);
+            return DealResult.CLOSE;
+        }
     }
 }
