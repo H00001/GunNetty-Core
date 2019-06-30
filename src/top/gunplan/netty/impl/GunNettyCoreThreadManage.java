@@ -3,6 +3,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.GunTimeExecute;
+import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.common.GunNettyThreadFactory;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
@@ -33,13 +34,9 @@ final class GunNettyCoreThreadManage {
         dealData = new AbstractGunCoreEventLoop[MANAGE_THREAD_NUM];
     }
 
-    private static SynchronousQueue<Runnable> sync = new SynchronousQueue<>();
-    private static final ExecutorService SERVER_POOL = new ThreadPoolExecutor(MANAGE_THREAD_NUM, MANAGE_THREAD_NUM,
-            0L, TimeUnit.MILLISECONDS, sync, new GunNettyThreadFactory("CoreDataThread"));
-    private static final ExecutorService TRANSFER_POOL = new ThreadPoolExecutor(1, 1,
-            0L, TimeUnit.MILLISECONDS, sync, new GunNettyThreadFactory("TransferThread"));
-    private static final ExecutorService ACCEPT_POOL = new ThreadPoolExecutor(1, 1,
-            0L, TimeUnit.MILLISECONDS, sync, new GunNettyThreadFactory("CoreAcceptThread"));
+    private static final ExecutorService SERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
+    private static final ExecutorService TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
+    private static final ExecutorService ACCEPT_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread"));
     private static int selectSelector = 0;
     private volatile static GunTimeExecute timeExecute = null;
 
