@@ -42,5 +42,5 @@ public interface GunNettyHandle extends GunHandle {
      *
      * @param exp Exception
      */
-    void dealExceptionEvent(Exception exp);
+    void dealExceptionEvent(GunChannelException exp);
 }

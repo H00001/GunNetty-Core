@@ -17,7 +17,8 @@ public interface GunBootServer extends GunBootServerBase {
      * <p>
      * stop the server
      */
-    void stop() throws InterruptedException;
+    @Override
+    int stop() throws InterruptedException;
 
     /**
      * register observe
@@ -37,13 +38,13 @@ public interface GunBootServer extends GunBootServerBase {
 
     /**
      * sync
-     * boot by synchorized
+     * boot by synchronized or asynchronized
      *
      * @return sync result
-     * @throws Exception exp
+     * @throws GunNettyCanNotBootException exception very urgency
      */
     @Override
-    int sync() throws Exception;
+    int sync() throws GunNettyCanNotBootException;
 
     /**
      * set the Thread pool that dispose the request

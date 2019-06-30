@@ -11,7 +11,7 @@ public enum GunExceptionType {
     /**
      * types such as
      */
-    NULLPTR("nullptr exception"), REF("reference exception"), READ_PROPERTY_ERROR("READ PROPERTY ERROR"), EXC0("Init error"), EXC1(""), EXC2(""), OUT_POSITION("out of position"), EXC3("None know exc3");
+    NULLPTR("nullptr exception"),URGERCY("urgency can incur boot fail"), REF("reference exception"), READ_PROPERTY_ERROR("READ PROPERTY ERROR"), EXC0("Init error"), EXC1(""), EXC2(""), OUT_POSITION("out of position"), EXC3("None know exc3");
     private String info;
 
     GunExceptionType(String info) {

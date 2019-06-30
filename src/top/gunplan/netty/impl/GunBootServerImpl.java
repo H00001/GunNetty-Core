@@ -71,15 +71,16 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public void stop() throws InterruptedException {
+    public int stop() throws InterruptedException {
         if (GunNettyCoreThreadManage.stopAllAndWait()) {
             this.runnable = false;
         }
+        return GunNettyWorkState.STOP.state;
     }
 
 
     @Override
-    public synchronized int sync() throws ExecutionException, InterruptedException {
+    public synchronized int sync() throws GunNettyCanNotBootException {
         if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
             throw new GunException(GunExceptionType.EXC0, "Handel, Execute pool not set or Server has been running");
         }
@@ -90,10 +91,15 @@ final class GunBootServerImpl implements GunBootServer {
             this.observe.onBooted(coreProperty);
             this.runnable = true;
             if (isSync()) {
-                int val = result.get();
-                this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
-                this.observe.onStop(coreProperty);
-                return val;
+                try {
+                    int val = result.get();
+                    this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
+                    this.observe.onStop(coreProperty);
+                    return val;
+                } catch (InterruptedException | ExecutionException e) {
+                    throw new GunNettyCanNotBootException(e);
+                }
+
             } else {
                 return (GunNettyWorkState.ASYNC.state | GunNettyWorkState.RUNNING.state);
             }

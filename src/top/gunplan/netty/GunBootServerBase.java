@@ -5,19 +5,40 @@ package top.gunplan.netty;
  * @author dosdrtt
  * @date 2019/05/25
  */
-@FunctionalInterface
+
 public interface GunBootServerBase {
     /**
      * sync
      * start sync server and wait
+     *
      * @return int boot result
-     * @throws Exception  syncing's exception
+     * @throws Exception syncing's exception
      */
 
     int sync() throws Exception;
 
 
+    /**
+     * stop server
+     *
+     * @return stop result
+     */
+    int stop() throws InterruptedException;
+
+    /**
+     * is or not synchronized
+     *
+     * @return result
+     */
     default boolean isSync() {
         return true;
+    }
+
+
+    class GunNettyCanNotBootException extends GunException {
+
+        public GunNettyCanNotBootException(Exception why) {
+            super(GunExceptionType.URGERCY, why);
+        }
     }
 }
