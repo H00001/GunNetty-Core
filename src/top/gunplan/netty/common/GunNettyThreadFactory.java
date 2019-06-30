@@ -1,12 +1,10 @@
 package top.gunplan.netty.common;
-
-import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.LongAdder;
 
 /**
  * @author dosdrtt
  */
-public class GunNettyThreadFactory implements ThreadFactory {
+public class GunNettyThreadFactory implements GunNettyNvThreadFactory {
     private String poolName;
     private LongAdder haveUsedCount = new LongAdder();
 
@@ -16,12 +14,24 @@ public class GunNettyThreadFactory implements ThreadFactory {
 
     @Override
     public Thread newThread(Runnable r) {
+        return createThread(r, null);
+    }
+
+    private Thread createThread(Runnable r, Thread.UncaughtExceptionHandler handler) {
         haveUsedCount.increment();
         Thread t = new Thread(r, poolName + "-" + haveUsedCount.longValue());
+        if (handler != null) {
+            t.setUncaughtExceptionHandler(handler);
+        }
         if (t.isDaemon()) {
             t.setDaemon(false);
         }
         t.setPriority(9);
         return t;
+    }
+
+    @Override
+    public Thread newThread(Runnable r, Thread.UncaughtExceptionHandler handler) {
+        return createThread(r, handler);
     }
 }
