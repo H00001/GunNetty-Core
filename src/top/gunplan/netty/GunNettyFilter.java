@@ -15,8 +15,6 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  */
 public interface GunNettyFilter extends GunHandle {
-
-
     /**
      * doInputFilter
      *

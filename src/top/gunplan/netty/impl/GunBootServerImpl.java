@@ -93,7 +93,7 @@ final class GunBootServerImpl implements GunBootServer {
             if (isSync()) {
                 try {
                     int val = result.get();
-                    this.observe.onStatusChanged(GunNettyObserve.GunNettyStatus.RUNTOSTOP);
+                    this.observe.onStatusChanged(GunNettyObserve.GunNettyChangeStatus.RUN_TO_STOP);
                     this.observe.onStop(coreProperty);
                     return val;
                 } catch (InterruptedException | ExecutionException e) {

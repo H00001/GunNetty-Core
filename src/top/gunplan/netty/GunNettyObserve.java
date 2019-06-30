@@ -34,12 +34,12 @@ public interface GunNettyObserve extends GunHandle {
      * on status  changed happens
      * @param status changed status
      */
-    void onStatusChanged(GunNettyStatus status);
+    void onStatusChanged(GunNettyChangeStatus status);
 
-    enum GunNettyStatus {
+    enum GunNettyChangeStatus {
         /**
          * RUN TO STOP run status to stop status
          */
-        RUNTOSTOP, STOPTORUN
+        RUN_TO_STOP, STOP_TO_RUN,RUN_TO_PAUSE
     }
 }

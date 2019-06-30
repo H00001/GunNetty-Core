@@ -4,9 +4,6 @@ import top.gunplan.netty.GunNettyObserve;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
-import java.io.IOException;
-import java.net.URISyntaxException;
-
 /**
  * GunNettyDefaultObserveImpl
  *
@@ -35,7 +32,7 @@ public class GunNettyDefaultObserveImpl implements GunNettyObserve {
     }
 
     @Override
-    public void onStatusChanged(GunNettyStatus status) {
+    public void onStatusChanged(GunNettyChangeStatus status) {
 
     }
 }

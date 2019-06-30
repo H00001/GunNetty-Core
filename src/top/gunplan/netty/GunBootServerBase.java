@@ -38,7 +38,7 @@ public interface GunBootServerBase {
     class GunNettyCanNotBootException extends GunException {
 
         public GunNettyCanNotBootException(Exception why) {
-            super(GunExceptionType.URGERCY, why);
+            super(GunExceptionType.URGENCY, why);
         }
     }
 }
