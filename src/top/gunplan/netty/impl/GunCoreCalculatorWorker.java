@@ -1,5 +1,6 @@
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.protocol.GunNetOutputInterface;
@@ -32,7 +33,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             GunNettyFilter.DealResult result = null;
             try {
                 result = filter.doInputFilter(gunFilterObj);
-            } catch (Exception e) {
+            } catch (GunChannelException e) {
                 this.pipeline.getHandel().dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NATALINA) {
@@ -47,7 +48,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         GunNetOutputInterface respObject = null;
         try {
             respObject = this.pipeline.getHandel().dealDataEvent(gunFilterObj.getTransfer());
-        } catch (Exception e) {
+        } catch (GunChannelException e) {
             this.pipeline.getHandel().dealExceptionEvent(e);
         }
         GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(respObject);
@@ -58,7 +59,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             GunNettyFilter.DealResult result = null;
             try {
                 result = filters.previous().doOutputFilter(responseFilterDto);
-            } catch (Exception e) {
+            } catch (GunChannelException e) {
                 this.pipeline.getHandel().dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NOTDEALOUTPUT) {

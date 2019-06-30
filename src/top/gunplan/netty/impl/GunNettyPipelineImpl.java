@@ -108,6 +108,14 @@ final class GunNettyPipelineImpl implements GunNettyPipeline {
 
 
     @Override
+    public int destory() {
+        filterChain.parallelStream().forEach(GunHandle::destory);
+        timers.parallelStream().forEach(GunHandle::destory);
+        handle.destory();
+        return 0;
+    }
+
+    @Override
     public int init() {
         filterChain.parallelStream().forEach(GunHandle::init);
         timers.parallelStream().forEach(GunHandle::init);

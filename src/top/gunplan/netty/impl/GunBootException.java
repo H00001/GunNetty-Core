@@ -3,6 +3,14 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 
+/**
+ * GunBootException
+ *
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-06-29 22:50
+ */
+
 public class GunBootException extends GunException {
     private boolean canBoot = true;
 

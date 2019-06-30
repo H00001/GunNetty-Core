@@ -10,7 +10,14 @@ package top.gunplan.netty;
  */
 
 public class GunChannelException extends GunException {
+    private static final long serialVersionUID = -4413715733291360863L;
+
     public GunChannelException(GunExceptionType type, String why) {
         super(type, why);
+    }
+
+    public GunChannelException(Exception exp) {
+        super(GunExceptionType.EXC3, exp);
+
     }
 }

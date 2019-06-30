@@ -6,7 +6,7 @@ import java.util.concurrent.ThreadFactory;
  * GunNettyNvThreadFactory
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-06-30 09:49
  */
 public interface GunNettyNvThreadFactory extends ThreadFactory {

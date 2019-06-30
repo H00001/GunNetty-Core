@@ -87,12 +87,13 @@ final class GunBootServerImpl implements GunBootServer {
         final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
         if (this.observe.onBooting(coreProperty) && GunNettyCoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
             pipeline.init();
-            Future<Integer> result = GunNettyCoreThreadManage.startAllAndWait();
+            Future<Integer> executing = GunNettyCoreThreadManage.startAllAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
             if (isSync()) {
                 try {
-                    int val = result.get();
+                    int val = executing.get();
+                    pipeline.destory();
                     this.observe.onStatusChanged(GunNettyObserve.GunNettyChangeStatus.RUN_TO_STOP);
                     this.observe.onStop(coreProperty);
                     return val;

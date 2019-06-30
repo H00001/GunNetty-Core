@@ -1,5 +1,6 @@
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.protocol.GunNetOutputInterface;
@@ -39,8 +40,10 @@ final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
                     AbstractGunBaseLogUtil.error(e.getMessage(), "IO ERROR");
                 }
             });
-        } catch (IOException e) {
+        } catch (GunChannelException e) {
             this.pipeline.getHandel().dealExceptionEvent(e);
+        } catch (IOException e) {
+            this.pipeline.getHandel().dealExceptionEvent(new GunChannelException(e));
         }
     }
 }

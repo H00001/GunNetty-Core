@@ -36,7 +36,7 @@ final class GunNettyCoreThreadManage {
 
     private static final ExecutorService SERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
     private static final ExecutorService TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
-    private static final ExecutorService ACCEPT_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread"));
+    private static final ExecutorService ACCEPT_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
     private static int selectSelector = 0;
     private volatile static GunTimeExecute timeExecute = null;
 

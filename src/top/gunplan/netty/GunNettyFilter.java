@@ -20,18 +20,18 @@ public interface GunNettyFilter extends GunHandle {
      *
      * @param filterDto input filter dto
      * @return deal result {@link DealResult};
-     * @throws Exception kinds of exception
+     * @throws GunChannelException kinds of exception
      */
-    DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws Exception;
+    DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException;
 
     /**
      * doing filter when the response occur
      *
      * @param filterDto input to the filter's deal Object
      * @return DealResult result true:next false:break
-     * @throws Exception kinds of exception
+     * @throws GunChannelException kinds of exception
      */
-    DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws Exception;
+    DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws GunChannelException;
 
     /**
      * doOutputFilter
