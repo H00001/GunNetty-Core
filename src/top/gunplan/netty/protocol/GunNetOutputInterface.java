@@ -8,7 +8,7 @@ import top.gunplan.netty.impl.GunNetInputOutputInterface;
  */
 public interface GunNetOutputInterface extends GunNetInputOutputInterface {
     /**
-     * serialize the protoctol
+     * serialize the protocol
      * @return bytes[] transfer to client
      */
     byte[] serialize();

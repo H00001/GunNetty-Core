@@ -61,7 +61,7 @@ final class GunBootServerImpl implements GunBootServer {
         if (pipeline != null) {
             this.pipeline = pipeline;
         } else {
-            throw new GunException(GunExceptionType.NULLPTR, "Your GunNettyPipeline is null");
+            throw new GunException(GunExceptionType.NULLPTR, "Your GunNetty Pipeline is null");
         }
     }
 

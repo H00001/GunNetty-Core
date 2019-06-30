@@ -23,7 +23,6 @@ final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
 
     @Override
     public synchronized void run() {
-
         for (GunNettyFilter filter : pipeline.getFilters()) {
             if (!filter.doConnFilter(channel)) {
                 return;

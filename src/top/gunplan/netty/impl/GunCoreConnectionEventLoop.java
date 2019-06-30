@@ -55,7 +55,10 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
         try {
             final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
             GunNettyCoreThreadManage.keyQueue().offer(socketChannel);
-            this.deal.submit(new GunAcceptWorker(dealHandle, socketChannel));
+            BaseGunNettyWorker worker = new GunAcceptWorker(dealHandle, socketChannel);
+            if (worker.init() == 0) {
+                this.deal.submit(worker);
+            }
         } catch (IOException exp) {
             AbstractGunBaseLogUtil.error(exp.getMessage());
         }
