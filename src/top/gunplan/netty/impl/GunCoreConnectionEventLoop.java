@@ -23,14 +23,9 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     GunCoreConnectionEventLoop(ExecutorService deal, GunNettyPipeline dealHandle, int port) throws IOException {
         super(deal);
         this.dealHandle = dealHandle;
-        try {
-            ServerSocketChannel var57 = ServerSocketChannel.open();
-            var57.bind(new InetSocketAddress(port)).configureBlocking(false);
-            var57.register(bootSelector, SelectionKey.OP_ACCEPT, this);
-        } catch (IOException e) {
-            AbstractGunBaseLogUtil.urgency(e.getMessage());
-        }
-
+        ServerSocketChannel var57 = ServerSocketChannel.open();
+        var57.bind(new InetSocketAddress(port)).configureBlocking(false);
+        var57.register(bootSelector, SelectionKey.OP_ACCEPT, this);
     }
 
     @Override
@@ -44,23 +39,19 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
                     keyIterator.remove();
                 }
             }
-        } catch (Exception exp) {
+        } catch (IOException exp) {
             AbstractGunBaseLogUtil.error(exp.getMessage());
         }
 
     }
 
     @Override
-    public void dealEvent(SelectionKey key) {
-        try {
-            final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-            GunNettyCoreThreadManage.keyQueue().offer(socketChannel);
-            BaseGunNettyWorker worker = new GunAcceptWorker(dealHandle, socketChannel);
-            if (worker.init() == 0) {
-                this.deal.submit(worker);
-            }
-        } catch (IOException exp) {
-            AbstractGunBaseLogUtil.error(exp.getMessage());
+    public void dealEvent(SelectionKey key) throws IOException {
+        final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
+        GunNettyCoreThreadManage.keyQueue().offer(socketChannel);
+        BaseGunNettyWorker worker = new GunAcceptWorker(dealHandle, socketChannel);
+        if (worker.init() == 0) {
+            this.deal.submit(worker);
         }
     }
 }

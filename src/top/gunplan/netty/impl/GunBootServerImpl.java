@@ -72,6 +72,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public int stop() throws InterruptedException {
+        this.pipeline.destory();
         if (GunNettyCoreThreadManage.stopAllAndWait()) {
             this.runnable = false;
         }

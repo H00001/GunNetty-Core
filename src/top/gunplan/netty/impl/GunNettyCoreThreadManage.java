@@ -8,6 +8,7 @@ import top.gunplan.netty.common.GunNettyThreadFactory;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
+import java.io.IOException;
 import java.nio.channels.SelectionKey;
 
 
@@ -55,7 +56,7 @@ final class GunNettyCoreThreadManage {
                 dealData[i] = new GunCoreDataEventLoop(dataExecutor, pipepine);
             }
             timeExecute.registerWorker(pipepine.getTimer());
-        } catch (Exception e) {
+        } catch (IOException e) {
             AbstractGunBaseLogUtil.error(e);
             return false;
         }

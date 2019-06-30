@@ -68,7 +68,7 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
                 bootSelector.selectNow();
             }
             bootSelector.close();
-        } catch (Exception exp) {
+        } catch (IOException exp) {
             throw new GunException(exp);
         }
     }
