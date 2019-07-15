@@ -8,6 +8,7 @@ import top.gunplan.netty.GunHandle;
  * @author dosdrtt
  * @see java.lang.Runnable
  */
+@FunctionalInterface
 interface GunNettyWorkerInterface extends Runnable, GunHandle {
     /**
      * run

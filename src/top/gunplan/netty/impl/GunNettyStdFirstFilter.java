@@ -1,5 +1,6 @@
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.anno.GunNetFilterOrder;
@@ -34,16 +35,21 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
         return true;
     }
 
-    private void dealCloseEvent(SelectionKey key) throws IOException {
+    private void dealCloseEvent(SelectionKey key) throws GunChannelException {
         AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
-        key.channel().close();
-        key.selector().wakeup();
-        key.selector().selectNow();
+        try {
+            key.channel().close();
+            key.selector().wakeup();
+            key.selector().selectNow();
+        } catch (IOException e) {
+            throw new GunChannelException(e);
+        }
+
     }
 
 
     @Override
-    public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws Exception {
+    public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException {
 
         byte[] data;
         SelectionKey key = filterDto.getKey();
@@ -78,7 +84,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws IOException {
+    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws GunChannelException {
         SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
         return doOutputFilter(filterDto, channel);
     }

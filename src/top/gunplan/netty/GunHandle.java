@@ -21,6 +21,12 @@ public interface GunHandle {
     }
 
 
+    /**
+     * this function will be called at destory
+     *
+     * @return int destory result
+     */
+
     default int destory() {
         return 0;
     }
