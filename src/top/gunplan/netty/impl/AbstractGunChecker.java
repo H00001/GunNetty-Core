@@ -14,6 +14,9 @@ abstract class AbstractGunChecker<Transfer extends GunNetInputOutputInterface> i
     byte[] src;
 
     /**
+     * translate
+     *
+     *
      * @see GunNetInputOutputInterface
      */
     @Override

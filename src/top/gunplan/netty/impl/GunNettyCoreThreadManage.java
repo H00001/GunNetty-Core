@@ -4,7 +4,6 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.GunTimeExecute;
 import top.gunplan.netty.common.GunNettyExecutors;
-import top.gunplan.netty.common.GunNettyThreadFactory;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.AbstractGunBaseLogUtil;
 
@@ -13,7 +12,6 @@ import java.nio.channels.SelectionKey;
 
 
 import java.nio.channels.SocketChannel;
-import java.util.Queue;
 import java.util.Set;
 import java.util.concurrent.*;
 
@@ -42,13 +40,9 @@ final class GunNettyCoreThreadManage {
     private volatile static GunTimeExecute timeExecute = null;
 
 
-    static Queue<SocketChannel> keyQueue() {
-        return transfer.kQueue();
-    }
-
     static boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipepine, int port) {
-        AbstractGunBaseLogUtil.debug("Server running on :" + port);
-        transfer = new GunNettyTransferEventLoop<>();
+        AbstractGunBaseLogUtil.info("Server running on :" + port);
+        transfer = new GunNettyBaseTransferEventLoop<>();
         timeExecute = new GunNettyTimeExecuteImpl();
         try {
             dealAccept = new GunCoreConnectionEventLoop(acceptExecutor, pipepine, port);
@@ -61,6 +55,10 @@ final class GunNettyCoreThreadManage {
             return false;
         }
         return true;
+    }
+
+    static <U extends SocketChannel> void push(U u) {
+        transfer.push(u);
     }
 
     static AbstractGunCoreEventLoop getDealThread() {

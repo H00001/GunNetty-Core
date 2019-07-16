@@ -22,6 +22,7 @@ public interface GunBootServerBase {
      * stop server
      *
      * @return stop result
+     * @throws InterruptedException when it was interrupted
      */
     int stop() throws InterruptedException;
 

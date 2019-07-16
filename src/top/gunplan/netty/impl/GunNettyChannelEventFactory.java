@@ -11,13 +11,13 @@ import java.nio.channels.SocketChannel;
  * @version 0.0.0.1
  * @date 2019-06-18 23:55
  */
-public class GunNettyChannelEventFactory implements EventFactory<GunNettyChannelTransfer> {
+public class GunNettyChannelEventFactory implements EventFactory<GunNettyChannelTransfer<SocketChannel>> {
     public GunNettyChannelEventFactory() {
 
     }
 
     @Override
-    public GunNettyChannelTransfer newInstance() {
-        return new GunNettyChannelTransfer(0, null);
+    public GunNettyChannelTransfer<SocketChannel> newInstance() {
+        return new GunNettyChannelTransferImpl(0, null);
     }
 }
