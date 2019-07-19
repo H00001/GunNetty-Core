@@ -6,7 +6,7 @@ import java.nio.channels.SocketChannel;
  * GunNettyChannelTransferImpl
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-06-19 00:02
  */
 
