@@ -4,10 +4,10 @@ import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.anno.GunNetFilterOrder;
+import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
-import top.gunplan.netty.protocol.GunNetOutputInterface;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
 import top.gunplan.utils.GunBytesUtil;
+import top.gunplan.utils.GunLogger;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -23,6 +23,7 @@ import java.nio.channels.SocketChannel;
  */
 @GunNetFilterOrder
 public class GunNettyStdFirstFilter implements GunNettyFilter {
+    private static final GunLogger LOG = GunNettyContext.logger;
     private GunNettyCoreProperty coreProperty;
 
     public GunNettyStdFirstFilter() {
@@ -36,7 +37,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     private void dealCloseEvent(SelectionKey key) throws GunChannelException {
-        AbstractGunBaseLogUtil.debug("Client closed", "[CONNECTION]");
+        LOG.debug("Client closed", "[CONNECTION]");
         try {
             key.channel().close();
             key.selector().wakeup();
@@ -61,7 +62,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
                 filterDto.setSource(data);
             } catch (IOException e) {
                 dealCloseEvent(key);
-                AbstractGunBaseLogUtil.error(e);
+                LOG.error(e);
                 return DealResult.CLOSE;
             }
             if (data == null) {
@@ -106,7 +107,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
             sendMessage(filterDto.source(), channel);
             return DealResult.NEXT;
         } catch (IOException exp) {
-            AbstractGunBaseLogUtil.error(exp);
+            LOG.error(exp);
             return DealResult.CLOSE;
         }
     }

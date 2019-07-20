@@ -3,9 +3,10 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.GunTimeExecute;
+import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
+import top.gunplan.utils.GunLogger;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -26,6 +27,7 @@ final class GunNettyCoreThreadManage {
     private volatile static AbstractGunCoreEventLoop dealAccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealData;
     static volatile boolean status = true;
+    private final static GunLogger LOG = GunNettyContext.logger;
     private volatile static GunNettyTransfer<SocketChannel> transfer;
     private static final ScheduledExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
 
@@ -41,7 +43,7 @@ final class GunNettyCoreThreadManage {
 
 
     static boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipepine, int port) {
-        AbstractGunBaseLogUtil.info("Server running on :" + port);
+        LOG.info("Server running on :" + port);
         transfer = new GunNettyBaseTransferEventLoop<>();
         timeExecute = new GunNettyTimeExecuteImpl();
         try {
@@ -51,7 +53,7 @@ final class GunNettyCoreThreadManage {
             }
             timeExecute.registerWorker(pipepine.getTimer());
         } catch (IOException e) {
-            AbstractGunBaseLogUtil.error(e);
+            LOG.error(e);
             return false;
         }
         return true;

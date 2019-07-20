@@ -1,7 +1,8 @@
 package top.gunplan.netty.impl.buffer;
 
 import sun.misc.Unsafe;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
+import top.gunplan.netty.common.GunNettyContext;
+
 
 import java.lang.reflect.Field;
 
@@ -24,7 +25,7 @@ public class GunNettyUnsafeBufferManage extends BaseNettyBufferManager implement
             getUnsafe.setAccessible(true);
             unsafe = (Unsafe) getUnsafe.get(null);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            AbstractGunBaseLogUtil.error(e);
+            GunNettyContext.logger.error(e);
         }
     }
 

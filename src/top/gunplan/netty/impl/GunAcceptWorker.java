@@ -3,8 +3,8 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.protocol.GunNetOutputInterface;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -37,7 +37,7 @@ final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
                         channel.close();
                     }
                 } catch (IOException e) {
-                    AbstractGunBaseLogUtil.error(e.getMessage(), "IO ERROR");
+                    GunNettyContext.logger.error(e.getMessage(), "IO ERROR");
                 }
             });
         } catch (GunChannelException e) {

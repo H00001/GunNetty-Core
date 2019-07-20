@@ -17,7 +17,7 @@ import java.util.concurrent.locks.LockSupport;
  *
  * @author dosdrtt
  */
-public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
+public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop implements GunNettySelectionChannelRegister<SelectableChannel> {
     private final GunNettyPipeline pipeline;
     private AtomicInteger listenSize = new AtomicInteger(0);
     private volatile Thread nowRun = null;
@@ -38,7 +38,8 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop {
 
     }
 
-    SelectionKey registerReadKey(SelectableChannel channel) throws IOException {
+    @Override
+    public SelectionKey registerReadKey(SelectableChannel channel) throws IOException {
         final SelectionKey key = channel.register(this.bootSelector, SelectionKey.OP_READ, this);
         this.incrAndContinueLoop();
         return key;

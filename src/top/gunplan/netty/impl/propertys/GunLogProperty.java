@@ -2,7 +2,8 @@ package top.gunplan.netty.impl.propertys;
 
 import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.GunProperty;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
+import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.utils.GunLogger;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -29,23 +30,23 @@ public class GunLogProperty implements GunProperty {
 
     @Override
     public boolean doRegex() {
+        GunLogger log = GunNettyContext.logger;
         String f = "file:";
         if (isAvailable()) {
-            AbstractGunBaseLogUtil.setLevel(outputlevel);
-            AbstractGunBaseLogUtil.debug("Check parameters succeed");
+            log.setLevel(outputlevel);
+            log.info("Check parameters succeed");
             if (format != null) {
-                AbstractGunBaseLogUtil.setFormat(format);
+                log.setFormat(format);
             }
             final String direct = this.direct;
             if (direct.startsWith(f)) {
                 String[] prfile = direct.replace("file:", "").split(",");
                 try {
-                    AbstractGunBaseLogUtil.setStdoutput(new FileOutputStream(prfile[0], true));
-                    AbstractGunBaseLogUtil.setErroutput(new FileOutputStream(prfile[1], true));
+                    log.setStdoutput(new FileOutputStream(prfile[0], true));
+                    log.setErrOutput(new FileOutputStream(prfile[1], true));
 
                 } catch (FileNotFoundException e) {
-
-                    AbstractGunBaseLogUtil.error(e);
+                    log.error(e);
                     return false;
                 }
             }

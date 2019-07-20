@@ -1,7 +1,8 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyPipeline;
-import top.gunplan.utils.AbstractGunBaseLogUtil;
+import top.gunplan.netty.common.GunNettyContext;
+
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -40,7 +41,7 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
                 }
             }
         } catch (IOException exp) {
-            AbstractGunBaseLogUtil.error(exp.getMessage());
+            GunNettyContext.logger.error(exp.getMessage());
         }
 
     }

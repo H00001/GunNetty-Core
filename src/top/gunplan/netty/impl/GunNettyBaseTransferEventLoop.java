@@ -1,15 +1,15 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.utils.AbstractGunBaseLogUtil;
+
+import top.gunplan.netty.common.GunNettyContext;
 
 import java.io.IOException;
 import java.net.SocketException;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
-import com.lmax.disruptor.*;
 
 /**
  * GunNettyBaseTransferEventLoop
@@ -43,12 +43,12 @@ public class GunNettyBaseTransferEventLoop<U extends SocketChannel> implements G
         for (; GunNettyCoreThreadManage.status; ) {
             try {
                 U socketChannel = kQueue.take();
-                GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) GunNettyCoreThreadManage.getDealThread());
+                GunNettySelectionChannelRegister<SelectableChannel> register = ((GunCoreDataEventLoop) GunNettyCoreThreadManage.getDealThread());
                 socketChannel.configureBlocking(false);
-                final SelectionKey key = selectionThread.registerReadKey(socketChannel);
+                final SelectionKey key = register.registerReadKey(socketChannel);
                 dealEvent(key);
             } catch (InterruptedException | IOException e) {
-                AbstractGunBaseLogUtil.error(e);
+                GunNettyContext.logger.error(e);
             }
 
         }
