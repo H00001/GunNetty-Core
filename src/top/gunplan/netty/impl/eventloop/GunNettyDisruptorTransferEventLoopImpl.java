@@ -1,16 +1,20 @@
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.eventloop;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
+import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.common.GunNettyThreadFactory;
+import top.gunplan.netty.impl.GunCoreDataEventLoop;
+import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
-public class GunNettyDispTransferEventLoop<U extends SocketChannel> implements GunNettyTransfer<U>, EventHandler<GunNettyChannelTransfer<SocketChannel>> {
+
+public class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<SocketChannel>> {
     private final Disruptor<GunNettyChannelTransferImpl> disruptor;
     private int bufferSize = 1024;
 
@@ -22,7 +26,7 @@ public class GunNettyDispTransferEventLoop<U extends SocketChannel> implements G
     @Override
     public void onEvent(GunNettyChannelTransfer<SocketChannel> event, long sequence, boolean endOfBatch) throws Exception {
         SocketChannel socketChannel = event.getChannel();
-        GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) GunNettyCoreThreadManage.getDealThread());
+        GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) GunNettySystemServices.CORE_THREAD_MANAGER.dealChannelThread());
         socketChannel.socket().setTcpNoDelay(true);
         socketChannel.configureBlocking(false);
         final SelectionKey key = selectionThread.registerReadKey(socketChannel);
@@ -54,6 +58,7 @@ public class GunNettyDispTransferEventLoop<U extends SocketChannel> implements G
     public void dealEvent(SelectionKey key) throws Exception {
 
     }
+
 
     @Override
     public void run() {

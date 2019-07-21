@@ -1,6 +1,12 @@
 package top.gunplan.netty.impl.aio;
 
 
+import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+
+import java.nio.channels.SelectionKey;
+import java.util.Set;
+
 /**
  * GunCoreAioConnectionEventLoopImpl
  *
@@ -34,6 +40,31 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
 //            AbstractGunBaseLogUtil.error(exp.getMessage());
 //        }
 
+
+    }
+
+    @Override
+    public <V extends GunCoreEventLoop> V registerManager(GunNettyCoreThreadManager manager) {
+        return null;
+    }
+
+    @Override
+    public Set<SelectionKey> availableSelectionKey() {
+        return null;
+    }
+
+    @Override
+    public void startEventLoop() {
+
+    }
+
+    @Override
+    public boolean isRunning() {
+        return false;
+    }
+
+    @Override
+    public void stopEventLoop() {
 
     }
 }

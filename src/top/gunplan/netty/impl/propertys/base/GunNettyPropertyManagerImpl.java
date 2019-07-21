@@ -1,4 +1,4 @@
-package top.gunplan.netty.property;
+package top.gunplan.netty.impl.propertys.base;
 
 
 import top.gunplan.netty.GunException;

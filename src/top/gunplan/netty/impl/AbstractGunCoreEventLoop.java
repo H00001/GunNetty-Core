@@ -8,6 +8,7 @@ import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
+import java.util.EventListener;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
@@ -21,18 +22,29 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoop {
     final ExecutorService deal;
     volatile Selector bootSelector;
+    volatile boolean running;
     final GunNettyCoreProperty coreProperty = GunNettySystemServices.coreProperty();
+    GunNettyCoreThreadManager manager;
+
 
     AbstractGunCoreEventLoop(ExecutorService deal) throws IOException {
         bootSelector = Selector.open();
         this.deal = deal;
     }
 
+    @SuppressWarnings("unchecked")
+    @Override
+    public GunCoreEventLoop registerManager(GunNettyCoreThreadManager manager) {
+        this.manager = manager;
+        return this;
+    }
+
     /**
      * get all of avaliable keys
      * async invoke
      */
-    Set<SelectionKey> getAvailableSelectionKey() {
+    @Override
+    public Set<SelectionKey> availableSelectionKey() {
         bootSelector.wakeup();
         return bootSelector.keys();
     }
@@ -45,6 +57,22 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
      */
     @Override
     public abstract void dealEvent(SelectionKey key) throws Exception;
+
+
+    @Override
+    public boolean isRunning() {
+        return running;
+    }
+
+    @Override
+    public void startEventLoop() {
+        this.running = true;
+    }
+
+    @Override
+    public void stopEventLoop() {
+        this.running = false;
+    }
 }
 
 

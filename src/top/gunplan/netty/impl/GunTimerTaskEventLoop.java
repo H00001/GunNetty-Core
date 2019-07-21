@@ -6,6 +6,7 @@ import top.gunplan.netty.anno.GunTimeAnno;
 
 import java.lang.reflect.Method;
 import java.nio.channels.SelectionKey;
+import java.util.Set;
 
 /**
  * todo
@@ -38,6 +39,31 @@ public class GunTimerTaskEventLoop implements GunCoreEventLoop {
 
     @Override
     public void run() {
+
+    }
+
+    @Override
+    public <V extends GunCoreEventLoop> V registerManager(GunNettyCoreThreadManager manager) {
+        return null;
+    }
+
+    @Override
+    public Set<SelectionKey> availableSelectionKey() {
+        return null;
+    }
+
+    @Override
+    public void startEventLoop() {
+
+    }
+
+    @Override
+    public boolean isRunning() {
+        return false;
+    }
+
+    @Override
+    public void stopEventLoop() {
 
     }
 }

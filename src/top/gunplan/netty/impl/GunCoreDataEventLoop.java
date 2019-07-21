@@ -48,9 +48,10 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop implements Gu
 
     @Override
     public synchronized void run() {
+        startEventLoop();
         try {
             nowRun = Thread.currentThread();
-            while (GunNettyCoreThreadManage.status) {
+            for (; running; ) {
 
                 if (listenSize.get() == 0) {
                     LockSupport.park();
@@ -64,7 +65,6 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop implements Gu
                         this.dealEvent(sk);
                         keyIterator.remove();
                     }
-
                 }
                 bootSelector.selectNow();
             }

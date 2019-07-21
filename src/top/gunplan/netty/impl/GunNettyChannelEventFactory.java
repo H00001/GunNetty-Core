@@ -1,6 +1,7 @@
 package top.gunplan.netty.impl;
 
 import com.lmax.disruptor.EventFactory;
+import top.gunplan.netty.impl.eventloop.GunNettyChannelTransferImpl;
 
 import java.nio.channels.SocketChannel;
 

@@ -2,7 +2,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
-import top.gunplan.netty.property.GunNettyPropertyManager;
+import top.gunplan.netty.impl.propertys.base.GunNettyPropertyManager;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -21,10 +21,11 @@ import java.util.concurrent.Future;
 
 final class GunBootServerImpl implements GunBootServer {
 
+    private final GunNettyCoreThreadManager threadManager = GunNettySystemServices.CORE_THREAD_MANAGER;
 
     private volatile boolean runnable = false;
 
-    private volatile GunNettyObserve observe = new GunNettyDefaultObserveImpl();
+    private volatile GunNettyObserve observe;
 
     private volatile ExecutorService acceptExecutor;
 
@@ -33,6 +34,8 @@ final class GunBootServerImpl implements GunBootServer {
     private volatile GunNettyPipeline pipeline = new GunNettyPipelineImpl();
 
     GunBootServerImpl() {
+
+        observe = new GunNettyDefaultObserveImpl();
     }
 
 
@@ -67,13 +70,22 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public boolean initCheck() {
-        return this.acceptExecutor != null && requestExecutor != null && this.pipeline.check().getResult() != GunPipelineCheckResult.CheckResult.ERROR && !runnable;
+        if (acceptExecutor == null) {
+            throw new GunException(GunExceptionType.EXC0, "acceptExecutor is null");
+        } else if (requestExecutor == null) {
+            throw new GunException(GunExceptionType.EXC0, "requestExecutor is null");
+        } else if (this.pipeline.check().getResult() == GunPipelineCheckResult.CheckResult.ERROR) {
+            throw new GunException(GunExceptionType.EXC0, "handle or chain result is not normal");
+        } else if (runnable) {
+            throw new GunException(GunExceptionType.STATE_ERROR, "system has running");
+        }
+        return true;
     }
 
     @Override
     public int stop() throws InterruptedException {
         this.pipeline.destroy();
-        if (GunNettyCoreThreadManage.stopAllAndWait()) {
+        if (GunNettySystemServices.CORE_THREAD_MANAGER.stopAllAndWait()) {
             this.runnable = false;
         }
         return GunNettyWorkState.STOP.state;
@@ -84,12 +96,12 @@ final class GunBootServerImpl implements GunBootServer {
     public synchronized int sync() throws GunNettyCanNotBootException {
         final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
         if (!this.initCheck() || !propertyManager.initProperty()) {
-            throw new GunException(GunExceptionType.EXC0, "Handel, Execute pool not set or Server has been running");
+            throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
         }
         final GunNettyCoreProperty coreProperty = GunNettySystemServices.coreProperty();
-        if (this.observe.onBooting(coreProperty) && GunNettyCoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
+        if (this.observe.onBooting(coreProperty) && threadManager.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
             pipeline.init();
-            Future<Integer> executing = GunNettyCoreThreadManage.startAllAndWait();
+            Future<Integer> executing = threadManager.startAllAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
             if (isSync()) {

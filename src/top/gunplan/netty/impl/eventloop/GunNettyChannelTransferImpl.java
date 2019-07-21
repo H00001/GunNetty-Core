@@ -1,4 +1,6 @@
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.eventloop;
+
+import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
 import java.nio.channels.SocketChannel;
 
@@ -14,7 +16,7 @@ public class GunNettyChannelTransferImpl implements GunNettyChannelTransfer<Sock
     private long value;
     private SocketChannel channel;
 
-    public GunNettyChannelTransferImpl() {
+    GunNettyChannelTransferImpl() {
     }
 
     public GunNettyChannelTransferImpl(SocketChannel channel) {

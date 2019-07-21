@@ -11,10 +11,10 @@ import top.gunplan.utils.GunLogger;
  * @author dosdrtt
  */
 public class GunNettyDefaultObserveImpl implements GunNettyObserve {
-    private static final GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyDefaultObserveImpl.class);
 
     @Override
     public void onBooted(GunNettyCoreProperty property) {
+        final GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyDefaultObserveImpl.class);
         LOG.debug("A high performance net server and a reverse proxy server", "BOOTED");
         try {
             LOG.outputFile(property.getProfileName());
@@ -30,7 +30,7 @@ public class GunNettyDefaultObserveImpl implements GunNettyObserve {
 
     @Override
     public void onStop(GunNettyCoreProperty property) {
-        LOG.info("SERVER STOP");
+        GunNettyContext.logger.info("SERVER STOP");
     }
 
     @Override

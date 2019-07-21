@@ -15,7 +15,7 @@ GunBootServer server = GunBootServerFactory.getInstance();
         server.setExecuters(es0, es1).getPipeline().addFilter(new GunNettyStdFirstFilter()).
                 addFilter(new GunStdHttp2Filter()).
               //  addFilter(new GunHttpdHostCheck()).
-                setHandle(new GunStdHttpHandle("top.gunplan.netty.test"));
+                setHandle(new GunStdHttpHandle("top.gunplan.netty.test.BaseTest"));
         try {
             server.sync();
         } catch (Exception e) {

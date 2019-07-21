@@ -1,6 +1,7 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.common.GunNettyContext;
 
 
@@ -31,8 +32,9 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
 
     @Override
     public synchronized void run() {
+        startEventLoop();
         try {
-            while (bootSelector.select() > 0 && GunNettyCoreThreadManage.status) {
+            while (bootSelector.select() > 0 && running) {
                 Iterator keyIterator = bootSelector.selectedKeys().iterator();
                 while (keyIterator.hasNext()) {
                     SelectionKey sk = (SelectionKey) keyIterator.next();
@@ -49,7 +51,7 @@ public class GunCoreConnectionEventLoop extends AbstractGunCoreEventLoop {
     @Override
     public void dealEvent(SelectionKey key) throws IOException {
         final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-        GunNettyCoreThreadManage.push(socketChannel);
+        manager.transferThread().push(socketChannel);
         BaseGunNettyWorker worker = new GunAcceptWorker(dealHandle, socketChannel);
         if (worker.init() == 0) {
             this.deal.submit(worker);

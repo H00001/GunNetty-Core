@@ -14,7 +14,7 @@ public enum GunExceptionType {
     NULLPTR("Nullptr exception"), URGENCY("Urgency can incur boot fail"),
     REF("Reference exception"), READ_PROPERTY_ERROR("Read property error"),
     EXC0("Init error"), EXC1("Connection error"), EXC2("Use high level"),
-    OUT_POSITION("out of position"),
+    OUT_POSITION("Out of position"), STATE_ERROR("State error"),
     EXC3("None know exc3");
     private String info;
 
