@@ -12,7 +12,7 @@ public enum GunExceptionType {
      * types such as
      */
     NULLPTR("Nullptr exception"), URGENCY("Urgency can incur boot fail"),
-    REF("Reference exception"), READ_PROPERTY_ERROR("READ PROPERTY ERROR"),
+    REF("Reference exception"), READ_PROPERTY_ERROR("Read property error"),
     EXC0("Init error"), EXC1("Connection error"), EXC2("Use high level"),
     OUT_POSITION("out of position"),
     EXC3("None know exc3");

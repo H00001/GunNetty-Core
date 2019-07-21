@@ -9,7 +9,6 @@ import java.nio.channels.SelectionKey;
  * @author dosdrtt
  * @version 0.0.0.2
  */
-@FunctionalInterface
 public interface GunNettyChecker {
     /**
      * getKey
@@ -18,4 +17,20 @@ public interface GunNettyChecker {
      * @return SelectionKey
      */
     SelectionKey getKey();
+
+
+    byte[] source();
+
+
+    void setSource(byte[] src);
+
+
+    void setKey(SelectionKey key);
+
+
+    void attach(Object attach);
+
+
+    Object attach();
+
 }

@@ -11,7 +11,7 @@ import top.gunplan.utils.GunLogger;
  * @author dosdrtt
  */
 public class GunNettyDefaultObserveImpl implements GunNettyObserve {
-    private static final GunLogger LOG = GunNettyContext.logger;
+    private static final GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyDefaultObserveImpl.class);
 
     @Override
     public void onBooted(GunNettyCoreProperty property) {
@@ -21,7 +21,6 @@ public class GunNettyDefaultObserveImpl implements GunNettyObserve {
         } catch (Exception e) {
             LOG.error(e);
         }
-
     }
 
     @Override

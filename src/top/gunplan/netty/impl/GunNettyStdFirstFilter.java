@@ -23,7 +23,7 @@ import java.nio.channels.SocketChannel;
  */
 @GunNetFilterOrder
 public class GunNettyStdFirstFilter implements GunNettyFilter {
-    private static final GunLogger LOG = GunNettyContext.logger;
+    private static final GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyStdFirstFilter.class);
     private GunNettyCoreProperty coreProperty;
 
     public GunNettyStdFirstFilter() {

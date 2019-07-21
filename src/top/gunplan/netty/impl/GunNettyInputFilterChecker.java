@@ -1,6 +1,6 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.protocol.GunNetInputInterface;
+import top.gunplan.netty.protocol.GunNetInbound;
 
 import java.nio.channels.SelectionKey;
 
@@ -10,7 +10,7 @@ import java.nio.channels.SelectionKey;
  *
  * @author dosdrtt
  */
-public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInputInterface> {
+public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInbound> {
 
 
     GunNettyInputFilterChecker(final SelectionKey key) {
@@ -23,7 +23,7 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetI
         this.to.unSerialize(src);
     }
 
-    public GunNettyInputFilterChecker(byte[] src, GunNetInputInterface object) {
+    public GunNettyInputFilterChecker(byte[] src, GunNetInbound object) {
         super(null);
         this.src = src;
         this.to = object;

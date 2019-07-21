@@ -1,14 +1,17 @@
 package top.gunplan.netty.protocol;
 
 
-import top.gunplan.netty.impl.GunNetInputOutputInterface;
+import top.gunplan.netty.impl.GunNetBound;
 
 /**
+ * GunNetOutBound
+ *
  * @author dosdrtt
  */
-public interface GunNetOutputInterface extends GunNetInputOutputInterface {
+public interface GunNetOutBound extends GunNetBound {
     /**
      * serialize the protocol
+     *
      * @return bytes[] transfer to client
      */
     byte[] serialize();

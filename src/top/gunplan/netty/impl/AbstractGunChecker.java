@@ -8,16 +8,17 @@ import java.nio.channels.SelectionKey;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-abstract class AbstractGunChecker<Transfer extends GunNetInputOutputInterface> implements GunNettyChecker, GunNettyTranslator {
-
+abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNettyChecker, GunNettyTranslator {
 
     byte[] src;
+
+    Transfer to;
+    private Object attach;
 
     /**
      * translate
      *
-     *
-     * @see GunNetInputOutputInterface
+     * @see GunNetBound
      */
     @Override
     public abstract void translate();
@@ -28,15 +29,17 @@ abstract class AbstractGunChecker<Transfer extends GunNetInputOutputInterface> i
      *
      * @return bytes
      */
+    @Override
     public byte[] source() {
         return src;
     }
 
+    @Override
     public void setSource(byte[] src) {
         this.src = src;
     }
 
-    Transfer to;
+
     private volatile SelectionKey key;
 
     public Transfer getTransfer() {
@@ -53,6 +56,7 @@ abstract class AbstractGunChecker<Transfer extends GunNetInputOutputInterface> i
         return key;
     }
 
+    @Override
     public void setKey(SelectionKey key) {
         this.key = key;
     }
@@ -61,4 +65,13 @@ abstract class AbstractGunChecker<Transfer extends GunNetInputOutputInterface> i
         this.key = key;
     }
 
+    @Override
+    public Object attach() {
+        return attach;
+    }
+
+    @Override
+    public void attach(Object attach) {
+        this.attach = attach;
+    }
 }

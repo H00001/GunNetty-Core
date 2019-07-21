@@ -1,11 +1,9 @@
 package top.gunplan.netty;
 
-import top.gunplan.netty.protocol.GunNetInputInterface;
-import top.gunplan.netty.protocol.GunNetOutputInterface;
+import top.gunplan.netty.protocol.GunNetInbound;
+import top.gunplan.netty.protocol.GunNetOutBound;
 
-import java.io.IOException;
 import java.net.SocketAddress;
-import java.nio.channels.SocketChannel;
 
 /**
  * net handle is a handle interface used to deal event
@@ -16,21 +14,21 @@ public interface GunNettyHandle extends GunHandle {
     /**
      * dealDataEvent
      *
-     * @param request GunNetInputInterface
-     * @return GunNetOutputInterface
+     * @param request GunNetInbound
+     * @return GunNetOutBound
      * @throws GunException kinds of exception
      */
-    GunNetOutputInterface dealDataEvent(GunNetInputInterface request) throws GunException;
+    GunNetOutBound dealDataEvent(GunNetInbound request) throws GunException;
 
     /**
      * dealConnEvent connection event
      *
      * @param address request address information
-     * @return GunNetOutputInterface
+     * @return GunNetOutBound
      * @throws GunException kinds of exception
      * @throws GunException IO error
      */
-    GunNetOutputInterface dealConnEvent(SocketAddress address) throws GunException;
+    GunNetOutBound dealConnEvent(SocketAddress address) throws GunException;
 
     /**
      * when close event happened ,the method will be called

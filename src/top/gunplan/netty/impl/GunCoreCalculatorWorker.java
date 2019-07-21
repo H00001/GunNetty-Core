@@ -3,7 +3,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyPipeline;
-import top.gunplan.netty.protocol.GunNetOutputInterface;
+import top.gunplan.netty.protocol.GunNetOutBound;
 
 import java.nio.channels.SelectionKey;
 import java.util.ListIterator;
@@ -45,7 +45,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
                 return;
             }
         }
-        GunNetOutputInterface respObject = null;
+        GunNetOutBound respObject = null;
         try {
             respObject = this.pipeline.getHandel().dealDataEvent(gunFilterObj.getTransfer());
         } catch (GunChannelException e) {
