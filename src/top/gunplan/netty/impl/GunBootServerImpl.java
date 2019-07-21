@@ -35,12 +35,12 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile GunNettyPipeline pipeline = new GunNettyPipelineImpl();
 
+
+    private volatile GunNettyCoreProperty coreProperty;
+
     GunBootServerImpl() {
         observe = new GunNettyDefaultObserveImpl();
-        final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
-        if (!this.initCheck() || !propertyManager.initProperty()) {
-            throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
-        }
+
     }
 
 
@@ -99,7 +99,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public synchronized int sync() throws GunNettyCanNotBootException {
-        final GunNettyCoreProperty coreProperty = GunNettySystemServices.coreProperty();
+        baseParameterCheck();
+        coreProperty = GunNettySystemServices.coreProperty();
         try {
             threadManager.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort());
         } catch (IOException exceptio) {
@@ -128,6 +129,13 @@ final class GunBootServerImpl implements GunBootServer {
             }
         }
         return GunNettyWorkState.BOOT_ERROR_1.state;
+    }
+
+    private void baseParameterCheck() {
+        final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
+        if (!this.initCheck() || !propertyManager.initProperty()) {
+            throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
+        }
     }
 
 
