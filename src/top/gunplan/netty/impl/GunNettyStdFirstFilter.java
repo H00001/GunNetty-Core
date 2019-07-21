@@ -3,6 +3,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
+import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
@@ -27,7 +28,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
     private GunNettyCoreProperty coreProperty;
 
     public GunNettyStdFirstFilter() {
-        coreProperty = GunNettyPropertyManagerImpl.coreProperty();
+        coreProperty = GunNettySystemServices.coreProperty();
     }
 
 

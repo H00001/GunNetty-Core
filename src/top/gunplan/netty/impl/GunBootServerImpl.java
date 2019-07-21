@@ -2,7 +2,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
-
+import top.gunplan.netty.property.GunNettyPropertyManager;
 
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
@@ -82,10 +82,11 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public synchronized int sync() throws GunNettyCanNotBootException {
-        if (!this.initCheck() || !GunNettyPropertyManagerImpl.initProperty()) {
+        final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
+        if (!this.initCheck() || !propertyManager.initProperty()) {
             throw new GunException(GunExceptionType.EXC0, "Handel, Execute pool not set or Server has been running");
         }
-        final GunNettyCoreProperty coreProperty = GunNettyPropertyManagerImpl.coreProperty();
+        final GunNettyCoreProperty coreProperty = GunNettySystemServices.coreProperty();
         if (this.observe.onBooting(coreProperty) && GunNettyCoreThreadManage.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
             pipeline.init();
             Future<Integer> executing = GunNettyCoreThreadManage.startAllAndWait();

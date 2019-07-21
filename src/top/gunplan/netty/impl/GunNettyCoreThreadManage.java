@@ -2,10 +2,12 @@ package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.GunTimeExecute;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
+
 import top.gunplan.utils.GunLogger;
 
 import java.io.IOException;
@@ -22,7 +24,7 @@ import java.util.concurrent.*;
  * @apiNote 1.0.0.8
  */
 final class GunNettyCoreThreadManage {
-    private static final GunNettyCoreProperty CORE_PROPERTY = GunNettyPropertyManagerImpl.coreProperty();
+    private static final GunNettyCoreProperty CORE_PROPERTY = GunNettySystemServices.coreProperty();
     private static final int MANAGE_THREAD_NUM = CORE_PROPERTY.getMaxRunnningNum();
     private volatile static AbstractGunCoreEventLoop dealAccept = null;
     private volatile static AbstractGunCoreEventLoop[] dealData;

@@ -3,7 +3,7 @@ package top.gunplan.netty.impl.propertys;
 import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyStringUtil;
-import top.gunplan.netty.impl.GunNettyPropertyManagerImpl;
+
 import top.gunplan.utils.GunLogger;
 
 import java.lang.reflect.Field;
@@ -11,7 +11,6 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Map;
 import java.util.Objects;
-
 import static top.gunplan.utils.NumberUtil.isNumber;
 
 /**
@@ -50,7 +49,7 @@ public class GunGetPropertyFromBaseFile implements GunPropertyStrategy {
     private boolean settingProperties0(Map<String, GunProperty> propertyMap, String filename) {
         try {
             byte[] read = Files.readAllBytes(Paths.get(Objects.
-                    requireNonNull(GunNettyPropertyManagerImpl.class.getClassLoader().
+                    requireNonNull(this.getClass().getClassLoader().
                             getResource(filename)).toURI()));
             String[] properties = new String(read).split("\n");
             realAnalyPropertys(properties, propertyMap);
