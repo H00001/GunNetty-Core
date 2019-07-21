@@ -29,7 +29,19 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker {
     @Override
     void run();
 
+    /**
+     * register manager
+     *
+     * @param manager manager
+     * @param <V>     return
+     * @return return
+     */
     <V extends GunCoreEventLoop> V registerManager(GunNettyCoreThreadManager manager);
 
+    /**
+     * available channels
+     *
+     * @return Set<SelectionKey>
+     */
     Set<SelectionKey> availableSelectionKey();
 }

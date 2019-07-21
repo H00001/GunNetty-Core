@@ -4,7 +4,7 @@ import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
 
-import java.nio.channels.SelectableChannel;
+import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Set;
@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * GunNettyCoreThreadManager
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.e.1
  * @date 2019-07-21 15:18
  */
 public interface GunNettyCoreThreadManager {
@@ -54,7 +54,7 @@ public interface GunNettyCoreThreadManager {
     GunNettyTransfer<SocketChannel> transferThread();
 
 
-    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port);
+    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException;
 
 
     ManageState runState();

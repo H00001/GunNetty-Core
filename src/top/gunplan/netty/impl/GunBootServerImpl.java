@@ -1,9 +1,11 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
+import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.base.GunNettyPropertyManager;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -34,8 +36,11 @@ final class GunBootServerImpl implements GunBootServer {
     private volatile GunNettyPipeline pipeline = new GunNettyPipelineImpl();
 
     GunBootServerImpl() {
-
         observe = new GunNettyDefaultObserveImpl();
+        final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
+        if (!this.initCheck() || !propertyManager.initProperty()) {
+            throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
+        }
     }
 
 
@@ -94,12 +99,14 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public synchronized int sync() throws GunNettyCanNotBootException {
-        final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
-        if (!this.initCheck() || !propertyManager.initProperty()) {
-            throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
-        }
         final GunNettyCoreProperty coreProperty = GunNettySystemServices.coreProperty();
-        if (this.observe.onBooting(coreProperty) && threadManager.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort())) {
+        try {
+            threadManager.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort());
+        } catch (IOException exceptio) {
+            GunNettyContext.logger.setTAG(GunNettyCanNotBootException.class).urgency(exceptio.getMessage());
+            return GunNettyWorkState.BOOT_ERROR_1.state;
+        }
+        if (this.observe.onBooting(coreProperty)) {
             pipeline.init();
             Future<Integer> executing = threadManager.startAllAndWait();
             this.observe.onBooted(coreProperty);
@@ -110,6 +117,7 @@ final class GunBootServerImpl implements GunBootServer {
                     pipeline.destroy();
                     this.observe.onStatusChanged(GunNettyObserve.GunNettyChangeStatus.RUN_TO_STOP);
                     this.observe.onStop(coreProperty);
+                    threadManager.stopAllAndWait();
                     return val;
                 } catch (InterruptedException | ExecutionException e) {
                     throw new GunNettyCanNotBootException(e);

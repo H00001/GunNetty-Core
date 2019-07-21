@@ -24,7 +24,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * @version 0.0.0.2
  * @date 2019-06-09 22:10
  */
-public class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> {
+class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> {
 
     private final BlockingQueue<U> kQueue = new LinkedBlockingQueue<>();
 

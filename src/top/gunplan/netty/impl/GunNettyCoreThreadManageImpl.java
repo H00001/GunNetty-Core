@@ -7,7 +7,7 @@ import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.GunTimeExecute;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
-import top.gunplan.netty.impl.eventloop.GunNettyBaseTransferEventLoopImpl;
+import top.gunplan.netty.impl.eventloop.EventLoopFactory;
 import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
@@ -33,7 +33,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private volatile GunCoreEventLoop dealAccept;
     private final GunTimeExecute timeExecute = new GunNettyTimeExecuteImpl();
     private volatile GunCoreEventLoop[] dealData;
-    private final GunNettyTransfer<SocketChannel> transfer = new GunNettyBaseTransferEventLoopImpl<>().registerManager(this);
+    private final GunNettyTransfer<SocketChannel> transfer = EventLoopFactory.newGunNettyBaseTransfer().registerManager(this);
 
 
     private final ScheduledExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
@@ -51,21 +51,14 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) {
+    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException {
         this.port = port;
         CORE_PROPERTY = GunNettySystemServices.coreProperty();
         initPoolAndEventLoop();
-
-
         timeExecute.registerWorker(pipeline.getTimer());
-        try {
-            dealAccept = new GunCoreConnectionEventLoop(acceptExecutor, pipeline, port).registerManager(this);
-            for (int i = 0; i < dealData.length; i++) {
-                dealData[i] = new GunCoreDataEventLoop(dataExecutor, pipeline).registerManager(this);
-            }
-        } catch (IOException e) {
-            LOG.error(e);
-            return false;
+        dealAccept = new GunCoreConnectionEventLoop(acceptExecutor, pipeline, port).registerManager(this);
+        for (int i = 0; i < dealData.length; i++) {
+            dealData[i] = new GunCoreDataEventLoop(dataExecutor, pipeline).registerManager(this);
         }
         return true;
     }
@@ -89,13 +82,16 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     @Override
     public Future<Integer> startAllAndWait() {
+        status = ManageState.BOOTING;
         LOG.info("Server running on :" + port);
         for (GunCoreEventLoop dat : dealData) {
             SERVER_POOL.submit(dat);
         }
         TRANSFER_POOL.submit(transfer);
         TIMER_POOL.scheduleAtFixedRate(timeExecute, CORE_PROPERTY.initWait(), CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
-        return ACCEPT_POOL.submit(dealAccept, 1);
+        var frature = ACCEPT_POOL.submit(dealAccept, 1);
+        status = ManageState.RUNNING;
+        return frature;
     }
 
     @Override
@@ -108,6 +104,9 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         status = ManageState.STOPPING;
         dealAccept.stopEventLoop();
         transfer.stopEventLoop();
+        for (GunCoreEventLoop dealDatum : dealData) {
+            dealDatum.stopEventLoop();
+        }
         SERVER_POOL.shutdown();
         ACCEPT_POOL.shutdown();
         TIMER_POOL.shutdown();
