@@ -1,13 +1,14 @@
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.impl.GunNettySelectionChannelRegister;
 
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.util.Iterator;
-
+import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.LockSupport;
@@ -17,25 +18,23 @@ import java.util.concurrent.locks.LockSupport;
  *
  * @author dosdrtt
  */
-public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop implements GunNettySelectionChannelRegister<SelectableChannel> {
-    private final GunNettyPipeline pipeline;
+class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunNettySelectionChannelRegister<SelectableChannel>, GunDataEventLoop {
     private AtomicInteger listenSize = new AtomicInteger(0);
-    private volatile Thread nowRun = null;
+    private final int timeWait;
 
+
+    GunCoreDataEventLoopImpl() {
+        timeWait = coreProperty.getClientWaitTime();
+    }
 
     public void continueLoop() {
-        LockSupport.unpark(nowRun);
+        LockSupport.unpark(workThread);
     }
 
-    void incrAndContinueLoop() {
+    @Override
+    public void incrAndContinueLoop() {
         listenSize.incrementAndGet();
-        LockSupport.unpark(nowRun);
-    }
-
-    GunCoreDataEventLoop(ExecutorService deal, final GunNettyPipeline pileline) throws IOException {
-        super(deal);
-        this.pipeline = pileline;
-
+        continueLoop();
     }
 
     @Override
@@ -45,19 +44,14 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop implements Gu
         return key;
     }
 
-
     @Override
-    public synchronized void run() {
-        startEventLoop();
-        try {
-            nowRun = Thread.currentThread();
-            for (; running; ) {
-
-                if (listenSize.get() == 0) {
-                    LockSupport.park();
-                }
-                assert coreProperty != null;
-                int val = coreProperty.getClientWaitTime() == -1 ? bootSelector.select() : bootSelector.select(coreProperty.getClientWaitTime());
+    public synchronized void loop() {
+        for (; running; ) {
+            if (listenSize.get() == 0) {
+                LockSupport.park();
+            }
+            try {
+                int val = timeWait == -1 ? bootSelector.select() : bootSelector.select(timeWait);
                 if (val > 0) {
                     Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
                     while (keyIterator.hasNext()) {
@@ -67,11 +61,16 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop implements Gu
                     }
                 }
                 bootSelector.selectNow();
+            } catch (IOException exp) {
+                throw new GunException(exp);
             }
-            bootSelector.close();
-        } catch (IOException exp) {
-            throw new GunException(exp);
         }
+        try {
+            bootSelector.close();
+        } catch (IOException e) {
+            throw new GunException(e);
+        }
+
     }
 
 
@@ -82,4 +81,17 @@ public class GunCoreDataEventLoop extends AbstractGunCoreEventLoop implements Gu
         this.deal.submit(new GunCoreCalculatorWorker(pipeline, key, listenSize));
     }
 
+    @Override
+    public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
+        super.init(deal, pipeline);
+
+
+    }
+
+
+    @Override
+    public Set<SelectionKey> availableSelectionKey() {
+        bootSelector.wakeup();
+        return bootSelector.keys();
+    }
 }

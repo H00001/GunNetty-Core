@@ -16,13 +16,13 @@ public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNet
      * @param outputObject GunNetOutBound
      * @param key          SelectionKey
      */
-    GunNettyOutputFilterChecker(GunNetOutBound outputObject, SelectionKey key) {
+    public GunNettyOutputFilterChecker(GunNetOutBound outputObject, SelectionKey key) {
         super(key);
         this.to = outputObject;
     }
 
 
-    GunNettyOutputFilterChecker(GunNetOutBound outputObject) {
+    public GunNettyOutputFilterChecker(GunNetOutBound outputObject) {
         super(null);
         this.to = outputObject;
     }

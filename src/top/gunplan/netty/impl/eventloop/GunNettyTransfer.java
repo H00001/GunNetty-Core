@@ -4,8 +4,6 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunCoreEventLoop;
 
 import java.nio.channels.SelectableChannel;
-import java.nio.channels.SocketChannel;
-import java.util.Queue;
 
 /**
  * GunNettyTransfer
@@ -25,5 +23,6 @@ public interface GunNettyTransfer<U extends SelectableChannel> extends GunCoreEv
     /**
      * loop the queue
      */
+    @Override
     void loop();
 }

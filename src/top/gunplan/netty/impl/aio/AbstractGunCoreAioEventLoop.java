@@ -1,10 +1,8 @@
 package top.gunplan.netty.impl.aio;
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.impl.AbstractGunCoreEventLoop;
 
 import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 
 /**
  * AbstractGunCoreAioEventLoop

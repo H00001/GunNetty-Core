@@ -13,7 +13,7 @@ import java.nio.channels.SelectionKey;
 public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInbound> {
 
 
-    GunNettyInputFilterChecker(final SelectionKey key) {
+    public GunNettyInputFilterChecker(final SelectionKey key) {
         super(key);
     }
 

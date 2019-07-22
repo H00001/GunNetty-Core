@@ -1,11 +1,7 @@
 package top.gunplan.netty.impl.eventloop;
 
 
-import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.common.GunNettyContext;
-import top.gunplan.netty.impl.GunCoreDataEventLoop;
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 import top.gunplan.netty.impl.GunNettySelectionChannelRegister;
 
 import java.io.IOException;
@@ -13,7 +9,6 @@ import java.net.SocketException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
@@ -45,7 +40,7 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
         for (; isRunning(); ) {
             try {
                 U socketChannel = kQueue.take();
-                GunNettySelectionChannelRegister<SelectableChannel> register = ((GunCoreDataEventLoop) manager.dealChannelThread());
+                GunNettySelectionChannelRegister<SelectableChannel> register = ((GunCoreDataEventLoopImpl) manager.dealChannelThread());
                 socketChannel.configureBlocking(false);
                 final SelectionKey key = register.registerReadKey(socketChannel);
                 dealEvent(key);

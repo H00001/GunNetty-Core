@@ -7,7 +7,6 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.common.GunNettyThreadFactory;
-import top.gunplan.netty.impl.GunCoreDataEventLoop;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
 import java.nio.channels.SelectionKey;
@@ -26,7 +25,7 @@ public class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> ext
     @Override
     public void onEvent(GunNettyChannelTransfer<SocketChannel> event, long sequence, boolean endOfBatch) throws Exception {
         SocketChannel socketChannel = event.getChannel();
-        GunCoreDataEventLoop selectionThread = ((GunCoreDataEventLoop) GunNettySystemServices.CORE_THREAD_MANAGER.dealChannelThread());
+        GunCoreDataEventLoopImpl selectionThread = ((GunCoreDataEventLoopImpl) GunNettySystemServices.CORE_THREAD_MANAGER.dealChannelThread());
         socketChannel.socket().setTcpNoDelay(true);
         socketChannel.configureBlocking(false);
         final SelectionKey key = selectionThread.registerReadKey(socketChannel);

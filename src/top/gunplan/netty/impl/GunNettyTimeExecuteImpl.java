@@ -9,13 +9,14 @@ import java.util.Set;
 
 
 /**
+ * GunNettyTimeExecuteImpl
+ *
  * @author dosdrtt
  */
 public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute {
     @Override
     public void run() {
         sum.increment();
-
         final Set<SelectionKey> keys = GunNettySystemServices.CORE_THREAD_MANAGER.availableChannel(sum.longValue());
         works.parallelStream().forEach(k -> {
             if (k.ifKeyEmptyExec() || keys.size() != 0) {

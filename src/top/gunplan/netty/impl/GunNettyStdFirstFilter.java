@@ -1,11 +1,12 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunChannelException;
-import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunFunctionMappingInterFace;
+import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.GunBytesUtil;
 import top.gunplan.utils.GunLogger;
@@ -74,7 +75,7 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
                     filterDto.getKey().cancel();
                 } else if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.KEEP_ALIVE) {
                     key.interestOps(SelectionKey.OP_READ);
-                    ((GunCoreDataEventLoop) key.attachment()).incrAndContinueLoop();
+                    ((GunDataEventLoop) key.attachment()).incrAndContinueLoop();
 
                 }
                 return DealResult.NEXT;

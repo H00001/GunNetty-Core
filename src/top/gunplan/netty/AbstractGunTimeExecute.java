@@ -1,6 +1,7 @@
 package top.gunplan.netty;
 
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.LongAdder;
 
 
@@ -9,7 +10,7 @@ import java.util.concurrent.atomic.LongAdder;
  * @date 2019/05/30
  */
 public abstract class AbstractGunTimeExecute implements GunTimeExecute {
-    protected volatile List<GunNettyTimer> works = null;
+    protected volatile List<GunNettyTimer> works = new CopyOnWriteArrayList<>();
     protected volatile LongAdder sum = new LongAdder();
 
 
@@ -20,14 +21,20 @@ public abstract class AbstractGunTimeExecute implements GunTimeExecute {
     public abstract void run();
 
     @Override
-    public void registerWorker(List<GunNettyTimer> works) {
-        this.works = works;
+    public GunTimeExecute registerWorker(List<GunNettyTimer> works) {
+        this.works.addAll(works);
+        return this;
     }
 
     @Override
-    public void addWorker(GunNettyTimer work) {
-        assert work != null;
+    public GunTimeExecute registerWorker(GunNettyTimer work) {
         this.works.add(work);
+        return this;
     }
 
+    @Override
+    public GunTimeExecute eraserWorker(GunNettyTimer work) {
+        this.works.remove(work);
+        return this;
+    }
 }

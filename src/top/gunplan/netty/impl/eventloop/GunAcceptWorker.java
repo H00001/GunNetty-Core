@@ -1,9 +1,10 @@
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
 import top.gunplan.netty.protocol.GunNetOutBound;
 
 import java.io.IOException;
@@ -13,7 +14,7 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  * @date
  */
-final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
+public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
     private final SocketChannel channel;
 
     GunAcceptWorker(final GunNettyPipeline l, final SocketChannel channel) {
@@ -23,7 +24,7 @@ final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
 
 
     @Override
-    public synchronized void run() {
+    public void work() {
         for (GunNettyFilter filter : pipeline.getFilters()) {
             if (!filter.doConnFilter(channel)) {
                 return;

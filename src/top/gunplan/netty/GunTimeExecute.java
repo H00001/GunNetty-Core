@@ -1,5 +1,7 @@
 package top.gunplan.netty;
 
+import top.gunplan.netty.impl.GunNettyTimeExecuteImpl;
+
 import java.util.List;
 
 /**
@@ -14,18 +16,26 @@ public interface GunTimeExecute extends Runnable {
     @Override
     void run();
 
+    static GunTimeExecute instance() {
+        return new GunNettyTimeExecuteImpl();
+    }
+
     /**
      * register Worker
      *
-     * @param works add time works
+     * @param works list of work
      */
-    void registerWorker(List<GunNettyTimer> works);
-
+    GunTimeExecute registerWorker(List<GunNettyTimer> works);
 
     /**
-     * add work
+     * register work
      *
      * @param work work
      */
-    void addWorker(GunNettyTimer work);
+    GunTimeExecute registerWorker(GunNettyTimer work);
+
+    /**
+     * delete worker form time execute
+     */
+    GunTimeExecute eraserWorker(GunNettyTimer work);
 }

@@ -1,4 +1,4 @@
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunHandle;
 
@@ -14,7 +14,10 @@ interface GunNettyWorkerInterface extends Runnable, GunHandle {
      * run
      */
     @Override
-    void run();
+    default void run() {
+        work();
+    }
 
+    void work();
 
 }

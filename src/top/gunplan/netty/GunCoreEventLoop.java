@@ -3,8 +3,9 @@ package top.gunplan.netty;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 import top.gunplan.netty.impl.eventloop.GunNettyVariableWorker;
 
+import java.io.IOException;
 import java.nio.channels.SelectionKey;
-import java.util.Set;
+import java.util.concurrent.ExecutorService;
 
 /**
  * GunCoreEventLoop event loop deal class
@@ -27,7 +28,13 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker {
      * running on new thread not main
      */
     @Override
-    void run();
+    default void run() {
+        startEventLoop();
+        loop();
+    }
+
+
+    void loop();
 
     /**
      * register manager
@@ -41,7 +48,8 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker {
     /**
      * available channels
      *
-     * @return Set<SelectionKey>
      */
-    Set<SelectionKey> availableSelectionKey();
+
+
+    void init(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
 }
