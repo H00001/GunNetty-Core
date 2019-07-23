@@ -7,7 +7,7 @@ import java.util.Map;
 /**
  * GunPropertyStrategy
  * <p>
- * this interface is only for getProperty
+ * this interface is only for acquireProperty
  * as for how to give them to property value
  * ti should by manage
  *

@@ -11,12 +11,12 @@ public final class GunNettySystemServices {
 
 
     public static GunNettyCoreProperty coreProperty() {
-        return PROPERTY_MANAGER.getProperty(GunNettyCoreProperty.class);
+        return PROPERTY_MANAGER.acquireProperty(GunNettyCoreProperty.class);
     }
 
     public static final GunNettyCoreThreadManager CORE_THREAD_MANAGER = GunNettyCoreThreadManager.initInstance();
 
     public static GunLogProperty logProperty() {
-        return PROPERTY_MANAGER.getProperty(GunLogProperty.class);
+        return PROPERTY_MANAGER.acquireProperty(GunLogProperty.class);
     }
 }

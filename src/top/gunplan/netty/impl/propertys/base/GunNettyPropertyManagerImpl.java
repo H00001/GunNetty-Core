@@ -53,7 +53,7 @@ final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
 
 
     @Override
-    public <T extends GunProperty> T getProperty(Class<T> clazz) {
+    public <T extends GunProperty> T acquireProperty(Class<T> clazz) {
         GunPropertyMap mmap = clazz.getAnnotation(GunPropertyMap.class);
         final GunProperty property = propertiesMap.get(mmap.name());
         return clazz.cast(property);
