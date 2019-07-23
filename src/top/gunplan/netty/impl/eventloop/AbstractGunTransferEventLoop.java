@@ -26,7 +26,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
     }
 
     SelectionKey registerReadChannelToDataEventLoop(SocketChannel channel) throws IOException {
-        GunDataEventLoop register = manager.dealChannelEventLoop();
+        GunDataEventLoop<SocketChannel> register = manager.dealChannelEventLoop();
         return register.registerReadKey(channel);
     }
 
@@ -39,7 +39,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
 
     @SuppressWarnings("unchecked")
     @Override
-    public GunNettyTransfer registerManager(GunNettyCoreThreadManager manager) {
+    public GunNettyTransfer<U> registerManager(GunNettyCoreThreadManager manager) {
         this.manager = manager;
         return this;
     }

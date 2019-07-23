@@ -19,7 +19,7 @@ import java.util.concurrent.locks.LockSupport;
  *
  * @author dosdrtt
  */
-class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDataEventLoop {
+class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDataEventLoop<SocketChannel> {
     private AtomicInteger listenSize = new AtomicInteger(0);
     private final int timeWait;
 
@@ -39,7 +39,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     }
 
     @Override
-    public SelectionKey registerReadKey(SelectableChannel channel) throws IOException {
+    public SelectionKey registerReadKey(SocketChannel channel) throws IOException {
         final SelectionKey key = channel.register(this.bootSelector, SelectionKey.OP_READ, this);
         this.incrAndContinueLoop();
         return key;

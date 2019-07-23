@@ -26,9 +26,9 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final static GunLogger LOG = GunNettyContext.logger;
     private volatile GunNettyCoreProperty CORE_PROPERTY;
     private volatile int MANAGE_THREAD_NUM;
-    private volatile GunCoreEventLoop dealAccept;
+    private volatile GunConnEventLoop dealAccept;
     private final GunTimeExecute timeExecute = new GunNettyTimeExecuteImpl();
-    private volatile GunDataEventLoop[] dealData;
+    private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private final GunNettyTransfer<SocketChannel> transfer = EventLoopFactory.newGunNettyBaseTransfer().registerManager(this);
 
 
@@ -71,7 +71,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     @Override
-    public GunCoreEventLoop dealChannelEventLoop() {
+    public GunDataEventLoop<SocketChannel> dealChannelEventLoop() {
         return dealData[selectSelector++ & (MANAGE_THREAD_NUM - 1)];
     }
 

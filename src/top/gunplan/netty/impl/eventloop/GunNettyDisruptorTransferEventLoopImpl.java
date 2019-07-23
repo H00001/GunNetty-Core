@@ -5,11 +5,9 @@ import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
-import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.common.GunNettyThreadFactory;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 /**

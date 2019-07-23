@@ -35,7 +35,7 @@ public interface GunNettyCoreThreadManager {
      *
      * @return GunDataEventLoop
      */
-    GunDataEventLoop dealChannelEventLoop();
+    GunDataEventLoop<SocketChannel> dealChannelEventLoop();
 
 
     boolean stopAllAndWait() throws InterruptedException;
