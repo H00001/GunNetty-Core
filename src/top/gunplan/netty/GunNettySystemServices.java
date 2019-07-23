@@ -1,6 +1,5 @@
 package top.gunplan.netty;
 
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.base.GunNettyPropertyManager;
@@ -14,7 +13,7 @@ public final class GunNettySystemServices {
         return PROPERTY_MANAGER.acquireProperty(GunNettyCoreProperty.class);
     }
 
-    public static final GunNettyCoreThreadManager CORE_THREAD_MANAGER = GunNettyCoreThreadManager.initInstance();
+    //  public static final GunNettyCoreThreadManager CORE_THREAD_MANAGER = GunNettyCoreThreadManager.initInstance();
 
     public static GunLogProperty logProperty() {
         return PROPERTY_MANAGER.acquireProperty(GunLogProperty.class);

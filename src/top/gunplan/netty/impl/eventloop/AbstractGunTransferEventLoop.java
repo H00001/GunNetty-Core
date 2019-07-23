@@ -38,7 +38,6 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
 
     }
 
-    @SuppressWarnings("unchecked")
     @Override
     public GunNettyTransfer<U> registerManager(GunNettyCoreThreadManager manager) {
         this.manager = manager;

@@ -4,7 +4,6 @@ import top.gunplan.netty.GunCoreEventLoop;
 
 import java.io.IOException;
 import java.nio.channels.Channel;
-import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.util.Set;
 

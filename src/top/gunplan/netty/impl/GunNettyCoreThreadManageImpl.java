@@ -7,7 +7,10 @@ import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.GunTimeExecute;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
-import top.gunplan.netty.impl.eventloop.*;
+import top.gunplan.netty.impl.eventloop.EventLoopFactory;
+import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
+import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
+import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.GunLogger;
 
@@ -24,12 +27,12 @@ import java.util.concurrent.*;
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final static GunLogger LOG = GunNettyContext.logger;
-    private volatile GunNettyCoreProperty CORE_PROPERTY;
+    private final GunNettyCoreProperty coreProperty;
     private volatile int MANAGE_THREAD_NUM;
     private volatile GunConnEventLoop dealAccept;
     private final GunTimeExecute timeExecute = new GunNettyTimeExecuteImpl();
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
-    private final GunNettyTransfer<SocketChannel> transfer = EventLoopFactory.newGunNettyBaseTransfer().registerManager(this);
+    private final GunNettyTransfer<SocketChannel> transfer = (GunNettyTransfer<SocketChannel>) EventLoopFactory.newGunNettyBaseTransfer().registerManager(this);
 
 
     private final ScheduledExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
@@ -43,14 +46,14 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     GunNettyCoreThreadManageImpl() {
-
+        this.coreProperty = GunNettySystemServices.coreProperty();
+        ;
     }
 
     @SuppressWarnings("unchecked")
     @Override
     public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException {
         this.port = port;
-        CORE_PROPERTY = GunNettySystemServices.coreProperty();
         initPoolAndEventLoop();
         timeExecute.registerWorker(pipeline.getTimer());
         dealData = EventLoopFactory.buildDataEventLoop(MANAGE_THREAD_NUM).with(dataExecutor, pipeline).andRegister(this).build();
@@ -59,7 +62,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     private void initPoolAndEventLoop() {
-        MANAGE_THREAD_NUM = CORE_PROPERTY.getMaxRunnningNum();
+        MANAGE_THREAD_NUM = coreProperty.getMaxRunnningNum();
         SERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
     }
 
@@ -82,7 +85,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
             SERVER_POOL.submit(dat);
         }
         TRANSFER_POOL.submit(transfer);
-        TIMER_POOL.scheduleAtFixedRate(timeExecute, CORE_PROPERTY.initWait(), CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
+        TIMER_POOL.scheduleAtFixedRate(timeExecute, coreProperty.initWait(), coreProperty.minInterval(), TimeUnit.MILLISECONDS);
         var future = ACCEPT_POOL.submit(dealAccept, 1);
         status = ManageState.RUNNING;
         return future;

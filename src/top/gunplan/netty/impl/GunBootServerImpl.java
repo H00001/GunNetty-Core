@@ -23,7 +23,7 @@ import java.util.concurrent.Future;
 
 final class GunBootServerImpl implements GunBootServer {
 
-    private final GunNettyCoreThreadManager threadManager = GunNettySystemServices.CORE_THREAD_MANAGER;
+    private volatile GunNettyCoreThreadManager threadManager;
 
     private volatile boolean runnable = false;
 
@@ -90,7 +90,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public int stop() throws InterruptedException {
         this.pipeline.destroy();
-        if (GunNettySystemServices.CORE_THREAD_MANAGER.stopAllAndWait()) {
+        if (threadManager.stopAllAndWait()) {
             this.runnable = false;
         }
         return GunNettyWorkState.STOP.state;

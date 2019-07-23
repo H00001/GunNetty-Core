@@ -1,6 +1,6 @@
 package top.gunplan.netty;
 
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.GunNettyManagerGetter;
 import top.gunplan.netty.impl.eventloop.GunNettyVariableWorker;
 
 import java.io.IOException;
@@ -14,7 +14,8 @@ import java.util.concurrent.ExecutorService;
  *
  * @author dosdrtt
  */
-public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker {
+
+public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunNettyManagerGetter<GunCoreEventLoop> {
     /**
      * when the event come ,the method will be call back
      *
@@ -36,20 +37,9 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker {
 
     void loop();
 
-    /**
-     * register manager
-     *
-     * @param manager manager
-     * @param <V>     return
-     * @return return
-     */
-    <V extends GunCoreEventLoop> V registerManager(GunNettyCoreThreadManager manager);
 
     /**
      * available channels
-     *
      */
-
-
     void init(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
 }

@@ -1,7 +1,6 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.AbstractGunTimeExecute;
-import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.GunNettyTimer;
 
 import java.nio.channels.SelectionKey;
@@ -13,17 +12,25 @@ import java.util.Set;
  *
  * @author dosdrtt
  */
-public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute {
+public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute implements GunNettyManagerGetter<Void> {
+    private volatile GunNettyCoreThreadManager manager;
+
     @Override
     public void run() {
         sum.increment();
-        final Set<SelectionKey> keys = GunNettySystemServices.CORE_THREAD_MANAGER.availableChannel(sum.longValue());
+        final Set<SelectionKey> keys = manager.availableChannel(sum.longValue());
         works.parallelStream().forEach(k -> {
             if (k.ifKeyEmptyExec() || keys.size() != 0) {
                 new GunTimeWorkFunc(keys, sum.longValue()).execute(k);
             }
         });
 
+    }
+
+    @Override
+    public Void registerManager(GunNettyCoreThreadManager manager) {
+        this.manager = manager;
+        return null;
     }
 
     /**

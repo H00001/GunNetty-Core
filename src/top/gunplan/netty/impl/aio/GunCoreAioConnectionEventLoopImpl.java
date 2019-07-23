@@ -49,10 +49,6 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
 
     }
 
-    @Override
-    public <V extends GunCoreEventLoop> V registerManager(GunNettyCoreThreadManager manager) {
-        return null;
-    }
 
     @Override
     public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
@@ -73,5 +69,10 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
     @Override
     public void stopEventLoop() {
 
+    }
+
+    @Override
+    public GunCoreEventLoop registerManager(GunNettyCoreThreadManager manager) {
+        return null;
     }
 }

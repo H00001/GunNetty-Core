@@ -18,7 +18,7 @@ import java.util.concurrent.ExecutorService;
  * @see GunCoreDataEventLoopImpl
  * @see GunCoreConnectionEventLoopImpl
  */
-public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEventLoop {
+public abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     volatile ExecutorService deal;
     volatile Selector bootSelector;
     volatile GunNettyPipeline pipeline;
@@ -38,9 +38,8 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
         bootSelector = Selector.open();
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public GunCoreEventLoop registerManager(GunNettyCoreThreadManager manager) {
+    public AbstractGunCoreEventLoop registerManager(GunNettyCoreThreadManager manager) {
         this.manager = manager;
         return this;
     }
