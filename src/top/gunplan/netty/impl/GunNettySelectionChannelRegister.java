@@ -12,6 +12,7 @@ import java.nio.channels.SelectionKey;
  * @date 2019-07-20 23:18
  */
 
+@Deprecated
 @FunctionalInterface
 public interface GunNettySelectionChannelRegister<Channel extends SelectableChannel> {
     SelectionKey registerReadKey(Channel channel) throws IOException;

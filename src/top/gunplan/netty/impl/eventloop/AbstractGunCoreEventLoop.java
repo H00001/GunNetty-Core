@@ -45,11 +45,6 @@ public abstract class AbstractGunCoreEventLoop implements Runnable, GunCoreEvent
         return this;
     }
 
-    /**
-     * get all of avaliable keys
-     * async invoke
-     */
-
 
     /**
      * dealEvent

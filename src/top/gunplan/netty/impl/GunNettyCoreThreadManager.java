@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
 
 import java.io.IOException;
@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * GunNettyCoreThreadManager
  *
  * @author frank albert
- * @version 0.0.e.1
+ * @version 0.0.f.1
  * @date 2019-07-21 15:18
  */
 public interface GunNettyCoreThreadManager {
@@ -29,12 +29,13 @@ public interface GunNettyCoreThreadManager {
     }
 
     /**
-     * dealChannelThread
+     * dealChannelEventLoop
      * is data thread
+     * who can deal channel event? only Data EventLoop
      *
-     * @return GunCoreEventLoop
+     * @return GunDataEventLoop
      */
-    GunCoreEventLoop dealChannelThread();
+    GunDataEventLoop dealChannelEventLoop();
 
 
     boolean stopAllAndWait() throws InterruptedException;

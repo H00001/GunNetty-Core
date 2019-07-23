@@ -7,6 +7,7 @@ import top.gunplan.netty.impl.GunNettySelectionChannelRegister;
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.Set;
 import java.util.concurrent.ExecutorService;
@@ -18,7 +19,7 @@ import java.util.concurrent.locks.LockSupport;
  *
  * @author dosdrtt
  */
-class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunNettySelectionChannelRegister<SelectableChannel>, GunDataEventLoop {
+class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDataEventLoop {
     private AtomicInteger listenSize = new AtomicInteger(0);
     private final int timeWait;
 
@@ -44,6 +45,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunNe
         return key;
     }
 
+
     @Override
     public synchronized void loop() {
         for (; running; ) {
@@ -62,15 +64,19 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunNe
                 }
                 bootSelector.selectNow();
             } catch (IOException exp) {
-                throw new GunException(exp);
+                throwGunException(exp);
             }
         }
         try {
             bootSelector.close();
         } catch (IOException e) {
-            throw new GunException(e);
+            throwGunException(e);
         }
 
+    }
+
+    private void throwGunException(IOException e) throws GunException {
+        throw new GunException(e);
     }
 
 

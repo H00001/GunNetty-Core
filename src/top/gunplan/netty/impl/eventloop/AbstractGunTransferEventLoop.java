@@ -5,6 +5,8 @@ import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 
 import java.io.IOException;
 import java.nio.channels.SelectableChannel;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -16,13 +18,24 @@ import java.util.concurrent.ExecutorService;
  */
 public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> implements GunNettyTransfer<U> {
     private boolean running = false;
-    volatile GunNettyCoreThreadManager manager;
+    private volatile GunNettyCoreThreadManager manager;
 
     @Override
     public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
 
     }
 
+    SelectionKey registerReadChannelToDataEventLoop(SocketChannel channel) throws IOException {
+        GunDataEventLoop register = manager.dealChannelEventLoop();
+        return register.registerReadKey(channel);
+    }
+
+    @Override
+    public void dealEvent(SelectionKey socketChannel) throws IOException {
+        SocketChannel channel = ((SocketChannel) socketChannel.channel());
+        channel.socket().setTcpNoDelay(true);
+        channel.configureBlocking(false);
+    }
 
     @SuppressWarnings("unchecked")
     @Override

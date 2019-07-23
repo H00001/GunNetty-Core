@@ -5,7 +5,6 @@ import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.GunNettySelectionChannelRegister;
 
 import java.io.IOException;
-import java.net.SocketException;
 import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
@@ -25,12 +24,6 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
 
 
     @Override
-    public void dealEvent(SelectionKey socketChannel) throws SocketException {
-        ((SocketChannel) socketChannel.channel()).socket().setTcpNoDelay(true);
-    }
-
-
-    @Override
     public void push(U u) {
         kQueue.offer(u);
     }
@@ -40,10 +33,7 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
         for (; isRunning(); ) {
             try {
                 U socketChannel = kQueue.take();
-                GunNettySelectionChannelRegister<SelectableChannel> register = ((GunCoreDataEventLoopImpl) manager.dealChannelThread());
-                socketChannel.configureBlocking(false);
-                final SelectionKey key = register.registerReadKey(socketChannel);
-                dealEvent(key);
+                dealEvent(registerReadChannelToDataEventLoop(socketChannel));
             } catch (InterruptedException | IOException e) {
                 GunNettyContext.logger.error(e);
             }

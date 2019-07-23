@@ -12,8 +12,15 @@ import top.gunplan.netty.impl.GunNettyChannelTransfer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
+/**
+ * GunNettyDisruptorTransferEventLoopImpl
+ *
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-07-23 08:57
+ */
 
-public class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<SocketChannel>> {
+class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<U>> {
     private final Disruptor<GunNettyChannelTransferImpl> disruptor;
     private int bufferSize = 1024;
 
@@ -22,15 +29,6 @@ public class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> ext
         disruptor.start();
     }
 
-    @Override
-    public void onEvent(GunNettyChannelTransfer<SocketChannel> event, long sequence, boolean endOfBatch) throws Exception {
-        SocketChannel socketChannel = event.getChannel();
-        GunCoreDataEventLoopImpl selectionThread = ((GunCoreDataEventLoopImpl) GunNettySystemServices.CORE_THREAD_MANAGER.dealChannelThread());
-        socketChannel.socket().setTcpNoDelay(true);
-        socketChannel.configureBlocking(false);
-        final SelectionKey key = selectionThread.registerReadKey(socketChannel);
-        dealEvent(key);
-    }
 
     private void publishChannel(U channel) {
         RingBuffer<GunNettyChannelTransferImpl> ringBuffer = disruptor.getRingBuffer();
@@ -53,14 +51,15 @@ public class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> ext
         disruptor.start();
     }
 
-    @Override
-    public void dealEvent(SelectionKey key) throws Exception {
-
-    }
-
 
     @Override
     public void run() {
         loop();
+    }
+
+    @Override
+    public void onEvent(GunNettyChannelTransfer<U> event, long l, boolean b) throws Exception {
+        final U socketChannel = event.getChannel();
+        dealEvent(registerReadChannelToDataEventLoop(socketChannel));
     }
 }

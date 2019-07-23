@@ -2,6 +2,8 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
 
+import java.io.IOException;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.util.Set;
 
@@ -9,7 +11,7 @@ import java.util.Set;
  * GunDataEventLoop
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-07-22 23:29
  */
 public interface GunDataEventLoop extends GunCoreEventLoop {
@@ -28,4 +30,7 @@ public interface GunDataEventLoop extends GunCoreEventLoop {
      */
 
     void incrAndContinueLoop();
+
+
+    SelectionKey registerReadKey(SelectableChannel channel) throws IOException;
 }

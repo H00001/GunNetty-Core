@@ -71,7 +71,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     @Override
-    public GunCoreEventLoop dealChannelThread() {
+    public GunCoreEventLoop dealChannelEventLoop() {
         return dealData[selectSelector++ & (MANAGE_THREAD_NUM - 1)];
     }
 
