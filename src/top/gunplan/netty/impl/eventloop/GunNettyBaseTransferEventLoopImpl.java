@@ -2,10 +2,8 @@ package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.common.GunNettyContext;
-import top.gunplan.netty.impl.GunNettySelectionChannelRegister;
 
 import java.io.IOException;
-import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.BlockingQueue;
@@ -31,11 +29,15 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
     @Override
     public void loop() {
         for (; isRunning(); ) {
+
             try {
                 U socketChannel = kQueue.take();
-                dealEvent(registerReadChannelToDataEventLoop(socketChannel));
-            } catch (InterruptedException | IOException e) {
+                final SelectionKey key = registerReadChannelToDataEventLoop(socketChannel);
+                dealEvent(key);
+            } catch (IOException e) {
                 GunNettyContext.logger.error(e);
+            } catch (InterruptedException ignored) {
+
             }
 
         }

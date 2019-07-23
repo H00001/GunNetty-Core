@@ -46,6 +46,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException {
         this.port = port;
@@ -60,8 +61,6 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private void initPoolAndEventLoop() {
         MANAGE_THREAD_NUM = CORE_PROPERTY.getMaxRunnningNum();
         SERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
-        // dealData = new GunDataEventLoop[MANAGE_THREAD_NUM];
-
     }
 
     @Override
@@ -84,9 +83,9 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         }
         TRANSFER_POOL.submit(transfer);
         TIMER_POOL.scheduleAtFixedRate(timeExecute, CORE_PROPERTY.initWait(), CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
-        var frature = ACCEPT_POOL.submit(dealAccept, 1);
+        var future = ACCEPT_POOL.submit(dealAccept, 1);
         status = ManageState.RUNNING;
-        return frature;
+        return future;
     }
 
     @Override

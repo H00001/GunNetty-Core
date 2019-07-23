@@ -2,8 +2,6 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
 
-import java.io.IOException;
-
 /**
  * GunConnEventLoop
  *
@@ -12,7 +10,7 @@ import java.io.IOException;
  * @date 2019-07-23 00:11
  */
 public interface GunConnEventLoop extends GunCoreEventLoop {
-    int openPort(int port) throws IOException;
+    int openPort(int port);
 
     int listenPort();
 }

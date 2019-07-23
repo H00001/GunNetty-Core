@@ -50,10 +50,6 @@ class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends Ab
     }
 
 
-    @Override
-    public void run() {
-        loop();
-    }
 
     @Override
     public void onEvent(GunNettyChannelTransfer<U> event, long l, boolean b) throws Exception {

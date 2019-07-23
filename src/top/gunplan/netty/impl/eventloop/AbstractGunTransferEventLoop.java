@@ -17,15 +17,16 @@ import java.util.concurrent.ExecutorService;
  * @date 2019-07-23 00:36
  */
 public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> implements GunNettyTransfer<U> {
-    private boolean running = false;
+    private volatile boolean running = false;
     private volatile GunNettyCoreThreadManager manager;
 
     @Override
-    public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
+    public void init(ExecutorService deal, GunNettyPipeline pipeline) {
 
     }
 
     SelectionKey registerReadChannelToDataEventLoop(SocketChannel channel) throws IOException {
+        channel.configureBlocking(false);
         GunDataEventLoop<SocketChannel> register = manager.dealChannelEventLoop();
         return register.registerReadKey(channel);
     }
@@ -34,7 +35,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
     public void dealEvent(SelectionKey socketChannel) throws IOException {
         SocketChannel channel = ((SocketChannel) socketChannel.channel());
         channel.socket().setTcpNoDelay(true);
-        channel.configureBlocking(false);
+
     }
 
     @SuppressWarnings("unchecked")

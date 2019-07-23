@@ -1,5 +1,6 @@
 package top.gunplan.netty.impl.eventloop;
 
+import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.common.GunNettyContext;
 
 import java.io.IOException;
@@ -8,6 +9,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
+import java.util.concurrent.ExecutorService;
 
 /**
  * GunCoreConnectionEventLoopImpl deal connection event
@@ -24,10 +26,8 @@ public class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop imp
     }
 
     @Override
-    public int openPort(int port) throws IOException {
+    public int openPort(int port) {
         this.port = port;
-        var57.bind(new InetSocketAddress(port)).configureBlocking(false);
-        var57.register(bootSelector, SelectionKey.OP_ACCEPT, this);
         return 0;
     }
 
@@ -36,6 +36,13 @@ public class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop imp
         return this.port;
     }
 
+
+    @Override
+    public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
+        super.init(deal, pipeline);
+        var57.bind(new InetSocketAddress(port)).configureBlocking(false);
+        var57.register(bootSelector, SelectionKey.OP_ACCEPT, this);
+    }
 
     @Override
     public synchronized void loop() {
