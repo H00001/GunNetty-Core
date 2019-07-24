@@ -58,26 +58,26 @@ public final class EventLoopFactory {
         }
 
         @Override
-        public ConnEventLoopBuilder port(int p) throws IOException {
+        public ConnEventLoopBuilder port(int p) {
             eventLoop.openPort(p);
             return this;
         }
     }
 
     static final class DataEventLoopBuilderImpl implements DataEventLoopBuilder {
-        final GunDataEventLoop[] eventLoops;
+        final GunDataEventLoop<SocketChannel>[] eventLoops;
         final int sum;
 
         DataEventLoopBuilderImpl(int sum) {
             this.sum = sum;
-            eventLoops = new GunDataEventLoop[sum];
+            eventLoops = new GunCoreDataEventLoopImpl[sum];
             for (int i = 0; i < sum; i++) {
                 eventLoops[i] = new GunCoreDataEventLoopImpl();
             }
         }
 
         @Override
-        public GunDataEventLoop[] build() {
+        public GunDataEventLoop<SocketChannel>[] build() {
             return eventLoops;
         }
 

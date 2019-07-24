@@ -15,13 +15,14 @@ import java.util.concurrent.Future;
  * GunBootServer's real implement ,this class is not public
  *
  * @author Gunplan
- * @version 0.0.1.4
+ * @version 0.1.1.4
  * @apiNote 0.0.0.5
  * @see GunBootServer
  * @since 0.0.0.5
  */
 
 final class GunBootServerImpl implements GunBootServer {
+    private volatile boolean isSync;
 
     private volatile GunNettyCoreThreadManager threadManager;
 
@@ -43,6 +44,10 @@ final class GunBootServerImpl implements GunBootServer {
 
     }
 
+    @Override
+    public boolean isSync() {
+        return isSync;
+    }
 
     @Override
     public GunBootServer registerObserve(GunNettyObserve observe) {
@@ -60,7 +65,7 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunNettyPipeline getPipeline() {
+    public GunNettyPipeline pipeline() {
         return pipeline;
     }
 
@@ -96,15 +101,28 @@ final class GunBootServerImpl implements GunBootServer {
         return GunNettyWorkState.STOP.state;
     }
 
+    @Override
+    public void setSyncType(boolean b) {
+        isSync = b;
+    }
+
+    private void init() {
+        coreProperty = GunNettySystemServices.coreProperty();
+        threadManager = GunNettyCoreThreadManager.initInstance();
+    }
+
 
     @Override
     public synchronized int sync() throws GunNettyCanNotBootException {
-        baseParameterCheck();
-        coreProperty = GunNettySystemServices.coreProperty();
+        if (baseParameterCheck() == 0) {
+            init();
+        } else {
+            return GunNettyWorkState.BOOT_ERROR_2.state;
+        }
         try {
             threadManager.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort());
-        } catch (IOException exceptio) {
-            GunNettyContext.logger.setTAG(GunNettyCanNotBootException.class).urgency(exceptio.getMessage());
+        } catch (IOException exc) {
+            GunNettyContext.logger.setTAG(GunNettyCanNotBootException.class).urgency(exc.getMessage());
             return GunNettyWorkState.BOOT_ERROR_1.state;
         }
         if (this.observe.onBooting(coreProperty)) {
@@ -112,7 +130,7 @@ final class GunBootServerImpl implements GunBootServer {
             Future<Integer> executing = threadManager.startAllAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
-            if (isSync()) {
+            if (isSync) {
                 try {
                     int val = executing.get();
                     pipeline.destroy();
@@ -131,16 +149,17 @@ final class GunBootServerImpl implements GunBootServer {
         return GunNettyWorkState.BOOT_ERROR_1.state;
     }
 
-    private void baseParameterCheck() {
+    private int baseParameterCheck() {
         final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
         if (!this.initCheck() || !propertyManager.initProperty()) {
             throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
         }
+        return 0;
     }
 
 
     @Override
-    public GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters) {
+    public GunBootServer setExecutors(ExecutorService acceptExecuters, ExecutorService requestExecuters) {
         this.acceptExecutor = acceptExecuters;
         this.requestExecutor = requestExecuters;
         return this;

@@ -36,6 +36,8 @@ public interface GunBootServerBase {
     }
 
 
+    void setSyncType(boolean b);
+
     class GunNettyCanNotBootException extends GunException {
 
         private static final long serialVersionUID = -8015693220955781128L;

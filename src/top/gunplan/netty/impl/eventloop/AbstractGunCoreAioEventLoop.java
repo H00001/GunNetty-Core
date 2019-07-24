@@ -1,6 +1,4 @@
-package top.gunplan.netty.impl.aio;
-
-import top.gunplan.netty.GunCoreEventLoop;
+package top.gunplan.netty.impl.eventloop;
 
 import java.nio.channels.SelectionKey;
 
@@ -12,7 +10,10 @@ import java.nio.channels.SelectionKey;
  * @date 2019-06-09 10:25
  */
 
-public abstract class AbstractGunCoreAioEventLoop implements GunCoreEventLoop, Runnable {
+public abstract class AbstractGunCoreAioEventLoop extends AbstractGunCoreEventLoop {
+    public AbstractGunCoreAioEventLoop() {
+        super();
+    }
 
     /**
      * aio running method

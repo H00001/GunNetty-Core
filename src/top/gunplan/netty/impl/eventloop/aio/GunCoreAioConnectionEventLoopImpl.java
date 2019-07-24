@@ -1,12 +1,7 @@
-package top.gunplan.netty.impl.aio;
+package top.gunplan.netty.impl.eventloop.aio;
 
 
-import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunNettyPipeline;
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
-
-import java.io.IOException;
-import java.util.concurrent.ExecutorService;
+import top.gunplan.netty.impl.eventloop.AbstractGunCoreAioEventLoop;
 
 /**
  * GunCoreAioConnectionEventLoopImpl
@@ -49,13 +44,6 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
 
     }
 
-
-    @Override
-    public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
-
-    }
-
-
     @Override
     public void startEventLoop() {
 
@@ -71,8 +59,5 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
 
     }
 
-    @Override
-    public GunCoreEventLoop registerManager(GunNettyCoreThreadManager manager) {
-        return null;
-    }
+
 }

@@ -1,6 +1,5 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.AbstractGunTimeExecute;
 import top.gunplan.netty.GunNettyTimer;
 
 import java.nio.channels.SelectionKey;
@@ -12,8 +11,8 @@ import java.util.Set;
  *
  * @author dosdrtt
  */
-public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute implements GunNettyManagerGetter<Void> {
-    private volatile GunNettyCoreThreadManager manager;
+public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute {
+
 
     @Override
     public void run() {
@@ -27,11 +26,6 @@ public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute implem
 
     }
 
-    @Override
-    public Void registerManager(GunNettyCoreThreadManager manager) {
-        this.manager = manager;
-        return null;
-    }
 
     /**
      * GunTimeWorkFunc

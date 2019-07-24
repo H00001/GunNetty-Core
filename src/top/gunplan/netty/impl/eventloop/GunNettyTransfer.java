@@ -2,8 +2,10 @@ package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunNettyPipeline;
 
 import java.nio.channels.SelectableChannel;
+import java.util.concurrent.ExecutorService;
 
 /**
  * GunNettyTransfer
@@ -25,4 +27,10 @@ public interface GunNettyTransfer<U extends SelectableChannel> extends GunCoreEv
      */
     @Override
     void loop();
+
+
+    @Override
+    default int init(ExecutorService deal, GunNettyPipeline pipeline) {
+        return 0;
+    }
 }

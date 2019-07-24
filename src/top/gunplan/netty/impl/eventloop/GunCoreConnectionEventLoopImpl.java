@@ -38,10 +38,11 @@ public class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop imp
 
 
     @Override
-    public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
+    public int init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
         super.init(deal, pipeline);
         var57.bind(new InetSocketAddress(port)).configureBlocking(false);
         var57.register(bootSelector, SelectionKey.OP_ACCEPT, this);
+        return 0;
     }
 
     @Override

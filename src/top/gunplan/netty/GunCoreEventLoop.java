@@ -35,11 +35,17 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunN
     }
 
 
+    /**
+     * loop loop
+     */
     void loop();
 
 
     /**
      * available channels
+     *
+     * @param deal     deal event Executor
+     * @param pipeline event dealer
      */
-    void init(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
+    int init(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
 }

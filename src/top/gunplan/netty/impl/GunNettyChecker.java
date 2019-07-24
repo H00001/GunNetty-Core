@@ -19,7 +19,13 @@ public interface GunNettyChecker {
     SelectionKey getKey();
 
 
+    /**
+     * source information
+     *
+     * @return bytes
+     */
     byte[] source();
+
 
 
     void setSource(byte[] src);
@@ -28,6 +34,10 @@ public interface GunNettyChecker {
     void setKey(SelectionKey key);
 
 
+    /**
+     * attached object
+     * @param attach object to attach
+     */
     void attach(Object attach);
 
 

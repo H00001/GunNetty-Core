@@ -2,10 +2,8 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyPipeline;
-import top.gunplan.netty.impl.GunNettySelectionChannelRegister;
 
 import java.io.IOException;
-import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
@@ -88,10 +86,8 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     }
 
     @Override
-    public void init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
-        super.init(deal, pipeline);
-
-
+    public int init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
+        return super.init(deal, pipeline);
     }
 
 

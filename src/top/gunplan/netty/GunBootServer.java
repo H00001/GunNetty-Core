@@ -49,19 +49,19 @@ public interface GunBootServer extends GunBootServerBase {
     /**
      * set the Thread pool that dispose the request
      *
-     * @param acceptExecuters  this Executer is used to deal with accept request
-     * @param requestExecuters this Executer is used to deal with data request
+     * @param acceptExecutor  this Executor is used to deal with accept request
+     * @param requestExecutor this Executor is used to deal with data request
      * @return this
      */
 
-    GunBootServer setExecuters(ExecutorService acceptExecuters, ExecutorService requestExecuters);
+    GunBootServer setExecutors(ExecutorService acceptExecutor, ExecutorService requestExecutor);
 
     /**
      * this method return a {@link GunNettyPipeline} implements
      *
      * @return GunNettyPipeline
      */
-    GunNettyPipeline getPipeline();
+    GunNettyPipeline pipeline();
 
 
     /**
@@ -80,7 +80,7 @@ public interface GunBootServer extends GunBootServerBase {
          */
 
 
-        STOP(0b0001), SYNC(STOP.state >> 1), ASYNC(STOP.state << 1), RUNNING(STOP.state << 3), BOOT_ERROR_1(-1);
+        STOP(0b0001), SYNC(STOP.state >> 1), ASYNC(STOP.state << 1), RUNNING(STOP.state << 3), BOOT_ERROR_1(-1), BOOT_ERROR_2(-2);
 
 
         public int state;
@@ -98,6 +98,7 @@ public interface GunBootServer extends GunBootServerBase {
      */
 
     void setPipeline(GunNettyPipeline pipeline);
+
 
 }
 

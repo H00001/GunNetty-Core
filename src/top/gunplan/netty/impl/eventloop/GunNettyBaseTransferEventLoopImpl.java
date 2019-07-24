@@ -13,7 +13,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  * GunNettyBaseTransferEventLoopImpl
  *
  * @author frank albert
- * @version 0.0.0.2
+ * @version 0.0.0.e
  * @date 2019-06-09 22:10
  */
 class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> {
@@ -26,10 +26,10 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
         kQueue.offer(u);
     }
 
+
     @Override
     public void loop() {
         for (; isRunning(); ) {
-
             try {
                 U socketChannel = kQueue.take();
                 final SelectionKey key = registerReadChannelToDataEventLoop(socketChannel);

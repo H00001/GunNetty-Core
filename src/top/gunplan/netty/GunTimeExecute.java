@@ -1,5 +1,6 @@
 package top.gunplan.netty;
 
+import top.gunplan.netty.impl.GunNettyManagerGetter;
 import top.gunplan.netty.impl.GunNettyTimeExecuteImpl;
 
 import java.util.List;
@@ -9,7 +10,7 @@ import java.util.List;
  * @date 2019/05/30
  */
 
-public interface GunTimeExecute extends Runnable {
+public interface GunTimeExecute extends Runnable, GunNettyManagerGetter<GunTimeExecute> {
     /**
      * run
      */

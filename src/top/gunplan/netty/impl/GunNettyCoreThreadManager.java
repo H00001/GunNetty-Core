@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * GunNettyCoreThreadManager
  *
  * @author frank albert
- * @version 0.0.f.1
+ * @version 0.0.g.1
  * @date 2019-07-21 15:18
  */
 public interface GunNettyCoreThreadManager {
@@ -44,6 +44,11 @@ public interface GunNettyCoreThreadManager {
     Set<SelectionKey> availableChannel(long i);
 
 
+    /**
+     * boot server
+     *
+     * @return future result
+     */
     Future<Integer> startAllAndWait();
 
 
