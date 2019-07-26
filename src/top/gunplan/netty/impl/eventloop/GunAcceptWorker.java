@@ -25,14 +25,14 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
 
     @Override
     public void work() {
-        for (GunNettyFilter filter : pipeline.getFilters()) {
+        for (GunNettyFilter filter : pipeline.filters()) {
             if (!filter.doConnFilter(channel)) {
                 return;
             }
         }
         try {
-            final GunNetOutBound ob = this.pipeline.getHandel().dealConnEvent(channel.getRemoteAddress());
-            pipeline.getFilters().forEach(f -> {
+            final GunNetOutBound ob = this.pipeline.handel().dealConnEvent(channel.getRemoteAddress());
+            pipeline.filters().forEach(f -> {
                 try {
                     if (f.doOutputFilter(new GunNettyOutputFilterChecker(ob, null), channel) == GunNettyFilter.DealResult.CLOSE) {
                         channel.close();
@@ -42,9 +42,9 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
                 }
             });
         } catch (GunChannelException e) {
-            this.pipeline.getHandel().dealExceptionEvent(e);
+            this.pipeline.handel().dealExceptionEvent(e);
         } catch (IOException e) {
-            this.pipeline.getHandel().dealExceptionEvent(new GunChannelException(e));
+            this.pipeline.handel().dealExceptionEvent(new GunChannelException(e));
         }
     }
 }

@@ -6,21 +6,17 @@ as a web services ,a load balancing and so on.<br>
 
 ```
 GunBootServer server = GunBootServerFactory.getInstance();
-        ExecutorService es0 = new ThreadPoolExecutor(100, 1000,
-                5L, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>());
-        ExecutorService es1 = new ThreadPoolExecutor(100, 1000,
-                5L, TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>());
-        server.setExecuters(es0, es1).getPipeline().addFilter(new GunNettyStdFirstFilter()).
-                addFilter(new GunStdHttp2Filter()).
-              //  addFilter(new GunHttpdHostCheck()).
-                setHandle(new GunStdHttpHandle("top.gunplan.netty.test.BaseTest"));
-        try {
-            server.sync();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
+                GunNettyExecutors.newFixedExecutorPool(10));
+        server.registerObserve(new GunNettyDefaultObserve());
+        server.pipeline().addFilter(new GunNettyStdFirstFilter()).
+                addFilter(new GunNettyCharsetInboundChecker()).
+                setHandle(new GunNettyStringHandle());
+        server.setSyncType(false);
+        server.sync();
+        //running time
+        Thread.sleep(100000);
+        server.stop();
  ```
  if you want to make it as a web server ,please use `GunStdHttp2Filter` as `GunNettyFilter` and use `GunStdHttpHandle` as `GunNettyhandle` ,
  even though you can writer the filter and headle that belong to you .

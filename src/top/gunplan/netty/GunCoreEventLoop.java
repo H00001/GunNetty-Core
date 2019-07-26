@@ -46,6 +46,8 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunN
      *
      * @param deal     deal event Executor
      * @param pipeline event dealer
+     * @return int init result
+     * @throws IOException some i/o can not opened
      */
     int init(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
 }

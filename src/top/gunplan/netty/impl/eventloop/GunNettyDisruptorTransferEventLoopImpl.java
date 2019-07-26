@@ -19,7 +19,7 @@ import java.nio.channels.SocketChannel;
  */
 
 class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<U>> {
-    private final Disruptor<GunNettyChannelTransferImpl> disruptor;
+    private final Disruptor<GunNettyChannelTransfer> disruptor;
     private int bufferSize = 1024;
 
     {
@@ -27,9 +27,8 @@ class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends Ab
         disruptor.start();
     }
 
-
     private void publishChannel(U channel) {
-        RingBuffer<GunNettyChannelTransferImpl> ringBuffer = disruptor.getRingBuffer();
+        RingBuffer<GunNettyChannelTransfer> ringBuffer = disruptor.getRingBuffer();
         long l = ringBuffer.next();
         try {
             GunNettyChannelTransfer<SocketChannel> transfer = ringBuffer.get(l);

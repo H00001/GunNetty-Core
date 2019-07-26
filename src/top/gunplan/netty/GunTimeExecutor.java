@@ -10,35 +10,38 @@ import java.util.List;
  * @date 2019/05/30
  */
 
-public interface GunTimeExecute extends Runnable, GunNettyManagerGetter<GunTimeExecute> {
+public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTimeExecutor> {
     /**
      * run
      */
     @Override
     void run();
 
-    static GunTimeExecute instance() {
+    static GunTimeExecutor instance() {
         return new GunNettyTimeExecuteImpl();
     }
 
     /**
+     * registerWorker
+     * <p>
      * register Worker
      *
      * @param works list of work
+     * @return chain style
      */
-    GunTimeExecute registerWorker(List<GunNettyTimer> works);
+    GunTimeExecutor registerWorker(List<GunNettyTimer> works);
 
     /**
      * register work
      *
      * @param work work
      */
-    GunTimeExecute registerWorker(GunNettyTimer work);
+    GunTimeExecutor registerWorker(GunNettyTimer work);
 
     /**
      * delete worker form time execute
      */
-    GunTimeExecute eraserWorker(GunNettyTimer work);
+    GunTimeExecutor eraserWorker(GunNettyTimer work);
 
 
 }

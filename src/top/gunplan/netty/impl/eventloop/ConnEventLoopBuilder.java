@@ -10,5 +10,12 @@ import java.io.IOException;
  * @date 2019-07-23 00:17
  */
 public interface ConnEventLoopBuilder extends EventLoopBuilder<GunConnEventLoop> {
-    ConnEventLoopBuilder port(int p) throws IOException;
+    /**
+     * bindPort
+     *
+     * @param p port
+     * @return this chain style
+     * @throws IOException when bind file
+     */
+    ConnEventLoopBuilder bindPort(int p) throws IOException;
 }

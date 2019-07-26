@@ -95,17 +95,17 @@ final class GunNettyPipelineImpl implements GunNettyPipeline {
     }
 
     @Override
-    public List<GunNettyFilter> getFilters() {
+    public List<GunNettyFilter> filters() {
         return filterChain;
     }
 
     @Override
-    public GunNettyHandle getHandel() {
+    public GunNettyHandle handel() {
         return handle;
     }
 
     @Override
-    public List<GunNettyTimer> getTimer() {
+    public List<GunNettyTimer> timer() {
         return timers;
     }
 

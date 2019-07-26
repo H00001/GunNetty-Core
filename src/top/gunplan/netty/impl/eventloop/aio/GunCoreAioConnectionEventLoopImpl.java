@@ -15,11 +15,11 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
 //    private AsynchronousChannelProvider provider = new BsdAsynchronousChannelProvider();
 //    private GunNettyPipeline pipeline;
 //
-//    GunCoreAioConnectionEventLoopImpl(ExecutorService deal, GunNettyPipeline dealHandle, int port) throws IOException {
+//    GunCoreAioConnectionEventLoopImpl(ExecutorService deal, GunNettyPipeline dealHandle, int bindPort) throws IOException {
 //        this.pipeline = dealHandle;
 //        var57 = provider.openAsynchronousServerSocketChannel(provider.openAsynchronousChannelGroup(deal, 10));
 //        try {
-//            var57.bind(new InetSocketAddress(port));
+//            var57.bind(new InetSocketAddress(bindPort));
 //        } catch (IOException e) {
 //            AbstractGunBaseLogUtil.urgency(e.getMessage());
 //        }

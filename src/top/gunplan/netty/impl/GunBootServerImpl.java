@@ -40,7 +40,7 @@ final class GunBootServerImpl implements GunBootServer {
     private volatile GunNettyCoreProperty coreProperty;
 
     GunBootServerImpl() {
-        observe = new GunNettyDefaultObserveImpl();
+        observe = new GunNettyDefaultObserve();
 
     }
 

@@ -11,7 +11,7 @@ import java.util.Set;
  *
  * @author dosdrtt
  */
-public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecute {
+public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
 
 
     @Override

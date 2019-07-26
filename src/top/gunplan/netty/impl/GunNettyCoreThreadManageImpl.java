@@ -23,19 +23,18 @@ import java.util.concurrent.*;
  * @apiNote 2.0.0.8
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
-    private final static GunLogger LOG = GunNettyContext.logger;
+    private final static GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyCoreThreadManageImpl.class);
     private final static GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY = GunNettySystemServices.coreProperty();
-    private final int MANAGE_THREAD_NUM;
+    private final int MANAGE_THREAD_NUM = GUN_NETTY_CORE_PROPERTY.getMaxRunnningNum();
     private volatile GunConnEventLoop dealAccept;
-    private final GunTimeExecute timeExecute = new GunNettyTimeExecuteImpl();
+    private final GunTimeExecutor timeExecute = new GunNettyTimeExecuteImpl();
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private final GunNettyTransfer<SocketChannel> transfer;
 
-
-    private final ScheduledExecutorService TIMER_POOL = Executors.newScheduledThreadPool(1);
+    private final ScheduledExecutorService TIMER_POOL;
     private final ExecutorService SERVER_POOL;
-    private final ExecutorService TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
-    private final ExecutorService ACCEPT_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
+    private final ExecutorService TRANSFER_POOL;
+    private final ExecutorService ACCEPT_POOL;
 
     private static int selectSelector = 0;
     private volatile int port;
@@ -43,20 +42,22 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     GunNettyCoreThreadManageImpl() {
-        MANAGE_THREAD_NUM = GUN_NETTY_CORE_PROPERTY.getMaxRunnningNum();
+        TIMER_POOL = Executors.newScheduledThreadPool(1);
+        TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
+        ACCEPT_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
         SERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
         transfer = EventLoopFactory.newGunNettyBaseTransfer();
         transfer.registerManager(this);
+
     }
 
-    // @SuppressWarnings("unchecked")
     @Override
     public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException {
         this.port = port;
-        timeExecute.registerWorker(pipeline.getTimer());
+        timeExecute.registerWorker(pipeline.timer());
         timeExecute.registerManager(this);
         dealData = EventLoopFactory.buildDataEventLoop(MANAGE_THREAD_NUM).with(dataExecutor, pipeline).andRegister(this).build();
-        dealAccept = EventLoopFactory.buildConnEventLoop().port(port).with(dataExecutor, pipeline).andRegister(this).build();
+        dealAccept = EventLoopFactory.buildConnEventLoop().bindPort(port).with(dataExecutor, pipeline).andRegister(this).build();
         return true;
     }
 

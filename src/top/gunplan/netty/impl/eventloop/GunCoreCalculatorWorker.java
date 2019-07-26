@@ -29,15 +29,16 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         this.waitSize = waitSize;
     }
 
+
     @Override
     public void work() {
         final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(key);
-        for (GunNettyFilter filter : this.pipeline.getFilters()) {
+        for (GunNettyFilter filter : this.pipeline.filters()) {
             GunNettyFilter.DealResult result = null;
             try {
                 result = filter.doInputFilter(gunFilterObj);
             } catch (GunChannelException e) {
-                this.pipeline.getHandel().dealExceptionEvent(e);
+                this.pipeline.handel().dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NATALINA) {
                 break;
@@ -48,22 +49,22 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
                 return;
             }
         }
-        GunNetOutBound respObject = null;
+        GunNetOutBound output = null;
         try {
-            respObject = this.pipeline.getHandel().dealDataEvent(gunFilterObj.getTransfer());
+            output = this.pipeline.handel().dealDataEvent(gunFilterObj.getTransfer());
         } catch (GunChannelException e) {
-            this.pipeline.getHandel().dealExceptionEvent(e);
+            this.pipeline.handel().dealExceptionEvent(e);
         }
-        GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(respObject);
+        GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(output);
         responseFilterDto.setKey(gunFilterObj.getKey());
-        ListIterator<GunNettyFilter> filters = pipeline.getFilters().listIterator(pipeline.getFilters().size());
+        ListIterator<GunNettyFilter> filters = pipeline.filters().listIterator(pipeline.filters().size());
 
         while (filters.hasPrevious()) {
             GunNettyFilter.DealResult result = null;
             try {
                 result = filters.previous().doOutputFilter(responseFilterDto);
             } catch (GunChannelException e) {
-                this.pipeline.getHandel().dealExceptionEvent(e);
+                this.pipeline.handel().dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NOTDEALOUTPUT) {
                 break;
@@ -75,6 +76,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             }
 
         }
+        destroy();
 
     }
 }

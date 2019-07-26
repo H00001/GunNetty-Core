@@ -1,4 +1,5 @@
 package top.gunplan.netty.common;
+
 import java.util.concurrent.atomic.LongAdder;
 
 /**

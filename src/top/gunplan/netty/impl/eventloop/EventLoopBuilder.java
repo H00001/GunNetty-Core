@@ -14,9 +14,27 @@ import java.util.concurrent.ExecutorService;
  * @date 2019-07-23 00:10
  */
 public interface EventLoopBuilder<U> {
+    /**
+     * build
+     *
+     * @return a event loop builder:self
+     */
     U build();
 
+    /**
+     andRegister
+     * @param manager  GunNettyCoreThreadManager
+     * @return EventLoopBuilder<U>
+     */
     EventLoopBuilder<U> andRegister(GunNettyCoreThreadManager manager);
 
+    /**
+     * with
+     * register executor
+     * @param deal ExecutorService
+     * @param pipeline works
+     * @return this chain style
+     * @throws IOException i/o error
+     */
     EventLoopBuilder<U> with(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
 }

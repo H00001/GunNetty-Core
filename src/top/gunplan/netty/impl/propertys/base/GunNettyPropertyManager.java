@@ -25,6 +25,12 @@ public interface GunNettyPropertyManager {
      */
     GunNettyPropertyManager setStrategy(GunPropertyStrategy strategy);
 
+
+    /**
+     * @param clazz
+     * @param <T>
+     * @return
+     */
     <T extends GunProperty> T acquireProperty(Class<T> clazz);
 
     void registerProperty(GunProperty property);

@@ -58,7 +58,7 @@ public final class EventLoopFactory {
         }
 
         @Override
-        public ConnEventLoopBuilder port(int p) {
+        public ConnEventLoopBuilder bindPort(int p) {
             eventLoop.openPort(p);
             return this;
         }

@@ -62,27 +62,27 @@ public interface GunNettyPipeline extends GunHandle {
 
 
     /**
-     * getFilters
+     * filters
      *
      * @return List<GunNettyFilter> GunNettyFilter's List
      */
-    List<GunNettyFilter> getFilters();
+    List<GunNettyFilter> filters();
 
 
     /**
-     * getHandel
+     * handel
      *
      * @return GunNettyHandle
      */
-    GunNettyHandle getHandel();
+    GunNettyHandle handel();
 
 
     /**
-     * getTimer
+     * timer
      *
      * @return List<GunNettyTimer>
      */
-    List<GunNettyTimer> getTimer();
+    List<GunNettyTimer> timer();
 
 
     /**

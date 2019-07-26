@@ -15,6 +15,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -24,7 +25,7 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  */
 @GunNetFilterOrder
-public class GunNettyStdFirstFilter implements GunNettyFilter {
+public final class GunNettyStdFirstFilter implements GunNettyFilter {
     private static final GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyStdFirstFilter.class);
     private GunNettyCoreProperty coreProperty;
 
@@ -40,10 +41,11 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
 
     private void dealCloseEvent(SelectionKey key) throws GunChannelException {
         LOG.debug("Client closed", "[CONNECTION]");
+        final Selector selector = key.selector();
         try {
             key.channel().close();
-            key.selector().wakeup();
-            key.selector().selectNow();
+            selector.wakeup();
+            selector.selectNow();
         } catch (IOException e) {
             throw new GunChannelException(e);
         }
@@ -72,7 +74,8 @@ public class GunNettyStdFirstFilter implements GunNettyFilter {
                 return DealResult.CLOSE;
             } else {
                 if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.CLOSE) {
-                    filterDto.getKey().cancel();
+                    dealCloseEvent(key);
+                    return DealResult.CLOSE;
                 } else if (coreProperty.getConnection() == GunNettyCoreProperty.connectionType.KEEP_ALIVE) {
                     key.interestOps(SelectionKey.OP_READ);
                     ((GunDataEventLoop) key.attachment()).incrAndContinueLoop();

@@ -6,20 +6,20 @@ import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.GunLogger;
 
 /**
- * GunNettyDefaultObserveImpl
+ * GunNettyDefaultObserve
  *
  * @author dosdrtt
  */
-public class GunNettyDefaultObserveImpl implements GunNettyObserve {
+public class GunNettyDefaultObserve implements GunNettyObserve {
 
     @Override
     public void onBooted(GunNettyCoreProperty property) {
-        final GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyDefaultObserveImpl.class);
-        LOG.debug("A high performance net server and a reverse proxy server", "BOOTED");
+        final GunLogger logger = GunNettyContext.logger.setTAG(GunNettyDefaultObserve.class);
+        logger.debug("A high performance net server and a reverse proxy server", "BOOTED");
         try {
-            LOG.outputFile(property.getProfileName());
+            logger.outputFile(property.getProfileName());
         } catch (Exception e) {
-            LOG.error(e);
+            logger.error(e);
         }
     }
 
