@@ -13,23 +13,21 @@ import java.nio.channels.SocketChannel;
  */
 
 public class GunNettyChannelTransferImpl implements GunNettyChannelTransfer<SocketChannel> {
-    private long value;
+    private long key;
     private SocketChannel channel;
 
     GunNettyChannelTransferImpl() {
     }
 
-    public GunNettyChannelTransferImpl(SocketChannel channel) {
-        this.channel = channel;
+
+    public GunNettyChannelTransferImpl(long value, SocketChannel key) {
+        this.key = value;
+        this.channel = key;
     }
 
-    public GunNettyChannelTransferImpl(long value, SocketChannel channel) {
-        this.value = value;
-        this.channel = channel;
-    }
 
     @Override
-    public SocketChannel getChannel() {
+    public SocketChannel channel() {
         return channel;
     }
 
@@ -39,7 +37,12 @@ public class GunNettyChannelTransferImpl implements GunNettyChannelTransfer<Sock
     }
 
     @Override
-    public void setValue(long value) {
-        this.value = value;
+    public void setKey(long key) {
+        this.key = key;
+    }
+
+    @Override
+    public long key() {
+        return key;
     }
 }

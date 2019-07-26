@@ -39,9 +39,10 @@ class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends Ab
         }
     }
 
+
     @Override
-    public void push(U u) {
-        publishChannel(u);
+    public void push(GunNettyChannelTransfer<U> u) {
+        publishChannel(u.channel());
     }
 
     @Override
@@ -50,10 +51,9 @@ class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends Ab
     }
 
 
-
     @Override
     public void onEvent(GunNettyChannelTransfer<U> event, long l, boolean b) throws Exception {
-        final U socketChannel = event.getChannel();
+        final U socketChannel = event.channel();
         dealEvent(registerReadChannelToDataEventLoop(socketChannel));
     }
 }

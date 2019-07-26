@@ -64,7 +64,7 @@ public class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop imp
     @Override
     public void dealEvent(SelectionKey key) throws IOException {
         final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-        manager.transferThread().push(socketChannel);
+        manager.transferThread().push(new GunNettyChannelTransferImpl(0, socketChannel));
         BaseGunNettyWorker worker = new GunAcceptWorker(pipeline, socketChannel);
         if (worker.init() == 0) {
             this.deal.submit(worker);

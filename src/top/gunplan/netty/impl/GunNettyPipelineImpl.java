@@ -43,6 +43,9 @@ final class GunNettyPipelineImpl implements GunNettyPipeline {
 
     private void addFilter0(GunNettyFilter filter) {
         GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
+        if (order == null) {
+            throw new GunBootServerBase.GunNettyCanNotBootException(new NullPointerException("not have order"));
+        }
         this.filterChain.add(order.index(), filter);
     }
 

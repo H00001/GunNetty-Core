@@ -1,5 +1,8 @@
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.protocol.GunNetInbound;
+
 import java.nio.channels.SelectionKey;
 
 /**
@@ -73,5 +76,19 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
     @Override
     public void attach(Object attach) {
         this.attach = attach;
+    }
+
+
+    @Override
+    public <R extends GunNetInbound> boolean tranToObject(Class<R> in) {
+        try {
+            R instance = in.getDeclaredConstructor().newInstance();
+            this.to = (Transfer) instance;
+            return instance.unSerialize(src);
+        } catch (ReflectiveOperationException e) {
+            GunNettyContext.logger.error(e);
+            return false;
+        }
+
     }
 }

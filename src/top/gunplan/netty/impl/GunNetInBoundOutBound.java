@@ -5,12 +5,12 @@ import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutBound;
 
 /**
- * GunNetInputOutputInterface
+ * GunNetInBoundOutBound
  *
  * @author frank albert
- * @version 0.0.0.3
+ * @version 0.0.0.4
  * @date 2019-06-29 20:52
  */
 
-public interface GunNetInputOutputInterface extends GunNetInbound, GunNetOutBound {
+public interface GunNetInBoundOutBound extends GunNetInbound, GunNetOutBound {
 }
