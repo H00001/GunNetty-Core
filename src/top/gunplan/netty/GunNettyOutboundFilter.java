@@ -11,6 +11,13 @@ import top.gunplan.netty.impl.GunNettyInputFilterChecker;
  */
 
 public interface GunNettyOutboundFilter extends GunNettyFilter {
+    /**
+     * doInputFilter
+     *
+     * @param filterDto input filter dto
+     * @return DealResult
+     * @throws GunChannelException channel i/o error
+     */
     @Override
     default DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException {
         return DealResult.NEXT;

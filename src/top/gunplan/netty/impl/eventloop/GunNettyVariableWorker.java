@@ -16,6 +16,7 @@ public interface GunNettyVariableWorker {
 
     /**
      * status
+     * @return is running
      */
     boolean isRunning();
 

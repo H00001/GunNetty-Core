@@ -11,13 +11,23 @@ import java.util.concurrent.ThreadFactory;
  */
 public interface GunNettyNvThreadFactory extends ThreadFactory {
     /**
+     * newThread
+     *
      * @param r @see ThreadFactory
-     * @return @see ThreadFactory
+     * @return Thread ThreadFactory
      * @see ThreadFactory
      */
     @Override
     Thread newThread(Runnable r);
 
+    /**
+     * newThread
+     *
+     * @param r       @see ThreadFactory
+     * @param handler handler to deal exception
+     * @return Thread ThreadFactory
+     * @see ThreadFactory
+     */
 
     Thread newThread(Runnable r, Thread.UncaughtExceptionHandler handler);
 }

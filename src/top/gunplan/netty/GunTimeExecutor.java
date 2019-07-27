@@ -17,6 +17,11 @@ public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTime
     @Override
     void run();
 
+    /**
+     * a instance
+     *
+     * @return GunTimeExecutor
+     */
     static GunTimeExecutor instance() {
         return new GunNettyTimeExecuteImpl();
     }
@@ -35,11 +40,14 @@ public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTime
      * register work
      *
      * @param work work
+     * @return this chain style
      */
     GunTimeExecutor registerWorker(GunNettyTimer work);
 
     /**
      * delete worker form time execute
+     * @param  work to erase
+     * @return this chain style
      */
     GunTimeExecutor eraserWorker(GunNettyTimer work);
 

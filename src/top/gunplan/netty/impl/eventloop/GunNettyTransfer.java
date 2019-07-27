@@ -20,6 +20,8 @@ public interface GunNettyTransfer<U extends Channel> extends GunCoreEventLoop {
     /**
      * queue
      * push to queue
+     *
+     * @param u transfer object
      */
     void push(GunNettyChannelTransfer<U> u);
 
@@ -30,6 +32,13 @@ public interface GunNettyTransfer<U extends Channel> extends GunCoreEventLoop {
     void loop();
 
 
+    /**
+     * init
+     *
+     * @param deal     deal event Executor
+     * @param pipeline event dealer
+     * @return init result
+     */
     @Override
     default int init(ExecutorService deal, GunNettyPipeline pipeline) {
         return 0;
