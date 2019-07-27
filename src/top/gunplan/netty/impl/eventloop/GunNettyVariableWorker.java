@@ -9,9 +9,18 @@ package top.gunplan.netty.impl.eventloop;
  */
 public interface GunNettyVariableWorker {
 
+    /**
+     * start
+     */
     void startEventLoop();
 
+    /**
+     * status
+     */
     boolean isRunning();
 
+    /**
+     * stop
+     */
     void stopEventLoop();
 }

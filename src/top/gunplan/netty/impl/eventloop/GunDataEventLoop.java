@@ -32,5 +32,12 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
     void incrAndContinueLoop();
 
 
+    /**
+     * registerReadKey
+     *
+     * @param channel channel chan read
+     * @return selector
+     * @throws IOException register fail
+     */
     SelectionKey registerReadKey(U channel) throws IOException;
 }

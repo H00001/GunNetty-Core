@@ -11,7 +11,7 @@ import java.nio.channels.SocketChannel;
  * AbstractGunTransferEventLoop
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.2.1
  * @date 2019-07-23 00:36
  */
 public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> implements GunNettyTransfer<U> {

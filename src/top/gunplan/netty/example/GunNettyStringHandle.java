@@ -9,6 +9,14 @@ import top.gunplan.netty.protocol.GunNetOutBound;
 import java.net.SocketAddress;
 
 
+/**
+ * GunNettyStringHandle
+ * a example
+ *
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-07-27 08:08
+ */
 public class GunNettyStringHandle implements GunNettyHandle {
     @Override
     public GunNetOutBound dealDataEvent(GunNetInbound request) throws GunException {

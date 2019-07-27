@@ -19,5 +19,10 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
      */
     int openPort(int port);
 
+    /**
+     * listen port
+     *
+     * @return port
+     */
     int listenPort();
 }

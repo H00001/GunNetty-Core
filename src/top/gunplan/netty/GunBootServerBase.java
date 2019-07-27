@@ -36,6 +36,13 @@ public interface GunBootServerBase {
     }
 
 
+    /**
+     * sync type
+     * : true sync
+     * : false async
+     *
+     * @param b type
+     */
     void setSyncType(boolean b);
 
     class GunNettyCanNotBootException extends GunException {

@@ -16,6 +16,11 @@ public interface GunBootServer extends GunBootServerBase {
      * stop
      * <p>
      * stop the server
+     *
+     * @return stop result
+     *                      0:normal
+     *                      other value : not normal
+     * @throws InterruptedException when stoping the server
      */
     @Override
     int stop() throws InterruptedException;

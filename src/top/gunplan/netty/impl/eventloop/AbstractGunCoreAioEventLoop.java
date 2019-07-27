@@ -18,8 +18,6 @@ public abstract class AbstractGunCoreAioEventLoop extends AbstractGunCoreEventLo
     /**
      * aio running method
      */
-    @Override
-    abstract public void run();
 
     @Override
     public void dealEvent(SelectionKey key) throws Exception {

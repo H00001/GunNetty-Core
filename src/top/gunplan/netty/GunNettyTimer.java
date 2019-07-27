@@ -27,7 +27,7 @@ public interface GunNettyTimer extends GunHandle {
 
 
     /**
-     * avaliable keys
+     * available keys
      *
      * @param keys selection keys set
      * @return work result

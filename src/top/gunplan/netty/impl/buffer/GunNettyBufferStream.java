@@ -1,7 +1,5 @@
 package top.gunplan.netty.impl.buffer;
 
-import java.util.Comparator;
-
 /**
  * GunNettyBufferStream
  *
@@ -127,6 +125,12 @@ public interface GunNettyBufferStream extends Comparable<GunNettyBufferStream> {
     void setUsed();
 
 
+    /**
+     * compare compare
+     *
+     * @param o
+     * @return
+     */
     @Override
     default int compareTo(GunNettyBufferStream o) {
         return Long.compare(this.maxLen(), o.maxLen());

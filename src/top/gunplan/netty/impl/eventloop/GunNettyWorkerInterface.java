@@ -18,6 +18,9 @@ interface GunNettyWorkerInterface extends Runnable, GunHandle {
         work();
     }
 
+    /**
+     * do work
+     */
     void work();
 
 }

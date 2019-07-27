@@ -27,7 +27,9 @@ public interface GunNettyChecker {
     byte[] source();
 
 
-
+    /**
+     * @param src
+     */
     void setSource(byte[] src);
 
 
