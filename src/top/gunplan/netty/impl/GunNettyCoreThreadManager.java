@@ -15,7 +15,7 @@ import java.util.concurrent.Future;
  * GunNettyCoreThreadManager
  *
  * @author frank albert
- * @version 0.0.g.1
+ * @version 0.0.h.1
  * @date 2019-07-21 15:18
  */
 public interface GunNettyCoreThreadManager {
@@ -38,9 +38,20 @@ public interface GunNettyCoreThreadManager {
     GunDataEventLoop<SocketChannel> dealChannelEventLoop();
 
 
+    /**
+     * stop all and wait for stop
+     *
+     * @return result
+     * @throws InterruptedException when something happened
+     */
     boolean stopAllAndWait() throws InterruptedException;
 
 
+    /**
+     * i th available channel
+     * @param i i th
+     * @return channel's collection
+     */
     Set<SelectionKey> availableChannel(long i);
 
 
@@ -60,9 +71,24 @@ public interface GunNettyCoreThreadManager {
     GunNettyTransfer<SocketChannel> transferThread();
 
 
-    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException;
+    /**
+     * init
+     *
+     * @param acceptExecutor executor to deal accept event
+     * @param dataExecutor   executor to deal data event
+     * @param pipeline       pipeline deal handle
+     * @param port           listen the port
+     * @return init result
+     * @throws IOException when i/o error
+     */
+    boolean init(final ExecutorService acceptExecutor, final ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException;
 
 
-    ManageState runState();
+    /**
+     * running state
+     *
+     * @return manage state
+     */
+    ManagerState runState();
 }
 

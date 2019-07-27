@@ -38,7 +38,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     private static int selectSelector = 0;
     private volatile int port;
-    private volatile ManageState status = ManageState.INACTIVE;
+    private volatile ManagerState status = ManagerState.INACTIVE;
 
 
     GunNettyCoreThreadManageImpl() {
@@ -63,7 +63,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     @Override
-    public ManageState runState() {
+    public ManagerState runState() {
         return status;
     }
 
@@ -75,7 +75,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     @Override
     public Future<Integer> startAllAndWait() {
-        status = ManageState.BOOTING;
+        status = ManagerState.BOOTING;
         LOG.info("Server running on :" + port);
         for (GunCoreEventLoop dat : dealData) {
             SERVER_POOL.submit(dat);
@@ -84,7 +84,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         TIMER_POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(), GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
 
         var future = ACCEPT_POOL.submit(dealAccept, 1);
-        status = ManageState.RUNNING;
+        status = ManagerState.RUNNING;
         return future;
     }
 
@@ -95,7 +95,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     @Override
     public boolean stopAllAndWait() throws InterruptedException {
-        status = ManageState.STOPPING;
+        status = ManagerState.STOPPING;
         dealAccept.stopEventLoop();
         transfer.stopEventLoop();
         for (GunCoreEventLoop dealDatum : dealData) {
@@ -113,7 +113,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
                 TIMER_POOL.awaitTermination(1, TimeUnit.MINUTES);
             }
         }
-        status = ManageState.INACTIVE;
+        status = ManagerState.INACTIVE;
         return true;
 
     }

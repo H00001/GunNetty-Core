@@ -10,6 +10,11 @@ import java.util.concurrent.ThreadFactory;
  * @date 2019-06-30 09:49
  */
 public interface GunNettyNvThreadFactory extends ThreadFactory {
+    /**
+     * @param r @see ThreadFactory
+     * @return @see ThreadFactory
+     * @see ThreadFactory
+     */
     @Override
     Thread newThread(Runnable r);
 

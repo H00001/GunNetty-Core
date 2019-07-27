@@ -1,13 +1,13 @@
 package top.gunplan.netty.impl;
 
 /**
- * ManageState
+ * ManagerState
  *
  * @author frank albert
  * @version 0.0.0.2
  * @date 2019-07-21 16:17
  */
-public enum ManageState {
+public enum ManagerState {
     /**
      * INACTIVE   : stopd , not active
      * BOOTING    : booting ,boot but not complete
@@ -17,7 +17,7 @@ public enum ManageState {
     INACTIVE(1), BOOTING(1 << 1), RUNNING(1 << 2), STOPPING(1 << 3);
     int stateCode;
 
-    ManageState(int stateCode) {
+    ManagerState(int stateCode) {
         this.stateCode = stateCode;
     }
 }

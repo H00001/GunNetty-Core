@@ -32,7 +32,7 @@ public abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     }
 
     @Override
-    public int init(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException {
+    public int init(final ExecutorService deal, final GunNettyPipeline pipeline) throws IOException {
         this.deal = deal;
         this.pipeline = pipeline;
         bootSelector = Selector.open();

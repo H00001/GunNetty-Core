@@ -27,14 +27,25 @@ public interface GunNettyPropertyManager {
 
 
     /**
-     * @param clazz
-     * @param <T>
-     * @return
+     * acquireProperty
+     *
+     * @param clazz property class
+     * @param <T>   property class
+     * @return property object
      */
     <T extends GunProperty> T acquireProperty(Class<T> clazz);
 
+    /**
+     * registerProperty
+     *
+     * @param property GunProperty
+     */
     void registerProperty(GunProperty property);
 
 
+    /**
+     * init
+     * @return init result
+     */
     boolean initProperty();
 }

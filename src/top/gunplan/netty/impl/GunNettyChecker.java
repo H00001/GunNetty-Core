@@ -28,21 +28,33 @@ public interface GunNettyChecker {
 
 
     /**
-     * @param src
+     * set source
+     *
+     * @param src source
      */
     void setSource(byte[] src);
 
 
+    /**
+     * set the key
+     *
+     * @param key selection key
+     */
     void setKey(SelectionKey key);
 
 
     /**
-     * attached object
+     * set attached object
+     *
      * @param attach object to attach
      */
     void attach(Object attach);
 
-
+    /**
+     * get attached object
+     *
+     * @return object to attach
+     */
     Object attach();
 
 }

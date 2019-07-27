@@ -60,7 +60,7 @@ public interface GunNettyFilter extends GunHandle {
 
     public enum DealResult {
         /**
-         * NATALINA  :do not deal input filter ,go for handle right away
+         * NATALINA      :do not deal input filter ,go for handle right away
          * CLOSE         :do not deal any filter or handle
          * NEXT          :nothing will happened
          * NOTDEALOUTPUT :exit output filter chain and handle but it wasn't close
