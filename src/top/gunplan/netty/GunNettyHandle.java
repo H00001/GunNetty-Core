@@ -1,7 +1,7 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.protocol.GunNetInbound;
-import top.gunplan.netty.protocol.GunNetOutBound;
+import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.net.SocketAddress;
 
@@ -15,20 +15,20 @@ public interface GunNettyHandle extends GunHandle {
      * dealDataEvent
      *
      * @param request GunNetInbound
-     * @return GunNetOutBound
+     * @return GunNetOutbound
      * @throws GunException kinds of exception
      */
-    GunNetOutBound dealDataEvent(GunNetInbound request) throws GunException;
+    GunNetOutbound dealDataEvent(GunNetInbound request) throws GunException;
 
     /**
      * dealConnEvent connection event
      *
      * @param address request address information
-     * @return GunNetOutBound
+     * @return GunNetOutbound
      * @throws GunException kinds of exception
      * @throws GunException IO error
      */
-    GunNetOutBound dealConnEvent(SocketAddress address) throws GunException;
+    GunNetOutbound dealConnEvent(SocketAddress address) throws GunException;
 
     /**
      * when close event happened ,the method will be called

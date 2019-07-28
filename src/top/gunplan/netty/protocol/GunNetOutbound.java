@@ -4,11 +4,11 @@ package top.gunplan.netty.protocol;
 import top.gunplan.netty.impl.GunNetBound;
 
 /**
- * GunNetOutBound
+ * GunNetOutbound
  *
  * @author dosdrtt
  */
-public interface GunNetOutBound extends GunNetBound {
+public interface GunNetOutbound extends GunNetBound {
     /**
      * serialize the protocol
      *

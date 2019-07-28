@@ -13,8 +13,8 @@ import java.nio.channels.SocketChannel;
  */
 
 public class GunNettyChannelTransferImpl implements GunNettyChannelTransfer<SocketChannel> {
-    private long key;
-    private SocketChannel channel;
+    private volatile long key;
+    private volatile SocketChannel channel;
 
     GunNettyChannelTransferImpl() {
     }

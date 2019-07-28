@@ -4,7 +4,7 @@ import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.protocol.GunNetInbound;
-import top.gunplan.netty.protocol.GunNetOutBound;
+import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.net.SocketAddress;
 
@@ -19,12 +19,12 @@ import java.net.SocketAddress;
  */
 public class GunNettyStringHandle implements GunNettyHandle {
     @Override
-    public GunNetOutBound dealDataEvent(GunNetInbound request) throws GunException {
-        return (GunNetOutBound) request;
+    public GunNetOutbound dealDataEvent(GunNetInbound request) throws GunException {
+        return (GunNetOutbound) request;
     }
 
     @Override
-    public GunNetOutBound dealConnEvent(SocketAddress address) throws GunException {
+    public GunNetOutbound dealConnEvent(SocketAddress address) throws GunException {
         return null;
     }
 

@@ -17,7 +17,7 @@ public final class GunNettyBufferFactory {
     public static final class SafeConcurrentInstance {
         private static final GunBufferManage HINDRANCE = new GunNettySafeBufferManager(BaseNettyBufferManager.BufferPoolStrategy.ConcurrentStrategy);
 
-        public GunBufferManage getHinstance() {
+        public static GunBufferManage getHinstance() {
             return HINDRANCE;
         }
     }
@@ -25,7 +25,7 @@ public final class GunNettyBufferFactory {
     public static final class SafeProiortyInstance {
         private static final GunBufferManage HINDRANCE = new GunNettySafeBufferManager(BaseNettyBufferManager.BufferPoolStrategy.PriorityQueueStrategy);
 
-        public GunBufferManage getHinstance() {
+        public static GunBufferManage getHinstance() {
             return HINDRANCE;
         }
     }
@@ -33,7 +33,7 @@ public final class GunNettyBufferFactory {
     public static final class UnSafeConcurrentInstance {
         private static final GunBufferManage HINDRANCE = new GunNettyUnsafeBufferManage(BaseNettyBufferManager.BufferPoolStrategy.ConcurrentStrategy);
 
-        public GunBufferManage getHinstance() {
+        public static GunBufferManage getHinstance() {
             return HINDRANCE;
         }
     }

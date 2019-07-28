@@ -58,7 +58,7 @@ public interface GunNettyFilter extends GunHandle {
     }
 
 
-    public enum DealResult {
+    enum DealResult {
         /**
          * NATALINA      :do not deal input filter ,go for handle right away
          * CLOSE         :do not deal any filter or handle
@@ -66,6 +66,6 @@ public interface GunNettyFilter extends GunHandle {
          * NOTDEALOUTPUT :exit output filter chain and handle but it wasn't close
          * NOTDEALALLNEXT:ecit all filter chain and handle but it wasn't close
          */
-        NATALINA, CLOSE, NEXT, NOTDEALOUTPUT, NOTDEALALLNEXT;
+        NATALINA, CLOSE, NEXT, NOTDEALOUTPUT, NOTDEALALLNEXT
     }
 }

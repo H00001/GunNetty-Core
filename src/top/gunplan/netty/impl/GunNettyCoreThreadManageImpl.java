@@ -1,7 +1,10 @@
 package top.gunplan.netty.impl;
 
 
-import top.gunplan.netty.*;
+import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.GunNettySystemServices;
+import top.gunplan.netty.GunTimeExecutor;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.eventloop.EventLoopFactory;
@@ -31,10 +34,10 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private final GunNettyTransfer<SocketChannel> transfer;
 
-    private final ScheduledExecutorService TIMER_POOL;
-    private final ExecutorService SERVER_POOL;
+    private final ScheduledExecutorService TIMER____POOL;
+    private final ExecutorService SERVER___POOL;
     private final ExecutorService TRANSFER_POOL;
-    private final ExecutorService ACCEPT_POOL;
+    private final ExecutorService ACCEPT___POOL;
 
     private static int selectSelector = 0;
     private volatile int port;
@@ -42,11 +45,11 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     GunNettyCoreThreadManageImpl() {
-        TIMER_POOL = Executors.newScheduledThreadPool(1);
+        TIMER____POOL = Executors.newScheduledThreadPool(1);
         TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
-        ACCEPT_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
-        SERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
-        transfer = EventLoopFactory.newGunNettyBaseTransfer();
+        ACCEPT___POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
+        SERVER___POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
+        transfer = EventLoopFactory.newGunDisruptorTransfer();
         transfer.registerManager(this);
 
     }
@@ -78,12 +81,12 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         status = ManagerState.BOOTING;
         LOG.info("Server running on :" + port);
         for (GunCoreEventLoop dat : dealData) {
-            SERVER_POOL.submit(dat);
+            SERVER___POOL.submit(dat);
         }
         TRANSFER_POOL.submit(transfer);
-        TIMER_POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(), GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
+        TIMER____POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(), GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
 
-        var future = ACCEPT_POOL.submit(dealAccept, 1);
+        var future = ACCEPT___POOL.submit(dealAccept, 1);
         status = ManagerState.RUNNING;
         return future;
     }
@@ -96,26 +99,36 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     @Override
     public boolean stopAllAndWait() throws InterruptedException {
         status = ManagerState.STOPPING;
+        inforToStop();
+
+        for (; SERVER___POOL.isTerminated() &&
+                ACCEPT___POOL.isTerminated() &&
+                TIMER____POOL.isTerminated() &&
+                TRANSFER_POOL.isTerminated(); ) {
+            if (!SERVER___POOL.isTerminated()) {
+                SERVER___POOL.awaitTermination(1, TimeUnit.MINUTES);
+            } else if (!ACCEPT___POOL.isTerminated()) {
+                ACCEPT___POOL.awaitTermination(1, TimeUnit.MINUTES);
+            } else if (!TIMER____POOL.isTerminated()) {
+                TIMER____POOL.awaitTermination(1, TimeUnit.MINUTES);
+            } else if (!TRANSFER_POOL.isTerminated()) {
+                TIMER____POOL.awaitTermination(1, TimeUnit.MINUTES);
+            }
+        }
+        status = ManagerState.INACTIVE;
+        return true;
+    }
+
+    private void inforToStop() {
         dealAccept.stopEventLoop();
         transfer.stopEventLoop();
         for (GunCoreEventLoop dealDatum : dealData) {
             dealDatum.stopEventLoop();
         }
-        SERVER_POOL.shutdown();
-        ACCEPT_POOL.shutdown();
-        TIMER_POOL.shutdown();
-        for (; SERVER_POOL.isTerminated() && ACCEPT_POOL.isTerminated() && TIMER_POOL.isTerminated(); ) {
-            if (!SERVER_POOL.isTerminated()) {
-                SERVER_POOL.awaitTermination(1, TimeUnit.MINUTES);
-            } else if (!ACCEPT_POOL.isTerminated()) {
-                ACCEPT_POOL.awaitTermination(1, TimeUnit.MINUTES);
-            } else if (!TIMER_POOL.isTerminated()) {
-                TIMER_POOL.awaitTermination(1, TimeUnit.MINUTES);
-            }
-        }
-        status = ManagerState.INACTIVE;
-        return true;
-
+        ACCEPT___POOL.shutdown();
+        TRANSFER_POOL.shutdown();
+        SERVER___POOL.shutdown();
+        TIMER____POOL.shutdown();
     }
 
     @Override

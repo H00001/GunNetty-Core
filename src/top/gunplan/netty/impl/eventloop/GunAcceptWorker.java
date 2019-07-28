@@ -5,7 +5,7 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
-import top.gunplan.netty.protocol.GunNetOutBound;
+import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -31,7 +31,7 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
             }
         }
         try {
-            final GunNetOutBound ob = this.pipeline.handel().dealConnEvent(channel.getRemoteAddress());
+            final GunNetOutbound ob = this.pipeline.handel().dealConnEvent(channel.getRemoteAddress());
             pipeline.filters().forEach(f -> {
                 try {
                     if (f.doOutputFilter(new GunNettyOutputFilterChecker(ob, null), channel) == GunNettyFilter.DealResult.CLOSE) {
