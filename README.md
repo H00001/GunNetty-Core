@@ -2,7 +2,7 @@
 `Copyright © frank albert personal 2016-2018` <br>
 I am a Support for high concurrency net servers，you can use me<br>
 as a web services ,a load balancing and so on.<br>
-
+a echo server
 
 ```
 GunBootServer server = GunBootServerFactory.getInstance();
