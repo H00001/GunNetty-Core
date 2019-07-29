@@ -15,7 +15,7 @@ public enum GunExceptionType {
     REF("Reference exception"), READ_PROPERTY_ERROR("Read property error"),
     EXC0("Init error"), EXC1("Connection error"), EXC2("Use high level"),
     OUT_POSITION("Out of position"), STATE_ERROR("State error"),
-    EXC3("None know exc3");
+    EXC3("None know exc3"), FUNCTION_NOT_IMPLEMTNT("Function not implement");
     private String info;
 
     GunExceptionType(String info) {
