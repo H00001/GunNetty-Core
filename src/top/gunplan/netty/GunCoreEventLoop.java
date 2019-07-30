@@ -41,6 +41,9 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunN
     void loop();
 
 
+    boolean isLoopNext();
+
+
     /**
      * available channels
      *

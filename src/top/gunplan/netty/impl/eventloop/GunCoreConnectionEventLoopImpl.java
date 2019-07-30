@@ -17,7 +17,7 @@ import java.util.concurrent.ExecutorService;
  * @author dosdrtt
  * @see AbstractGunCoreEventLoop
  */
-public class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements GunConnEventLoop {
+class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements GunConnEventLoop {
     private final ServerSocketChannel var57;
     private volatile int port;
 
@@ -46,20 +46,34 @@ public class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop imp
     }
 
     @Override
-    public synchronized void loop() {
+    public boolean isLoopNext() {
         try {
-            while (bootSelector.select() > 0 && running) {
-                Iterator keyIterator = bootSelector.selectedKeys().iterator();
-                while (keyIterator.hasNext()) {
-                    SelectionKey sk = (SelectionKey) keyIterator.next();
-                    this.dealEvent(sk);
-                    keyIterator.remove();
-                }
-            }
-        } catch (IOException exp) {
-            GunNettyContext.logger.error(exp.getMessage());
+            return bootSelector.select() > 0 && isRunning();
+        } catch (IOException e) {
+            GunNettyContext.logger.error(e.getMessage());
+            return false;
         }
     }
+
+    @Override
+    public void nextDeal() {
+        Iterator keyIterator = bootSelector.selectedKeys().iterator();
+        while (keyIterator.hasNext()) {
+            SelectionKey sk = (SelectionKey) keyIterator.next();
+            try {
+                this.dealEvent(sk);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            keyIterator.remove();
+        }
+    }
+
+    @Override
+    void whenHaltDeal() throws IOException {
+        var57.close();
+    }
+
 
     @Override
     public void dealEvent(SelectionKey key) throws IOException {

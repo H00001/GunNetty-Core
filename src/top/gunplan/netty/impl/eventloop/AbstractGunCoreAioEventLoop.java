@@ -15,12 +15,23 @@ public abstract class AbstractGunCoreAioEventLoop extends AbstractGunCoreEventLo
         super();
     }
 
+    @Override
+    public void nextDeal() {
+
+    }
+
     /**
      * aio running method
      */
 
+
     @Override
     public void dealEvent(SelectionKey key) throws Exception {
 
+    }
+
+    @Override
+    public boolean isLoopNext() {
+        return isRunning();
     }
 }

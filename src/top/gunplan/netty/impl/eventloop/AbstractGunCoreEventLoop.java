@@ -1,6 +1,7 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
@@ -22,7 +23,7 @@ public abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     volatile ExecutorService deal;
     volatile Selector bootSelector;
     volatile GunNettyPipeline pipeline;
-    volatile boolean running;
+    private volatile boolean running;
     volatile Thread workThread;
     final GunNettyCoreProperty coreProperty = GunNettySystemServices.coreProperty();
     GunNettyCoreThreadManager manager;
@@ -71,6 +72,36 @@ public abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     public void stopEventLoop() {
         this.running = false;
     }
+
+    public abstract void nextDeal();
+
+
+    @Override
+    public void loop() {
+        for (; isLoopNext(); ) {
+            nextDeal();
+        }
+        try {
+            whenHaltDeal();
+        } catch (IOException e) {
+            throw new GunException(e);
+        }
+    }
+
+    /**
+     * when halt the deal
+     */
+    void whenHaltDeal() throws IOException {
+        bootSelector.close();
+    }
+
+
+    @Override
+    public boolean isLoopNext() {
+        return isRunning();
+    }
+
+
 }
 
 

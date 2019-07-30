@@ -20,7 +20,7 @@ public class GunNettyUnsafeSyncBuffer extends GunNettyUnsafeBuffer {
      * in fact if the type is int,
      * we do not need to write synchronized
      * keyword ,but it is long type ,you'd
-     * know the long type was writen in 2
+     * know the long type was written in 2
      * step from the register to memory :
      * first write 32 high bit the next is
      * write low 32 bits
@@ -37,7 +37,7 @@ public class GunNettyUnsafeSyncBuffer extends GunNettyUnsafeBuffer {
      * in fact if the type is int,
      * we do not need to write synchronized
      * keyword ,but it is long type ,you'd
-     * know the long type was writen in 2
+     * know the long type was written in 2
      * step from the register to memory :
      * first write 32 high bit the next is
      * write low 32 bits

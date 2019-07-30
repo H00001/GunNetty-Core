@@ -18,7 +18,15 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
     private volatile boolean running = false;
     private volatile GunNettyCoreThreadManager manager;
 
+    /**
+     * do transfer
+     */
+    public abstract void loopTransfer();
 
+    @Override
+    public boolean isLoopNext() {
+        return isRunning();
+    }
 
     SelectionKey registerReadChannelToDataEventLoop(SocketChannel channel) throws IOException {
         channel.configureBlocking(false);
@@ -39,6 +47,13 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
         return this;
     }
 
+
+    @Override
+    public void loop() {
+        for (; isLoopNext(); ) {
+            loopTransfer();
+        }
+    }
 
     @Override
     public boolean isRunning() {

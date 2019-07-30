@@ -10,6 +10,7 @@ import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 
 /**
  * GunNettyDisruptorTransferEventLoopImpl
@@ -48,8 +49,16 @@ class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends Ab
     }
 
     @Override
-    public void loop() {
+    public void loopTransfer() {
         disruptor.start();
+        for (; isRunning(); ) {
+            try {
+                TimeUnit.SECONDS.sleep(1000);
+            } catch (InterruptedException ignore) {
+                break;
+            }
+        }
+        disruptor.shutdown();
     }
 
 

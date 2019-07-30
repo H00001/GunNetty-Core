@@ -28,19 +28,15 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
     }
 
     @Override
-    public void loop() {
-        for (; isRunning(); ) {
-            try {
-                U socketChannel = kQueue.take();
-                final SelectionKey key = registerReadChannelToDataEventLoop(socketChannel);
-                dealEvent(key);
-            } catch (IOException e) {
-                GunNettyContext.logger.error(e);
-            } catch (InterruptedException ignored) {
-
-            }
+    public void loopTransfer() {
+        try {
+            U socketChannel = kQueue.take();
+            final SelectionKey key = registerReadChannelToDataEventLoop(socketChannel);
+            dealEvent(key);
+        } catch (IOException e) {
+            GunNettyContext.logger.error(e);
+        } catch (InterruptedException ignored) {
 
         }
-
     }
 }

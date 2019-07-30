@@ -45,33 +45,26 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
 
 
     @Override
-    public synchronized void loop() {
-        for (; running; ) {
-            if (listenSize.get() == 0) {
-                LockSupport.park();
-            }
-            try {
-                int val = timeWait == -1 ? bootSelector.select() : bootSelector.select(timeWait);
-                if (val > 0) {
-                    Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
-                    while (keyIterator.hasNext()) {
-                        final SelectionKey sk = keyIterator.next();
-                        this.dealEvent(sk);
-                        keyIterator.remove();
-                    }
-                }
-                bootSelector.selectNow();
-            } catch (IOException exp) {
-                throwGunException(exp);
-            }
+    public void nextDeal() {
+        if (listenSize.get() == 0) {
+            LockSupport.park();
         }
         try {
-            bootSelector.close();
-        } catch (IOException e) {
-            throwGunException(e);
+            int val = timeWait == -1 ? bootSelector.select() : bootSelector.select(timeWait);
+            if (val > 0) {
+                Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
+                while (keyIterator.hasNext()) {
+                    final SelectionKey sk = keyIterator.next();
+                    this.dealEvent(sk);
+                    keyIterator.remove();
+                }
+            }
+            bootSelector.selectNow();
+        } catch (IOException exp) {
+            throwGunException(exp);
         }
-
     }
+
 
     private void throwGunException(IOException e) throws GunException {
         throw new GunException(e);

@@ -15,7 +15,7 @@ public class GunNettyDefaultObserve implements GunNettyObserve {
     @Override
     public void onBooted(GunNettyCoreProperty property) {
         final GunLogger logger = GunNettyContext.logger.setTAG(GunNettyDefaultObserve.class);
-        logger.debug("A high performance net server and a reverse proxy server", "BOOTED");
+        logger.info("A high performance net server and a reverse proxy server", "BOOTED");
         try {
             logger.outputFile(property.getProfileName());
         } catch (Exception e) {
