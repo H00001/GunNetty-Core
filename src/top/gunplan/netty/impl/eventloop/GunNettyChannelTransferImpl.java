@@ -20,7 +20,7 @@ public class GunNettyChannelTransferImpl implements GunNettyChannelTransfer<Sock
     }
 
 
-    public GunNettyChannelTransferImpl(long value, SocketChannel key) {
+    GunNettyChannelTransferImpl(long value, SocketChannel key) {
         this.key = value;
         this.channel = key;
     }

@@ -1,5 +1,6 @@
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SelectionKey;
@@ -27,13 +28,14 @@ public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNet
         this.to = outputObject;
     }
 
-    public GunNettyOutputFilterChecker() {
-        super(null);
-    }
-
 
     @Override
     public void translate() {
         this.src = to.serialize();
+    }
+
+    @Override
+    public <R extends GunNetInbound> boolean tranToObject(Class<R> in) throws ReflectiveOperationException {
+        throw new NoSuchMethodException("tranToObject in GunNettyOutputFilterChecker");
     }
 }

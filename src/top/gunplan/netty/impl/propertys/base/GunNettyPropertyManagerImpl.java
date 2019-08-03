@@ -1,18 +1,18 @@
 package top.gunplan.netty.impl.propertys.base;
 
 
+import top.gunplan.netty.GunBootServerBase;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.impl.propertys.GunGetPropertyFromBaseFile;
-import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.GunPropertyStrategy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -60,7 +60,7 @@ final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
     }
 
     @Override
-    public boolean initProperty() {
+    public boolean initProperty() throws GunBootServerBase.GunNettyCanNotBootException {
         return strategy.settingProperties(propertiesMap);
     }
 

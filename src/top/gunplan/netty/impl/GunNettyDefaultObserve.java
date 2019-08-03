@@ -5,6 +5,9 @@ import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.utils.GunLogger;
 
+import java.io.IOException;
+import java.net.URISyntaxException;
+
 /**
  * GunNettyDefaultObserve
  *
@@ -18,7 +21,7 @@ public class GunNettyDefaultObserve implements GunNettyObserve {
         logger.info("A high performance net server and a reverse proxy server", "BOOTED");
         try {
             logger.outputFile(property.getProfileName());
-        } catch (Exception e) {
+        } catch (IOException | URISyntaxException e) {
             logger.error(e);
         }
     }

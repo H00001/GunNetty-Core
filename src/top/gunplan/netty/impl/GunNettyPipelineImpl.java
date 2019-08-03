@@ -25,7 +25,7 @@ final class GunNettyPipelineImpl implements GunNettyPipeline {
         if (handle instanceof GunNettyHandle) {
             setHandle0((GunNettyHandle) handle);
         } else if (handle instanceof GunNettyFilter) {
-            addFilter((GunNettyFilter) handle);
+            addFilter0((GunNettyFilter) handle);
         } else if (handle instanceof GunNettyTimer) {
             addTimer((GunNettyTimer) handle);
         }

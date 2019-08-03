@@ -14,7 +14,7 @@ public interface GunHandle {
      * <p>
      *
      * @return int init result 0:succeed
-     * 1:error
+     *                         1:error
      */
     default int init() {
         return 0;

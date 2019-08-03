@@ -1,7 +1,7 @@
 package top.gunplan.netty.impl.propertys;
 
-import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.GunProperty;
+import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.utils.GunLogger;
 
@@ -42,7 +42,7 @@ public class GunLogProperty implements GunProperty {
             if (direct.startsWith(f)) {
                 String[] prfile = direct.replace("file:", "").split(",");
                 try {
-                    log.setStdoutput(new FileOutputStream(prfile[0], true));
+                    log.setStdOutput(new FileOutputStream(prfile[0], true));
                     log.setErrOutput(new FileOutputStream(prfile[1], true));
 
                 } catch (FileNotFoundException e) {
