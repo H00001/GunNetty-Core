@@ -2,6 +2,7 @@ package top.gunplan.netty;
 
 import top.gunplan.netty.impl.GunNettyManagerGetter;
 import top.gunplan.netty.impl.eventloop.GunNettyVariableWorker;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -16,6 +17,8 @@ import java.util.concurrent.ExecutorService;
  */
 
 public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunNettyManagerGetter<GunCoreEventLoop> {
+    GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY = GunNettySystemServices.coreProperty();
+
     /**
      * when the event come ,the method will be call back
      *
@@ -41,6 +44,11 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunN
     void loop();
 
 
+    /**
+     * isLoopNext
+     *
+     * @return is or not loop
+     */
     boolean isLoopNext();
 
 

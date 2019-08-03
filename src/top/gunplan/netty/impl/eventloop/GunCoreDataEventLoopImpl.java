@@ -23,7 +23,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
 
 
     GunCoreDataEventLoopImpl() {
-        timeWait = coreProperty.getClientWaitTime();
+        timeWait = GUN_NETTY_CORE_PROPERTY.getClientWaitTime();
     }
 
     public void continueLoop() {

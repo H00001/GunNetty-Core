@@ -44,11 +44,12 @@ public interface GunNettyCoreThreadManager {
      * @return result
      * @throws InterruptedException when something happened
      */
-    boolean stopAllAndWait() throws InterruptedException;
+    boolean stopAndWait() throws InterruptedException;
 
 
     /**
      * i th available channel
+     *
      * @param i i th
      * @return channel's collection
      */
@@ -60,7 +61,7 @@ public interface GunNettyCoreThreadManager {
      *
      * @return future result
      */
-    Future<Integer> startAllAndWait();
+    Future<Integer> startAndWait();
 
 
     /**

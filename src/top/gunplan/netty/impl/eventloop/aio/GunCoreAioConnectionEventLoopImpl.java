@@ -17,10 +17,6 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
 
     }
 
-    @Override
-    public void loop() {
-
-    }
 
     @Override
     public void startEventLoop() {

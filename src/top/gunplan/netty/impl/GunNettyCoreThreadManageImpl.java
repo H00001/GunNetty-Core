@@ -77,7 +77,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public Future<Integer> startAllAndWait() {
+    public Future<Integer> startAndWait() {
         status = ManagerState.BOOTING;
         LOG.info("Server running on :" + port);
         for (GunCoreEventLoop dat : dealData) {
@@ -97,7 +97,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public boolean stopAllAndWait() throws InterruptedException {
+    public boolean stopAndWait() throws InterruptedException {
         status = ManagerState.STOPPING;
         inforToStop();
 

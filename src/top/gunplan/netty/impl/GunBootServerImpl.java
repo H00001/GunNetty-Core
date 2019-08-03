@@ -95,7 +95,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public int stop() throws InterruptedException {
         this.pipeline.destroy();
-        if (threadManager.stopAllAndWait()) {
+        if (threadManager.stopAndWait()) {
             this.runnable = false;
         }
         return GunNettyWorkState.STOP.state;
@@ -127,7 +127,7 @@ final class GunBootServerImpl implements GunBootServer {
         }
         if (this.observe.onBooting(coreProperty)) {
             pipeline.init();
-            Future<Integer> executing = threadManager.startAllAndWait();
+            Future<Integer> executing = threadManager.startAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
             if (isSync) {
@@ -136,7 +136,7 @@ final class GunBootServerImpl implements GunBootServer {
                     pipeline.destroy();
                     this.observe.onStatusChanged(GunNettyObserve.GunNettyChangeStatus.RUN_TO_STOP);
                     this.observe.onStop(coreProperty);
-                    threadManager.stopAllAndWait();
+                    threadManager.stopAndWait();
                     return val;
                 } catch (InterruptedException | ExecutionException e) {
                     throw new GunNettyCanNotBootException(e);

@@ -3,9 +3,7 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyPipeline;
-import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
-import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -19,13 +17,16 @@ import java.util.concurrent.ExecutorService;
  * @see GunCoreDataEventLoopImpl
  * @see GunCoreConnectionEventLoopImpl
  */
-public abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
+abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     volatile ExecutorService deal;
     volatile Selector bootSelector;
+    /**
+     * pipe line, executor chain
+     */
     volatile GunNettyPipeline pipeline;
     private volatile boolean running;
     volatile Thread workThread;
-    final GunNettyCoreProperty coreProperty = GunNettySystemServices.coreProperty();
+
     GunNettyCoreThreadManager manager;
 
     AbstractGunCoreEventLoop() {
@@ -73,6 +74,9 @@ public abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
         this.running = false;
     }
 
+    /**
+     * how to next deal
+     */
     public abstract void nextDeal();
 
 
