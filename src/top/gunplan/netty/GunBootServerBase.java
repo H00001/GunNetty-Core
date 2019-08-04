@@ -44,7 +44,7 @@ public interface GunBootServerBase {
      * @param b type
      */
     default void setSyncType(boolean b) {
-        throw new GunException(GunExceptionType.FUNCTION_NOT_IMPLEMTNT, ":setSyncType");
+        throw new GunException(GunExceptionType.FUNCTION_NOT_IMPLEMENT, ":setSyncType");
     }
 
     class GunNettyCanNotBootException extends GunException {

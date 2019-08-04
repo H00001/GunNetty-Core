@@ -25,8 +25,6 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module" module-name="GunNetty-Utils" />
-    <orderEntry type="library" name="Maven: com.lmax:disruptor:3.4.2" level="project" />
     <orderEntry type="module-library" scope="TEST">
       <library name="JUnit4">
         <CLASSES>
@@ -37,5 +35,7 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="module" module-name="GunNetty-Utils" />
+    <orderEntry type="library" name="Maven: com.lmax:disruptor:3.4.2" level="project" />
   </component>
 </module>

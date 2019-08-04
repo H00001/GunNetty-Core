@@ -1,8 +1,10 @@
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
+import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -22,10 +24,12 @@ public interface GunNettyCoreThreadManager {
     /**
      * initInstance
      *
+     * @param observe event observe
+     * @param property core property
      * @return GunNettyCoreThreadManager
      */
-    static GunNettyCoreThreadManager initInstance() {
-        return new GunNettyCoreThreadManageImpl();
+    static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyBaseObserve observe) {
+        return new GunNettyCoreThreadManageImpl(property, observe);
     }
 
     /**

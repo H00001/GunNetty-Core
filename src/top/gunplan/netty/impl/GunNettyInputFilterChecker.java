@@ -1,6 +1,7 @@
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.GunException;
+import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.protocol.GunNetInbound;
 
 import java.nio.channels.SelectionKey;
@@ -17,7 +18,6 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetI
     public GunNettyInputFilterChecker(final SelectionKey key) {
         super(key);
     }
-
 
     @Override
     public void translate() {
@@ -38,10 +38,8 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetI
             this.to = instance;
             return instance.unSerialize(src);
         } catch (ReflectiveOperationException e) {
-            GunNettyContext.logger.error(e);
-            return false;
+            throw new GunException(GunExceptionType.TRANSLATE_ERROR, GunNettyInputFilterChecker.class.getName());
         }
-
     }
 
 }

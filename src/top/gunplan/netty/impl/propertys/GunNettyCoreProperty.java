@@ -1,8 +1,8 @@
 package top.gunplan.netty.impl.propertys;
 
 
-import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.GunProperty;
+import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.utils.GunBytesUtil;
 
 /**
@@ -70,7 +70,8 @@ public class GunNettyCoreProperty implements GunProperty {
     public long minInterval() {
         return minInterval;
     }
-    private volatile int maxRunnningNum;
+
+    private volatile int maxRunningNum;
     private volatile int clientWaitTime;
     private volatile int fileReadBufferMin;
     private volatile int connection;
@@ -96,8 +97,8 @@ public class GunNettyCoreProperty implements GunProperty {
         return port;
     }
 
-    public int getMaxRunnningNum() {
-        return maxRunnningNum;
+    public int maxRunningNum() {
+        return maxRunningNum;
     }
 
 }

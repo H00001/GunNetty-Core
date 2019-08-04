@@ -42,6 +42,7 @@ final class GunBootServerImpl implements GunBootServer {
     GunBootServerImpl() {
         observe = new GunNettyDefaultObserve();
 
+
     }
 
     @Override
@@ -55,6 +56,11 @@ final class GunBootServerImpl implements GunBootServer {
             this.observe = observe;
         }
         return this;
+    }
+
+    @Override
+    public GunNettyCoreThreadManager manager() {
+        return threadManager;
     }
 
     @Override
@@ -108,7 +114,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     private void init() {
         coreProperty = GunNettySystemServices.coreProperty();
-        threadManager = GunNettyCoreThreadManager.initInstance();
+        threadManager = GunNettyCoreThreadManager.
+                initInstance(GunNettySystemServices.coreProperty(), observe);
     }
 
 

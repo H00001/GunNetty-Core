@@ -2,6 +2,7 @@ package top.gunplan.netty.impl.propertys;
 
 import top.gunplan.netty.GunBootServerBase;
 import top.gunplan.netty.GunProperty;
+import top.gunplan.netty.common.GunNettyContext;
 
 import java.net.URI;
 import java.net.http.HttpClient;
@@ -33,21 +34,24 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
                 .uri(URI.create(address))
                 .build();
 
-        try {
-            client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
-                    .thenApply(HttpResponse::body)
-                    .thenAccept(body -> {
-                        try {
-                            analyzier.analyzingProperties(body.split("\n"), propertyMap);
-                        } catch (NoSuchFieldException | IllegalAccessException e) {
-                            throw new GunBootServerBase.GunNettyCanNotBootException(e);
-                        }
-                    })
-                    .join();
-        } catch (Exception any) {
 
-            return false;
-        }
+        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+                .thenApply(HttpResponse::body)
+                .exceptionally(f -> {
+                    GunNettyContext.logger.error(f.getCause());
+                    return null;
+                })
+                .thenAccept(body -> {
+                    // FIXME: 2019-08-03
+                    //todo
+                    try {
+                        analyzier.analyzingProperties(body.split("\n"), propertyMap);
+                    } catch (NoSuchFieldException | IllegalAccessException e) {
+                        throw new GunBootServerBase.GunNettyCanNotBootException(e);
+                    }
+                })
+                .join();
+
         return true;
     }
 }

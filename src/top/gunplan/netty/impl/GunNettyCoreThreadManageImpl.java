@@ -2,17 +2,15 @@ package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyPipeline;
-import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.GunTimeExecutor;
-import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.eventloop.EventLoopFactory;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
-import top.gunplan.utils.GunLogger;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -26,10 +24,11 @@ import java.util.concurrent.*;
  * @apiNote 2.0.0.8
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
-    private final static GunLogger LOG = GunNettyContext.logger.setTAG(GunNettyCoreThreadManageImpl.class);
-    private final static GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY = GunNettySystemServices.coreProperty();
-    private final int MANAGE_THREAD_NUM = GUN_NETTY_CORE_PROPERTY.getMaxRunnningNum();
+    private final GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY;
+    private final int MANAGE_THREAD_NUM;
     private volatile GunConnEventLoop dealAccept;
+    private final GunNettyBaseObserve observe;
+    private final GunNettySequencer sequencer = new GunUnsafeNettySequenceImpl();
     private final GunTimeExecutor timeExecute = new GunNettyTimeExecuteImpl();
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private final GunNettyTransfer<SocketChannel> transfer;
@@ -39,12 +38,15 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final ExecutorService TRANSFER_POOL;
     private final ExecutorService ACCEPT___POOL;
 
-    private static int selectSelector = 0;
+
     private volatile int port;
     private volatile ManagerState status = ManagerState.INACTIVE;
 
 
-    GunNettyCoreThreadManageImpl() {
+    GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final GunNettyBaseObserve baseObserve) {
+        this.observe = baseObserve;
+        GUN_NETTY_CORE_PROPERTY = property;
+        MANAGE_THREAD_NUM = property.maxRunningNum();
         TIMER____POOL = Executors.newScheduledThreadPool(1);
         TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
         ACCEPT___POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
@@ -73,19 +75,18 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     @Override
     public GunDataEventLoop<SocketChannel> dealChannelEventLoop() {
-        return dealData[selectSelector++ & (MANAGE_THREAD_NUM - 1)];
+        return dealData[sequencer.nextSequenceInt32WithLimit(MANAGE_THREAD_NUM - 1)];
     }
 
     @Override
     public Future<Integer> startAndWait() {
         status = ManagerState.BOOTING;
-        LOG.info("Server running on :" + port);
+        observe.onListion(port);
         for (GunCoreEventLoop dat : dealData) {
             SERVER___POOL.submit(dat);
         }
         TRANSFER_POOL.submit(transfer);
         TIMER____POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(), GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
-
         var future = ACCEPT___POOL.submit(dealAccept, 1);
         status = ManagerState.RUNNING;
         return future;

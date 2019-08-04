@@ -1,6 +1,5 @@
 package top.gunplan.netty;
 
-import top.gunplan.netty.impl.propertys.GunGetPropertyFromNet;
 import top.gunplan.netty.impl.propertys.GunLogProperty;
 import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
 import top.gunplan.netty.impl.propertys.base.GunNettyPropertyManager;
@@ -16,14 +15,12 @@ import top.gunplan.netty.impl.propertys.base.GunNettyPropertyManagerFactory;
 
 public final class GunNettySystemServices {
     public final static GunNettyPropertyManager PROPERTY_MANAGER = GunNettyPropertyManagerFactory.
-            propertyInstance().setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config1.html"));
+            propertyInstance();
 
 
     public static GunNettyCoreProperty coreProperty() {
         return PROPERTY_MANAGER.acquireProperty(GunNettyCoreProperty.class);
     }
-
-    //  public static final GunNettyCoreThreadManager CORE_THREAD_MANAGER = GunNettyCoreThreadManager.initInstance();
 
     public static GunLogProperty logProperty() {
         return PROPERTY_MANAGER.acquireProperty(GunLogProperty.class);

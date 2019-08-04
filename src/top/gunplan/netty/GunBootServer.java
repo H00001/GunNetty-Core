@@ -1,5 +1,7 @@
 package top.gunplan.netty;
 
+import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+
 import java.util.concurrent.ExecutorService;
 
 
@@ -18,8 +20,8 @@ public interface GunBootServer extends GunBootServerBase {
      * stop the server
      *
      * @return stop result
-     *                      0:normal
-     *                      other value : not normal
+     * 0:normal
+     * other value : not normal
      * @throws InterruptedException when stoping the server
      */
     @Override
@@ -32,6 +34,14 @@ public interface GunBootServer extends GunBootServerBase {
      * @return GunBootServer
      */
     GunBootServer registerObserve(GunNettyObserve observe);
+
+    /**
+     * GunNettyCoreThreadManager
+     *
+     * @return manager
+     */
+    GunNettyCoreThreadManager manager();
+
 
     /**
      * get the status of server
