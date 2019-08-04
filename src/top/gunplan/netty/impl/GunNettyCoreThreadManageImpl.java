@@ -81,7 +81,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     @Override
     public Future<Integer> startAndWait() {
         status = ManagerState.BOOTING;
-        observe.onListion(port);
+        observe.onListen(port);
         for (GunCoreEventLoop dat : dealData) {
             SERVER___POOL.submit(dat);
         }

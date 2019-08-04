@@ -24,13 +24,13 @@ public class BaseTest {
         server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
                 GunNettyExecutors.newFixedExecutorPool(10));
         server.registerObserve(new GunNettyDefaultObserve());
-        server.pipeline().addFilter(new GunNettyStdFirstFilter()).
+        server.pipeline().addFilter(new GunNettyStdFirstFilter(new GunNettyDefaultObserve())).
                 addFilter(new GunNettyCharsetInboundChecker()).
                 setHandle(new GunNettyStringHandle());
         server.setSyncType(false);
         server.sync();
         //running time
-        Thread.sleep(1000);
+        Thread.sleep(100000);
         server.stop();
     }
 }
