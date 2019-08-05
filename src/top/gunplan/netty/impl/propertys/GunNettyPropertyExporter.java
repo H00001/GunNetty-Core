@@ -6,21 +6,19 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package top.gunplan.netty.common;
+package top.gunplan.netty.impl.propertys;
+
+import top.gunplan.netty.common.GunNettyContext;
 
 /**
- * @author dosdrtt
+ * GunNettyPropertyExporter
+ *
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-08-05 08:19
  */
-public final class GunNettyStringUtil {
-    public static boolean isEmpty0(String in) {
-        return in != null && in.trim().length() != 0;
-    }
-
-    public static boolean isEmpty(String in) {
-        return !isEmpty0(in);
-    }
-
-    public static boolean isEmpty0(String[] in) {
-        return in == null || in.length == 0;
+public interface GunNettyPropertyExporter {
+    default void output(String k, String v) {
+        GunNettyContext.logger.setTAG(GunNettyPropertyExporter.class).info(k + ":" + v, "[PROPERTY]");
     }
 }

@@ -1,9 +1,15 @@
+/*
+ * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package top.gunplan.netty.impl.propertys;
 
 import top.gunplan.netty.GunProperty;
-import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyStringUtil;
-import top.gunplan.utils.GunLogger;
 
 import java.lang.reflect.Field;
 import java.util.Map;
@@ -18,8 +24,8 @@ import static top.gunplan.utils.NumberUtil.isNumber;
  * @date 2019-08-03 18:21
  */
 public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements GunNettyPropertyAnalyzier {
-    private static final GunLogger LOG = GunNettyContext.logger;
-
+    private final GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {
+    };
     private static String unusefulchars = "#";
     private static String assignmentchars = "=";
     private static String[] openandclodechildproperties = {"{", "}"};
@@ -45,7 +51,7 @@ public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements G
                             if (!properties[now].startsWith(unusefulchars)) {
                                 proName = properties[now].replace(" ", "").split(assignmentchars);
                                 fd = obj.getClass().getDeclaredField(proName[0]);
-                                LOG.info(proName[0] + ":" + proName[1].trim(), "[PROPERTY]");
+                                exporter.output(proName[0], proName[1].trim());
                                 fd.setAccessible(true);
                                 fd.set(obj, isNumber(proName[1].trim()) ? Integer.valueOf(proName[1].trim()) : proName[1].trim());
                             }

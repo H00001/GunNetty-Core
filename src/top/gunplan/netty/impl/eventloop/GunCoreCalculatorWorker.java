@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
@@ -17,15 +25,14 @@ import java.util.concurrent.atomic.AtomicInteger;
  */
 
 public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
-    private final AtomicInteger waitSize;
+
     private final SelectionKey key;
 
 
     GunCoreCalculatorWorker(final GunNettyPipeline pipeline
             , final SelectionKey key, AtomicInteger waitSize) {
-        super(pipeline);
+        super(pipeline, waitSize);
         this.key = key;
-        this.waitSize = waitSize;
     }
 
 
@@ -37,7 +44,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             try {
                 result = filter.doInputFilter(gunFilterObj);
             } catch (GunChannelException e) {
-                this.pipeline.handel().dealExceptionEvent(e);
+                this.handle.dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NATALINA) {
                 break;
@@ -62,17 +69,16 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             try {
                 result = filters.previous().doOutputFilter(responseFilterDto);
             } catch (GunChannelException e) {
-                this.pipeline.handel().dealExceptionEvent(e);
+                this.handle.dealExceptionEvent(e);
             }
             if (result == GunNettyFilter.DealResult.NOTDEALOUTPUT) {
                 break;
             } else if (result == GunNettyFilter.DealResult.CLOSE) {
-                waitSize.decrementAndGet();
+                decreaseChannel(1);
                 return;
             } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
                 return;
             }
-
         }
         destroy();
 

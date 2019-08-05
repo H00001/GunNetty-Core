@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package top.gunplan.netty;
 
 import top.gunplan.netty.common.GunNettyContext;
@@ -22,11 +30,16 @@ public interface GunNettyBaseObserve {
     }
 
     default int preReadClose(SocketAddress address) {
-        GunNettyContext.logger.debug("Client closed:" + address.toString(), "[CONNECTION]");
+        output(address);
         return 0;
     }
 
+    default void output(SocketAddress address) {
+        GunNettyContext.logger.debug("client closed:" + address.toString(), "[CONNECTION]");
+    }
+
     default int preWriteClose(SocketAddress address) {
+        output(address);
         return 0;
     }
 
