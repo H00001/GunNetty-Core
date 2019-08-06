@@ -6,7 +6,7 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package top.gunplan.netty.impl.propertys;
+package top.gunplan.netty.impl.property;
 
 import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.common.GunNettyStringUtil;
@@ -17,13 +17,13 @@ import java.util.Map;
 import static top.gunplan.utils.NumberUtil.isNumber;
 
 /**
- * AbstractGunNettyStandStringPropertyAnalysiser
+ * AbstractGunNettyStandStringProperty Analysiser
  *
  * @author frank albert
  * @version 0.0.0.1
  * @date 2019-08-03 18:21
  */
-public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements GunNettyPropertyAnalyzier {
+public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements GunNettyPropertyAnalyzier<String, String[]> {
     private final GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {
     };
     private static String unusefulchars = "#";
@@ -51,7 +51,7 @@ public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements G
                             if (!properties[now].startsWith(unusefulchars)) {
                                 proName = properties[now].replace(" ", "").split(assignmentchars);
                                 fd = obj.getClass().getDeclaredField(proName[0]);
-                                exporter.output(proName[0], proName[1].trim());
+                                exporter.export(proName[0], proName[1].trim());
                                 fd.setAccessible(true);
                                 fd.set(obj, isNumber(proName[1].trim()) ? Integer.valueOf(proName[1].trim()) : proName[1].trim());
                             }

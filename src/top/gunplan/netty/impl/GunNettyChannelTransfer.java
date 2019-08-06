@@ -19,7 +19,7 @@ import java.nio.channels.Channel;
  */
 public interface GunNettyChannelTransfer<U extends Channel> {
     /**
-     * transfer's channel
+     * transferTarget's channel
      *
      * @return channel
      */

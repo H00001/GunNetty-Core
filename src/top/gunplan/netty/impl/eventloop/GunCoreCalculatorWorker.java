@@ -39,7 +39,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
     @Override
     public void work() {
         final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(key);
-        for (GunNettyFilter filter : this.pipeline.filters()) {
+        for (final GunNettyFilter filter : this.pipeline.filters()) {
             GunNettyFilter.DealResult result = null;
             try {
                 result = filter.doInputFilter(gunFilterObj);
@@ -49,6 +49,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             if (result == GunNettyFilter.DealResult.NATALINA) {
                 break;
             } else if (result == GunNettyFilter.DealResult.CLOSE) {
+                decreaseChannel(1);
                 return;
             } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
                 return;
@@ -56,7 +57,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         }
         GunNetOutbound output = null;
         try {
-            output = this.pipeline.handel().dealDataEvent(gunFilterObj.getTransfer());
+            output = this.handle.dealDataEvent(gunFilterObj.transferTarget());
         } catch (GunChannelException e) {
             this.pipeline.handel().dealExceptionEvent(e);
         }

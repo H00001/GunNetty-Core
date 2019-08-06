@@ -6,23 +6,14 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package top.gunplan.netty.protocol;
-
-
-import top.gunplan.netty.impl.GunNetBound;
+package top.gunplan.netty.impl.property;
 
 /**
- * GunNetOutbound
+ * NvPropertyConfigureGetter
  *
- * @author dosdrtt
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-08-06 12:58
  */
-public interface GunNetOutbound extends GunNetBound {
-    /**
-     * serialize the protocol
-     *
-     * @return bytes[] transferTarget to client
-     */
-    byte[] serialize();
-
+public interface NvPropertyConfigureGetter {
 }
-

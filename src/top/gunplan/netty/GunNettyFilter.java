@@ -44,7 +44,7 @@ public interface GunNettyFilter extends GunHandle {
      * doOutputFilter
      *
      * @param filterDto filter dto
-     * @param channel   channel to transfer
+     * @param channel   channel to transferTarget
      * @return deal result
      */
     default DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) {
@@ -69,8 +69,8 @@ public interface GunNettyFilter extends GunHandle {
          * NATALINA      :do not deal input filter ,go for handle right away
          * CLOSE         :do not deal any filter or handle
          * NEXT          :nothing will happened
-         * NOTDEALOUTPUT :exit output filter chain and handle but it wasn't close
-         * NOTDEALALLNEXT:ecit all filter chain and handle but it wasn't close
+         * NOTDEALOUTPUT :exit export filter chain and handle but it wasn't close
+         * NOTDEALALLNEXT:exit all filter chain and handle but it wasn't close
          */
         NATALINA, CLOSE, NEXT, NOTDEALOUTPUT, NOTDEALALLNEXT
     }

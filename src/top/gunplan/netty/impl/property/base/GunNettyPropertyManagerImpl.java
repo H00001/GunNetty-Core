@@ -1,4 +1,12 @@
-package top.gunplan.netty.impl.propertys.base;
+/*
+ * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
+package top.gunplan.netty.impl.property.base;
 
 
 import top.gunplan.netty.GunBootServerBase;
@@ -6,10 +14,10 @@ import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.anno.GunPropertyMap;
-import top.gunplan.netty.impl.propertys.GunGetPropertyFromBaseFile;
-import top.gunplan.netty.impl.propertys.GunLogProperty;
-import top.gunplan.netty.impl.propertys.GunNettyCoreProperty;
-import top.gunplan.netty.impl.propertys.GunPropertyStrategy;
+import top.gunplan.netty.impl.property.GunGetPropertyFromBaseFile;
+import top.gunplan.netty.impl.property.GunLogProperty;
+import top.gunplan.netty.impl.property.GunNettyCoreProperty;
+import top.gunplan.netty.impl.property.GunPropertyStrategy;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;

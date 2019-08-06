@@ -1,9 +1,17 @@
+/*
+ * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package top.gunplan.netty.impl;
 
 import java.nio.channels.SelectionKey;
 
 /**
- * AbstractGunChecker checker transfer object
+ * AbstractGunChecker checker transferTarget object
  *
  * @author dosdrtt
  * @see GunNettyChecker
@@ -42,7 +50,7 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
 
     private volatile SelectionKey key;
 
-    public Transfer getTransfer() {
+    public Transfer transferTarget() {
         return to;
     }
 

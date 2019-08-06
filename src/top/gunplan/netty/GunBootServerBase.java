@@ -1,3 +1,11 @@
+/*
+ * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+ * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
+ * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
+ * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
+ * Vestibulum commodo. Ut rhoncus gravida arcu.
+ */
+
 package top.gunplan.netty;
 
 
@@ -51,7 +59,7 @@ public interface GunBootServerBase {
 
         private static final long serialVersionUID = -8015693220955781128L;
 
-        public GunNettyCanNotBootException(Exception why) {
+        public GunNettyCanNotBootException(Throwable why) {
             super(GunExceptionType.URGENCY, why);
         }
     }

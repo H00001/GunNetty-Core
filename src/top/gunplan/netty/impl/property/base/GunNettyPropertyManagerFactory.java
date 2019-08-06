@@ -6,19 +6,23 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package top.gunplan.netty.impl.propertys;
-
-import top.gunplan.netty.common.GunNettyContext;
+package top.gunplan.netty.impl.property.base;
 
 /**
- * GunNettyPropertyExporter
+ * GunNettyPropertyManagerFactory
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-05 08:19
+ * @date 2019-07-21 14:50
  */
-public interface GunNettyPropertyExporter {
-    default void output(String k, String v) {
-        GunNettyContext.logger.setTAG(GunNettyPropertyExporter.class).info(k + ":" + v, "[PROPERTY]");
+
+public class GunNettyPropertyManagerFactory {
+    private static GunNettyPropertyManager manager;
+
+    public static synchronized GunNettyPropertyManager propertyInstance() {
+        if (manager == null) {
+            manager = new GunNettyPropertyManagerImpl();
+        }
+        return manager;
     }
 }

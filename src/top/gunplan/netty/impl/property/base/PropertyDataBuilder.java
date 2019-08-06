@@ -6,23 +6,24 @@
  * Vestibulum commodo. Ut rhoncus gravida arcu.
  */
 
-package top.gunplan.netty.protocol;
+package top.gunplan.netty.impl.property.base;
 
-
-import top.gunplan.netty.impl.GunNetBound;
+import java.io.IOException;
 
 /**
- * GunNetOutbound
+ * PropertyDataBuilder
  *
- * @author dosdrtt
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-08-06 13:09
  */
-public interface GunNetOutbound extends GunNetBound {
+@FunctionalInterface
+public interface PropertyDataBuilder<D> {
     /**
-     * serialize the protocol
+     * create data
      *
-     * @return bytes[] transferTarget to client
+     * @return data to get properties
+     * @throws IOException read error
      */
-    byte[] serialize();
-
+    D create() throws IOException;
 }
-
