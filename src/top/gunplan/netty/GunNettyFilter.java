@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty;
@@ -66,12 +62,13 @@ public interface GunNettyFilter extends GunHandle {
 
     enum DealResult {
         /**
-         * NATALINA      :do not deal input filter ,go for handle right away
-         * CLOSE         :do not deal any filter or handle
-         * NEXT          :nothing will happened
-         * NOTDEALOUTPUT :exit export filter chain and handle but it wasn't close
-         * NOTDEALALLNEXT:exit all filter chain and handle but it wasn't close
+         * NATALINA           :do not deal input filter ,go for handle right away
+         * CLOSE              :do not deal any filter or handle
+         * NEXT               :nothing will happened
+         * NOT_DEAL_OUTPUT    :exit export filter chain and handle but it wasn't close
+         * NOT_DEAL_ALL_NEXT  :exit all filter chain and handle but it wasn't close
+         * CLOSED_WHEN_READ:  :
          */
-        NATALINA, CLOSE, NEXT, NOTDEALOUTPUT, NOTDEALALLNEXT
+        NATALINA, CLOSE, NEXT, NOT_DEAL_OUTPUT, NOT_DEAL_ALL_NEXT, CLOSED_WHEN_READ
     }
 }

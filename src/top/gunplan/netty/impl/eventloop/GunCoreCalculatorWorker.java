@@ -1,22 +1,22 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
+import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.impl.GunNettyFunctional;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SelectionKey;
+import java.util.HashMap;
 import java.util.ListIterator;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -27,32 +27,48 @@ import java.util.concurrent.atomic.AtomicInteger;
 public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
 
     private final SelectionKey key;
+    private final Map<GunNettyFilter.DealResult, GunNettyFunctional> executeEvent = new HashMap<>(5);
+    private boolean notDealOutputFlag = false;
 
 
     GunCoreCalculatorWorker(final GunNettyPipeline pipeline
             , final SelectionKey key, AtomicInteger waitSize) {
         super(pipeline, waitSize);
         this.key = key;
+        executeEvent.put(GunNettyFilter.DealResult.CLOSE, () -> {
+            decreaseChannel(1);
+            return -1;
+        });
+        executeEvent.put(GunNettyFilter.DealResult.NEXT, () -> 1);
+        executeEvent.put(GunNettyFilter.DealResult.CLOSED_WHEN_READ, () -> -1);
+        executeEvent.put(GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT, () -> -1);
+        executeEvent.put(GunNettyFilter.DealResult.NATALINA, () -> 0);
+        executeEvent.put(GunNettyFilter.DealResult.NOT_DEAL_OUTPUT, () -> {
+            GunCoreCalculatorWorker.this.notDealOutputFlag = true;
+            return 0;
+        });
     }
 
 
     @Override
     public void work() {
         final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(key);
+        GunNettyFilter.DealResult result = null;
         for (final GunNettyFilter filter : this.pipeline.filters()) {
-            GunNettyFilter.DealResult result = null;
             try {
                 result = filter.doInputFilter(gunFilterObj);
             } catch (GunChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }
-            if (result == GunNettyFilter.DealResult.NATALINA) {
+            final int exeCode = executeEvent.get(result).apply();
+            if (exeCode == 0) {
                 break;
-            } else if (result == GunNettyFilter.DealResult.CLOSE) {
-                decreaseChannel(1);
+            } else if (exeCode == -1) {
                 return;
-            } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
-                return;
+            } else if (exeCode == 1) {
+
+            } else {
+                throw new GunChannelException(GunExceptionType.EXC0, "why");
             }
         }
         GunNetOutbound output = null;
@@ -65,19 +81,19 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         responseFilterDto.setKey(gunFilterObj.getKey());
         ListIterator<GunNettyFilter> filters = pipeline.filters().listIterator(pipeline.filters().size());
 
-        while (filters.hasPrevious()) {
-            GunNettyFilter.DealResult result = null;
+        for (; filters.hasPrevious() && !notDealOutputFlag; ) {
             try {
                 result = filters.previous().doOutputFilter(responseFilterDto);
             } catch (GunChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }
-            if (result == GunNettyFilter.DealResult.NOTDEALOUTPUT) {
+            if (result == GunNettyFilter.DealResult.NOT_DEAL_OUTPUT) {
                 break;
             } else if (result == GunNettyFilter.DealResult.CLOSE) {
-                decreaseChannel(1);
-                return;
-            } else if (result == GunNettyFilter.DealResult.NOTDEALALLNEXT) {
+                if (decreaseChannel(1) != -32768) {
+                    return;
+                }
+            } else if (result == GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT) {
                 return;
             }
         }

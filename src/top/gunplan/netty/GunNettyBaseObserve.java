@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty;
@@ -16,7 +12,7 @@ import java.net.SocketAddress;
  * GunNettyBaseObserve
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.w
  * @date 2019-08-05 00:19
  */
 public interface GunNettyBaseObserve {
@@ -29,15 +25,32 @@ public interface GunNettyBaseObserve {
         GunNettyContext.logger.info("server running on :" + port);
     }
 
+    /**
+     * Ready-to-read termination
+     *
+     * @param address remote address
+     * @return wait time
+     */
     default int preReadClose(SocketAddress address) {
         output(address);
         return 0;
     }
 
-    default void output(SocketAddress address) {
+    /**
+     * output
+     *
+     * @param address remote address
+     */
+    private void output(SocketAddress address) {
         GunNettyContext.logger.debug("client closed:" + address.toString(), "[CONNECTION]");
     }
 
+    /**
+     * Ready-to-write termination
+     *
+     * @param address remote address
+     * @return wait time
+     */
     default int preWriteClose(SocketAddress address) {
         output(address);
         return 0;

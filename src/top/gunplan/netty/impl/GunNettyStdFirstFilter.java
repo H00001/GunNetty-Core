@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl;
@@ -76,21 +72,14 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
             ((GunDataEventLoop) key.attachment()).incrAndContinueLoop();
             return DealResult.NEXT;
         } else {
-            return DealResult.NOTDEALALLNEXT;
+            return DealResult.NOT_DEAL_ALL_NEXT;
         }
 
     }
 
     private DealResult invokeCloseEvent(SelectionKey key, boolean b) {
-        if (!b) {
-            //when write stop happened
-            //if it is conn event it doesn't have attachment
-            if (key.attachment() != null && key.attachment() instanceof GunDataEventLoop) {
-                ((GunDataEventLoop) key.attachment()).decreaseAndStop();
-            }
-        }
         dealCloseEvent(key, b);
-        return DealResult.CLOSE;
+        return b ? DealResult.CLOSED_WHEN_READ : DealResult.CLOSE;
     }
 
     @Override

@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.example;
 
 import top.gunplan.netty.GunChannelException;
@@ -21,7 +25,7 @@ public class GunNettyCharsetInboundChecker implements GunNettyInboundFilter {
         if (filterDto.tranToObject(GunString.class)) {
             return DealResult.NEXT;
         } else {
-            return DealResult.NOTDEALOUTPUT;
+            return DealResult.NOT_DEAL_OUTPUT;
         }
     }
 

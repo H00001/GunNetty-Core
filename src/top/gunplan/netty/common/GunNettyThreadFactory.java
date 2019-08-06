@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.common;
 
 import java.util.concurrent.atomic.LongAdder;
@@ -18,8 +22,10 @@ public class GunNettyThreadFactory implements GunNettyNvThreadFactory {
         return createThread(r, null);
     }
 
+    @SuppressWarnings("AlibabaAvoidManuallyCreateThread")
     private Thread createThread(Runnable r, Thread.UncaughtExceptionHandler handler) {
         haveUsedCount.increment();
+        @SuppressWarnings("AlibabaAvoidManuallyCreateThread")
         Thread t = new Thread(r, poolName + "-" + haveUsedCount.longValue());
         if (handler != null) {
             t.setUncaughtExceptionHandler(handler);

@@ -34,7 +34,7 @@ public class BaseTest {
         server.setSyncType(false);
         server.sync();
         //running time
-        Thread.sleep(1000);
+        Thread.sleep(10000000);
         server.stop();
     }
 }

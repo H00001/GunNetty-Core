@@ -34,6 +34,11 @@ public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTime
 
     }
 
+    /**
+     * loop
+     *
+     * @return
+     */
     boolean loop();
 
     /**

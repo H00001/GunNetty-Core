@@ -38,10 +38,6 @@ public class GunNettyCoreProperty implements GunProperty {
     private volatile int initWait;
     private volatile int minInterval;
 
-    public connectionType getConnection() {
-        return connectionType.getTypeByVal(connection);
-    }
-
     private volatile int port;
 
     public long initWait() {

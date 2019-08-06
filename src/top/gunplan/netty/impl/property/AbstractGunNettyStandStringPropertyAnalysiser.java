@@ -68,6 +68,12 @@ public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements G
 
     }
 
+    /**
+     * nextAnalyze
+     *
+     * @param propertiesMap propertiesMap
+     * @param info          next information
+     */
     @Override
     public abstract void nextAnalyze(Map<String, GunProperty> propertiesMap, String info);
 }
