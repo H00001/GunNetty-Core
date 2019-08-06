@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.property;
@@ -42,31 +38,8 @@ public class GunNettyCoreProperty implements GunProperty {
     private volatile int initWait;
     private volatile int minInterval;
 
-    public enum connectionType {
-        /**
-         *
-         */
-        KEEP_ALIVE(1, "keep-alive"), CLOSE(2, "close"), NODEF(4, "nodef");
-        private int index;
-        private String sval;
-
-        public String getSVal() {
-            return sval;
-        }
-
-        connectionType(int index, String sval) {
-            this.index = index;
-            this.sval = sval;
-        }
-
-        public static connectionType getTypeByval(int val) {
-            for (connectionType type : connectionType.values()) {
-                if (type.index == val) {
-                    return type;
-                }
-            }
-            return NODEF;
-        }
+    public connectionType getConnection() {
+        return connectionType.getTypeByVal(connection);
     }
 
     private volatile int port;
@@ -85,8 +58,32 @@ public class GunNettyCoreProperty implements GunProperty {
     private volatile int connection;
     private volatile String profileName;
 
-    public connectionType getConnection() {
-        return connectionType.getTypeByval(connection);
+    @Deprecated
+    public enum connectionType {
+        /**
+         *
+         */
+        KEEP_ALIVE(1, "keep-alive"), CLOSE(2, "close"), NODEF(4, "nodef");
+        private int index;
+        private String sval;
+
+        public String getSVal() {
+            return sval;
+        }
+
+        connectionType(int index, String sval) {
+            this.index = index;
+            this.sval = sval;
+        }
+
+        public static connectionType getTypeByVal(int val) {
+            for (connectionType type : connectionType.values()) {
+                if (type.index == val) {
+                    return type;
+                }
+            }
+            return NODEF;
+        }
     }
 
     public int getFileReadBufferMin() {

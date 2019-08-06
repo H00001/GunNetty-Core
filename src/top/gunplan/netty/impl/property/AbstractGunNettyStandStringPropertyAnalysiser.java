@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.property;
@@ -23,7 +19,7 @@ import static top.gunplan.utils.NumberUtil.isNumber;
  * @version 0.0.0.1
  * @date 2019-08-03 18:21
  */
-public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements GunNettyPropertyAnalyzier<String, String[]> {
+public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements GunNettyPropertyAnalyzer<String, String[]> {
     private final GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {
     };
     private static String unusefulchars = "#";
@@ -65,7 +61,7 @@ public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements G
                 }
             }
             if (properties[now].startsWith("+")) {
-                nextAnalyzing(propertiesMap, properties[now].replace("+", "").trim());
+                nextAnalyze(propertiesMap, properties[now].replace("+", "").trim());
             }
         }
 
@@ -73,5 +69,5 @@ public abstract class AbstractGunNettyStandStringPropertyAnalysiser implements G
     }
 
     @Override
-    public abstract void nextAnalyzing(Map<String, GunProperty> propertiesMap, String info);
+    public abstract void nextAnalyze(Map<String, GunProperty> propertiesMap, String info);
 }

@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.property;
@@ -31,9 +27,9 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
     private GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {
     };
 
-    private GunNettyPropertyAnalyzier analyzier = new AbstractGunNettyStandStringPropertyAnalysiser() {
+    private GunNettyPropertyAnalyzer<String, String[]> analyzer = new AbstractGunNettyStandStringPropertyAnalysiser() {
         @Override
-        public void nextAnalyzing(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
+        public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
             GunGetPropertyFromNet.this.address = info;
             GunGetPropertyFromNet.this.settingProperties(propertiesMap);
         }
@@ -58,7 +54,7 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
                 .whenCompleteAsync((body, en) -> {
                     if (en == null) {
                         try {
-                            analyzier.analyzingProperties(body.split("\n"), propertyMap);
+                            analyzer.analyzingProperties(body.split("\n"), propertyMap);
                         } catch (NoSuchFieldException | IllegalAccessException e) {
                             throw new GunBootServerBase.GunNettyCanNotBootException(e);
                         }

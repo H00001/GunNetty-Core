@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.property;
@@ -14,22 +10,25 @@ import top.gunplan.netty.GunProperty;
 import java.util.Map;
 
 /**
- * GunNettyPropertyAnalyzier
+ * GunNettyPropertyAnalyzer
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-03 18:22
  */
 
-public interface GunNettyPropertyAnalyzier<U, R> {
+public interface GunNettyPropertyAnalyzer<U, R> {
 
     /**
+     * nextAnalyze
+     * <p>
      * set property
      *
      * @param propertiesMap propertiesMap
      * @param info          next information
+     * @throws GunBootServerBase.GunNettyCanNotBootException i/o or analyze error
      */
-    void nextAnalyzing(Map<String, GunProperty> propertiesMap, U info) throws GunBootServerBase.GunNettyCanNotBootException;
+    void nextAnalyze(Map<String, GunProperty> propertiesMap, U info) throws GunBootServerBase.GunNettyCanNotBootException;
 
     /**
      * analyzing properties

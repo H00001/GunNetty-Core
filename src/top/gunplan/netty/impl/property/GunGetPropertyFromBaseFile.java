@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.property;
@@ -26,9 +22,9 @@ import java.util.Objects;
  * @date 2019-06-25 20:55
  */
 public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, PropertyDataBuilder<String[]> {
-    private final GunNettyPropertyAnalyzier<String, String[]> analyzier = new AbstractGunNettyStandStringPropertyAnalysiser() {
+    private final GunNettyPropertyAnalyzer<String, String[]> analyzier = new AbstractGunNettyStandStringPropertyAnalysiser() {
         @Override
-        public void nextAnalyzing(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
+        public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
             GunGetPropertyFromBaseFile.this.settingProperties0(propertiesMap, info);
         }
 

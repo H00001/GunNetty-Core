@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl;
 
 /**
@@ -8,9 +12,28 @@ package top.gunplan.netty.impl;
  * @date 2019-08-05 00:22
  */
 
-@FunctionalInterface
 public interface GunNettySequencer {
+    /**
+     * new ThreadUnSafeSequencer
+     *
+     * @return GunNettySequencer
+     */
+    static GunNettySequencer newThreadUnSafeSequencer() {
+        return new GunUnsafeNettySequenceImpl();
+    }
+
+    /**
+     * new newThreadSafeSequencer
+     *
+     * @return GunNettySequencer
+     */
+    static GunNettySequencer newThreadSafeSequencer() {
+        return new GunSafeNettySequenceImpl();
+    }
+
     long nextSequence();
+
+    long lastSequence();
 
 
     default int nextSequenceInt32() {

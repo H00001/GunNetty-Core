@@ -1,7 +1,11 @@
-package top.gunplan.netty;
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
 
+package top.gunplan.netty.impl.timeevent;
+
+import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.impl.GunNettyManagerGetter;
-import top.gunplan.netty.impl.GunNettyTimeExecuteImpl;
 
 import java.util.List;
 
@@ -12,19 +16,25 @@ import java.util.List;
 
 public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTimeExecutor> {
     /**
-     * run
-     */
-    @Override
-    void run();
-
-    /**
-     * a instance
+     * an instance
      *
      * @return GunTimeExecutor
      */
     static GunTimeExecutor instance() {
         return new GunNettyTimeExecuteImpl();
     }
+
+    /**
+     * run
+     */
+    @Override
+    default void run() {
+        for (; loop(); ) {
+        }
+
+    }
+
+    boolean loop();
 
     /**
      * registerWorker
@@ -46,10 +56,15 @@ public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTime
 
     /**
      * delete worker form time execute
-     * @param  work to erase
+     *
+     * @param work to erase
      * @return this chain style
      */
     GunTimeExecutor eraserWorker(GunNettyTimer work);
 
 
+    /**
+     * stop loop
+     */
+    void shutdown();
 }

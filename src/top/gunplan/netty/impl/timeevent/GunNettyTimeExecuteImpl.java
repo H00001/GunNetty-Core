@@ -1,4 +1,8 @@
-package top.gunplan.netty.impl;
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
+package top.gunplan.netty.impl.timeevent;
 
 import top.gunplan.netty.GunNettyTimer;
 
@@ -11,11 +15,11 @@ import java.util.Set;
  *
  * @author dosdrtt
  */
-public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
+final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
 
 
     @Override
-    public void run() {
+    public boolean loop() {
         sum.increment();
         final Set<SelectionKey> keys = manager.availableChannel(sum.longValue());
         works.parallelStream().forEach(k -> {
@@ -23,6 +27,12 @@ public final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
                 new GunTimeWorkFunc(keys, sum.longValue()).execute(k);
             }
         });
+        return false;
+
+    }
+
+    @Override
+    public void shutdown() {
 
     }
 

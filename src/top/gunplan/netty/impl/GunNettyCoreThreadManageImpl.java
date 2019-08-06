@@ -1,35 +1,31 @@
+
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl;
 
 
-import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyPipeline;
-import top.gunplan.netty.GunTimeExecutor;
 import top.gunplan.netty.common.GunNettyExecutors;
-import top.gunplan.netty.impl.eventloop.EventLoopFactory;
-import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
-import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
-import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
+import top.gunplan.netty.impl.eventloop.*;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
+import top.gunplan.netty.impl.timeevent.AbstractGunTimeExecutor;
+import top.gunplan.netty.impl.timeevent.GunTimeExecutor;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 import java.util.Set;
 import java.util.concurrent.*;
+import java.util.stream.Stream;
 
 /**
  * @author dosdrtt
  * @concurrent
- * @apiNote 2.0.0.8
+ * @apiNote 2.0.0.9
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY;
@@ -37,7 +33,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private volatile GunConnEventLoop dealAccept;
     private final GunNettyBaseObserve observe;
     private final GunNettySequencer sequencer = new GunUnsafeNettySequenceImpl();
-    private final GunTimeExecutor timeExecute = new GunNettyTimeExecuteImpl();
+    private final GunTimeExecutor timeExecute = AbstractGunTimeExecutor.create();
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private final GunNettyTransfer<SocketChannel> transfer;
 
@@ -45,6 +41,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final ExecutorService SERVER___POOL;
     private final ExecutorService TRANSFER_POOL;
     private final ExecutorService ACCEPT___POOL;
+    private final ExecutorService[] EXE_POOL_LIST;
 
 
     private volatile int port;
@@ -59,6 +56,8 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
         ACCEPT___POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
         SERVER___POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
+        EXE_POOL_LIST = new ExecutorService[]{ACCEPT___POOL, TRANSFER_POOL, SERVER___POOL, TIMER____POOL};
+
         transfer = EventLoopFactory.newGunDisruptorTransfer();
         transfer.registerManager(this);
 
@@ -90,11 +89,10 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     public Future<Integer> startAndWait() {
         status = ManagerState.BOOTING;
         observe.onListen(port);
-        for (GunCoreEventLoop dat : dealData) {
-            SERVER___POOL.submit(dat);
-        }
+        Arrays.stream(dealData).parallel().forEach(SERVER___POOL::submit);
         TRANSFER_POOL.submit(transfer);
-        TIMER____POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(), GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
+        TIMER____POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(),
+                GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
         var future = ACCEPT___POOL.submit(dealAccept, 1);
         status = ManagerState.RUNNING;
         return future;
@@ -106,38 +104,31 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public boolean stopAndWait() throws InterruptedException {
+    public boolean stopAndWait() {
         status = ManagerState.STOPPING;
-        inforToStop();
-
-        for (; SERVER___POOL.isTerminated() &&
-                ACCEPT___POOL.isTerminated() &&
-                TIMER____POOL.isTerminated() &&
-                TRANSFER_POOL.isTerminated(); ) {
-            if (!SERVER___POOL.isTerminated()) {
-                SERVER___POOL.awaitTermination(1, TimeUnit.MINUTES);
-            } else if (!ACCEPT___POOL.isTerminated()) {
-                ACCEPT___POOL.awaitTermination(1, TimeUnit.MINUTES);
-            } else if (!TIMER____POOL.isTerminated()) {
-                TIMER____POOL.awaitTermination(1, TimeUnit.MINUTES);
-            } else if (!TRANSFER_POOL.isTerminated()) {
-                TIMER____POOL.awaitTermination(1, TimeUnit.MINUTES);
-            }
-        }
+        informToStop();
+        checkToStop();
         status = ManagerState.INACTIVE;
         return true;
     }
 
-    private void inforToStop() {
+    private void checkToStop() {
+        Stream<ExecutorService> services = Arrays.stream(EXE_POOL_LIST).filter(who -> !who.isTerminated());
+        services.parallel().forEach(any -> {
+            try {
+                any.awaitTermination(1, TimeUnit.MINUTES);
+            } catch (InterruptedException ignore) {
+            }
+        });
+    }
+
+
+    private void informToStop() {
         dealAccept.stopEventLoop();
         transfer.stopEventLoop();
-        for (GunCoreEventLoop dealDatum : dealData) {
-            dealDatum.stopEventLoop();
-        }
-        ACCEPT___POOL.shutdown();
-        TRANSFER_POOL.shutdown();
-        SERVER___POOL.shutdown();
-        TIMER____POOL.shutdown();
+        timeExecute.shutdown();
+        Arrays.stream(dealData).parallel().forEach(GunNettyVariableWorker::stopEventLoop);
+        Arrays.stream(EXE_POOL_LIST).forEach(ExecutorService::shutdown);
     }
 
     @Override
