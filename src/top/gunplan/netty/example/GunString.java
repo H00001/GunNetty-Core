@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.example;
 
 import top.gunplan.netty.impl.GunNetInBoundOutBound;
@@ -12,10 +16,6 @@ import top.gunplan.netty.impl.GunNetInBoundOutBound;
 
 public class GunString implements GunNetInBoundOutBound {
     private String base;
-
-    public String getBase() {
-        return base;
-    }
 
     @Override
     public boolean unSerialize(byte[] in) {

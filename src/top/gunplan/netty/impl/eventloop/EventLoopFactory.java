@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
 
@@ -36,7 +40,7 @@ public final class EventLoopFactory {
     static final class ConnEventLoopBuilderImpl implements ConnEventLoopBuilder {
         final GunConnEventLoop eventLoop;
 
-        public ConnEventLoopBuilderImpl() throws IOException {
+        ConnEventLoopBuilderImpl() throws IOException {
             this.eventLoop = new GunCoreConnectionEventLoopImpl();
         }
 

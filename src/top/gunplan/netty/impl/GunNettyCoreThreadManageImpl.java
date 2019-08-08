@@ -13,6 +13,7 @@ import top.gunplan.netty.impl.eventloop.*;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.timeevent.AbstractGunTimeExecutor;
 import top.gunplan.netty.impl.timeevent.GunTimeExecutor;
+import top.gunplan.utils.NumberUtil;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -25,7 +26,7 @@ import java.util.stream.Stream;
 /**
  * @author dosdrtt
  * @concurrent
- * @apiNote 2.0.0.9
+ * @apiNote 2.0.1.9
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY;
@@ -37,26 +38,25 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private final GunNettyTransfer<SocketChannel> transfer;
 
-    private final ScheduledExecutorService TIMER____POOL;
-    private final ExecutorService SERVER___POOL;
+    private final ScheduledExecutorService EXETIMER_POOL;
+    private final ExecutorService DASERVER_POOL;
     private final ExecutorService TRANSFER_POOL;
-    private final ExecutorService ACCEPT___POOL;
+    private final ExecutorService ACCEPTCO_POOL;
     private final ExecutorService[] EXE_POOL_LIST;
 
 
-    private volatile int port;
     private volatile ManagerState status = ManagerState.INACTIVE;
 
 
     GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final GunNettyBaseObserve baseObserve) {
         this.observe = baseObserve;
         GUN_NETTY_CORE_PROPERTY = property;
-        MANAGE_THREAD_NUM = property.maxRunningNum();
-        TIMER____POOL = Executors.newScheduledThreadPool(1);
-        TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("TransferThread");
-        ACCEPT___POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
-        SERVER___POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
-        EXE_POOL_LIST = new ExecutorService[]{ACCEPT___POOL, TRANSFER_POOL, SERVER___POOL, TIMER____POOL};
+        MANAGE_THREAD_NUM = NumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
+        EXETIMER_POOL = Executors.newScheduledThreadPool(1);
+        TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("CoreTransferThread");
+        ACCEPTCO_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
+        DASERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
+        EXE_POOL_LIST = new ExecutorService[]{ACCEPTCO_POOL, TRANSFER_POOL, DASERVER_POOL, EXETIMER_POOL};
 
         transfer = EventLoopFactory.newGunDisruptorTransfer();
         transfer.registerManager(this);
@@ -65,7 +65,6 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     @Override
     public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException {
-        this.port = port;
         timeExecute.registerWorker(pipeline.timer());
         timeExecute.registerManager(this);
         dealData = EventLoopFactory.buildDataEventLoop(MANAGE_THREAD_NUM).with(dataExecutor, pipeline).andRegister(this).build();
@@ -88,12 +87,12 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     @Override
     public Future<Integer> startAndWait() {
         status = ManagerState.BOOTING;
-        observe.onListen(port);
-        Arrays.stream(dealData).parallel().forEach(SERVER___POOL::submit);
+        observe.onListen(dealAccept.listenPort());
+        Arrays.stream(dealData).parallel().forEach(DASERVER_POOL::submit);
         TRANSFER_POOL.submit(transfer);
-        TIMER____POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(),
+        EXETIMER_POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(),
                 GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
-        var future = ACCEPT___POOL.submit(dealAccept, 1);
+        var future = ACCEPTCO_POOL.submit(dealAccept, 1);
         status = ManagerState.RUNNING;
         return future;
     }
@@ -106,8 +105,8 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     @Override
     public boolean stopAndWait() {
         status = ManagerState.STOPPING;
-        informToStop();
-        checkToStop();
+        this.informToStop();
+        this.checkToStop();
         status = ManagerState.INACTIVE;
         return true;
     }
@@ -124,9 +123,9 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     private void informToStop() {
-        dealAccept.stopEventLoop();
-        transfer.stopEventLoop();
-        timeExecute.shutdown();
+        this.dealAccept.stopEventLoop();
+        this.transfer.stopEventLoop();
+        this.timeExecute.shutdown();
         Arrays.stream(dealData).parallel().forEach(GunNettyVariableWorker::stopEventLoop);
         Arrays.stream(EXE_POOL_LIST).forEach(ExecutorService::shutdown);
     }

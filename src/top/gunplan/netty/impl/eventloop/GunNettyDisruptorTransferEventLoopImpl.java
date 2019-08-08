@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
 import com.lmax.disruptor.BlockingWaitStrategy;
@@ -16,17 +20,19 @@ import java.util.concurrent.TimeUnit;
  * GunNettyDisruptorTransferEventLoopImpl
  *
  * @author frank albert
- * @version 0.1.0.1
+ * @version 0.1.0.2
  * @date 2019-07-23 08:57
  */
 
-class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<SocketChannel>> {
+final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<SocketChannel>> {
     private final static int BUFFER_SIZE = 1024;
     private final Disruptor<GunNettyChannelTransfer<SocketChannel>> disruptor;
     private RingBuffer<GunNettyChannelTransfer<SocketChannel>> ringBuffer;
 
-    {
-        disruptor = new Disruptor<>(GunNettyChannelTransferImpl::new, BUFFER_SIZE, new GunNettyThreadFactory(this.getClass().getName()), ProducerType.MULTI, new BlockingWaitStrategy());
+    GunNettyDisruptorTransferEventLoopImpl() {
+        disruptor = new Disruptor<>(GunNettyChannelTransferImpl::new, BUFFER_SIZE,
+                new GunNettyThreadFactory(this.getClass().getName()),
+                ProducerType.MULTI, new BlockingWaitStrategy());
         disruptor.handleEventsWith(this);
         ringBuffer = disruptor.getRingBuffer();
     }

@@ -1,4 +1,10 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty;
+
+import java.io.IOException;
 
 /**
  * GunChannelException
@@ -16,7 +22,7 @@ public class GunChannelException extends GunException {
         super(type, why);
     }
 
-    public GunChannelException(Exception exp) {
+    public GunChannelException(IOException exp) {
         super(GunExceptionType.EXC3, exp);
 
     }

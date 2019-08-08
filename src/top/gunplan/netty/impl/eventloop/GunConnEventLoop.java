@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
@@ -17,7 +21,8 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
      * @param port port
      * @return succeed , normal
      */
-    int openPort(int port);
+    int openPort(int... port);
+
 
     /**
      * listen port

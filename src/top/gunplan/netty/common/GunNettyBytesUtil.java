@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.common;
 
 
@@ -30,9 +34,9 @@ public final class GunNettyBytesUtil {
     }
 
     private static byte[] incrementCopy(byte[] oldbytes, int increment) {
-        byte[] newbbytes = new byte[oldbytes.length + increment];
-        System.arraycopy(oldbytes, 0, newbbytes, 0, oldbytes.length);
-        return newbbytes;
+        byte[] newBytes = new byte[oldbytes.length + increment];
+        System.arraycopy(oldbytes, 0, newBytes, 0, oldbytes.length);
+        return newBytes;
     }
 
     private static byte[] readFromChannel(SocketChannel channel, int increment) throws IOException {
