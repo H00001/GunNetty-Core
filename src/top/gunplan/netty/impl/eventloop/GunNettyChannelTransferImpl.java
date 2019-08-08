@@ -1,8 +1,13 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
-import java.nio.channels.SocketChannel;
+import java.nio.channels.Channel;
 
 /**
  * GunNettyChannelTransferImpl
@@ -12,37 +17,29 @@ import java.nio.channels.SocketChannel;
  * @date 2019-06-19 00:02
  */
 
-public class GunNettyChannelTransferImpl implements GunNettyChannelTransfer<SocketChannel> {
-    private volatile long key;
-    private volatile SocketChannel channel;
+public class GunNettyChannelTransferImpl<U extends Channel> implements GunNettyChannelTransfer<GunNettyChannel<U>> {
+    private volatile GunNettyChannel<U> channel;
 
-    GunNettyChannelTransferImpl() {
+    GunNettyChannelTransferImpl(GunNettyChannel<U> channel) {
+        this.channel = channel;
     }
 
-
-    GunNettyChannelTransferImpl(long value, SocketChannel key) {
-        this.key = value;
-        this.channel = key;
+    public GunNettyChannelTransferImpl() {
     }
-
 
     @Override
-    public SocketChannel channel() {
+    public GunNettyChannel<U> channel() {
         return channel;
     }
 
     @Override
-    public void setChannel(SocketChannel channel) {
+    public void setChannel(GunNettyChannel<U> channel) {
         this.channel = channel;
     }
 
-    @Override
-    public void setKey(long key) {
-        this.key = key;
-    }
 
     @Override
     public long key() {
-        return key;
+        return channel.channelId();
     }
 }

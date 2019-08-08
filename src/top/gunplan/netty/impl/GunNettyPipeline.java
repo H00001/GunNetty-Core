@@ -1,5 +1,11 @@
-package top.gunplan.netty;
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
 
+package top.gunplan.netty.impl;
+
+
+import top.gunplan.netty.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.List;
@@ -9,6 +15,10 @@ import java.util.List;
  * @since 1.0.0.1
  */
 public interface GunNettyPipeline extends GunHandle {
+    static GunNettyPipeline newPipeline() {
+        return new GunNettyPipelineImpl();
+    }
+
     /**
      * register the handle in the chain
      *

@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty;
@@ -63,10 +59,9 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunN
     /**
      * available channels
      *
-     * @param deal     deal event Executor
-     * @param pipeline event dealer
+     * @param deal deal event Executor
      * @return int init result
      * @throws IOException some i/o can not opened
      */
-    int init(final ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
+    int init(final ExecutorService deal) throws IOException;
 }

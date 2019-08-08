@@ -5,7 +5,8 @@
 package top.gunplan.netty.impl.eventloop;
 
 
-import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.ChannelInitHandle;
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 
 import java.io.IOException;
@@ -21,11 +22,11 @@ import java.util.concurrent.ExecutorService;
  */
 
 public final class EventLoopFactory {
-    public static GunNettyTransfer<SocketChannel> newGunNettyBaseTransfer() {
+    public static GunNettyTransfer<GunNettyChannel<SocketChannel>> newGunNettyBaseTransfer() {
         return new GunNettyBaseTransferEventLoopImpl<>();
     }
 
-    public static GunNettyTransfer<SocketChannel> newGunDisruptorTransfer() {
+    public static GunNettyTransfer<GunNettyChannel<SocketChannel>> newGunDisruptorTransfer() {
         return new GunNettyDisruptorTransferEventLoopImpl<>();
     }
 
@@ -45,8 +46,9 @@ public final class EventLoopFactory {
         }
 
         @Override
-        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
-            this.eventLoop.init(deal, pipeline);
+        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle handle) throws IOException {
+            with(deal);
+            this.eventLoop.initInitHandle(handle);
             return this;
         }
 
@@ -58,6 +60,12 @@ public final class EventLoopFactory {
         @Override
         public EventLoopBuilder<GunConnEventLoop> andRegister(GunNettyCoreThreadManager manager) {
             eventLoop.registerManager(manager);
+            return this;
+        }
+
+        @Override
+        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal) throws IOException {
+            this.eventLoop.init(deal);
             return this;
         }
 
@@ -95,9 +103,9 @@ public final class EventLoopFactory {
         }
 
         @Override
-        public DataEventLoopBuilder with(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException {
+        public DataEventLoopBuilder with(ExecutorService deal) throws IOException {
             for (int i = 0; i < sum; i++) {
-                eventLoops[i].init(deal, pipeline);
+                eventLoops[i].init(deal);
             }
             return this;
         }

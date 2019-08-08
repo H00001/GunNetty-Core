@@ -7,13 +7,14 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyFunctional;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
@@ -31,9 +32,9 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
     private boolean notDealOutputFlag = false;
 
 
-    GunCoreCalculatorWorker(final GunNettyPipeline pipeline
+    GunCoreCalculatorWorker(final GunNettyChannel<SocketChannel> nettyChannel
             , final SelectionKey key, AtomicInteger waitSize) {
-        super(pipeline, waitSize);
+        super(nettyChannel, waitSize);
         this.key = key;
         executeEvent.put(GunNettyFilter.DealResult.CLOSE, () -> {
             decreaseChannel(1);
@@ -54,7 +55,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
     public void work() {
         final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(key);
         GunNettyFilter.DealResult result = null;
-        for (final GunNettyFilter filter : this.pipeline.filters()) {
+        for (final GunNettyFilter filter : filters) {
             try {
                 result = filter.doInputFilter(gunFilterObj);
             } catch (GunChannelException e) {
@@ -75,15 +76,14 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
         try {
             output = this.handle.dealDataEvent(gunFilterObj.transferTarget());
         } catch (GunChannelException e) {
-            this.pipeline.handel().dealExceptionEvent(e);
+            this.handle.dealExceptionEvent(e);
         }
         GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(output);
         responseFilterDto.setKey(gunFilterObj.getKey());
-        ListIterator<GunNettyFilter> filters = pipeline.filters().listIterator(pipeline.filters().size());
-
-        for (; filters.hasPrevious() && !notDealOutputFlag; ) {
+        ListIterator<GunNettyFilter> iterator = filters.listIterator(filters.size());
+        for (; iterator.hasPrevious() && !notDealOutputFlag; ) {
             try {
-                result = filters.previous().doOutputFilter(responseFilterDto);
+                result = iterator.previous().doOutputFilter(responseFilterDto);
             } catch (GunChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }

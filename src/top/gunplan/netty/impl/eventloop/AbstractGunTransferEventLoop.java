@@ -1,19 +1,16 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.eventloop;
 
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 
 import java.io.IOException;
-import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ExecutorService;
 
 /**
  * AbstractGunTransferEventLoop
@@ -22,7 +19,7 @@ import java.nio.channels.SocketChannel;
  * @version 0.0.2.1
  * @date 2019-07-23 00:36
  */
-public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> implements GunNettyTransfer<U> {
+public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransfer<GunNettyChannel<U>> {
     private volatile boolean running = false;
     private volatile GunNettyCoreThreadManager manager;
 
@@ -36,21 +33,28 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
         return isRunning();
     }
 
-    SelectionKey registerReadChannelToDataEventLoop(SocketChannel channel) throws IOException {
-        channel.configureBlocking(false);
+    SelectionKey registerReadChannelToDataEventLoop(GunNettyChannel<U> channel) throws IOException {
+        channel.channel().configureBlocking(false);
         GunDataEventLoop<SocketChannel> register = manager.dealChannelEventLoop();
-        return register.registerReadKey(channel);
+        final SelectionKey key = register.registerReadKey(channel.channel());
+        key.attach(channel);
+        return key;
+    }
+
+
+    @Override
+    public int init(ExecutorService deal) {
+        return 0;
     }
 
     @Override
     public void dealEvent(SelectionKey socketChannel) throws IOException {
-        SocketChannel channel = ((SocketChannel) socketChannel.channel());
-        channel.socket().setTcpNoDelay(true);
-
+        final SocketChannel javaChannel = ((SocketChannel) socketChannel.channel());
+        javaChannel.socket().setTcpNoDelay(true);
     }
 
     @Override
-    public GunNettyTransfer<U> registerManager(GunNettyCoreThreadManager manager) {
+    public GunNettyTransfer<GunNettyChannel<U>> registerManager(GunNettyCoreThreadManager manager) {
         this.manager = manager;
         return this;
     }
@@ -77,4 +81,5 @@ public abstract class AbstractGunTransferEventLoop<U extends SelectableChannel> 
     public void stopEventLoop() {
         running = false;
     }
+
 }

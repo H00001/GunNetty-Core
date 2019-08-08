@@ -1,7 +1,12 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
 import java.io.IOException;
@@ -19,18 +24,13 @@ import java.util.concurrent.LinkedBlockingQueue;
  */
 class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> {
 
-    private final BlockingQueue<U> kQueue = new LinkedBlockingQueue<>();
+    private final BlockingQueue<GunNettyChannel<U>> kQueue = new LinkedBlockingQueue<>();
 
-
-    @Override
-    public void push(GunNettyChannelTransfer<U> u) {
-        kQueue.offer(u.channel());
-    }
 
     @Override
     public void loopTransfer() {
         try {
-            U socketChannel = kQueue.take();
+            GunNettyChannel<U> socketChannel = kQueue.take();
             final SelectionKey key = registerReadChannelToDataEventLoop(socketChannel);
             dealEvent(key);
         } catch (IOException e) {
@@ -38,5 +38,10 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
         } catch (InterruptedException ignored) {
 
         }
+    }
+
+    @Override
+    public void push(GunNettyChannelTransfer<GunNettyChannel<U>> u) {
+        kQueue.offer(u.channel());
     }
 }

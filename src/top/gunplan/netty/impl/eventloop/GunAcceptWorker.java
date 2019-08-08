@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
@@ -21,32 +21,32 @@ import java.util.ListIterator;
  * @date 2019-04-25
  */
 public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
-    private final SocketChannel channel;
 
-    GunAcceptWorker(final GunNettyPipeline l, final SocketChannel channel) {
+
+    GunAcceptWorker(final GunNettyChannel<SocketChannel> l) {
         super(l, null);
-        this.channel = channel;
+
     }
 
 
     @Override
     public void work() {
-        for (GunNettyFilter filter : pipeline.filters()) {
+        for (GunNettyFilter filter : filters) {
             if (!filter.doConnFilter(channel)) {
                 return;
             }
         }
         GunNetOutbound ob = null;
         try {
-            ob = this.pipeline.handel().dealConnEvent(channel.getRemoteAddress());
+            ob = this.handle.dealConnEvent(channel.remoteAddress());
         } catch (IOException e) {
             handle.dealExceptionEvent(new GunChannelException(e));
         }
-        ListIterator<GunNettyFilter> filters = pipeline.filters().listIterator(pipeline.filters().size());
-        while (filters.hasPrevious()) {
+        ListIterator<GunNettyFilter> iterator = filters.listIterator(filters.size());
+        while (iterator.hasPrevious()) {
             GunNettyFilter.DealResult result = null;
             try {
-                result = filters.previous().doOutputFilter(new GunNettyOutputFilterChecker(ob, null), channel);
+                result = iterator.previous().doOutputFilter(new GunNettyOutputFilterChecker(ob, null), channel);
             } catch (GunChannelException e) {
                 handle.dealExceptionEvent(e);
             }

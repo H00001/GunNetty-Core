@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.GunHandle;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 
 import java.io.IOException;
@@ -25,10 +25,11 @@ import java.util.concurrent.ExecutorService;
 abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     volatile ExecutorService deal;
     volatile Selector bootSelector;
+    volatile GunHandle eventHandle;
     /**
      * pipe line, executor chain
      */
-    volatile GunNettyPipeline pipeline;
+
     private volatile boolean running;
     volatile Thread workThread;
 
@@ -39,9 +40,8 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     }
 
     @Override
-    public int init(final ExecutorService deal, final GunNettyPipeline pipeline) throws IOException {
+    public int init(final ExecutorService deal) throws IOException {
         this.deal = deal;
-        this.pipeline = pipeline;
         bootSelector = SelectorProvider.provider().openSelector();
         return 0;
     }

@@ -1,6 +1,11 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty;
 
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.GunNettyPipeline;
 
 import java.util.concurrent.ExecutorService;
 
@@ -115,5 +120,6 @@ public interface GunBootServer extends GunBootServerBase {
     void setPipeline(GunNettyPipeline pipeline);
 
 
+    void onHasChannel(ChannelInitHandle pipeline);
 }
 

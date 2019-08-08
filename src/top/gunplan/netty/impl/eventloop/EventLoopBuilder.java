@@ -1,6 +1,9 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
-import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 
 import java.io.IOException;
@@ -22,8 +25,9 @@ public interface EventLoopBuilder<U> {
     U build();
 
     /**
-     andRegister
-     * @param manager  GunNettyCoreThreadManager
+     * andRegister
+     *
+     * @param manager GunNettyCoreThreadManager
      * @return EventLoopBuilder<U>
      */
     EventLoopBuilder<U> andRegister(GunNettyCoreThreadManager manager);
@@ -31,10 +35,12 @@ public interface EventLoopBuilder<U> {
     /**
      * with
      * register executor
-     * @param deal ExecutorService
+     *
+     * @param deal     ExecutorService
      * @param pipeline works
      * @return this chain style
      * @throws IOException i/o error
      */
-    EventLoopBuilder<U> with(ExecutorService deal, final GunNettyPipeline pipeline) throws IOException;
+    EventLoopBuilder<U> with(final ExecutorService deal) throws IOException;
+
 }

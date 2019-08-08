@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl.eventloop;
 
+import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunCoreEventLoop;
 
 /**
@@ -30,4 +31,7 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
      * @return port
      */
     int listenPort();
+
+
+    void initInitHandle(ChannelInitHandle handle);
 }

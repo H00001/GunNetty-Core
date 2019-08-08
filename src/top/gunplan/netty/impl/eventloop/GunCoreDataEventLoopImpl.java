@@ -1,15 +1,11 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.impl.GunNettyChannel;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -36,6 +32,12 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
 
     private void continueLoop() {
         LockSupport.unpark(workThread);
+    }
+
+    @Override
+    public Set<SelectionKey> availableSelectionKey() {
+        bootSelector.wakeup();
+        return bootSelector.keys();
     }
 
     @Override
@@ -87,21 +89,16 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
 
 
     @Override
+    @SuppressWarnings("unchecked")
     public void dealEvent(SelectionKey key) {
         key.interestOps(0);
         listenSize.decrementAndGet();
-        this.deal.submit(new GunCoreCalculatorWorker(pipeline, key, listenSize));
+        this.deal.submit(new GunCoreCalculatorWorker((GunNettyChannel) key.attachment(), key, listenSize));
     }
 
     @Override
-    public int init(ExecutorService deal, GunNettyPipeline pipeline) throws IOException {
-        return super.init(deal, pipeline);
+    public int init(ExecutorService deal) throws IOException {
+        return super.init(deal);
     }
 
-
-    @Override
-    public Set<SelectionKey> availableSelectionKey() {
-        bootSelector.wakeup();
-        return bootSelector.keys();
-    }
 }

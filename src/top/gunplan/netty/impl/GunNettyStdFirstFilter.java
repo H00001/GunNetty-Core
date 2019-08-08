@@ -14,7 +14,6 @@ import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.channels.Channel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
@@ -36,7 +35,7 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
 
 
     @Override
-    public boolean doConnFilter(Channel ch) {
+    public boolean doConnFilter(GunNettyChannel ch) {
         return true;
     }
 
@@ -83,8 +82,9 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws GunChannelException {
-        SocketChannel channel = (SocketChannel) filterDto.getKey().channel();
+        GunNettyChannel<SocketChannel> channel = ((GunNettyChannel<SocketChannel>) filterDto.getKey().attachment());
         try {
             return doOutputFilter(filterDto, channel);
         } catch (GunChannelException e) {
@@ -103,10 +103,10 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, SocketChannel channel) {
+    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, GunNettyChannel<SocketChannel> channel) {
         try {
             filterDto.translate();
-            sendMessage(filterDto.source(), channel);
+            sendMessage(filterDto.source(), channel.channel());
             return DealResult.NEXT;
         } catch (IOException exp) {
             throw new GunChannelException(exp);

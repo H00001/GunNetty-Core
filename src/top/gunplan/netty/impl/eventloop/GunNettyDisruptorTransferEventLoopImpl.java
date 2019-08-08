@@ -10,10 +10,10 @@ import com.lmax.disruptor.RingBuffer;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import top.gunplan.netty.common.GunNettyThreadFactory;
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
 import java.nio.channels.SocketChannel;
-import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -24,10 +24,10 @@ import java.util.concurrent.TimeUnit;
  * @date 2019-07-23 08:57
  */
 
-final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<SocketChannel>> {
+final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> implements EventHandler<GunNettyChannelTransfer<GunNettyChannel<U>>> {
     private final static int BUFFER_SIZE = 1024;
-    private final Disruptor<GunNettyChannelTransfer<SocketChannel>> disruptor;
-    private RingBuffer<GunNettyChannelTransfer<SocketChannel>> ringBuffer;
+    private final Disruptor<GunNettyChannelTransfer<GunNettyChannel<U>>> disruptor;
+    private RingBuffer<GunNettyChannelTransfer<GunNettyChannel<U>>> ringBuffer;
 
     GunNettyDisruptorTransferEventLoopImpl() {
         disruptor = new Disruptor<>(GunNettyChannelTransferImpl::new, BUFFER_SIZE,
@@ -37,11 +37,10 @@ final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> exte
         ringBuffer = disruptor.getRingBuffer();
     }
 
-    private void publishChannel(U channel) {
+    private void publishChannel(GunNettyChannel<U> channel) {
         long l = ringBuffer.next();
         try {
-            GunNettyChannelTransfer<SocketChannel> transfer = ringBuffer.get(l);
-            transfer.setKey(ThreadLocalRandom.current().nextInt(1000));
+            GunNettyChannelTransfer<GunNettyChannel<U>> transfer = ringBuffer.get(l);
             transfer.setChannel(channel);
         } finally {
             ringBuffer.publish(l);
@@ -50,7 +49,7 @@ final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> exte
 
 
     @Override
-    public void push(GunNettyChannelTransfer<U> u) {
+    public void push(GunNettyChannelTransfer<GunNettyChannel<U>> u) {
         publishChannel(u.channel());
     }
 
@@ -69,8 +68,9 @@ final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> exte
 
 
     @Override
-    public void onEvent(GunNettyChannelTransfer<SocketChannel> event, long sequence, boolean endOfBatch) throws Exception {
-        final SocketChannel socketChannel = event.channel();
+    public void onEvent(GunNettyChannelTransfer<GunNettyChannel<U>> event, long sequence, boolean endOfBatch) throws Exception {
+        final GunNettyChannel<U> socketChannel = event.channel();
         dealEvent(registerReadChannelToDataEventLoop(socketChannel));
+
     }
 }

@@ -1,6 +1,13 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
+import top.gunplan.netty.ChannelInitHandle;
+
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
 
 /**
  * ConnEventLoopBuilder
@@ -18,4 +25,7 @@ public interface ConnEventLoopBuilder extends EventLoopBuilder<GunConnEventLoop>
      * @throws IOException when bind file
      */
     ConnEventLoopBuilder bindPort(int p) throws IOException;
+
+
+    EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle handle) throws IOException;
 }

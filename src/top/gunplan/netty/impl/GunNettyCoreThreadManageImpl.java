@@ -6,8 +6,8 @@
 package top.gunplan.netty.impl;
 
 
+import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyBaseObserve;
-import top.gunplan.netty.GunNettyPipeline;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.eventloop.*;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
@@ -36,7 +36,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final GunNettySequencer sequencer = new GunUnsafeNettySequenceImpl();
     private final GunTimeExecutor timeExecute = AbstractGunTimeExecutor.create();
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
-    private final GunNettyTransfer<SocketChannel> transfer;
+    private final GunNettyTransfer<GunNettyChannel<SocketChannel>> transfer;
 
     private final ScheduledExecutorService EXETIMER_POOL;
     private final ExecutorService DASERVER_POOL;
@@ -64,11 +64,11 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, GunNettyPipeline pipeline, int port) throws IOException {
+    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, ChannelInitHandle handle, GunNettyPipeline pipeline, int port) throws IOException {
         timeExecute.registerWorker(pipeline.timer());
         timeExecute.registerManager(this);
-        dealData = EventLoopFactory.buildDataEventLoop(MANAGE_THREAD_NUM).with(dataExecutor, pipeline).andRegister(this).build();
-        dealAccept = EventLoopFactory.buildConnEventLoop().bindPort(port).with(dataExecutor, pipeline).andRegister(this).build();
+        dealData = EventLoopFactory.buildDataEventLoop(MANAGE_THREAD_NUM).with(dataExecutor).andRegister(this).build();
+        dealAccept = EventLoopFactory.buildConnEventLoop().bindPort(port).with(dataExecutor, handle).andRegister(this).build();
         return true;
     }
 
@@ -98,7 +98,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public GunNettyTransfer<SocketChannel> transferThread() {
+    public GunNettyTransfer<GunNettyChannel<SocketChannel>> transferThread() {
         return transfer;
     }
 

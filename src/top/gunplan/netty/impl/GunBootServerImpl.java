@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl;
@@ -44,6 +40,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile GunNettyPipeline pipeline = new GunNettyPipelineImpl();
 
+
+    ChannelInitHandle initHandle;
 
     private volatile GunNettyCoreProperty coreProperty;
 
@@ -93,6 +91,11 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
+    public void onHasChannel(ChannelInitHandle initHandle) {
+        this.initHandle = initHandle;
+    }
+
+    @Override
     public boolean initCheck() {
         if (acceptExecutor == null) {
             throw new GunException(GunExceptionType.EXC0, "acceptExecutor is null");
@@ -135,7 +138,7 @@ final class GunBootServerImpl implements GunBootServer {
             return GunNettyWorkState.BOOT_ERROR_2.state;
         }
         try {
-            threadManager.init(acceptExecutor, requestExecutor, pipeline, coreProperty.getPort());
+            threadManager.init(acceptExecutor, requestExecutor, initHandle, pipeline, coreProperty.getPort());
         } catch (IOException exc) {
             GunNettyContext.logger.setTAG(GunNettyCanNotBootException.class).urgency(exc.getMessage());
             return GunNettyWorkState.BOOT_ERROR_1.state;

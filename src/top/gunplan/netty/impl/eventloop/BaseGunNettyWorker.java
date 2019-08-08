@@ -1,16 +1,15 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.eventloop;
 
+import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyHandle;
-import top.gunplan.netty.GunNettyPipeline;
+import top.gunplan.netty.impl.GunNettyChannel;
 
+import java.nio.channels.SocketChannel;
+import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
 
 
@@ -20,14 +19,16 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author frank albert
  */
 abstract class BaseGunNettyWorker implements GunNettyWorkerInterface {
-    final GunNettyPipeline pipeline;
+    final GunNettyChannel<SocketChannel> channel;
     final GunNettyHandle handle;
+    final List<GunNettyFilter> filters;
     private final AtomicInteger waitSize;
 
 
-    BaseGunNettyWorker(final GunNettyPipeline pipeline, final AtomicInteger waitSize) {
-        this.pipeline = pipeline;
-        this.handle = pipeline.handel();
+    BaseGunNettyWorker(final GunNettyChannel<SocketChannel> channel, final AtomicInteger waitSize) {
+        this.channel = channel;
+        this.handle = channel.pipeline().handel();
+        this.filters = channel.pipeline().filters();
         this.waitSize = waitSize;
 
     }
