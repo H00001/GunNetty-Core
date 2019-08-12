@@ -9,7 +9,6 @@ import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
@@ -58,17 +57,16 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
 
     @Override
     public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException {
-        final GunNettyChildChannel<SocketChannel> key = filterDto.getKey();
-        key.channel().isv
-        if (key.isValid()) {
+        final GunNettyChildChannel<SocketChannel> channel = filterDto.getKey();
+        if (channel.isValid()) {
             try {
                 GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
                 filterDto.setSource(reader.readBytes(channel));
             } catch (IOException e) {
                 return invokeCloseEvent(key, true);
             }
-            key.interestOps(SelectionKey.OP_READ);
-            ((GunDataEventLoop) key.attachment()).incrAndContinueLoop();
+            channel.addReadObserve();
+            channel.continueLoop();
             return DealResult.NEXT;
         } else {
             return DealResult.NOT_DEAL_ALL_NEXT;

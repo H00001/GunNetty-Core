@@ -24,7 +24,7 @@ public class BaseTest {
     @Test
     public void using019() throws InterruptedException {
         GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config1.html"));
-        GunBootServer server = GunBootServerFactory.getInstance();
+        GunBootServer server = GunBootServerFactory.newInstance();
         server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
                 GunNettyExecutors.newFixedExecutorPool(10));
         server.registerObserve(new GunNettyDefaultObserve());

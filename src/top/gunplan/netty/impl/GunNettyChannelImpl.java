@@ -8,6 +8,7 @@ import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -40,6 +41,11 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
     }
 
     @Override
+    public boolean isValid() {
+        return false;
+    }
+
+    @Override
     public boolean isOpen() {
         return channel().isOpen();
     }
@@ -58,5 +64,25 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
     @Override
     public GunNettyServerChannel parent() {
         return pChannel;
+    }
+
+    @Override
+    public GunNettyChildChannel<SocketChannel> setSelectionKey(SelectionKey key) {
+        return null;
+    }
+
+    @Override
+    public GunNettyChildChannel<SocketChannel> addReadObserve() {
+        return null;
+    }
+
+    @Override
+    public GunNettyChildChannel<SocketChannel> cleanAllObserve() {
+        return null;
+    }
+
+    @Override
+    public void continueLoop() {
+        eventLoop.incrAndContinueLoop();
     }
 }

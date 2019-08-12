@@ -16,9 +16,15 @@ import top.gunplan.netty.protocol.GunProtocolControl;
 
 public interface GunNetBound extends GunProtocolControl<Void, Void> {
 
+    /**
+     * supply
+     *
+     * @param nullptr nullptr
+     * @return null
+     */
 
     @Override
-    default Void supply(Void nullper) {
+    default Void supply(Void nullptr) {
         return null;
     }
 }

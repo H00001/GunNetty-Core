@@ -22,7 +22,7 @@ import java.util.concurrent.locks.LockSupport;
  * @author dosdrtt
  */
 class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDataEventLoop<SocketChannel> {
-    private AtomicInteger listenSize = new AtomicInteger(0);
+    private final AtomicInteger listenSize = new AtomicInteger(0);
     private final int timeWait;
 
 
@@ -35,8 +35,9 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     }
 
     @Override
-    public Set<SelectionKey> availableSelectionKey() {
-        bootSelector.wakeup();
+    public Set<SelectionKey> availableSelectionKey() throws IOException {
+        //fast release
+        fastLimit();
         return bootSelector.keys();
     }
 
@@ -101,4 +102,10 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         return super.init(deal);
     }
 
+
+    @Override
+    public int fastLimit() throws IOException {
+        bootSelector.wakeup();
+        return bootSelector.select(0);
+    }
 }

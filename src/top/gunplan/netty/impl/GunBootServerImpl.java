@@ -52,7 +52,7 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public boolean isSync() {
+    public final boolean isSync() {
         return isSync;
     }
 

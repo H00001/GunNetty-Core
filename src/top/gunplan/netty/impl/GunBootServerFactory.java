@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunBootServer;
@@ -9,7 +13,7 @@ import top.gunplan.netty.GunBootServer;
  * @author dosdrtt
  */
 public class GunBootServerFactory {
-    public static GunBootServer getInstance() {
+    public static GunBootServer newInstance() {
         return new GunBootServerImpl();
     }
 }

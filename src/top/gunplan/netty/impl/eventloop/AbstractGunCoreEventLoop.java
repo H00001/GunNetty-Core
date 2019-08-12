@@ -111,11 +111,6 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     }
 
 
-    @Override
-    public int fastLimit() throws IOException {
-        bootSelector.wakeup();
-        return bootSelector.select(0);
-    }
 }
 
 

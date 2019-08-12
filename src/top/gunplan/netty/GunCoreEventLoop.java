@@ -48,9 +48,6 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunN
     void loop();
 
 
-    int fastLimit() throws IOException;
-
-
     /**
      * isLoopNext
      *

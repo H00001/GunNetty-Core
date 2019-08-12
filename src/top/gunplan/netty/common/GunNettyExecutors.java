@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.common;
 
 import java.util.concurrent.*;
@@ -26,4 +30,14 @@ public final class GunNettyExecutors {
     public static ExecutorService newSignalExecutorPool(String name) {
         return newFixedExecutorPool(ONE, name);
     }
+
+    public static ScheduledExecutorService newScheduleExecutorPool(int num) {
+        return new ScheduledThreadPoolExecutor(num);
+    }
+
+
+    public static ScheduledExecutorService newScheduleExecutorPool() {
+        return newScheduleExecutorPool(1);
+    }
+
 }

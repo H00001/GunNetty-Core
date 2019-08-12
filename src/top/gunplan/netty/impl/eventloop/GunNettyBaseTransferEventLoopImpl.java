@@ -40,11 +40,6 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
     }
 
 
-    @Override
-    public int fastLimit() throws IOException {
-        return 0;
-    }
-
 
     @Override
     public void push(GunNettyChildChannel<U> u) {

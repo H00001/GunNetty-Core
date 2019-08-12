@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.eventloop;
@@ -30,7 +26,7 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
      *
      * @return Set<SelectionKey>
      */
-    Set<SelectionKey> availableSelectionKey();
+    Set<SelectionKey> availableSelectionKey() throws IOException;
 
 
     /**
@@ -54,4 +50,14 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
      * make sum of select decrease
      */
     void decreaseAndStop();
+
+
+    /**
+     * fast release
+     *
+     * @return release value of channel
+     * @throws IOException i/o
+     */
+
+    int fastLimit() throws IOException;
 }

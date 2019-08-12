@@ -8,11 +8,9 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyBaseObserve;
-import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.eventloop.*;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
-import top.gunplan.netty.impl.sequence.GunNettyUnsafeSequenceImpl;
 import top.gunplan.netty.impl.timeevent.AbstractGunTimeExecutor;
 import top.gunplan.netty.impl.timeevent.GunTimeExecutor;
 import top.gunplan.utils.GunNumberUtil;
@@ -22,7 +20,9 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
 import java.util.Set;
-import java.util.concurrent.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Future;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
 /**
@@ -32,20 +32,22 @@ import java.util.stream.Stream;
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY;
+
     private final int MANAGE_THREAD_NUM;
+
     private volatile GunConnEventLoop dealAccept;
+
     private final GunNettyBaseObserve observe;
-    private final GunNettySequencer sequencer = new GunNettyUnsafeSequenceImpl();
+
+    private final GunNettySequencer sequencer = GunNettySequencer.newThreadSafeSequencer();
+
     private final GunTimeExecutor timeExecute = AbstractGunTimeExecutor.create();
+
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
+
     private final GunNettyTransfer<SocketChannel> transfer;
 
-    private final ScheduledExecutorService EXETIMER_POOL;
-    private final ExecutorService DASERVER_POOL;
-    private final ExecutorService TRANSFER_POOL;
-    private final ExecutorService ACCEPTCO_POOL;
-    private final ExecutorService[] EXE_POOL_LIST;
-
+    private final GunNettyCoreThreadManagerHelper threadHelper;
 
     private volatile ManagerState status = ManagerState.INACTIVE;
 
@@ -54,15 +56,9 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         this.observe = baseObserve;
         GUN_NETTY_CORE_PROPERTY = property;
         MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
-        EXETIMER_POOL = Executors.newScheduledThreadPool(1);
-        TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("CoreTransferThread");
-        ACCEPTCO_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
-        DASERVER_POOL = GunNettyExecutors.newFixedExecutorPool(MANAGE_THREAD_NUM, "CoreDataThread");
-        EXE_POOL_LIST = new ExecutorService[]{ACCEPTCO_POOL, TRANSFER_POOL, DASERVER_POOL, EXETIMER_POOL};
-
-        transfer = EventLoopFactory.newGunDisruptorTransfer();
+        threadHelper = GunNettyCoreThreadManagerHelper.newInstance(MANAGE_THREAD_NUM);
+        transfer = EventLoopFactory.newGunNettyBaseTransfer();
         transfer.registerManager(this);
-
     }
 
     @Override
@@ -90,11 +86,12 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     public Future<Integer> startAndWait() {
         status = ManagerState.BOOTING;
         observe.onListen(dealAccept.listenPort());
-        Arrays.stream(dealData).parallel().forEach(DASERVER_POOL::submit);
-        TRANSFER_POOL.submit(transfer);
-        EXETIMER_POOL.scheduleAtFixedRate(timeExecute, GUN_NETTY_CORE_PROPERTY.initWait(),
-                GUN_NETTY_CORE_PROPERTY.minInterval(), TimeUnit.MILLISECONDS);
-        var future = ACCEPTCO_POOL.submit(dealAccept, 1);
+        threadHelper.submitData(dealData);
+        threadHelper.submitTransfer(transfer);
+        threadHelper.submitSchedule(timeExecute,
+                GUN_NETTY_CORE_PROPERTY.initWait(),
+                GUN_NETTY_CORE_PROPERTY.minInterval());
+        var future = threadHelper.submitConnection(dealAccept);
         status = ManagerState.RUNNING;
         return future;
     }

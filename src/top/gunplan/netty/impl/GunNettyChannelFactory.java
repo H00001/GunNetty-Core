@@ -16,7 +16,7 @@ import java.nio.channels.SocketChannel;
  * GunNettyChannelFactory
  *
  * @author frank albert
- * @version 0.0.0.3
+ * @version 0.0.0.4
  * @date 2019-08-08 23:10
  */
 public class GunNettyChannelFactory {
@@ -38,6 +38,6 @@ public class GunNettyChannelFactory {
                      final GunConnEventLoop eventLoop) {
         GunNettyPipeline pipeline = GunNettyPipeline.newPipeline();
         initHandle.onHasChannel(pipeline);
-        return new GunNettyServerChannelImpl(channel, pipeline, BOSS_SEQUENCER.nextSequence(), eventLoop);
+        return new GunNettyServerChannelImpl(channel, pipeline, WORK_SEQUENCER.nextSequence(), eventLoop);
     }
 }

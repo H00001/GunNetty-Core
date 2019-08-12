@@ -53,8 +53,9 @@ public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLo
 
     /**
      * set channel id
+     * registerEventLoop
      *
-     * @param id cid
+     * @param eventLoop loop
      * @return self
      */
 
@@ -75,5 +76,20 @@ public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLo
      * @throws IOException i/o error
      */
     SocketAddress localAddress() throws IOException;
+
+
+    /**
+     * Tells whether or not this key is valid.
+     *
+     * <p> A key is valid upon creation and remains so until it is cancelled,
+     * its channel is closed, or its selector is closed.  </p>
+     *
+     * @return {@code true} if, and only if, this key is valid
+     */
+    boolean isValid();
+
+
+
+
 
 }
