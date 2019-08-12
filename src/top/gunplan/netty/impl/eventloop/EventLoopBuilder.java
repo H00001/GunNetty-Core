@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl.eventloop;
 
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.GunNettyEventLoopManager;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -30,14 +30,13 @@ public interface EventLoopBuilder<U> {
      * @param manager GunNettyCoreThreadManager
      * @return EventLoopBuilder<U>
      */
-    EventLoopBuilder<U> andRegister(GunNettyCoreThreadManager manager);
+    EventLoopBuilder<U> andRegister(GunNettyEventLoopManager manager);
 
     /**
      * with
      * register executor
      *
-     * @param deal     ExecutorService
-     * @param pipeline works
+     * @param deal ExecutorService
      * @return this chain style
      * @throws IOException i/o error
      */

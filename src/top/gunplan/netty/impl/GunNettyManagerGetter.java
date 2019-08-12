@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl;
 
 /**
@@ -14,5 +18,5 @@ public interface GunNettyManagerGetter<K> {
      * @param manager manager
      * @return return chain
      */
-    K registerManager(GunNettyCoreThreadManager manager);
+    K registerManager(GunNettyEventLoopManager manager);
 }

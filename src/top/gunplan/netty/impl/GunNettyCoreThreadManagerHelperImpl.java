@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Stream;
 
 final class GunNettyCoreThreadManagerHelperImpl implements GunNettyCoreThreadManagerHelper {
 
@@ -73,5 +74,22 @@ final class GunNettyCoreThreadManagerHelperImpl implements GunNettyCoreThreadMan
         EXETIMER_POOL.scheduleAtFixedRate(task, v1, v2, TimeUnit.MILLISECONDS);
     }
 
+    @Override
+    public GunNettyCoreThreadManagerHelper shutdownReturn() {
+        Arrays.stream(EXE_POOL_LIST).forEach(ExecutorService::shutdown);
+        return this;
+    }
 
+    @Override
+    public void syncStop() {
+        Stream<ExecutorService> services = Arrays.stream(EXE_POOL_LIST).filter(who -> !who.isTerminated());
+        services.parallel().forEach(any -> {
+            try {
+                for (; !any.isTerminated(); ) {
+                    any.awaitTermination(1, TimeUnit.MINUTES);
+                }
+            } catch (InterruptedException ignore) {
+            }
+        });
+    }
 }

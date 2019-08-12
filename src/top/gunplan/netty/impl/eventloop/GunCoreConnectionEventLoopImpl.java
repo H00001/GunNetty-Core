@@ -45,15 +45,16 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
         return this.port[0];
     }
 
-
     @Override
-    public int init(ExecutorService deal, ChannelInitHandle initHandle) throws IOException {
+    public int init(ExecutorService service, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException {
         super.init(deal);
-        this.initHandle = initHandle;
+        this.initHandle = parentHandle;
+        this.childrenInitHandle = childrenHandle;
         channel.bind(port[0]).configureBlocking(false);
         channel.channel().register(bootSelector, SelectionKey.OP_ACCEPT, this);
         return 0;
     }
+
 
     @Override
     public boolean isLoopNext() {
@@ -92,7 +93,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
             GunNettyChildChannel<SocketChannel> childChannel =
                     GunNettyChannelFactory.newChannel(socketChannel, childrenInitHandle, channel, null);
             //   GunNettyChannelTransfer<GunNettyChildChannel<SocketChannel>> channelGunNettyChannelTransfer =
-            manager.transferThread().push(new GunNettyChannelTransferImpl<>(childChannel));
+            manager.transferEventLoop().push(new GunNettyChannelTransferImpl<>(childChannel));
             BaseGunNettyWorker worker = new GunAcceptWorker(channel);
             if (worker.init() == 0) {
                 worker.run();

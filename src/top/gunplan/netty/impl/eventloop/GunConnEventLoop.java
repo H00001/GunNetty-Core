@@ -36,5 +36,5 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
     int listenPort();
 
 
-    int init(ExecutorService service, ChannelInitHandle handle) throws IOException;
+    int init(ExecutorService service, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;
 }

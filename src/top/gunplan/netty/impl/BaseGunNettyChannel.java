@@ -58,6 +58,6 @@ public abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCo
     @Override
     public void close() throws IOException {
         channel.close();
-        eventLoop.fastLimit();
+        eventLoop.fa();
     }
 }

@@ -27,5 +27,5 @@ public interface ConnEventLoopBuilder extends EventLoopBuilder<GunConnEventLoop>
     ConnEventLoopBuilder bindPort(int p) throws IOException;
 
 
-    EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle handle) throws IOException;
+    EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;
 }

@@ -7,7 +7,7 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunHandle;
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.GunNettyEventLoopManager;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -33,7 +33,7 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     private volatile boolean running;
     volatile Thread workThread;
 
-    GunNettyCoreThreadManager manager;
+    GunNettyEventLoopManager manager;
 
     AbstractGunCoreEventLoop() {
 
@@ -47,7 +47,7 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     }
 
     @Override
-    public AbstractGunCoreEventLoop registerManager(GunNettyCoreThreadManager manager) {
+    public AbstractGunCoreEventLoop registerManager(GunNettyEventLoopManager manager) {
         this.manager = manager;
         return this;
     }

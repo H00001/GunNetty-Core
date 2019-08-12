@@ -6,6 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.impl.GunNettyChildChannel;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.GunNettyEventLoopManager;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -21,7 +22,7 @@ import java.util.concurrent.ExecutorService;
  */
 public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransfer<U> {
     private volatile boolean running = false;
-    private volatile GunNettyCoreThreadManager manager;
+    private volatile GunNettyEventLoopManager manager;
 
     /**
      * do transferTarget

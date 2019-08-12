@@ -16,12 +16,15 @@ import java.util.Set;
  * @author dosdrtt
  */
 final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
+    private int var;
 
+    public GunNettyTimeExecuteImpl(int var) {
+        this.var = var;
+    }
 
     @Override
     public boolean loop() {
-        sum.increment();
-        final Set<SelectionKey> keys = manager.availableChannel(sum.longValue());
+        final Set<SelectionKey> keys = manager.availableChannel(sequencer.nextSequenceInt32WithLimit(var));
         works.parallelStream().forEach(k -> {
             if (k.ifKeyEmptyExec() || keys.size() != 0) {
                 new GunTimeWorkFunc(keys, sum.longValue()).execute(k);

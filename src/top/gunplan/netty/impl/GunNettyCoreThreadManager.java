@@ -7,13 +7,9 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
-import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 
-import java.io.IOException;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -55,14 +51,6 @@ public interface GunNettyCoreThreadManager {
     boolean stopAndWait() throws InterruptedException;
 
 
-    /**
-     * i th available channel
-     *
-     * @param i i th
-     * @return channel's collection
-     */
-    Set<SelectionKey> availableChannel(long i);
-
 
     /**
      * boot server
@@ -71,13 +59,6 @@ public interface GunNettyCoreThreadManager {
      */
     Future<Integer> startAndWait();
 
-
-    /**
-     * transferThread
-     *
-     * @return transferThread
-     */
-    GunNettyTransfer<SocketChannel> transferThread();
 
 
     /**
@@ -88,9 +69,8 @@ public interface GunNettyCoreThreadManager {
      * @param pipeline       pipeline deal handle
      * @param port           listen the port
      * @return init result
-     * @throws IOException when i/o error
      */
-    boolean init(final ExecutorService acceptExecutor, final ExecutorService dataExecutor, ChannelInitHandle handle, GunNettyPipeline pipeline, int port) throws IOException;
+    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, ChannelInitHandle handle, ChannelInitHandle f, GunNettyPipeline pipeline, int port);
 
 
     /**

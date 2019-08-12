@@ -77,11 +77,30 @@ public interface GunNettyCoreThreadManagerHelper {
      * submit connection eventloop
      *
      * @param run task
+     * @return running result
      */
     Future<Integer> submitConnection(Runnable run);
 
 
+    /**
+     * submitSchedule
+     *
+     * @param task task
+     * @param v1   interval time
+     * @param v2   first init time
+     */
     void submitSchedule(Runnable task, long v1, long v2);
+
+
+    /**
+     * shutdown pool and return right away
+     *
+     * @return GunNettyCoreThreadManagerHelper chain style
+     */
+    GunNettyCoreThreadManagerHelper shutdownReturn();
+
+
+    void syncStop();
 
 
 }

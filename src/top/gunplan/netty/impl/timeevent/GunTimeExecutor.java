@@ -15,14 +15,7 @@ import java.util.List;
  */
 
 public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTimeExecutor> {
-    /**
-     * an instance
-     *
-     * @return GunTimeExecutor
-     */
-    static GunTimeExecutor instance() {
-        return new GunNettyTimeExecuteImpl();
-    }
+
 
     /**
      * run

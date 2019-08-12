@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.timeevent;
 
 import top.gunplan.netty.GunNettyTimer;
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.GunNettyEventLoopManager;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.util.List;
@@ -23,14 +23,14 @@ public abstract class AbstractGunTimeExecutor implements GunTimeExecutor {
     volatile List<GunNettyTimer> works = new CopyOnWriteArrayList<>();
     volatile LongAdder sum = new LongAdder();
     final GunNettySequencer sequencer = GunNettySequencer.newThreadSafeSequencer();
-    volatile GunNettyCoreThreadManager manager;
+    volatile GunNettyEventLoopManager manager;
 
-    public static GunTimeExecutor create() {
-        return new GunNettyTimeExecuteImpl();
+    public static GunTimeExecutor create(int v) {
+        return new GunNettyTimeExecuteImpl(v);
     }
 
     @Override
-    public GunTimeExecutor registerManager(GunNettyCoreThreadManager manager) {
+    public GunTimeExecutor registerManager(GunNettyEventLoopManager manager) {
         this.manager = manager;
         return this;
     }

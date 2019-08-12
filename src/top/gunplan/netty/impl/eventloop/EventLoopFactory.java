@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.GunNettyEventLoopManager;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;
@@ -44,11 +44,7 @@ public final class EventLoopFactory {
             this.eventLoop = new GunCoreConnectionEventLoopImpl();
         }
 
-        @Override
-        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle handle) throws IOException {
-            this.eventLoop.init(deal, handle);
-            return this;
-        }
+
 
         @Override
         public GunConnEventLoop build() {
@@ -56,7 +52,7 @@ public final class EventLoopFactory {
         }
 
         @Override
-        public EventLoopBuilder<GunConnEventLoop> andRegister(GunNettyCoreThreadManager manager) {
+        public EventLoopBuilder<GunConnEventLoop> andRegister(GunNettyEventLoopManager manager) {
             eventLoop.registerManager(manager);
             return this;
         }
@@ -70,6 +66,12 @@ public final class EventLoopFactory {
         @Override
         public ConnEventLoopBuilder bindPort(int p) {
             eventLoop.openPort(p);
+            return this;
+        }
+
+        @Override
+        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException {
+            this.eventLoop.init(deal, parentHandle, childrenHandle);
             return this;
         }
     }
@@ -93,7 +95,7 @@ public final class EventLoopFactory {
 
 
         @Override
-        public DataEventLoopBuilder andRegister(GunNettyCoreThreadManager manager) {
+        public DataEventLoopBuilder andRegister(GunNettyEventLoopManager manager) {
             for (int i = 0; i < sum; i++) {
                 eventLoops[i].registerManager(manager);
             }

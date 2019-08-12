@@ -38,6 +38,11 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
         return channel().getLocalAddress();
     }
 
+    @Override
+    public boolean isValid() {
+        return true;
+    }
+
 
     @Override
     public boolean isOpen() {
