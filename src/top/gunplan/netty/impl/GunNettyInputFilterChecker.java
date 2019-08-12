@@ -1,10 +1,14 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.protocol.GunNetInbound;
 
-import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 
 
 /**
@@ -15,8 +19,8 @@ import java.nio.channels.SelectionKey;
 public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInbound> {
 
 
-    public GunNettyInputFilterChecker(final SelectionKey key) {
-        super(key);
+    public GunNettyInputFilterChecker(final GunNettyChildChannel<SocketChannel> channel) {
+        super(channel);
     }
 
     @Override

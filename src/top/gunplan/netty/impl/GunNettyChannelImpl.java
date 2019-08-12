@@ -4,6 +4,8 @@
 
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
+
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
@@ -15,57 +17,46 @@ import java.nio.channels.SocketChannel;
  * @version 0.0.0.1
  * @date 2019-08-08 23:09
  */
-class GunNettyChannelImpl implements GunNettyChannel<SocketChannel> {
-    private final SocketChannel channel;
-    private final long id;
-    private final GunNettyPipeline pipeline;
+class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>> implements GunNettyChildChannel<SocketChannel> {
+    private GunNettyServerChannel pChannel;
 
-
-    GunNettyChannelImpl(final SocketChannel channel, final GunNettyPipeline pipeline, final long seq) {
-        this.channel = channel;
-        this.id = seq;
-        this.pipeline = pipeline;
+    GunNettyChannelImpl(final SocketChannel channel, final GunNettyPipeline pipeline, GunNettyServerChannel pChannel, final long seq, GunDataEventLoop<SocketChannel> eventLoop) {
+        super(pipeline, channel, seq, eventLoop);
+        this.pChannel = pChannel;
     }
 
-    @Override
-    public GunNettyPipeline pipeline() {
-        return pipeline;
-    }
 
-    @Override
-    public SocketChannel channel() {
-        return channel;
-    }
-
-    @Override
-    public GunNettyChannel setPipeline(GunNettyPipeline pipeline) {
-        return null;
-    }
-
-    @Override
-    public long channelId() {
-        return 0;
-    }
-
-    @Override
-    public GunNettyChannel setChannelId(long id) {
-        return null;
-    }
 
 
     @Override
     public SocketAddress remoteAddress() throws IOException {
-        return channel.getRemoteAddress();
+        return channel().getRemoteAddress();
 
+    }
+
+    @Override
+    public SocketAddress localAddress() throws IOException {
+        return channel().getLocalAddress();
     }
 
     @Override
     public boolean isOpen() {
-        return false;
+        return channel().isOpen();
     }
 
     @Override
     public void close() throws IOException {
+        channel().close();
+    }
 
+    @Override
+    public void closeAndRemove() {
+
+    }
+
+
+    @Override
+    public GunNettyServerChannel parent() {
+        return pChannel;
     }
 }

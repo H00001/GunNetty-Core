@@ -28,9 +28,16 @@ public class BaseTest {
         server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
                 GunNettyExecutors.newFixedExecutorPool(10));
         server.registerObserve(new GunNettyDefaultObserve());
+        server.onHasChannel(hand -> {
+            hand.addFilter(new GunNettyStdFirstFilter(new GunNettyDefaultObserve())).
+                    addFilter(new GunNettyCharsetInboundChecker()).
+                    setHandle(new GunNettyStringHandle());
+        });
         server.pipeline().addFilter(new GunNettyStdFirstFilter(new GunNettyDefaultObserve())).
                 addFilter(new GunNettyCharsetInboundChecker()).
-                setHandle(new GunNettyStringHandle());
+                setHandle(new GunNettyStringHandle())
+
+        ;
         server.setSyncType(false);
         server.sync();
         //running time

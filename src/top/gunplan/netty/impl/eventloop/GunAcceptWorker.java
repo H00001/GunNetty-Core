@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.impl.GunNettyChannel;
+import top.gunplan.netty.impl.GunNettyChildChannel;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
@@ -23,7 +23,7 @@ import java.util.ListIterator;
 public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
 
 
-    GunAcceptWorker(final GunNettyChannel<SocketChannel> l) {
+    GunAcceptWorker(final GunNettyChildChannel<SocketChannel> l) {
         super(l, null);
 
     }

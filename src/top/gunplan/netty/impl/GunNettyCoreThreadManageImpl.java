@@ -36,7 +36,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final GunNettySequencer sequencer = new GunUnsafeNettySequenceImpl();
     private final GunTimeExecutor timeExecute = AbstractGunTimeExecutor.create();
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
-    private final GunNettyTransfer<GunNettyChannel<SocketChannel>> transfer;
+    private final GunNettyTransfer<SocketChannel> transfer;
 
     private final ScheduledExecutorService EXETIMER_POOL;
     private final ExecutorService DASERVER_POOL;
@@ -98,7 +98,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public GunNettyTransfer<GunNettyChannel<SocketChannel>> transferThread() {
+    public GunNettyTransfer<SocketChannel> transferThread() {
         return transfer;
     }
 

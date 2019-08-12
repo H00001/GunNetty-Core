@@ -6,7 +6,6 @@ package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 
 import java.io.IOException;
@@ -22,11 +21,11 @@ import java.util.concurrent.ExecutorService;
  */
 
 public final class EventLoopFactory {
-    public static GunNettyTransfer<GunNettyChannel<SocketChannel>> newGunNettyBaseTransfer() {
+    public static GunNettyTransfer<SocketChannel> newGunNettyBaseTransfer() {
         return new GunNettyBaseTransferEventLoopImpl<>();
     }
 
-    public static GunNettyTransfer<GunNettyChannel<SocketChannel>> newGunDisruptorTransfer() {
+    public static GunNettyTransfer<SocketChannel> newGunDisruptorTransfer() {
         return new GunNettyDisruptorTransferEventLoopImpl<>();
     }
 
@@ -47,8 +46,7 @@ public final class EventLoopFactory {
 
         @Override
         public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle handle) throws IOException {
-            with(deal);
-            this.eventLoop.initInitHandle(handle);
+            this.eventLoop.init(deal, handle);
             return this;
         }
 

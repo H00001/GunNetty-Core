@@ -5,12 +5,13 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.ChannelInitHandle;
+import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.common.GunNettyContext;
-import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyChannelFactory;
+import top.gunplan.netty.impl.GunNettyChildChannel;
+import top.gunplan.netty.impl.GunNettyServerChannel;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -24,12 +25,13 @@ import java.util.concurrent.ExecutorService;
  * @see AbstractGunCoreEventLoop
  */
 class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements GunConnEventLoop {
-    private final ServerSocketChannel var57;
     private volatile int[] port;
     private volatile ChannelInitHandle initHandle;
+    private volatile ChannelInitHandle childrenInitHandle;
+    private volatile GunNettyServerChannel channel;
 
     GunCoreConnectionEventLoopImpl() throws IOException {
-        var57 = ServerSocketChannel.open();
+        channel = GunNettyChannelFactory.newServerChannel(ServerSocketChannel.open(), initHandle, this);
     }
 
     @Override
@@ -44,11 +46,12 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     }
 
 
+    @Override
     public int init(ExecutorService deal, ChannelInitHandle initHandle) throws IOException {
         super.init(deal);
         this.initHandle = initHandle;
-        var57.bind(new InetSocketAddress(port[0])).configureBlocking(false);
-        var57.register(bootSelector, SelectionKey.OP_ACCEPT, this);
+        channel.bind(port[0]).configureBlocking(false);
+        channel.channel().register(bootSelector, SelectionKey.OP_ACCEPT, this);
         return 0;
     }
 
@@ -70,9 +73,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
             try {
                 this.dealEvent(sk);
             } catch (IOException e) {
-                e.getStackTrace();
-                //todo
-                // pipeline.handel().dealExceptionEvent(new GunChannelException(e));
+                channel.pipeline().handel().dealExceptionEvent(new GunChannelException(e));
             }
             keyIterator.remove();
         }
@@ -80,20 +81,18 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
 
     @Override
     void whenHaltDeal() throws IOException {
-        var57.close();
+        channel.close();
     }
 
-    @Override
-    public void initInitHandle(ChannelInitHandle handle) {
-        this.initHandle = handle;
-    }
 
     @Override
     public void dealEvent(SelectionKey key) throws IOException {
         final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
         this.deal.submit(() -> {
-            GunNettyChannel<SocketChannel> channel = GunNettyChannelFactory.newChannel(socketChannel, initHandle);
-            manager.transferThread().push(new GunNettyChannelTransferImpl(channel));
+            GunNettyChildChannel<SocketChannel> childChannel =
+                    GunNettyChannelFactory.newChannel(socketChannel, childrenInitHandle, channel, null);
+            //   GunNettyChannelTransfer<GunNettyChildChannel<SocketChannel>> channelGunNettyChannelTransfer =
+            manager.transferThread().push(new GunNettyChannelTransferImpl<>(childChannel));
             BaseGunNettyWorker worker = new GunAcceptWorker(channel);
             if (worker.init() == 0) {
                 worker.run();

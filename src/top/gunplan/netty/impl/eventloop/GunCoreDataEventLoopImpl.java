@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.impl.GunNettyChannel;
+import top.gunplan.netty.impl.GunNettyChildChannel;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -93,7 +93,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     public void dealEvent(SelectionKey key) {
         key.interestOps(0);
         listenSize.decrementAndGet();
-        this.deal.submit(new GunCoreCalculatorWorker((GunNettyChannel) key.attachment(), key, listenSize));
+        this.deal.submit(new GunCoreCalculatorWorker((GunNettyChildChannel<SocketChannel>) key.attachment(), key, listenSize));
     }
 
     @Override

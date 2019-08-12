@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty;
 
 /**
@@ -16,7 +20,7 @@ public enum GunExceptionType {
     EXC0("Init error"), EXC1("Connection error"), EXC2("Use high level"),
     OUT_POSITION("Out of position"), STATE_ERROR("State error"),
     EXC3("None know exc3"), FUNCTION_NOT_IMPLEMENT("Function not implement"),
-    TRANSLATE_ERROR("translate error");
+    TRANSLATE_ERROR("Translate error"), NOT_SUPPORT("Not support");
     private String info;
 
     GunExceptionType(String info) {

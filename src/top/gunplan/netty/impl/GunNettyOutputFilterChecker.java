@@ -1,9 +1,13 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
-import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 
 /**
  * @author dosdrtt
@@ -17,7 +21,7 @@ public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNet
      * @param outputObject GunNetOutbound
      * @param key          SelectionKey
      */
-    public GunNettyOutputFilterChecker(GunNetOutbound outputObject, SelectionKey key) {
+    public GunNettyOutputFilterChecker(GunNetOutbound outputObject, GunNettyChildChannel<SocketChannel> key) {
         super(key);
         this.to = outputObject;
     }

@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl.eventloop;
 
-import top.gunplan.netty.impl.GunNettyChannel;
+import top.gunplan.netty.impl.GunNettyChildChannel;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 
 import java.io.IOException;
@@ -19,7 +19,7 @@ import java.util.concurrent.ExecutorService;
  * @version 0.0.2.1
  * @date 2019-07-23 00:36
  */
-public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransfer<GunNettyChannel<U>> {
+public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransfer<U> {
     private volatile boolean running = false;
     private volatile GunNettyCoreThreadManager manager;
 
@@ -33,7 +33,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
         return isRunning();
     }
 
-    SelectionKey registerReadChannelToDataEventLoop(GunNettyChannel<U> channel) throws IOException {
+    SelectionKey registerReadChannelToDataEventLoop(GunNettyChildChannel<U> channel) throws IOException {
         channel.channel().configureBlocking(false);
         GunDataEventLoop<SocketChannel> register = manager.dealChannelEventLoop();
         final SelectionKey key = register.registerReadKey(channel.channel());
@@ -54,7 +54,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
     }
 
     @Override
-    public GunNettyTransfer<GunNettyChannel<U>> registerManager(GunNettyCoreThreadManager manager) {
+    public GunNettyTransfer<U> registerManager(GunNettyCoreThreadManager manager) {
         this.manager = manager;
         return this;
     }

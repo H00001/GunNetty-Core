@@ -8,7 +8,7 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
-import java.nio.channels.Channel;
+import java.nio.channels.SocketChannel;
 
 /**
  * GunNettyTransfer
@@ -18,10 +18,11 @@ import java.nio.channels.Channel;
  * @date 2019-06-19 00:28
  */
 
-public interface GunNettyTransfer<U extends Channel> extends GunCoreEventLoop {
+public interface GunNettyTransfer<U extends SocketChannel> extends GunCoreEventLoop {
     /**
      * queue
      * push to queue
+     *
      * @param u transferTarget object
      */
     void push(GunNettyChannelTransfer<U> u);

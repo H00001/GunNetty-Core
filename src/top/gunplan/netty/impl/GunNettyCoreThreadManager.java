@@ -77,7 +77,7 @@ public interface GunNettyCoreThreadManager {
      *
      * @return transferThread
      */
-    GunNettyTransfer<GunNettyChannel<SocketChannel>> transferThread();
+    GunNettyTransfer<SocketChannel> transferThread();
 
 
     /**

@@ -4,10 +4,10 @@
 
 package top.gunplan.netty.impl.eventloop;
 
-import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
+import top.gunplan.netty.impl.GunNettyChildChannel;
 
-import java.nio.channels.Channel;
+import java.nio.channels.SocketChannel;
 
 /**
  * GunNettyChannelTransferImpl
@@ -17,10 +17,11 @@ import java.nio.channels.Channel;
  * @date 2019-06-19 00:02
  */
 
-public class GunNettyChannelTransferImpl<U extends Channel> implements GunNettyChannelTransfer<GunNettyChannel<U>> {
-    private volatile GunNettyChannel<U> channel;
+public class GunNettyChannelTransferImpl<U extends SocketChannel> implements
+        GunNettyChannelTransfer<U> {
+    private volatile GunNettyChildChannel<U> channel;
 
-    GunNettyChannelTransferImpl(GunNettyChannel<U> channel) {
+    GunNettyChannelTransferImpl(GunNettyChildChannel<U> channel) {
         this.channel = channel;
     }
 
@@ -28,12 +29,12 @@ public class GunNettyChannelTransferImpl<U extends Channel> implements GunNettyC
     }
 
     @Override
-    public GunNettyChannel<U> channel() {
+    public GunNettyChildChannel<U> channel() {
         return channel;
     }
 
     @Override
-    public void setChannel(GunNettyChannel<U> channel) {
+    public void setChannel(GunNettyChildChannel<U> channel) {
         this.channel = channel;
     }
 

@@ -58,8 +58,8 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
 
     @Override
     public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException {
-        final SelectionKey key = filterDto.getKey();
-        final SocketChannel channel = (SocketChannel) key.channel();
+        final GunNettyChildChannel<SocketChannel> key = filterDto.getKey();
+        key.channel().isv
         if (key.isValid()) {
             try {
                 GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
@@ -84,7 +84,7 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
     @Override
     @SuppressWarnings("unchecked")
     public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws GunChannelException {
-        GunNettyChannel<SocketChannel> channel = ((GunNettyChannel<SocketChannel>) filterDto.getKey().attachment());
+        GunNettyChildChannel<SocketChannel> channel = ((GunNettyChannel<SocketChannel>) filterDto.getKey().attachment());
         try {
             return doOutputFilter(filterDto, channel);
         } catch (GunChannelException e) {
@@ -103,8 +103,9 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
     }
 
     @Override
-    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, GunNettyChannel<SocketChannel> channel) {
+    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, GunNettyChildChannel<SocketChannel> channel) {
         try {
+            channel.channel().getRemoteAddress();
             filterDto.translate();
             sendMessage(filterDto.source(), channel.channel());
             return DealResult.NEXT;

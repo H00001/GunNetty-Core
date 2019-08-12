@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl;
 
-import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 
 /**
  * GunNettyChecker
@@ -20,7 +20,7 @@ public interface GunNettyChecker {
      *
      * @return SelectionKey
      */
-    SelectionKey getKey();
+    GunNettyChildChannel<SocketChannel> getKey();
 
 
     /**
@@ -44,7 +44,7 @@ public interface GunNettyChecker {
      *
      * @param key selection key
      */
-    void setKey(SelectionKey key);
+    void setKey(GunNettyChildChannel<SocketChannel> key);
 
 
     /**

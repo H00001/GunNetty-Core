@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl;
 
-import java.nio.channels.SelectionKey;
+import java.nio.channels.SocketChannel;
 
 /**
  * AbstractGunChecker checker transferTarget object
@@ -44,7 +44,7 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
     }
 
 
-    private volatile SelectionKey key;
+    private volatile GunNettyChildChannel<SocketChannel> key;
 
     public Transfer transferTarget() {
         return to;
@@ -55,17 +55,17 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
     }
 
 
+    AbstractGunChecker(GunNettyChildChannel<SocketChannel> key) {
+        this.key = key;
+    }
+
     @Override
-    public SelectionKey getKey() {
+    public GunNettyChildChannel<SocketChannel> getKey() {
         return key;
     }
 
     @Override
-    public void setKey(SelectionKey key) {
-        this.key = key;
-    }
-
-    AbstractGunChecker(SelectionKey key) {
+    public void setKey(GunNettyChildChannel<SocketChannel> key) {
         this.key = key;
     }
 

@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl;
 
-import java.nio.channels.Channel;
+import java.nio.channels.SocketChannel;
 
 /**
  * GunNettyChannelTransfer
@@ -13,20 +13,20 @@ import java.nio.channels.Channel;
  * @version 0.0.0.2
  * @date 2019-07-17 07:39
  */
-public interface GunNettyChannelTransfer<U extends Channel> {
+public interface GunNettyChannelTransfer<U extends SocketChannel> {
     /**
      * transferTarget's channel
      *
      * @return channel
      */
-    U channel();
+    GunNettyChildChannel<U> channel();
 
     /**
      * set channel
      *
      * @param channel set channel
      */
-    void setChannel(U channel);
+    void setChannel(GunNettyChildChannel<U> channel);
 
 
     /**

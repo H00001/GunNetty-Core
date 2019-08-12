@@ -7,6 +7,9 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunCoreEventLoop;
 
+import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+
 /**
  * GunConnEventLoop
  *
@@ -33,5 +36,5 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
     int listenPort();
 
 
-    void initInitHandle(ChannelInitHandle handle);
+    int init(ExecutorService service, ChannelInitHandle handle) throws IOException;
 }

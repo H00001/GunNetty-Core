@@ -8,6 +8,7 @@ package top.gunplan.netty;
 import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
+import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 
 import java.nio.channels.SocketChannel;
 
@@ -43,7 +44,7 @@ public interface GunNettyFilter extends GunHandle {
      * @param channel   channel to transferTarget
      * @return deal result
      */
-    default DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, GunNettyChannel<SocketChannel> channel) {
+    default DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, GunNettyChannel<SocketChannel, GunDataEventLoop> channel) {
         return DealResult.NEXT;
     }
 

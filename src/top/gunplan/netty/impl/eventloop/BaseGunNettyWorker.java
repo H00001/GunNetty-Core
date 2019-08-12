@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyHandle;
-import top.gunplan.netty.impl.GunNettyChannel;
+import top.gunplan.netty.impl.GunNettyChildChannel;
 
 import java.nio.channels.SocketChannel;
 import java.util.List;
@@ -19,13 +19,13 @@ import java.util.concurrent.atomic.AtomicInteger;
  * @author frank albert
  */
 abstract class BaseGunNettyWorker implements GunNettyWorkerInterface {
-    final GunNettyChannel<SocketChannel> channel;
+    final GunNettyChildChannel<SocketChannel> channel;
     final GunNettyHandle handle;
     final List<GunNettyFilter> filters;
     private final AtomicInteger waitSize;
 
 
-    BaseGunNettyWorker(final GunNettyChannel<SocketChannel> channel, final AtomicInteger waitSize) {
+    BaseGunNettyWorker(final GunNettyChildChannel<SocketChannel> channel, final AtomicInteger waitSize) {
         this.channel = channel;
         this.handle = channel.pipeline().handel();
         this.filters = channel.pipeline().filters();

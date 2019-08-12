@@ -7,13 +7,12 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.impl.GunNettyChannel;
+import top.gunplan.netty.impl.GunNettyChildChannel;
 import top.gunplan.netty.impl.GunNettyFunctional;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.ListIterator;
@@ -27,15 +26,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
 
-    private final SelectionKey key;
+
     private final Map<GunNettyFilter.DealResult, GunNettyFunctional> executeEvent = new HashMap<>(5);
     private boolean notDealOutputFlag = false;
 
 
-    GunCoreCalculatorWorker(final GunNettyChannel<SocketChannel> nettyChannel
-            , final SelectionKey key, AtomicInteger waitSize) {
+    GunCoreCalculatorWorker(final GunNettyChildChannel<SocketChannel> nettyChannel, AtomicInteger waitSize) {
         super(nettyChannel, waitSize);
-        this.key = key;
         executeEvent.put(GunNettyFilter.DealResult.CLOSE, () -> {
             decreaseChannel(1);
             return -1;
@@ -53,7 +50,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
 
     @Override
     public void work() {
-        final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(key);
+        final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(channel);
         GunNettyFilter.DealResult result = null;
         for (final GunNettyFilter filter : filters) {
             try {
