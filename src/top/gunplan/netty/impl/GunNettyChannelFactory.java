@@ -7,6 +7,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
+import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;

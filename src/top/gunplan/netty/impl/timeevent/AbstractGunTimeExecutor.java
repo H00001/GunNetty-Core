@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.timeevent;
 
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
-import top.gunplan.netty.impl.GunNettySequencer;
+import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
