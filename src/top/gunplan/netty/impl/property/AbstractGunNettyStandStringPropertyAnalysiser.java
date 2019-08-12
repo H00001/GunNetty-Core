@@ -10,7 +10,7 @@ import top.gunplan.netty.common.GunNettyStringUtil;
 import java.lang.reflect.Field;
 import java.util.Map;
 
-import static top.gunplan.utils.NumberUtil.isNumber;
+import static top.gunplan.utils.GunNumberUtil.isNumber;
 
 /**
  * AbstractGunNettyStandStringProperty Analysiser

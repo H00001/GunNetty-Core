@@ -4,6 +4,8 @@
 
 package top.gunplan.netty.impl;
 
+import top.gunplan.utils.GunNumberUtil;
+
 /**
  * GunNettySequencer
  *
@@ -19,7 +21,7 @@ public interface GunNettySequencer {
      * @return GunNettySequencer
      */
     static GunNettySequencer newThreadUnSafeSequencer() {
-        return new GunUnsafeNettySequenceImpl();
+        return new GunNettyUnsafeSequenceImpl();
     }
 
     /**
@@ -28,20 +30,44 @@ public interface GunNettySequencer {
      * @return GunNettySequencer
      */
     static GunNettySequencer newThreadSafeSequencer() {
-        return new GunSafeNettySequenceImpl();
+        return new GunNettySafeSequenceImpl();
     }
 
+    /**
+     * next sequence with long type
+     *
+     * @return seq
+     */
     long nextSequence();
 
+    /**
+     * last sequence with long type
+     *
+     * @return seq
+     */
     long lastSequence();
 
 
+    /**
+     * next sequence with int type
+     *
+     * @return sequence
+     */
     default int nextSequenceInt32() {
         return (int) nextSequence();
     }
 
+
+    /**
+     * next sequence
+     *
+     * @param limit max sequence
+     * @return sequence
+     */
     default int nextSequenceInt32WithLimit(int limit) {
-        return (int) (nextSequence() & limit);
+        return GunNumberUtil.isPowOf2(limit) ? ((int) (nextSequence() & limit)) :
+                ((int) (nextSequence() % limit));
+
     }
 
 }

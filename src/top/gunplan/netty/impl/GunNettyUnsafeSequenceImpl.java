@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl;
 
-class GunUnsafeNettySequenceImpl implements GunNettySequencer {
+class GunNettyUnsafeSequenceImpl implements GunNettySequencer {
     private int val = 0;
 
 

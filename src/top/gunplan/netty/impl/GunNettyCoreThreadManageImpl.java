@@ -13,7 +13,7 @@ import top.gunplan.netty.impl.eventloop.*;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.timeevent.AbstractGunTimeExecutor;
 import top.gunplan.netty.impl.timeevent.GunTimeExecutor;
-import top.gunplan.utils.NumberUtil;
+import top.gunplan.utils.GunNumberUtil;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -33,7 +33,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private final int MANAGE_THREAD_NUM;
     private volatile GunConnEventLoop dealAccept;
     private final GunNettyBaseObserve observe;
-    private final GunNettySequencer sequencer = new GunUnsafeNettySequenceImpl();
+    private final GunNettySequencer sequencer = new GunNettyUnsafeSequenceImpl();
     private final GunTimeExecutor timeExecute = AbstractGunTimeExecutor.create();
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private final GunNettyTransfer<SocketChannel> transfer;
@@ -51,7 +51,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final GunNettyBaseObserve baseObserve) {
         this.observe = baseObserve;
         GUN_NETTY_CORE_PROPERTY = property;
-        MANAGE_THREAD_NUM = NumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
+        MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
         EXETIMER_POOL = Executors.newScheduledThreadPool(1);
         TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("CoreTransferThread");
         ACCEPTCO_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");

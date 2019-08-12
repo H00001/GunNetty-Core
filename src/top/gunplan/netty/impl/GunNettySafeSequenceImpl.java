@@ -7,13 +7,13 @@ package top.gunplan.netty.impl;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
- * GunSafeNettySequenceImpl
+ * GunNettySafeSequenceImpl
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-06 15:20
  */
-final class GunSafeNettySequenceImpl implements GunNettySequencer {
+final class GunNettySafeSequenceImpl implements GunNettySequencer {
     private AtomicLong adder = new AtomicLong();
 
     @Override
