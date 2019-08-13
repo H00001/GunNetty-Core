@@ -4,6 +4,8 @@
 
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
+
 import java.nio.channels.SocketChannel;
 
 /**

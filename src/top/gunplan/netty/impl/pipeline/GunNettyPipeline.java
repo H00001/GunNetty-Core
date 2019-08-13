@@ -2,30 +2,26 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.pipeline;
 
 
 import top.gunplan.netty.*;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 
 /**
  * @author dosdrtt
  * @since 1.0.0.1
  */
-public interface GunNettyPipeline extends GunHandle {
-    static GunNettyPipeline newPipeline() {
-        return new GunNettyPipelineImpl();
-    }
-
+public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandle {
     /**
-     * register the handle in the chain
+     * newPipeline
      *
-     * @param handle register handle
-     * @return chain style is self
+     * @return AbstractNettyPipelineImpl
      */
-    GunNettyPipeline register(GunHandle handle);
+    static GunNettyPipeline newChildrenPipeline() {
+        return new GunNettyChildrenPipelineImpl();
+    }
 
     /**
      * addTimer
@@ -49,19 +45,7 @@ public interface GunNettyPipeline extends GunHandle {
      * @param handle GunNettyHandle
      * @return this.chain style
      */
-    GunNettyPipeline setHandle(GunNettyHandle handle);
-
-    /**
-     * ref to set the handle
-     *
-     * @param clazz refSetHandle
-     * @return GunNettyPipeline this,chain style
-     * @throws IllegalAccessException    exc
-     * @throws InstantiationException    exc
-     * @throws InvocationTargetException exc
-     * @throws NoSuchMethodException     can not find this method
-     */
-    GunNettyPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException;
+    GunNettyPipeline setHandle(KHAND handle);
 
     /**
      * check the pileline model avilable
@@ -84,7 +68,7 @@ public interface GunNettyPipeline extends GunHandle {
      *
      * @return GunNettyHandle
      */
-    GunNettyHandle handel();
+    KHAND handel();
 
 
     /**

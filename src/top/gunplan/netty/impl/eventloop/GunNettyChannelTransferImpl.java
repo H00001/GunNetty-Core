@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
-import top.gunplan.netty.impl.GunNettyChildChannel;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.nio.channels.SocketChannel;
 

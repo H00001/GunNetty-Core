@@ -6,6 +6,8 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.impl.pipeline.AbstractNettyPipelineImpl;
+import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
 
@@ -36,12 +38,13 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService acceptExecutor;
 
-    private volatile ExecutorService requestExecutor;
+    private volatile ExecutorService workExecutor;
 
-    private volatile GunNettyPipeline pipeline = new GunNettyPipelineImpl();
+    private volatile GunNettyPipeline pipeline = new AbstractNettyPipelineImpl();
 
+    private ChannelInitHandle initHandle;
 
-    ChannelInitHandle initHandle;
+    private ChannelInitHandle childInitHandel;
 
     private volatile GunNettyCoreProperty coreProperty;
 
@@ -99,8 +102,8 @@ final class GunBootServerImpl implements GunBootServer {
     public boolean initCheck() {
         if (acceptExecutor == null) {
             throw new GunException(GunExceptionType.EXC0, "acceptExecutor is null");
-        } else if (requestExecutor == null) {
-            throw new GunException(GunExceptionType.EXC0, "requestExecutor is null");
+        } else if (workExecutor == null) {
+            throw new GunException(GunExceptionType.EXC0, "workExecutor is null");
         } else if (this.pipeline.check().getResult() == GunPipelineCheckResult.CheckResult.ERROR) {
             throw new GunException(GunExceptionType.EXC0, "handle or chain result is not normal");
         } else if (runnable) {
@@ -125,8 +128,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private void init() {
         coreProperty = GunNettySystemServices.coreProperty();
-        threadManager = GunNettyCoreThreadManager.
-                initInstance(GunNettySystemServices.coreProperty(), observe);
+        threadManager = GunNettyCoreThreadManager.initInstance(GunNettySystemServices.coreProperty(), observe);
     }
 
 
@@ -138,7 +140,7 @@ final class GunBootServerImpl implements GunBootServer {
             return GunNettyWorkState.BOOT_ERROR_2.state;
         }
         try {
-            threadManager.init(acceptExecutor, requestExecutor, initHandle, pipeline, coreProperty.getPort());
+            threadManager.init(acceptExecutor, workExecutor, initHandle, childInitHandel, coreProperty.getPort());
         } catch (IOException exc) {
             GunNettyContext.logger.setTAG(GunNettyCanNotBootException.class).urgency(exc.getMessage());
             return GunNettyWorkState.BOOT_ERROR_1.state;
@@ -179,7 +181,7 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public GunBootServer setExecutors(ExecutorService acceptExecuters, ExecutorService requestExecuters) {
         this.acceptExecutor = acceptExecuters;
-        this.requestExecutor = requestExecuters;
+        this.workExecutor = requestExecuters;
         return this;
     }
 

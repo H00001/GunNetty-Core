@@ -4,8 +4,6 @@
 
 package top.gunplan.netty;
 
-import top.gunplan.netty.impl.GunNettyPipeline;
-
 /**
  * ChannelInitHandle
  *
@@ -16,5 +14,5 @@ import top.gunplan.netty.impl.GunNettyPipeline;
 
 @FunctionalInterface
 public interface ChannelInitHandle extends GunHandle {
-    void onHasChannel(GunNettyPipeline pipeline);
+    void onHasChannel(GunNettyChildrenPipeline pipeline);
 }

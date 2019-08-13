@@ -8,8 +8,8 @@ import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.GunNettyChannelFactory;
-import top.gunplan.netty.impl.GunNettyChildChannel;
-import top.gunplan.netty.impl.GunNettyServerChannel;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
+import top.gunplan.netty.impl.channel.GunNettyServerChannel;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;

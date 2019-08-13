@@ -5,7 +5,7 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
-import top.gunplan.netty.impl.GunNettyPipeline;
+import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.util.concurrent.ExecutorService;
 
@@ -110,16 +110,14 @@ public interface GunBootServer extends GunBootServerBase {
         }
     }
 
+
     /**
-     * set pipeline
-     *
-     * @param pipeline pipeline
-     * @see GunNettyPipeline
+     * when has a new channel
+     * @param pipeline input the pipeline
      */
+    void onHasChannel(GunNettyChildrenPipeline pipeline);
 
-    void setPipeline(GunNettyPipeline pipeline);
 
-
-    void onHasChannel(ChannelInitHandle pipeline);
+    void whenServerChannelStateChanged(SystemChannelChangedHandle handle);
 }
 

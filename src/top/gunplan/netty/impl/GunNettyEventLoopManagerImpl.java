@@ -7,6 +7,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.impl.eventloop.*;
+import top.gunplan.netty.impl.sequence.GunNettySequencer;
 import top.gunplan.netty.impl.timeevent.AbstractGunTimeExecutor;
 import top.gunplan.netty.impl.timeevent.GunTimeExecutor;
 
@@ -30,18 +31,23 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
     private volatile GunTimeExecutor timeExecute;
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private volatile GunNettyTransfer<SocketChannel> transfer;
+    private volatile int dataEvenLoopSum;
+
+    private GunNettySequencer sequencer0 = GunNettySequencer.newThreadUnSafeSequencer();
+    private GunNettySequencer sequencer1 = GunNettySequencer.newThreadSafeSequencer();
 
     @Override
     public synchronized boolean init(int v1, List<GunNettyTimer> timerList, ExecutorService bossExecutor,
                                      ExecutorService dataExecutor, ChannelInitHandle parentHandle,
                                      ChannelInitHandle childrenHandle, int port) {
+        this.dataEvenLoopSum = v1;
         transfer = EventLoopFactory.newGunNettyBaseTransfer();
         transfer.registerManager(this);
         timeExecute = AbstractGunTimeExecutor.create(v1 - 1);
         timeExecute.registerWorker(timerList);
         timeExecute.registerManager(this);
         try {
-            dealData = EventLoopFactory.buildDataEventLoop(v1).with(dataExecutor).andRegister(this).build();
+            dealData = EventLoopFactory.buildDataEventLoop(v1).with(bossExecutor).andRegister(this).build();
             dealAccept = EventLoopFactory.buildConnEventLoop().bindPort(port).with(dataExecutor, parentHandle, childrenHandle).andRegister(this).build();
         } catch (IOException e) {
             return false;
@@ -50,14 +56,14 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
     }
 
     @Override
-    public GunDataEventLoop<SocketChannel> dealChannelEventLoop(int i) {
-        return dealData[i];
+    public GunDataEventLoop<SocketChannel> dealChannelEventLoop() {
+        return dealData[sequencer0.nextSequenceInt32WithLimit(dataEvenLoopSum)];
     }
 
     @Override
-    public Set<SelectionKey> availableChannel(int i) {
+    public Set<SelectionKey> availableChannel() {
         try {
-            return dealData[i].availableSelectionKey();
+            return dealData[sequencer1.nextSequenceInt32WithLimit(dataEvenLoopSum)].availableSelectionKey();
         } catch (IOException e) {
             return null;
         }

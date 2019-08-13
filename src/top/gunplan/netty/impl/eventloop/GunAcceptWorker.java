@@ -6,8 +6,8 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.impl.GunNettyChildChannel;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.io.IOException;

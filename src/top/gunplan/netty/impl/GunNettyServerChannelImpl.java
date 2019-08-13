@@ -6,7 +6,10 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.impl.channel.BaseGunNettyChannel;
+import top.gunplan.netty.impl.channel.GunNettyServerChannel;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
+import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -25,7 +28,7 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
 
     @Override
     public GunNettyPipeline pipeline() {
-        return null;
+        return pipeline();
     }
 
     @Override

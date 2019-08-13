@@ -11,7 +11,7 @@ import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import top.gunplan.netty.common.GunNettyThreadFactory;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
-import top.gunplan.netty.impl.GunNettyChildChannel;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.io.IOException;
 import java.nio.channels.SocketChannel;

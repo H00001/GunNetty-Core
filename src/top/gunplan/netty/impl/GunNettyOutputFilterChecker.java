@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
 

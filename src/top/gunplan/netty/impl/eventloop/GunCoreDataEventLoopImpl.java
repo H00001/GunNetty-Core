@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.impl.GunNettyChildChannel;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;

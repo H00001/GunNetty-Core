@@ -2,8 +2,9 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.channel;
 
+import top.gunplan.netty.impl.GunNettyChannel;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 
 import java.io.IOException;

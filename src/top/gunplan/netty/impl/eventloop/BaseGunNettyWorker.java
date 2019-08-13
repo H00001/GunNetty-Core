@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyHandle;
-import top.gunplan.netty.impl.GunNettyChildChannel;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.nio.channels.SocketChannel;
 import java.util.List;

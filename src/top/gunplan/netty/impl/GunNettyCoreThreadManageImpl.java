@@ -8,12 +8,14 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyBaseObserve;
+import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 import top.gunplan.utils.GunNumberUtil;
 
 import java.nio.channels.SocketChannel;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -30,6 +32,8 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     private final GunNettyBaseObserve observe;
 
+    private final List<GunNettyTimer> globalTimers;
+
     private final GunNettySequencer sequencer = GunNettySequencer.newThreadSafeSequencer();
 
     private final GunNettyEventLoopManager eventLoopManager = GunNettyEventLoopManager.newInstance();
@@ -39,16 +43,17 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private volatile ManagerState status = ManagerState.INACTIVE;
 
 
-    GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final GunNettyBaseObserve baseObserve) {
+    GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final GunNettyBaseObserve baseObserve, final List<GunNettyTimer> globalTimers) {
         this.observe = baseObserve;
         GUN_NETTY_CORE_PROPERTY = property;
+        this.globalTimers = globalTimers;
         MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
     }
 
     @Override
-    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, ChannelInitHandle handle, ChannelInitHandle f, GunNettyPipeline pipeline, int port) {
+    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, ChannelInitHandle phandle, ChannelInitHandle cHandle, int port) {
         threadHelper = GunNettyCoreThreadManagerHelper.newInstance(MANAGE_THREAD_NUM);
-        return eventLoopManager.init(MANAGE_THREAD_NUM, pipeline.timer(), acceptExecutor, dataExecutor, handle, f, port);
+        return eventLoopManager.init(MANAGE_THREAD_NUM, globalTimers, acceptExecutor, dataExecutor, phandle, cHandle, port);
     }
 
 

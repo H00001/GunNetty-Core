@@ -6,7 +6,8 @@ package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.common.GunNettyContext;
-import top.gunplan.netty.impl.GunNettyChildChannel;
+import top.gunplan.netty.impl.GunNettyChannelTransfer;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -40,9 +41,8 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
     }
 
 
-
     @Override
-    public void push(GunNettyChildChannel<U> u) {
-        kQueue.offer(u);
+    public void push(GunNettyChannelTransfer<U> u) {
+        kQueue.offer(u.channel());
     }
 }

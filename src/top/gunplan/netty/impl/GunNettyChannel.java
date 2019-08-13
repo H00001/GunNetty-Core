@@ -5,6 +5,9 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyHandle;
+import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.io.IOException;
 import java.net.SocketAddress;
@@ -17,14 +20,14 @@ import java.nio.channels.Channel;
  * @version 0.0.0.1
  * @date 2019-08-08 23:06
  */
-public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop> extends Channel {
+public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyHandle> extends Channel {
 
     /**
      * get the pipeline that the channel attach
      *
      * @return pipeline
      */
-    GunNettyPipeline pipeline();
+    GunNettyPipeline<GunNettyChildrenHandle> pipeline();
 
 
     /**
@@ -59,7 +62,7 @@ public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLo
      * @return self
      */
 
-    GunNettyChannel<CH, LOOP> registerEventLoop(LOOP eventLoop);
+    GunNettyChannel<CH, LOOP, PL> registerEventLoop(LOOP eventLoop);
 
     /**
      * get remote address
@@ -87,9 +90,6 @@ public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLo
      * @return {@code true} if, and only if, this key is valid
      */
     boolean isValid();
-
-
-
 
 
 }

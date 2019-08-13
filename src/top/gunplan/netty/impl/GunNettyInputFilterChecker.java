@@ -6,6 +6,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetInbound;
 
 import java.nio.channels.SocketChannel;

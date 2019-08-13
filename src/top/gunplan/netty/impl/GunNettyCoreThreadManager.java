@@ -6,10 +6,13 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyBaseObserve;
+import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 
+import java.io.IOException;
 import java.nio.channels.SocketChannel;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -26,10 +29,12 @@ public interface GunNettyCoreThreadManager {
      *
      * @param observe  event observe
      * @param property core property
+     * @param l timers
      * @return GunNettyCoreThreadManager
+     *
      */
-    static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyBaseObserve observe) {
-        return new GunNettyCoreThreadManageImpl(property, observe);
+    static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyBaseObserve observe, List<GunNettyTimer> l) {
+        return new GunNettyCoreThreadManageImpl(property, observe, l);
     }
 
     /**
@@ -51,7 +56,6 @@ public interface GunNettyCoreThreadManager {
     boolean stopAndWait() throws InterruptedException;
 
 
-
     /**
      * boot server
      *
@@ -60,17 +64,18 @@ public interface GunNettyCoreThreadManager {
     Future<Integer> startAndWait();
 
 
-
     /**
      * init
      *
      * @param acceptExecutor executor to deal accept event
      * @param dataExecutor   executor to deal data event
-     * @param pipeline       pipeline deal handle
      * @param port           listen the port
+     * @param childrenInitHandle what happened when children channel init
+     * @param initHandle what happened when parent channel init
      * @return init result
+     * @throws IOException i/o error
      */
-    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, ChannelInitHandle handle, ChannelInitHandle f, GunNettyPipeline pipeline, int port);
+    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, ChannelInitHandle initHandle, ChannelInitHandle childrenInitHandle, int port) throws IOException;
 
 
     /**

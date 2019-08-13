@@ -1,36 +1,26 @@
-package top.gunplan.netty.impl;
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
+package top.gunplan.netty.impl.pipeline;
 
 import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * GunNettyPipelineImpl
+ * AbstractNettyPipelineImpl
  *
  * @author dosdrtt
  * @see GunNettyPipeline
  */
-final class GunNettyPipelineImpl implements GunNettyPipeline {
-
-    private volatile GunNettyHandle handle;
+abstract class AbstractNettyPipelineImpl<KHAND extends GunNettyHandle> implements GunNettyPipeline<KHAND> {
+    private volatile KHAND handle;
     private final List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
     private final List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
 
-    @Override
-    public GunNettyPipeline register(GunHandle handle) {
-        assert handle != null;
-        if (handle instanceof GunNettyHandle) {
-            setHandle0((GunNettyHandle) handle);
-        } else if (handle instanceof GunNettyFilter) {
-            addFilter0((GunNettyFilter) handle);
-        } else if (handle instanceof GunNettyTimer) {
-            addTimer((GunNettyTimer) handle);
-        }
-        return this;
-    }
 
     @Override
     public GunNettyPipeline addTimer(GunNettyTimer timer) {
@@ -49,7 +39,7 @@ final class GunNettyPipelineImpl implements GunNettyPipeline {
         this.filterChain.add(order.index(), filter);
     }
 
-    private void setHandle0(GunNettyHandle handle) {
+    private void setHandle0(KHAND handle) {
         this.handle = handle;
     }
 
@@ -60,26 +50,13 @@ final class GunNettyPipelineImpl implements GunNettyPipeline {
     }
 
     @Override
-    public GunNettyPipeline setHandle(GunNettyHandle handle) {
+    public GunNettyPipeline setHandle(KHAND handle) {
         if (handle != null) {
             setHandle0(handle);
         }
         return this;
     }
 
-
-    @Override
-    public GunNettyPipeline refSetHandle(Class<? extends GunHandle> clazz) throws IllegalAccessException, InstantiationException, NoSuchMethodException, InvocationTargetException {
-        if (clazz != null) {
-            GunHandle h = clazz.getDeclaredConstructor().newInstance();
-            if (h instanceof GunNettyHandle) {
-                setHandle0((GunNettyHandle) h);
-            } else if (h instanceof GunNettyFilter) {
-                addFilter((GunNettyFilter) h);
-            }
-        }
-        return this;
-    }
 
     @Override
     public GunPipelineCheckResult check() {
@@ -100,7 +77,7 @@ final class GunNettyPipelineImpl implements GunNettyPipeline {
     }
 
     @Override
-    public GunNettyHandle handel() {
+    public KHAND handel() {
         return handle;
     }
 

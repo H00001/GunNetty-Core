@@ -35,10 +35,21 @@ public interface GunNettyEventLoopManager {
                  ChannelInitHandle childrenHandle, int port);
 
 
-    GunDataEventLoop<SocketChannel> dealChannelEventLoop(int i);
+    /**
+     * dealChannelEventLoop
+     * get one of event loop
+     *
+     * @return data event loop
+     */
+    GunDataEventLoop<SocketChannel> dealChannelEventLoop();
 
 
-    Set<SelectionKey> availableChannel(int i);
+    /**
+     * get available channel
+     *
+     * @return channel
+     */
+    Set<SelectionKey> availableChannel();
 
 
     GunNettyTransfer<SocketChannel> transferEventLoop();

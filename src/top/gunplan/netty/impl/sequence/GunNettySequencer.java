@@ -65,7 +65,7 @@ public interface GunNettySequencer {
      * @return sequence
      */
     default int nextSequenceInt32WithLimit(int limit) {
-        return GunNumberUtil.isPowOf2(limit) ? ((int) (nextSequence() & limit)) :
+        return GunNumberUtil.isPowOf2(limit) ? ((int) (nextSequence() & (limit - 1))) :
                 ((int) (nextSequence() % limit));
 
     }

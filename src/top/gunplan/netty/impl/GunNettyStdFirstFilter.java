@@ -9,6 +9,7 @@ import top.gunplan.netty.GunFunctionMappingInterFace;
 import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
