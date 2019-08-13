@@ -2,35 +2,37 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.impl.channel.BaseGunNettyChannel;
-import top.gunplan.netty.impl.channel.GunNettyChildChannel;
-import top.gunplan.netty.impl.channel.GunNettyServerChannel;
+import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
-import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
 /**
  * GunNettyChannelImpl
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-08 23:09
  */
-class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>> implements GunNettyChildChannel<SocketChannel> {
+class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenHandle>
+        implements GunNettyChildChannel<SocketChannel> {
     private GunNettyServerChannel pChannel;
 
-    GunNettyChannelImpl(final SocketChannel channel, final GunNettyPipeline pipeline, GunNettyServerChannel pChannel, final long seq, GunDataEventLoop<SocketChannel> eventLoop) {
+    GunNettyChannelImpl(final SocketChannel channel,
+                        final GunNettyChildrenPipeline pipeline,
+                        final GunNettyServerChannel<ServerSocketChannel> pChannel,
+                        final GunDataEventLoop<SocketChannel> eventLoop,
+                        final long seq) {
         super(pipeline, channel, seq, eventLoop);
         this.pChannel = pChannel;
     }
-
-
 
 
     @Override
@@ -60,8 +62,10 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
     }
 
     @Override
-    public void closeAndRemove() {
-
+    public void closeAndRemove() throws IOException {
+        close();
+        eventLoop.fastLimit();
+        eventLoop.decreaseAndStop();
     }
 
 

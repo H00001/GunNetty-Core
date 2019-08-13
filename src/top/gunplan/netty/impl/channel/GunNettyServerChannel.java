@@ -4,10 +4,11 @@
 
 package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.impl.GunNettyChannel;
+import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 
 import java.io.IOException;
+import java.nio.channels.Channel;
 import java.nio.channels.ServerSocketChannel;
 
 /**
@@ -17,8 +18,7 @@ import java.nio.channels.ServerSocketChannel;
  * @version 0.0.0.2
  * @date 2019-08-09 22:54
  */
-public interface GunNettyServerChannel extends GunNettyChannel<ServerSocketChannel, GunConnEventLoop> {
-
+public interface GunNettyServerChannel<CH extends Channel> extends GunNettyChannel<CH, GunConnEventLoop, GunNettyParentHandle> {
     ServerSocketChannel bind(int... port) throws IOException;
 
 

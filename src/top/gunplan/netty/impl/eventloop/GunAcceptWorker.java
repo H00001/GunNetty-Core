@@ -6,12 +6,13 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
-import top.gunplan.netty.impl.channel.GunNettyChildChannel;
+import top.gunplan.netty.impl.channel.GunNettyChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.io.IOException;
-import java.nio.channels.SocketChannel;
+import java.nio.channels.ServerSocketChannel;
 import java.util.ListIterator;
 
 /**
@@ -20,12 +21,10 @@ import java.util.ListIterator;
  * @author dosdrtt
  * @date 2019-04-25
  */
-public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
+public final class GunAcceptWorker extends BaseGunNettyWorker<ServerSocketChannel, GunConnEventLoop, GunNettyParentHandle> implements Runnable {
 
-
-    GunAcceptWorker(final GunNettyChildChannel<SocketChannel> l) {
-        super(l, null);
-
+    GunAcceptWorker(final GunNettyChannel<ServerSocketChannel, GunConnEventLoop, GunNettyParentHandle> l) {
+        super(l);
     }
 
 

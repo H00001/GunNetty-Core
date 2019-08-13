@@ -94,7 +94,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     public void dealEvent(SelectionKey key) {
         key.interestOps(0);
         listenSize.decrementAndGet();
-        this.deal.submit(new GunCoreCalculatorWorker((GunNettyChildChannel<SocketChannel>) key.attachment(), key, listenSize));
+        this.deal.submit(new GunCoreCalculatorWorker((GunNettyChildChannel<SocketChannel>) key.attachment()));
     }
 
     @Override

@@ -17,12 +17,12 @@ import java.nio.channels.SocketChannel;
  */
 public interface GunNettyChecker {
     /**
-     * getKey
+     * channel
      * get selectionKey
      *
      * @return SelectionKey
      */
-    GunNettyChildChannel<SocketChannel> getKey();
+    GunNettyChildChannel<SocketChannel> channel();
 
 
     /**
@@ -46,27 +46,37 @@ public interface GunNettyChecker {
      *
      * @param key selection key
      */
-    void setKey(GunNettyChildChannel<SocketChannel> key);
+    void setChannel(GunNettyChildChannel<SocketChannel> key);
 
 
     /**
      * set attached object
      *
-     * @param attach object to attach
+     * @param attach object to attachment
      */
-    void attach(Object attach);
+    void attachment(Object attach);
 
     /**
      * get attached object
      *
-     * @return object to attach
+     * @return object to attachment
      */
-    Object attach();
+    Object attachment();
 
 
+    /**
+     * you can set error to transfer
+     *
+     * @param throwable w
+     */
     void setError(Throwable throwable);
 
 
+    /**
+     * get the error
+     *
+     * @return error
+     */
     Throwable error();
 
 }

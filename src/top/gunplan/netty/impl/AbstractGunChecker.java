@@ -62,22 +62,22 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
     }
 
     @Override
-    public GunNettyChildChannel<SocketChannel> getKey() {
+    public GunNettyChildChannel<SocketChannel> channel() {
         return key;
     }
 
     @Override
-    public void setKey(GunNettyChildChannel<SocketChannel> key) {
+    public void setChannel(GunNettyChildChannel<SocketChannel> key) {
         this.key = key;
     }
 
     @Override
-    public Object attach() {
+    public Object attachment() {
         return attach;
     }
 
     @Override
-    public void attach(Object attach) {
+    public void attachment(Object attach) {
         this.attach = attach;
     }
 

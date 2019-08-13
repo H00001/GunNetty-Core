@@ -2,10 +2,9 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
@@ -23,11 +22,11 @@ import java.nio.channels.Channel;
 public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyHandle> extends Channel {
 
     /**
-     * get the pipeline that the channel attach
+     * get the pipeline that the channel attachment
      *
      * @return pipeline
      */
-    GunNettyPipeline<GunNettyChildrenHandle> pipeline();
+    GunNettyPipeline<PL> pipeline();
 
 
     /**

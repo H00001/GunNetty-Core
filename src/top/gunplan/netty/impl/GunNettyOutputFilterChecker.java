@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl;
 
+import top.gunplan.netty.GunOutboundChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
@@ -14,7 +15,7 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNetOutbound> {
+public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNetOutbound> implements GunOutboundChecker {
 
     /**
      * GunNettyOutputFilterChecker

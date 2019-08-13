@@ -5,13 +5,11 @@
 package top.gunplan.netty.impl;
 
 /**
- * GunNettyFunctional
+ * GunInboundChecker
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-06 22:42
+ * @date 2019-08-13 17:21
  */
-@FunctionalInterface
-public interface GunNettyFunctional {
-    int apply();
+public interface GunInboundChecker extends GunNettyChecker {
 }

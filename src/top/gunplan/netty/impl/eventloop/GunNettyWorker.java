@@ -7,12 +7,12 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunHandle;
 
 /**
- * GunNettyWorkerInterface
+ * GunNettyWorker
  *
  * @author dosdrtt
  * @see java.lang.Runnable
  */
-interface GunNettyWorkerInterface extends Runnable, GunHandle {
+interface GunNettyWorker extends Runnable, GunHandle {
     /**
      * run
      */
@@ -26,14 +26,6 @@ interface GunNettyWorkerInterface extends Runnable, GunHandle {
      */
     void work();
 
-
-    /**
-     * decrease value of channels
-     *
-     * @param sum channel's sum
-     * @return result
-     */
-    int decreaseChannel(int sum);
 
 
 }

@@ -5,6 +5,7 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
+import top.gunplan.netty.impl.channel.GunNettyChannelImpl;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.channel.GunNettyServerChannel;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;

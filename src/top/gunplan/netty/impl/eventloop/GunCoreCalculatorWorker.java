@@ -6,37 +6,34 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.impl.GunNettyFunctional;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
-import top.gunplan.netty.impl.channel.GunNettyChildChannel;
+import top.gunplan.netty.impl.channel.GunNettyChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
 import java.util.ListIterator;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 
 /**
  * @author dosdrtt
  */
 
-public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
+public final class GunCoreCalculatorWorker extends BaseGunNettyWorker<SocketChannel, GunDataEventLoop, GunNettyChildrenHandle> {
 
 
     private final Map<GunNettyFilter.DealResult, GunNettyFunctional> executeEvent = new HashMap<>(5);
     private boolean notDealOutputFlag = false;
 
 
-    GunCoreCalculatorWorker(final GunNettyChildChannel<SocketChannel> nettyChannel, AtomicInteger waitSize) {
-        super(nettyChannel, waitSize);
-        executeEvent.put(GunNettyFilter.DealResult.CLOSE, () -> {
-            decreaseChannel(1);
-            return -1;
-        });
+    GunCoreCalculatorWorker(final GunNettyChannel<SocketChannel, GunDataEventLoop, GunNettyChildrenHandle> nettyChannel) {
+        super(nettyChannel);
+        executeEvent.put(GunNettyFilter.DealResult.CLOSE, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NEXT, () -> 1);
         executeEvent.put(GunNettyFilter.DealResult.CLOSED_WHEN_READ, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT, () -> -1);
@@ -76,7 +73,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker {
             this.handle.dealExceptionEvent(e);
         }
         GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(output);
-        responseFilterDto.setKey(gunFilterObj.getKey());
+        responseFilterDto.setChannel(gunFilterObj.channel());
         ListIterator<GunNettyFilter> iterator = filters.listIterator(filters.size());
         for (; iterator.hasPrevious() && !notDealOutputFlag; ) {
             try {

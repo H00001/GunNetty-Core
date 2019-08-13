@@ -17,7 +17,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author dosdrtt
  */
-public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInbound> {
+public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInbound> implements GunInboundChecker {
 
 
     public GunNettyInputFilterChecker(final GunNettyChildChannel<SocketChannel> channel) {
