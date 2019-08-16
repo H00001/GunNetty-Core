@@ -5,8 +5,7 @@
 package top.gunplan.netty;
 
 
-import top.gunplan.netty.impl.GunNettyInputFilterChecker;
-import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
+import top.gunplan.netty.impl.GunInboundChecker;
 import top.gunplan.netty.impl.channel.GunNettyChannel;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 
@@ -26,7 +25,7 @@ public interface GunNettyFilter extends GunHandle {
      * @return deal result {@link DealResult};
      * @throws GunChannelException kinds of exception
      */
-    DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException;
+    DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException;
 
     /**
      * doing filter when the response occur
@@ -35,7 +34,7 @@ public interface GunNettyFilter extends GunHandle {
      * @return DealResult result true:next false:break
      * @throws GunChannelException kinds of exception
      */
-    DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws GunChannelException;
+    DealResult doOutputFilter(GunOutboundChecker filterDto) throws GunChannelException;
 
     /**
      * doOutputFilter
@@ -44,7 +43,7 @@ public interface GunNettyFilter extends GunHandle {
      * @param channel   channel to transferTarget
      * @return deal result
      */
-    default DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, GunNettyChannel<SocketChannel, GunDataEventLoop> channel) {
+    default DealResult doOutputFilter(GunOutboundChecker filterDto, GunNettyChannel<SocketChannel, GunDataEventLoop> channel) {
         return DealResult.NEXT;
     }
 

@@ -10,7 +10,7 @@ import java.util.concurrent.*;
  * GunNettyExecutors
  *
  * @author frank albert
- * @version 0.0.0.2
+ * @version 0.0.0.3
  * @date 2019-06-19 00:38
  */
 public final class GunNettyExecutors {
@@ -31,8 +31,8 @@ public final class GunNettyExecutors {
         return newFixedExecutorPool(ONE, name);
     }
 
-    public static ScheduledExecutorService newScheduleExecutorPool(int num) {
-        return new ScheduledThreadPoolExecutor(num);
+    private static ScheduledExecutorService newScheduleExecutorPool(int num) {
+        return new ScheduledThreadPoolExecutor(num, new GunNettyThreadFactory("GunNettyExecutors"));
     }
 
 

@@ -18,13 +18,15 @@ import java.util.List;
  *
  * @author frank albert
  */
-abstract class BaseGunNettyWorker<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyHandle> implements GunNettyWorker {
-    final GunNettyChannel<CH, LOOP, PL> channel;
-    final PL handle;
+abstract class BaseGunNettyWorker<A extends Channel, B extends GunCoreEventLoop, C extends GunNettyHandle, CH extends GunNettyChannel<A, B, C>> implements GunNettyWorker {
+    final A javaChannel;
+    final C handle;
+    final CH channel;
     final List<GunNettyFilter> filters;
 
 
-    BaseGunNettyWorker(final GunNettyChannel<CH, LOOP, PL> channel) {
+    BaseGunNettyWorker(final CH channel) {
+        this.javaChannel = channel.channel();
         this.channel = channel;
         this.handle = channel.pipeline().handel();
         this.filters = channel.pipeline().filters();

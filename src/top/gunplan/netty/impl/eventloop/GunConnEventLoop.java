@@ -8,6 +8,7 @@ import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunCoreEventLoop;
 
 import java.io.IOException;
+import java.nio.channels.Selector;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -34,6 +35,9 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
      * @return port
      */
     int listenPort();
+
+
+    Selector select();
 
 
     int init(ExecutorService service, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;

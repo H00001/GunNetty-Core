@@ -5,12 +5,11 @@
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunNettyChildrenHandle;
-import top.gunplan.netty.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
+import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
 import java.io.IOException;
 import java.net.SocketAddress;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
@@ -29,7 +28,8 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
                         final GunNettyChildrenPipeline pipeline,
                         final GunNettyServerChannel<ServerSocketChannel> pChannel,
                         final GunDataEventLoop<SocketChannel> eventLoop,
-                        final long seq) {
+                        final long seq
+    ) {
         super(pipeline, channel, seq, eventLoop);
         this.pChannel = pChannel;
     }
@@ -75,8 +75,8 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
     }
 
     @Override
-    public GunNettyChildChannel<SocketChannel> setSelectionKey(SelectionKey key) {
-        return null;
+    public void registerReadWithEventLoop(GunDataEventLoop<SocketChannel> eventLoop) {
+
     }
 
     @Override

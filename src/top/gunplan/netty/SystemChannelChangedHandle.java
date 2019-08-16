@@ -5,6 +5,7 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
+import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
 
 /**
  * SystemChannelChangedHandle

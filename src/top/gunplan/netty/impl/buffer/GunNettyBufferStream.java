@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.buffer;
 
 /**
@@ -128,7 +132,7 @@ public interface GunNettyBufferStream extends Comparable<GunNettyBufferStream> {
     /**
      * compare compare
      *
-     * @param o
+     * @param o compareTo
      * @return
      */
     @Override

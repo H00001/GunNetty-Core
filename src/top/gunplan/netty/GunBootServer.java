@@ -5,6 +5,7 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
+import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.util.concurrent.ExecutorService;

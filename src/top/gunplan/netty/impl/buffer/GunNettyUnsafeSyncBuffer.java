@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.buffer;
 
 import sun.misc.Unsafe;
@@ -17,13 +21,14 @@ public class GunNettyUnsafeSyncBuffer extends GunNettyUnsafeBuffer {
 
 
     /**
-     * in fact if the type is int,
+     * in fact， if the type is int,
      * we do not need to write synchronized
-     * keyword ,but it is long type ,you'd
+     * keyword, but it is long type ,you'd
      * know the long type was written in 2
      * step from the register to memory :
      * first write 32 high bit the next is
-     * write low 32 bits
+     * write low 32 bits.so if we do not
+     * use {@link synchronized}
      *
      * @return long write point
      */

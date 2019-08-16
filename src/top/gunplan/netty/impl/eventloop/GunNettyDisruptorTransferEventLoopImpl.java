@@ -13,7 +13,6 @@ import top.gunplan.netty.common.GunNettyThreadFactory;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
-import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.TimeUnit;
 
@@ -76,8 +75,4 @@ final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> exte
         publishChannel(u.channel());
     }
 
-    @Override
-    public int fastLimit() throws IOException {
-        return 0;
-    }
 }

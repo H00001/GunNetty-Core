@@ -14,14 +14,7 @@ import java.util.List;
  * @since 1.0.0.1
  */
 public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandle {
-    /**
-     * newPipeline
-     *
-     * @return AbstractNettyPipelineImpl
-     */
-    static GunNettyPipeline newChildrenPipeline() {
-        return new GunNettyChildrenPipelineImpl();
-    }
+
 
     /**
      * addTimer

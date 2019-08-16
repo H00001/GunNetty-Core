@@ -9,7 +9,6 @@ import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 
 import java.io.IOException;
 import java.nio.channels.Channel;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -24,21 +23,19 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
      * close channel and remove form selector
      */
     void closeAndRemove() throws IOException;
+
     /**
      * parent
-     * return parent
+     * return parent channel
      */
-
     GunNettyServerChannel parent();
 
 
     /**
-     * setSelectionKey
-     *
-     * @param key selection key
-     * @return channel chain style
+     * register ReadWith EventLoop
+     * @param eventLoop event loop
      */
-    GunNettyChildChannel<CH> setSelectionKey(SelectionKey key);
+    void registerReadWithEventLoop(GunDataEventLoop<SocketChannel> eventLoop);
 
 
     /**
@@ -51,6 +48,7 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
 
     /**
      * addReadObserve
+     *
      * @return this chain style
      */
     GunNettyChildChannel<CH> cleanAllObserve();

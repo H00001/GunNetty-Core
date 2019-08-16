@@ -19,7 +19,7 @@ import java.nio.channels.Channel;
  * @date 2019-08-09 23:07
  */
 
-public abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyHandle> implements GunNettyChannel<CH, LOOP, PL> {
+abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyHandle> implements GunNettyChannel<CH, LOOP, PL> {
     private final GunNettyPipeline<PL> pipeline;
     private final long id;
     LOOP eventLoop;

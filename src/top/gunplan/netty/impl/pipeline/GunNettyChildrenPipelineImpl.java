@@ -5,7 +5,6 @@
 package top.gunplan.netty.impl.pipeline;
 
 import top.gunplan.netty.GunNettyChildrenHandle;
-import top.gunplan.netty.GunNettyChildrenPipeline;
 
 /**
  * GunNettyChildrenPipelineImpl
@@ -14,5 +13,6 @@ import top.gunplan.netty.GunNettyChildrenPipeline;
  * @version 0.0.0.1
  * @date 2019-08-13 15:02
  */
-class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl<GunNettyChildrenHandle> implements GunNettyChildrenPipeline {
+class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl<GunNettyChildrenHandle>
+        implements GunNettyChildrenPipeline {
 }

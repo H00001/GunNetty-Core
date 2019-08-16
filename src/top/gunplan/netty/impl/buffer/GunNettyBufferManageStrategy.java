@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.buffer;
 
 import java.lang.ref.SoftReference;
@@ -27,7 +31,7 @@ public interface GunNettyBufferManageStrategy {
      *
      * @param operator can allocation queue
      * @param using    using queue
-     * @param size size of need
+     * @param size     size of need
      * @return GunNettyBufferStream create a buffer
      */
     GunNettyBufferStream onNeed(Queue<SoftReference<GunNettyBufferStream>> operator,

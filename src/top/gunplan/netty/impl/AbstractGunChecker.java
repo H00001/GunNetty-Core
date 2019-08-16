@@ -14,12 +14,18 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNettyChecker, GunNettyTranslator {
+abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNettyChecker<Transfer>, GunNettyTranslator {
 
     byte[] src;
-    Throwable exp;
+
+    private Throwable exp;
+
     Transfer to;
+
     private Object attach;
+
+
+    private volatile GunNettyChildChannel<SocketChannel> key;
 
     /**
      * translate
@@ -40,14 +46,18 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
         return src;
     }
 
+    /**
+     * set source information
+     *
+     * @param src source
+     */
     @Override
     public void setSource(byte[] src) {
         this.src = src;
     }
 
 
-    private volatile GunNettyChildChannel<SocketChannel> key;
-
+    @Override
     public Transfer transferTarget() {
         return to;
     }

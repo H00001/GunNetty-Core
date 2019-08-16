@@ -8,7 +8,7 @@ import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
-import top.gunplan.netty.impl.channel.GunNettyChannel;
+import top.gunplan.netty.impl.channel.GunNettyServerChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.io.IOException;
@@ -21,9 +21,10 @@ import java.util.ListIterator;
  * @author dosdrtt
  * @date 2019-04-25
  */
-public final class GunAcceptWorker extends BaseGunNettyWorker<ServerSocketChannel, GunConnEventLoop, GunNettyParentHandle> implements Runnable {
+public final class GunAcceptWorker extends BaseGunNettyWorker<ServerSocketChannel, GunConnEventLoop, GunNettyParentHandle,
+        GunNettyServerChannel<ServerSocketChannel>> implements Runnable {
 
-    GunAcceptWorker(final GunNettyChannel<ServerSocketChannel, GunConnEventLoop, GunNettyParentHandle> l) {
+    GunAcceptWorker(final GunNettyServerChannel<ServerSocketChannel> l) {
         super(l);
     }
 
@@ -37,27 +38,20 @@ public final class GunAcceptWorker extends BaseGunNettyWorker<ServerSocketChanne
         }
         GunNetOutbound ob = null;
         try {
-            ob = this.handle.dealConnEvent(channel.remoteAddress());
+            ob = this.channel.remoteAddress();
         } catch (IOException e) {
             handle.dealExceptionEvent(new GunChannelException(e));
         }
         ListIterator<GunNettyFilter> iterator = filters.listIterator(filters.size());
-        while (iterator.hasPrevious()) {
-            GunNettyFilter.DealResult result = null;
+        GunNettyFilter.DealResult result = null;
+        do {
             try {
-                result = iterator.previous().doOutputFilter(new GunNettyOutputFilterChecker(ob, null), channel);
+                result = iterator.previous().doOutputFilter(new GunNettyOutputFilterChecker(ob, javaChannel));
             } catch (GunChannelException e) {
                 handle.dealExceptionEvent(e);
             }
-            if (result == GunNettyFilter.DealResult.NOT_DEAL_OUTPUT) {
-                break;
-            } else if (result == GunNettyFilter.DealResult.CLOSE) {
-                return;
-            } else if (result == GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT) {
-                return;
-            }
-
         }
+        while (iterator.hasPrevious() && (result != GunNettyFilter.DealResult.NEXT))
 
 
     }

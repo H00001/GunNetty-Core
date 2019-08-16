@@ -15,7 +15,7 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  * @version 0.0.0.2
  */
-public interface GunNettyChecker {
+public interface GunNettyChecker<T extends GunNetBound> {
     /**
      * channel
      * get selectionKey
@@ -79,4 +79,6 @@ public interface GunNettyChecker {
      */
     Throwable error();
 
+
+    T transferTarget();
 }

@@ -8,10 +8,11 @@ import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.impl.GunInboundChecker;
 import top.gunplan.netty.impl.GunNettyFunctional;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
-import top.gunplan.netty.impl.channel.GunNettyChannel;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SocketChannel;
@@ -24,14 +25,16 @@ import java.util.Map;
  * @author dosdrtt
  */
 
-public final class GunCoreCalculatorWorker extends BaseGunNettyWorker<SocketChannel, GunDataEventLoop, GunNettyChildrenHandle> {
-
-
+public final class GunCoreCalculatorWorker extends
+        BaseGunNettyWorker<SocketChannel,
+                GunDataEventLoop<SocketChannel>,
+                GunNettyChildrenHandle,
+                GunNettyChildChannel<SocketChannel>> {
     private final Map<GunNettyFilter.DealResult, GunNettyFunctional> executeEvent = new HashMap<>(5);
     private boolean notDealOutputFlag = false;
 
 
-    GunCoreCalculatorWorker(final GunNettyChannel<SocketChannel, GunDataEventLoop, GunNettyChildrenHandle> nettyChannel) {
+    GunCoreCalculatorWorker(final GunNettyChildChannel<SocketChannel> nettyChannel) {
         super(nettyChannel);
         executeEvent.put(GunNettyFilter.DealResult.CLOSE, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NEXT, () -> 1);
@@ -47,7 +50,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker<SocketChan
 
     @Override
     public void work() {
-        final GunNettyInputFilterChecker gunFilterObj = new GunNettyInputFilterChecker(channel);
+        final GunInboundChecker gunFilterObj = new GunNettyInputFilterChecker(channel);
         GunNettyFilter.DealResult result = null;
         for (final GunNettyFilter filter : filters) {
             try {
@@ -84,9 +87,7 @@ public final class GunCoreCalculatorWorker extends BaseGunNettyWorker<SocketChan
             if (result == GunNettyFilter.DealResult.NOT_DEAL_OUTPUT) {
                 break;
             } else if (result == GunNettyFilter.DealResult.CLOSE) {
-                if (decreaseChannel(1) != -32768) {
-                    return;
-                }
+
             } else if (result == GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT) {
                 return;
             }

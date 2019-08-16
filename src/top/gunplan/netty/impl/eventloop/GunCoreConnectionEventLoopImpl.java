@@ -7,12 +7,13 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.common.GunNettyContext;
-import top.gunplan.netty.impl.GunNettyChannelFactory;
+import top.gunplan.netty.impl.channel.GunNettyChannelFactory;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.channel.GunNettyServerChannel;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
@@ -46,12 +47,16 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     }
 
     @Override
+    public Selector select() {
+        return bootSelector;
+    }
+
+    @Override
     public int init(ExecutorService service, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException {
         super.init(deal);
         this.initHandle = parentHandle;
         this.childrenInitHandle = childrenHandle;
-        channel.bind(port[0]).configureBlocking(false);
-        channel.channel().register(bootSelector, SelectionKey.OP_ACCEPT, this);
+        channel.bind(port[0]).registerAcceptWithEventLoop(this);
         return 0;
     }
 
@@ -100,4 +105,5 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
             }
         });
     }
+
 }

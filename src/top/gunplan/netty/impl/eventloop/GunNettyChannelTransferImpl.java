@@ -25,7 +25,7 @@ public class GunNettyChannelTransferImpl<U extends SocketChannel> implements
         this.channel = channel;
     }
 
-    public GunNettyChannelTransferImpl() {
+    GunNettyChannelTransferImpl() {
     }
 
     @Override

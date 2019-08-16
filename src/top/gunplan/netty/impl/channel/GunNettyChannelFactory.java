@@ -2,15 +2,14 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.impl.channel.GunNettyChannelImpl;
-import top.gunplan.netty.impl.channel.GunNettyChildChannel;
-import top.gunplan.netty.impl.channel.GunNettyServerChannel;
+import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
-import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
+import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
+import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.nio.channels.ServerSocketChannel;
@@ -28,20 +27,22 @@ public class GunNettyChannelFactory {
     private static final GunNettySequencer WORK_SEQUENCER = GunNettySequencer.newThreadSafeSequencer();
 
     public static GunNettyChildChannel<SocketChannel>
-    newChannel(final SocketChannel channel, final ChannelInitHandle initHandle,
-               final GunNettyServerChannel pChannel, final GunDataEventLoop<SocketChannel> eventLoop) {
-        GunNettyPipeline pipeline = GunNettyPipeline.newPipeline();
+    newChannel(final SocketChannel channel,
+               final ChannelInitHandle initHandle,
+               final GunNettyServerChannel<ServerSocketChannel> pChannel,
+               final GunDataEventLoop<SocketChannel> eventLoop) {
+        GunNettyChildrenPipeline pipeline = GunNettyChildrenPipeline.newPipeline();
         initHandle.onHasChannel(pipeline);
-        return new GunNettyChannelImpl(channel, pipeline, pChannel, BOSS_SEQUENCER.nextSequence(), eventLoop);
+        return new GunNettyChannelImpl(channel, pipeline, pChannel, eventLoop, BOSS_SEQUENCER.nextSequence());
     }
 
 
     public static GunNettyServerChannel
     newServerChannel(final ServerSocketChannel channel,
-                     final ChannelInitHandle initHandle,
+                     final SystemChannelChangedHandle initHandle,
                      final GunConnEventLoop eventLoop) {
-        GunNettyPipeline pipeline = GunNettyPipeline.newPipeline();
-        initHandle.onHasChannel(pipeline);
+        GunNettyParentPipeline pipeline = GunNettyParentPipeline.newPipeline();
+        initHandle.whenInit(pipeline);
         return new GunNettyServerChannelImpl(channel, pipeline, WORK_SEQUENCER.nextSequence(), eventLoop);
     }
 }

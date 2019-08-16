@@ -40,7 +40,7 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
     /**
      * registerReadKey
      *
-     * @param channel channel chan read
+     * @param channel javaChannel chan read
      * @return selector
      * @throws IOException register fail
      */
@@ -56,7 +56,7 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
     /**
      * fast release
      *
-     * @return release value of channel
+     * @return release value of javaChannel
      * @throws IOException i/o
      */
 

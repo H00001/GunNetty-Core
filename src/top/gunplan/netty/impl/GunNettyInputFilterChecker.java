@@ -24,15 +24,15 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetI
         super(channel);
     }
 
-    @Override
-    public void translate() {
-        this.to.unSerialize(src);
-    }
-
     public GunNettyInputFilterChecker(byte[] src, GunNetInbound object) {
         super(null);
         this.src = src;
         this.to = object;
+    }
+
+    @Override
+    public void translate() {
+        this.to.unSerialize(src);
     }
 
 

@@ -19,7 +19,15 @@ import java.nio.channels.ServerSocketChannel;
  * @date 2019-08-09 22:54
  */
 public interface GunNettyServerChannel<CH extends Channel> extends GunNettyChannel<CH, GunConnEventLoop, GunNettyParentHandle> {
-    ServerSocketChannel bind(int... port) throws IOException;
+    /**
+     * bind
+     *
+     * @param port lestion the port
+     * @return ServerSocketChannel
+     * @throws IOException bind error
+     */
+    GunNettyServerChannel<ServerSocketChannel> bind(int... port) throws IOException;
 
 
+    void registerAcceptWithEventLoop(GunConnEventLoop eventLoop) throws IOException;
 }
