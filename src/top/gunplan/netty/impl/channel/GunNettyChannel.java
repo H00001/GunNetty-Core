@@ -5,7 +5,6 @@
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.io.IOException;
@@ -21,14 +20,14 @@ import java.nio.channels.Channel;
  */
 public interface GunNettyChannel<CH extends Channel,
         LOOP extends GunCoreEventLoop,
-        PL extends GunNettyHandle> extends Channel {
+        PL extends GunNettyPipeline> extends Channel {
 
     /**
      * get the pipeline that the channel attachment
      *
      * @return pipeline
      */
-    GunNettyPipeline<PL> pipeline();
+    PL pipeline();
 
 
     /**

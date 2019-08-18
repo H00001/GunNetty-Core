@@ -6,6 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.ChannelInitHandle;
+import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.GunNettyEventLoopManager;
 
 import java.io.IOException;
@@ -45,7 +46,6 @@ public final class EventLoopFactory {
         }
 
 
-
         @Override
         public GunConnEventLoop build() {
             return eventLoop;
@@ -70,7 +70,7 @@ public final class EventLoopFactory {
         }
 
         @Override
-        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException {
+        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, SystemChannelChangedHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException {
             this.eventLoop.init(deal, parentHandle, childrenHandle);
             return this;
         }

@@ -14,4 +14,6 @@ import top.gunplan.netty.impl.GunNettyChecker;
  * @date 2019-08-13 17:21
  */
 public interface GunOutboundChecker extends GunNettyChecker {
+    boolean isHasDataToOutput();
+
 }

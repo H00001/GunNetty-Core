@@ -6,6 +6,7 @@ package top.gunplan.netty;
 
 import top.gunplan.netty.common.GunNettyContext;
 
+import java.io.IOException;
 import java.net.SocketAddress;
 
 /**
@@ -56,4 +57,24 @@ public interface GunNettyBaseObserve {
         return 0;
     }
 
+    /**
+     * bootFail happened
+     *
+     * @param exp error
+     * @apiNote #4043
+     */
+    default void bootFail(IOException exp) {
+        GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
+    }
+
+
+    /**
+     * bootFail happened
+     *
+     * @param exp error
+     * @apiNote #4043
+     */
+    default void runningError(Exception exp) {
+        GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
+    }
 }

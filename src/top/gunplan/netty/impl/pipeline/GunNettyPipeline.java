@@ -5,25 +5,30 @@
 package top.gunplan.netty.impl.pipeline;
 
 
-import top.gunplan.netty.GunHandle;
-import top.gunplan.netty.GunNettyHandle;
-import top.gunplan.netty.GunNettyTimer;
-import top.gunplan.netty.GunPipelineCheckResult;
+import top.gunplan.netty.*;
 
 import java.util.List;
 
 /**
  * @author dosdrtt
- * @since 1.0.0.1
+ * @since 1.0.0.4
  */
-public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandle {
+public interface GunNettyPipeline extends GunHandle {
     /**
-     * addTimer
+     * add child Timer
      *
      * @param timer {@link GunNettyTimer}
      * @return this, chain style
      */
     GunNettyPipeline addTimer(GunNettyTimer timer);
+
+    /**
+     * setHandle
+     *
+     * @param handle GunNettyHandle
+     * @return this.chain style
+     */
+    GunNettyPipeline setHandle(GunNettyChildrenHandle handle);
 
 
     /**
@@ -32,7 +37,7 @@ public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandl
      * @param handle GunNettyHandle
      * @return this.chain style
      */
-    GunNettyPipeline setHandle(KHAND handle);
+    GunNettyPipeline setHandle(GunNettyParentHandle handle);
 
     /**
      * check the pipeline model available
@@ -41,14 +46,20 @@ public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandl
      */
     GunPipelineCheckResult check();
 
-
     /**
-     * handel
+     * data handel
      *
      * @return GunNettyHandle
      */
-    KHAND handel();
+    GunNettyChildrenHandle childHandel();
 
+
+    /**
+     * connection handel
+     *
+     * @return GunNettyHandle
+     */
+    GunNettyParentHandle parentHandel();
 
     /**
      * timers
@@ -68,4 +79,8 @@ public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandl
     @Override
     int init();
 
+
+    void setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe);
+
 }
+

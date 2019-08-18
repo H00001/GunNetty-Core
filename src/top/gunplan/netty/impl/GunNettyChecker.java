@@ -10,7 +10,7 @@ import java.nio.channels.SocketChannel;
 
 /**
  * GunNettyChecker
- * Checker filters's transferTarget Object interface
+ * Checker connFilterStream's transferTarget Object interface
  *
  * @author dosdrtt
  * @version 0.0.0.2
@@ -80,5 +80,13 @@ public interface GunNettyChecker<T extends GunNetBound> {
     Throwable error();
 
 
+    /**
+     * transfer src to target
+     *
+     * @return T
+     */
     T transferTarget();
+
+
+    void translate();
 }

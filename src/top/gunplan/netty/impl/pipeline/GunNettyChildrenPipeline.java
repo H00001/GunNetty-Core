@@ -4,11 +4,12 @@
 
 package top.gunplan.netty.impl.pipeline;
 
-import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyChildrenPipelineChangedObserve;
+import top.gunplan.netty.GunNettyConnFilter;
 import top.gunplan.netty.GunNettyDataFilter;
-import top.gunplan.netty.GunNettyFilter;
 
 import java.util.List;
+import java.util.stream.Stream;
 
 /**
  * GunNettyChildrenPipeline
@@ -18,39 +19,75 @@ import java.util.List;
  * @date 2019-08-13 09:35
  */
 
-public interface GunNettyChildrenPipeline extends GunNettyPipeline<GunNettyChildrenHandle> {
-    /**
-     * newPipeline
-     *
-     * @return AbstractNettyPipelineImpl
-     */
+public interface GunNettyChildrenPipeline extends GunNettyPipeline {
     static GunNettyChildrenPipeline newPipeline() {
         return new GunNettyChildrenPipelineImpl();
     }
 
-
     /**
-     * add Filter
-     *
-     * @param filter {@link GunNettyFilter}
-     * @return this, chain style
-     */
-    GunNettyPipeline addFilter(GunNettyDataFilter filter);
-
-
-    /**
-     * ¬
-     * remove Filter
+     * add data Filter
      *
      * @param filter {@link GunNettyDataFilter}
      * @return this, chain style
      */
-    GunNettyPipeline removeFilter(GunNettyDataFilter filter);
+    GunNettyChildrenPipeline addDataFilter(GunNettyDataFilter filter);
 
     /**
-     * filters
+     * remove data Filter
+     *
+     * @param filter {@link GunNettyDataFilter} to remove
+     * @return this, chain style
+     */
+    GunNettyChildrenPipeline removeDataFilter(GunNettyDataFilter filter);
+
+    /**
+     * get data filters
+     * {@link GunNettyDataFilter}
      *
      * @return List<GunNettyFilter> GunNettyFilter's List
      */
-    List<GunNettyDataFilter> filters();
+    Stream<GunNettyDataFilter> dataFilterStream();
+
+
+    /**
+     * get data filters
+     * {@link GunNettyDataFilter}
+     *
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
+    List<GunNettyConnFilter> connFilters();
+
+
+    /**
+     * get data filters
+     * {@link GunNettyDataFilter}
+     *
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
+    List<GunNettyDataFilter> dataFilters();
+
+    /**
+     * remove connection filter
+     *
+     * @param filter {@link GunNettyConnFilter} to remove
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
+    GunNettyChildrenPipeline removeConnFilter(GunNettyConnFilter filter);
+
+    /**
+     * add connection filter
+     *
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
+    GunNettyChildrenPipeline addConnFilter(GunNettyConnFilter filter);
+
+    /**
+     * get connection filters
+     *
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
+    Stream<GunNettyConnFilter> connFilterStream();
+
+
+    GunNettyChildrenPipeline setMetaInfoChangeObserver(GunNettyChildrenPipelineChangedObserve observe);
 }

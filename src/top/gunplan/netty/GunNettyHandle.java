@@ -21,5 +21,5 @@ public interface GunNettyHandle extends GunHandle {
      *
      * @param exp Exception
      */
-    void dealExceptionEvent(GunChannelException exp);
+    GunNettyFilter.DealResult dealExceptionEvent(GunChannelException exp);
 }

@@ -5,9 +5,6 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
-import top.gunplan.netty.common.GunNettyContext;
-import top.gunplan.netty.impl.pipeline.AbstractNettyPipelineImpl;
-import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
 
@@ -30,6 +27,8 @@ import java.util.concurrent.Future;
 final class GunBootServerImpl implements GunBootServer {
     private volatile boolean isSync;
 
+    private volatile SystemChannelChangedHandle changedHandle;
+
     private volatile GunNettyCoreThreadManager threadManager;
 
     private volatile boolean runnable = false;
@@ -40,11 +39,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService workExecutor;
 
-    private volatile GunNettyPipeline pipeline = new AbstractNettyPipelineImpl();
-
     private ChannelInitHandle initHandle;
 
-    private ChannelInitHandle childInitHandel;
 
     private volatile GunNettyCoreProperty coreProperty;
 
@@ -80,22 +76,13 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunNettyPipeline pipeline() {
-        return pipeline;
-    }
-
-    @Override
-    public void setPipeline(GunNettyPipeline pipeline) {
-        if (pipeline != null) {
-            this.pipeline = pipeline;
-        } else {
-            throw new GunException(GunExceptionType.NULLPTR, "Your GunNetty Pipeline is null");
-        }
-    }
-
-    @Override
     public void onHasChannel(ChannelInitHandle initHandle) {
         this.initHandle = initHandle;
+    }
+
+    @Override
+    public void whenServerChannelStateChanged(SystemChannelChangedHandle handle) {
+        this.changedHandle = handle;
     }
 
     @Override
@@ -104,8 +91,6 @@ final class GunBootServerImpl implements GunBootServer {
             throw new GunException(GunExceptionType.EXC0, "acceptExecutor is null");
         } else if (workExecutor == null) {
             throw new GunException(GunExceptionType.EXC0, "workExecutor is null");
-        } else if (this.pipeline.check().getResult() == GunPipelineCheckResult.CheckResult.ERROR) {
-            throw new GunException(GunExceptionType.EXC0, "handle or chain result is not normal");
         } else if (runnable) {
             throw new GunException(GunExceptionType.STATE_ERROR, "system has running");
         }
@@ -114,7 +99,6 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public int stop() throws InterruptedException {
-        this.pipeline.destroy();
         if (threadManager.stopAndWait()) {
             this.runnable = false;
         }
@@ -140,26 +124,24 @@ final class GunBootServerImpl implements GunBootServer {
             return GunNettyWorkState.BOOT_ERROR_2.state;
         }
         try {
-            threadManager.init(acceptExecutor, workExecutor, initHandle, childInitHandel, coreProperty.getPort());
+            threadManager.init(acceptExecutor, workExecutor, changedHandle, initHandle, coreProperty.getPort());
         } catch (IOException exc) {
-            GunNettyContext.logger.setTAG(GunNettyCanNotBootException.class).urgency(exc.getMessage());
+            observe.bootFail(exc);
             return GunNettyWorkState.BOOT_ERROR_1.state;
         }
         if (this.observe.onBooting(coreProperty)) {
-            pipeline.init();
             Future<Integer> executing = threadManager.startAndWait();
             this.observe.onBooted(coreProperty);
             this.runnable = true;
             if (isSync) {
                 try {
                     int val = executing.get();
-                    pipeline.destroy();
                     this.observe.onStatusChanged(GunNettyObserve.GunNettyChangeStatus.RUN_TO_STOP);
                     this.observe.onStop(coreProperty);
                     threadManager.stopAndWait();
                     return val;
                 } catch (InterruptedException | ExecutionException e) {
-                    throw new GunNettyCanNotBootException(e);
+                    observe.runningError(e);
                 }
 
             } else {

@@ -6,7 +6,6 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunOutboundChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
-import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SocketChannel;
@@ -16,32 +15,32 @@ import java.nio.channels.SocketChannel;
  * @see GunNettyChecker
  */
 public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNetOutbound> implements GunOutboundChecker {
+    private boolean hasDataToOutput;
 
     /**
      * GunNettyOutputFilterChecker
      *
      * @param outputObject GunNetOutbound
-     * @param key          SelectionKey
+     * @param channel      SelectionKey
      */
-    public GunNettyOutputFilterChecker(GunNetOutbound outputObject, GunNettyChildChannel<SocketChannel> key) {
-        super(key);
+    public GunNettyOutputFilterChecker(GunNetOutbound outputObject, GunNettyChildChannel<SocketChannel> channel) {
+        super(channel);
         this.to = outputObject;
-    }
-
-
-    public GunNettyOutputFilterChecker(GunNetOutbound outputObject) {
-        super(null);
-        this.to = outputObject;
+        hasDataToOutput = outputObject != null;
     }
 
 
     @Override
     public void translate() {
-        this.src = to.serialize();
+        if (isHasDataToOutput()) {
+            this.src = to.serialize();
+        }
+        hasDataToOutput = src.length != 0;
     }
 
+
     @Override
-    public <R extends GunNetInbound> boolean tranToObject(Class<R> in) throws ReflectiveOperationException {
-        throw new NoSuchMethodException("tranToObject in GunNettyOutputFilterChecker");
+    public boolean isHasDataToOutput() {
+        return hasDataToOutput;
     }
 }

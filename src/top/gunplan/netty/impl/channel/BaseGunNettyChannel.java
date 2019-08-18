@@ -5,7 +5,6 @@
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.io.IOException;
@@ -19,13 +18,13 @@ import java.nio.channels.Channel;
  * @date 2019-08-09 23:07
  */
 
-abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyHandle> implements GunNettyChannel<CH, LOOP, PL> {
-    private final GunNettyPipeline<PL> pipeline;
+abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyPipeline> implements GunNettyChannel<CH, LOOP, PL> {
+    private final PL pipeline;
     private final long id;
     LOOP eventLoop;
     private CH channel;
 
-    BaseGunNettyChannel(final GunNettyPipeline<PL> pipeline, final CH channel, final long id, final LOOP eventLoop) {
+    BaseGunNettyChannel(final PL pipeline, final CH channel, final long id, final LOOP eventLoop) {
         this.pipeline = pipeline;
         this.id = id;
         this.channel = channel;
@@ -41,7 +40,7 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
 
 
     @Override
-    public GunNettyPipeline<PL> pipeline() {
+    public PL pipeline() {
         return pipeline;
     }
 

@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunExceptionType;
-import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyDataFilter;
 import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.impl.GunInboundChecker;
 import top.gunplan.netty.impl.GunNettyFunctional;
@@ -26,10 +26,7 @@ import java.util.Map;
  */
 
 public final class GunCoreCalculatorWorker extends
-        BaseGunNettyWorker<SocketChannel,
-                GunDataEventLoop<SocketChannel>,
-                GunNettyChildrenHandle,
-                GunNettyChildChannel<SocketChannel>> {
+        BaseGunNettyWorker {
     private final Map<GunNettyFilter.DealResult, GunNettyFunctional> executeEvent = new HashMap<>(5);
     private boolean notDealOutputFlag = false;
 
@@ -52,7 +49,7 @@ public final class GunCoreCalculatorWorker extends
     public void work() {
         final GunInboundChecker gunFilterObj = new GunNettyInputFilterChecker(channel);
         GunNettyFilter.DealResult result = null;
-        for (final GunNettyFilter filter : filters) {
+        for (final GunNettyDataFilter filter : dataFilters) {
             try {
                 result = filter.doInputFilter(gunFilterObj);
             } catch (GunChannelException e) {
@@ -75,9 +72,9 @@ public final class GunCoreCalculatorWorker extends
         } catch (GunChannelException e) {
             this.handle.dealExceptionEvent(e);
         }
-        GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(output);
+        GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(output, channel);
         responseFilterDto.setChannel(gunFilterObj.channel());
-        ListIterator<GunNettyFilter> iterator = filters.listIterator(filters.size());
+        ListIterator<GunNettyDataFilter> iterator = dataFilters.listIterator(dataFilters.size());
         for (; iterator.hasPrevious() && !notDealOutputFlag; ) {
             try {
                 result = iterator.previous().doOutputFilter(responseFilterDto);

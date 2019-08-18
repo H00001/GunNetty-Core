@@ -5,8 +5,6 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
-import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
-import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.util.concurrent.ExecutorService;
 
@@ -77,13 +75,6 @@ public interface GunBootServer extends GunBootServerBase {
 
     GunBootServer setExecutors(ExecutorService acceptExecutor, ExecutorService requestExecutor);
 
-    /**
-     * this method return a {@link GunNettyPipeline} implements
-     *
-     * @return GunNettyPipeline
-     */
-    GunNettyPipeline pipeline();
-
 
     /**
      * check it can or not be boot
@@ -114,10 +105,11 @@ public interface GunBootServer extends GunBootServerBase {
 
     /**
      * when has a new channel
-     * @param pipeline input the pipeline
+     *
+     * @param initHandle input the pipeline
      */
-    void onHasChannel(GunNettyChildrenPipeline pipeline);
 
+    void onHasChannel(ChannelInitHandle initHandle);
 
     void whenServerChannelStateChanged(SystemChannelChangedHandle handle);
 }

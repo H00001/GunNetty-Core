@@ -6,6 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.SystemChannelChangedHandle;
 
 import java.io.IOException;
 import java.nio.channels.Selector;
@@ -40,5 +41,5 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
     Selector select();
 
 
-    int init(ExecutorService service, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;
+    int init(ExecutorService service, SystemChannelChangedHandle handle, ChannelInitHandle childrenHandle) throws IOException;
 }

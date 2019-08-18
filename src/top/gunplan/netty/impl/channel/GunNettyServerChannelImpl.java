@@ -7,7 +7,6 @@ package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
-import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
 
@@ -21,7 +20,7 @@ import java.nio.channels.ServerSocketChannel;
 /**
  * @author dosdrtt
  */
-public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketChannel, GunConnEventLoop, GunNettyParentHandle>
+public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketChannel, GunConnEventLoop, GunNettyParentPipeline>
         implements GunNettyServerChannel<ServerSocketChannel> {
 
     GunNettyServerChannelImpl(final ServerSocketChannel channel, final GunNettyParentPipeline pipeline, final GunConnEventLoop eventLoop, final long id) {
@@ -30,7 +29,7 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
 
     @Override
     public GunNettyParentPipeline pipeline() {
-        return (GunNettyParentPipeline) super.pipeline();
+        return super.pipeline();
     }
 
 

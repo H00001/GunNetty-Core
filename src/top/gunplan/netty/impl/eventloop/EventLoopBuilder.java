@@ -36,10 +36,12 @@ public interface EventLoopBuilder<U> {
      * with
      * register executor
      *
-     * @param deal ExecutorService
+     * @param deal           ExecutorService
+     * @param parentHandle   server channel event
+     * @param childrenHandle child channel event
      * @return this chain style
      * @throws IOException i/o error
      */
-    EventLoopBuilder<U> with(final ExecutorService deal) throws IOException;
+    EventLoopBuilder<U> with(ExecutorService deal) throws IOException;
 
 }

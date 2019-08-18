@@ -7,14 +7,13 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyConnFilter;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunNettyParentHandle;
+import top.gunplan.netty.GunOutboundChecker;
 import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
-import top.gunplan.netty.impl.channel.GunNettyServerChannel;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.io.IOException;
-import java.nio.channels.ServerSocketChannel;
-import java.util.List;
+import java.nio.channels.SocketChannel;
 import java.util.ListIterator;
 
 /**
@@ -23,40 +22,34 @@ import java.util.ListIterator;
  * @author dosdrtt
  * @date 2019-04-25
  */
-public final class GunAcceptWorker extends BaseGunNettyWorker<ServerSocketChannel, GunConnEventLoop, GunNettyParentHandle,
-        GunNettyServerChannel<ServerSocketChannel>> implements Runnable {
+public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
 
-    final List<GunNettyConnFilter> filters;
-
-    GunAcceptWorker(final GunNettyServerChannel<ServerSocketChannel> l) {
+    GunAcceptWorker(final GunNettyChildChannel<SocketChannel> l) {
         super(l);
-        this.filters = l.pipeline().filters();
     }
 
 
     @Override
     public void work() {
-        for (GunNettyFilter filter : filters) {
-            if (!filter.doConnFilter(channel)) {
+        GunNetOutbound outbound = null;
+        try {
+            outbound = pHandle.dealConnEvent(channel.remoteAddress());
+        } catch (IOException e) {
+            if (handle.dealExceptionEvent(new GunChannelException(e)) != GunNettyFilter.DealResult.NEXT) {
                 return;
             }
         }
-        GunNetOutbound ob = null;
-        try {
-            ob = this.channel.remoteAddress();
-        } catch (IOException e) {
-            handle.dealExceptionEvent(new GunChannelException(e));
-        }
-        ListIterator<GunNettyFilter> iterator = filters.listIterator(filters.size());
-        GunNettyFilter.DealResult result = null;
+        GunOutboundChecker checker = new GunNettyOutputFilterChecker(outbound, channel);
+        ListIterator<GunNettyConnFilter> iterator = connFilters.listIterator(connFilters.size());
+        GunNettyFilter.DealResult result;
         do {
             try {
-                result = iterator.previous().doOutputFilter(new GunNettyOutputFilterChecker(ob, javaChannel));
+                result = iterator.previous().doOutputFilter(checker);
             } catch (GunChannelException e) {
-                handle.dealExceptionEvent(e);
+                result = handle.dealExceptionEvent(e);
             }
         }
-        while (iterator.hasPrevious() && (result != GunNettyFilter.DealResult.NEXT))
+        while (iterator.hasPrevious() && (result != GunNettyFilter.DealResult.NEXT));
 
 
     }

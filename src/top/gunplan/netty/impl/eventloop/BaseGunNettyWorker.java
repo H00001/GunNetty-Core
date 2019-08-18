@@ -4,11 +4,15 @@
 
 package top.gunplan.netty.impl.eventloop;
 
-import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunNettyHandle;
-import top.gunplan.netty.impl.channel.GunNettyChannel;
+import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyConnFilter;
+import top.gunplan.netty.GunNettyDataFilter;
+import top.gunplan.netty.GunNettyParentHandle;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
-import java.nio.channels.Channel;
+import java.nio.channels.SocketChannel;
+import java.util.List;
+import java.util.stream.Stream;
 
 
 /**
@@ -16,17 +20,26 @@ import java.nio.channels.Channel;
  *
  * @author frank albert
  */
-abstract class BaseGunNettyWorker<A extends Channel, B extends GunCoreEventLoop, C extends GunNettyHandle, CH extends GunNettyChannel<A, B, C>> implements GunNettyWorker {
-    final A javaChannel;
-    final C handle;
-    final CH channel;
+abstract class BaseGunNettyWorker implements GunNettyWorker {
+    final SocketChannel javaChannel;
+    final GunNettyChildrenHandle handle;
+    final GunNettyParentHandle pHandle;
+    final GunNettyChildChannel<SocketChannel> channel;
+    final Stream<GunNettyDataFilter> dataFilterStream;
+    final Stream<GunNettyConnFilter> connFilterStream;
+    final List<GunNettyConnFilter> connFilters;
+    final List<GunNettyDataFilter> dataFilters;
 
 
-    BaseGunNettyWorker(final CH channel) {
+    BaseGunNettyWorker(final GunNettyChildChannel<SocketChannel> channel) {
         this.javaChannel = channel.channel();
         this.channel = channel;
-        this.handle = channel.pipeline().handel();
-        this.filters = channel.pipeline().filters();
+        this.handle = channel.pipeline().childHandel();
+        this.pHandle = channel.pipeline().parentHandel();
+        this.connFilters = channel.pipeline().connFilters();
+        this.dataFilters = channel.pipeline().dataFilters();
+        this.dataFilterStream = channel.pipeline().dataFilterStream();
+        this.connFilterStream = channel.pipeline().connFilterStream();
     }
 
 }

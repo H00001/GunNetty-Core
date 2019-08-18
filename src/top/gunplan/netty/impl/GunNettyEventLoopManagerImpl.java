@@ -43,7 +43,7 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
         this.dataEvenLoopSum = v1;
         transfer = EventLoopFactory.newGunNettyBaseTransfer();
         transfer.registerManager(this);
-        timeExecute = AbstractGunTimeExecutor.create(v1 - 1);
+        timeExecute = AbstractGunTimeExecutor.create();
         timeExecute.registerWorker(timerList);
         timeExecute.registerManager(this);
         try {

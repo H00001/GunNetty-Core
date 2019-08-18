@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.protocol.GunNetInbound;
@@ -26,8 +30,7 @@ public interface GunNettyTranslator {
      * @param in  Class<R> class
      * @param <R> GunNetInbound {@link  GunNetInbound}
      * @return boolean
-     * @throws ReflectiveOperationException reflective exception
      */
-    <R extends GunNetInbound> boolean tranToObject(Class<R> in) throws ReflectiveOperationException;
+    <R extends GunNetInbound> boolean tranToObject(Class<R> in);
 
 }

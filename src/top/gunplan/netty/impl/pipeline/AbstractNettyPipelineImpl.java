@@ -4,8 +4,10 @@
 
 package top.gunplan.netty.impl.pipeline;
 
-import top.gunplan.netty.*;
-import top.gunplan.netty.anno.GunNetFilterOrder;
+import top.gunplan.netty.GunHandle;
+import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyParentHandle;
+import top.gunplan.netty.GunNettyTimer;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -16,9 +18,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author dosdrtt
  * @see GunNettyPipeline
  */
-abstract class AbstractNettyPipelineImpl<KHAND extends GunNettyHandle> implements GunNettyPipeline<KHAND> {
-    private volatile KHAND handle;
-    private final List<GunNettyFilter> filterChain = new CopyOnWriteArrayList<>();
+abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
+    private volatile GunNettyChildrenHandle cHandle;
+    private volatile GunNettyParentHandle pHandle;
     private final List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
 
 
@@ -31,26 +33,18 @@ abstract class AbstractNettyPipelineImpl<KHAND extends GunNettyHandle> implement
     }
 
 
-    private void addFilter0(GunNettyFilter filter) {
-        GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
-        if (order == null) {
-            throw new GunBootServerBase.GunNettyCanNotBootException(new NullPointerException("not have order"));
-        }
-        this.filterChain.add(order.index(), filter);
+    private void setHandle0(GunNettyChildrenHandle handle) {
+        this.cHandle = handle;
     }
 
-    private void setHandle0(KHAND handle) {
-        this.handle = handle;
+
+    private void setHandle0(GunNettyParentHandle handle) {
+        this.pHandle = handle;
     }
+
 
     @Override
-    public GunNettyPipeline addFilter(GunNettyFilter filter) {
-        addFilter0(filter);
-        return this;
-    }
-
-    @Override
-    public GunNettyPipeline setHandle(KHAND handle) {
+    public GunNettyPipeline setHandle(GunNettyChildrenHandle handle) {
         if (handle != null) {
             setHandle0(handle);
         }
@@ -59,26 +53,22 @@ abstract class AbstractNettyPipelineImpl<KHAND extends GunNettyHandle> implement
 
 
     @Override
-    public GunPipelineCheckResult check() {
-        if (handle != null && filterChain.size() > 0) {
-            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.SAFE);
-        } else if (handle == null && filterChain.size() > 0) {
-            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.UNSAFE);
-        } else if (handle != null) {
-            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.WARNING);
-        } else {
-            return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.ERROR, "please set handle and filter");
+    public GunNettyPipeline setHandle(GunNettyParentHandle handle) {
+        if (handle != null) {
+            setHandle0(handle);
         }
+        return this;
+    }
+
+
+    @Override
+    public GunNettyParentHandle parentHandel() {
+        return pHandle;
     }
 
     @Override
-    public List<GunNettyFilter> filters() {
-        return filterChain;
-    }
-
-    @Override
-    public KHAND handel() {
-        return handle;
+    public GunNettyChildrenHandle childHandel() {
+        return cHandle;
     }
 
     @Override
@@ -89,17 +79,13 @@ abstract class AbstractNettyPipelineImpl<KHAND extends GunNettyHandle> implement
 
     @Override
     public int destroy() {
-        filterChain.parallelStream().forEach(GunHandle::destroy);
         timers.parallelStream().forEach(GunHandle::destroy);
-        handle.destroy();
-        return 0;
+        return cHandle.destroy() | pHandle.destroy();
     }
 
     @Override
     public int init() {
-        filterChain.parallelStream().forEach(GunHandle::init);
         timers.parallelStream().forEach(GunHandle::init);
-        handle.init();
-        return 0;
+        return cHandle.init() | pHandle.init();
     }
 }

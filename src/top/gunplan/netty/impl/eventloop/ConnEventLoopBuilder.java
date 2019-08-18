@@ -5,6 +5,7 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.ChannelInitHandle;
+import top.gunplan.netty.SystemChannelChangedHandle;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutorService;
@@ -27,5 +28,5 @@ public interface ConnEventLoopBuilder extends EventLoopBuilder<GunConnEventLoop>
     ConnEventLoopBuilder bindPort(int p) throws IOException;
 
 
-    EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, ChannelInitHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;
+    EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, SystemChannelChangedHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;
 }

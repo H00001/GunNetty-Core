@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
@@ -20,7 +19,7 @@ import java.nio.channels.SocketChannel;
  * @version 0.0.0.2
  * @date 2019-08-08 23:09
  */
-class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenHandle>
+class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline>
         implements GunNettyChildChannel<SocketChannel> {
     private GunNettyServerChannel pChannel;
 

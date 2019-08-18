@@ -37,12 +37,12 @@ public class GunNettyChannelFactory {
     }
 
 
-    public static GunNettyServerChannel
+    public static GunNettyServerChannel<ServerSocketChannel>
     newServerChannel(final ServerSocketChannel channel,
                      final SystemChannelChangedHandle initHandle,
                      final GunConnEventLoop eventLoop) {
         GunNettyParentPipeline pipeline = GunNettyParentPipeline.newPipeline();
         initHandle.whenInit(pipeline);
-        return new GunNettyServerChannelImpl(channel, pipeline, WORK_SEQUENCER.nextSequence(), eventLoop);
+        return new GunNettyServerChannelImpl(channel, pipeline, eventLoop, WORK_SEQUENCER.nextSequence());
     }
 }

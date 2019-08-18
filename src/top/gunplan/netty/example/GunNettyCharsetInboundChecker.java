@@ -7,7 +7,7 @@ package top.gunplan.netty.example;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunNettyInboundFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.impl.GunNettyInputFilterChecker;
+import top.gunplan.netty.impl.GunInboundChecker;
 
 /**
  * GunNettyCharsetInboundChecker
@@ -21,12 +21,12 @@ import top.gunplan.netty.impl.GunNettyInputFilterChecker;
 public class GunNettyCharsetInboundChecker implements GunNettyInboundFilter {
 
     @Override
-    public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException {
+    public DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException {
         if (filterDto.tranToObject(GunString.class)) {
             return DealResult.NEXT;
         } else {
             return DealResult.NOT_DEAL_OUTPUT;
         }
-    }
 
+    }
 }

@@ -14,7 +14,7 @@ import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
  * @version 0.0.0.1
  * @date 2019-08-13 09:28
  */
-public interface SystemChannelChangedHandle {
+public interface SystemChannelChangedHandle extends GunHandle {
     void whenInit(GunNettyParentPipeline pipeline);
 
     void hasChannel(GunNettyChildChannel channel);
