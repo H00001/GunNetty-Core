@@ -4,19 +4,15 @@
 
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunChannelException;
-import top.gunplan.netty.GunFunctionMappingInterFace;
-import top.gunplan.netty.GunNettyBaseObserve;
-import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.*;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.impl.channel.GunNettyChannel;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
+import java.net.SocketAddress;
 import java.nio.ByteBuffer;
-import java.nio.channels.SelectionKey;
-import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -26,71 +22,39 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  */
 @GunNetFilterOrder
-public final class GunNettyStdFirstFilter implements GunNettyFilter {
+public final class GunNettyStdFirstFilter implements GunNettyDataFilter {
 
     private final GunNettyBaseObserve observe;
+    private static Field operatorSrc;
+
+    static {
+        try {
+            operatorSrc = AbstractGunChecker.class.getDeclaredField("src");
+            assert operatorSrc != null;
+        } catch (NoSuchFieldException ignore) {
+
+        }
+        operatorSrc.setAccessible(true);
+
+    }
 
     public GunNettyStdFirstFilter(GunNettyBaseObserve baseObserve) {
         this.observe = baseObserve;
     }
 
 
-    @Override
-    public boolean doConnFilter(GunNettyChannel ch) {
-        return true;
-    }
-
-    private void dealCloseEvent(SelectionKey key, boolean readOrWrite) throws GunChannelException {
-        final SocketChannel channel = (SocketChannel) key.channel();
-        final Selector selector = key.selector();
-        try {
-            int v = readOrWrite
-                    ? observe.preReadClose(channel.getRemoteAddress()) :
-                    observe.preWriteClose(channel.getRemoteAddress());
-            channel.close();
-            selector.wakeup();
-            selector.select(v);
-        } catch (IOException e) {
-            throw new GunChannelException(e);
-        }
-
+    private void dealCloseEvent(SocketAddress key, boolean readOrWrite) throws GunChannelException {
+        int v = readOrWrite
+                ? observe.preReadClose(key) :
+                observe.preWriteClose(key);
     }
 
 
-    @Override
-    public DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException {
-        final GunNettyChildChannel<SocketChannel> channel = filterDto.channel();
-        if (channel.isValid()) {
-            try {
-                GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
-                filterDto.setSource(reader.readBytes(channel.channel()));
-            } catch (IOException e) {
-                return invokeCloseEvent(channel.se(), true);
-            }
-            channel.addReadObserve();
-            channel.continueLoop();
-            return DealResult.NEXT;
-        } else {
-            return DealResult.NOT_DEAL_ALL_NEXT;
-        }
-
-    }
-
-    private DealResult invokeCloseEvent(SelectionKey key, boolean b) {
+    private DealResult invokeCloseEvent(SocketAddress key, boolean b) {
         dealCloseEvent(key, b);
-        return b ? DealResult.CLOSED_WHEN_READ : DealResult.CLOSE;
+        return DealResult.CLOSED;
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto) throws GunChannelException {
-        GunNettyChildChannel<SocketChannel> channel = ((GunNettyChannel<SocketChannel>) filterDto.channel().attachment());
-        try {
-            return doOutputFilter(filterDto, channel);
-        } catch (GunChannelException e) {
-            return invokeCloseEvent(filterDto.channel(), false);
-        }
-    }
 
     private void sendMessage(byte[] src, SocketChannel channel) throws IOException {
         if (src != null && src.length > 0) {
@@ -102,15 +66,43 @@ public final class GunNettyStdFirstFilter implements GunNettyFilter {
         }
     }
 
-    @Override
-    public DealResult doOutputFilter(GunNettyOutputFilterChecker filterDto, GunNettyChildChannel<SocketChannel> channel) {
+
+    private DealResult doOutputFilter(GunOutboundChecker filterDto, GunNettyChildChannel<SocketChannel> channel) {
         try {
-            channel.channel().getRemoteAddress();
-            filterDto.translate();
-            sendMessage(filterDto.source(), channel.channel());
+            sendMessage(filterDto.translate().source(), channel.channel());
             return DealResult.NEXT;
         } catch (IOException exp) {
-            throw new GunChannelException(exp);
+            channel.closeAndRemove(true);
+            return DealResult.CLOSED;
+        }
+    }
+
+    @Override
+    public DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException {
+        final GunNettyChildChannel<SocketChannel> channel = filterDto.channel();
+        if (channel.isValid()) {
+            try {
+                GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
+                operatorSrc.set(filterDto, reader.readBytes(channel.channel()));
+                channel.recoverReadInterest();
+            } catch (IOException | ReflectiveOperationException e) {
+                channel.closeAndRemove(false);
+                return invokeCloseEvent(channel.remoteAddress(), true);
+            }
+            channel.addReadObserve();
+            return DealResult.NEXT;
+        } else {
+            return DealResult.NOT_DEAL_ALL_NEXT;
+        }
+    }
+
+    @Override
+    public DealResult doOutputFilter(GunOutboundChecker filterDto) throws GunChannelException {
+        GunNettyChildChannel<SocketChannel> channel = filterDto.channel();
+        try {
+            return doOutputFilter(filterDto, channel);
+        } catch (GunChannelException e) {
+            return invokeCloseEvent(filterDto.channel().remoteAddress(), false);
         }
     }
 }

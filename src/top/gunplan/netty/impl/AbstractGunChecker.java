@@ -15,8 +15,6 @@ import java.nio.channels.SocketChannel;
  * @see GunNettyChecker
  */
 abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNettyChecker<Transfer> {
-
-
     byte[] src;
 
     private Throwable exp;
@@ -24,7 +22,6 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
     Transfer to;
 
     private Object attach;
-
 
     private volatile GunNettyChildChannel<SocketChannel> key;
 
@@ -34,8 +31,7 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
      * @see GunNetBound
      */
     @Override
-    public abstract void translate();
-
+    public abstract GunNettyChecker<Transfer> translate();
 
     /**
      * get the source
@@ -47,22 +43,14 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
         return src;
     }
 
-    /**
-     * set source information
-     *
-     * @param src source
-     */
-    @Override
-    public void setSource(byte[] src) {
-        this.src = src;
-    }
-
 
     @Override
     public Transfer transferTarget() {
         return to;
     }
 
+
+    @Override
     public void setTransfer(Transfer to) {
         if (to != null) {
             this.to = to;

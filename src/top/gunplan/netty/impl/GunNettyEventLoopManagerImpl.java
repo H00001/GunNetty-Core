@@ -6,6 +6,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.*;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 import top.gunplan.netty.impl.timeevent.AbstractGunTimeExecutor;
@@ -38,7 +39,7 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
 
     @Override
     public synchronized boolean init(int v1, List<GunNettyTimer> timerList, ExecutorService bossExecutor,
-                                     ExecutorService dataExecutor, ChannelInitHandle parentHandle,
+                                     ExecutorService dataExecutor, SystemChannelChangedHandle parentHandle,
                                      ChannelInitHandle childrenHandle, int port) {
         this.dataEvenLoopSum = v1;
         transfer = EventLoopFactory.newGunNettyBaseTransfer();

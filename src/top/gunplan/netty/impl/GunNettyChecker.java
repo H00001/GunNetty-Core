@@ -34,14 +34,6 @@ public interface GunNettyChecker<T extends GunNetBound> {
 
 
     /**
-     * set source
-     *
-     * @param src source
-     */
-    void setSource(byte[] src);
-
-
-    /**
      * set the key
      *
      * @param key selection key
@@ -63,6 +55,8 @@ public interface GunNettyChecker<T extends GunNetBound> {
      */
     Object attachment();
 
+
+    void setTransfer(T to);
 
     /**
      * you can set error to transfer
@@ -88,5 +82,10 @@ public interface GunNettyChecker<T extends GunNetBound> {
     T transferTarget();
 
 
-    void translate();
+    /**
+     * do translate
+     *
+     * @return this chain style
+     */
+    GunNettyChecker<T> translate();
 }

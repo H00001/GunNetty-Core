@@ -4,11 +4,13 @@
 
 package top.gunplan.netty.impl.channel;
 
+import top.gunplan.netty.GunNettyReadObserve;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
@@ -16,12 +18,13 @@ import java.nio.channels.SocketChannel;
  * GunNettyChannelImpl
  *
  * @author frank albert
- * @version 0.0.0.2
+ * @version 0.0.0.3
  * @date 2019-08-08 23:09
  */
 class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline>
         implements GunNettyChildChannel<SocketChannel> {
     private GunNettyServerChannel pChannel;
+    private volatile SelectionKey key;
 
     GunNettyChannelImpl(final SocketChannel channel,
                         final GunNettyChildrenPipeline pipeline,
@@ -35,9 +38,13 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
 
 
     @Override
-    public SocketAddress remoteAddress() throws IOException {
-        return channel().getRemoteAddress();
-
+    public SocketAddress remoteAddress() {
+        try {
+            return channel().getRemoteAddress();
+        } catch (IOException e) {
+            //todo
+            return null;
+        }
     }
 
     @Override
@@ -61,10 +68,17 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
     }
 
     @Override
-    public void closeAndRemove() throws IOException {
-        close();
-        eventLoop.fastLimit();
-        eventLoop.decreaseAndStop();
+    public void closeAndRemove(boolean b) {
+        try {
+            close();
+            eventLoop.fastLimit();
+            if (b) {
+                eventLoop.decreaseAndStop();
+            }
+        } catch (IOException e) {
+            //todo
+            e.printStackTrace();
+        }
     }
 
 
@@ -84,6 +98,11 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
     }
 
     @Override
+    public GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyReadObserve observe) {
+        return this;
+    }
+
+    @Override
     public GunNettyChildChannel<SocketChannel> cleanAllObserve() {
         return null;
     }
@@ -91,5 +110,16 @@ class GunNettyChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEven
     @Override
     public void continueLoop() {
         eventLoop.incrAndContinueLoop();
+    }
+
+    @Override
+    public void recoverReadInterest() {
+        key.interestOps(SelectionKey.OP_READ);
+        continueLoop();
+    }
+
+    @Override
+    public void setKey(SelectionKey key) {
+        this.key = key;
     }
 }

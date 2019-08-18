@@ -7,8 +7,8 @@ package top.gunplan.netty.impl.channel;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
-import java.io.IOException;
 import java.nio.channels.Channel;
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -21,8 +21,10 @@ import java.nio.channels.SocketChannel;
 public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> {
     /**
      * close channel and remove form selector
+     *
+     * @param b is or not
      */
-    void closeAndRemove() throws IOException;
+    void closeAndRemove(boolean b);
 
     /**
      * parent
@@ -56,4 +58,8 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
 
 
     void continueLoop();
+
+    void recoverReadInterest();
+
+    void setKey(SelectionKey key);
 }

@@ -11,7 +11,7 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.impl.GunInboundChecker;
 import top.gunplan.netty.impl.GunNettyFunctional;
 import top.gunplan.netty.impl.GunNettyInputFilterChecker;
-import top.gunplan.netty.impl.GunNettyOutputFilterChecker;
+import top.gunplan.netty.impl.GunNettyOutBoundChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
@@ -33,7 +33,7 @@ public final class GunCoreCalculatorWorker extends
 
     GunCoreCalculatorWorker(final GunNettyChildChannel<SocketChannel> nettyChannel) {
         super(nettyChannel);
-        executeEvent.put(GunNettyFilter.DealResult.CLOSE, () -> -1);
+        executeEvent.put(GunNettyFilter.DealResult.CLOSED, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NEXT, () -> 1);
         executeEvent.put(GunNettyFilter.DealResult.CLOSED_WHEN_READ, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT, () -> -1);
@@ -72,7 +72,7 @@ public final class GunCoreCalculatorWorker extends
         } catch (GunChannelException e) {
             this.handle.dealExceptionEvent(e);
         }
-        GunNettyOutputFilterChecker responseFilterDto = new GunNettyOutputFilterChecker(output, channel);
+        GunNettyOutBoundChecker responseFilterDto = new GunNettyOutBoundChecker(output, channel);
         responseFilterDto.setChannel(gunFilterObj.channel());
         ListIterator<GunNettyDataFilter> iterator = dataFilters.listIterator(dataFilters.size());
         for (; iterator.hasPrevious() && !notDealOutputFlag; ) {
@@ -83,7 +83,7 @@ public final class GunCoreCalculatorWorker extends
             }
             if (result == GunNettyFilter.DealResult.NOT_DEAL_OUTPUT) {
                 break;
-            } else if (result == GunNettyFilter.DealResult.CLOSE) {
+            } else if (result == GunNettyFilter.DealResult.CLOSED) {
 
             } else if (result == GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT) {
                 return;

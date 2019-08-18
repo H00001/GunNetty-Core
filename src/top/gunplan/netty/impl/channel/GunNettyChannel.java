@@ -68,9 +68,8 @@ public interface GunNettyChannel<CH extends Channel,
      * get remote address
      *
      * @return SocketAddress
-     * @throws IOException i/o error
      */
-    SocketAddress remoteAddress() throws IOException;
+    SocketAddress remoteAddress();
 
     /**
      * get local address

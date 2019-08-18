@@ -22,16 +22,15 @@ public interface GunNettyFilter extends GunHandle {
     DealResult doOutputFilter(GunOutboundChecker filterDto) throws GunChannelException;
 
 
-
     enum DealResult {
         /**
          * NATALINA           :do not deal input filter ,go for handle right away
-         * CLOSE              :do not deal any filter or handle
+         * CLOSED              :do not deal any filter or handle
          * NEXT               :nothing will happened
          * NOT_DEAL_OUTPUT    :exit export filter chain and handle but it wasn't close
          * NOT_DEAL_ALL_NEXT  :exit all filter chain and handle but it wasn't close
          * CLOSED_WHEN_READ:  :
          */
-        NATALINA, CLOSE, NEXT, NOT_DEAL_OUTPUT, NOT_DEAL_ALL_NEXT, CLOSED_WHEN_READ
+        NATALINA, CLOSED, NEXT, NOT_DEAL_OUTPUT, NOT_DEAL_ALL_NEXT
     }
 }

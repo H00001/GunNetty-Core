@@ -6,6 +6,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
@@ -21,15 +22,22 @@ import java.util.concurrent.ExecutorService;
  * GunNettyEventLoopManager
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.3
  * @date 2019-08-13 04:41
  */
 public interface GunNettyEventLoopManager {
+    /**
+     * create a new event loop manage instance
+     *
+     * @return instance
+     */
     static GunNettyEventLoopManager newInstance() {
         return new GunNettyEventLoopManagerImpl();
     }
 
     /**
+     * init
+     *
      * @param v1             sum
      * @param timerList      global timers
      * @param bossExecutor   to deal connection event
@@ -40,7 +48,7 @@ public interface GunNettyEventLoopManager {
      * @return init result
      */
     boolean init(int v1, List<GunNettyTimer> timerList, ExecutorService bossExecutor,
-                 ExecutorService dataExecutor, ChannelInitHandle parentHandle,
+                 ExecutorService dataExecutor, SystemChannelChangedHandle parentHandle,
                  ChannelInitHandle childrenHandle, int port);
 
 
@@ -96,4 +104,6 @@ public interface GunNettyEventLoopManager {
      */
 
     void shutDown();
+
+
 }

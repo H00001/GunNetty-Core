@@ -9,6 +9,7 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 import top.gunplan.utils.GunNumberUtil;
@@ -49,7 +50,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     }
 
     @Override
-    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, ChannelInitHandle pHandle, ChannelInitHandle cHandle, int port) {
+    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, SystemChannelChangedHandle pHandle, ChannelInitHandle cHandle, int port) {
         threadHelper = GunNettyCoreThreadManagerHelper.newInstance(MANAGE_THREAD_NUM);
         return eventLoopManager.init(MANAGE_THREAD_NUM, globalTimers, acceptExecutor, dataExecutor, pHandle, cHandle, port);
     }

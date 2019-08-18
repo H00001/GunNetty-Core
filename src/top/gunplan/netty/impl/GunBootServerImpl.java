@@ -112,7 +112,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private void init() {
         coreProperty = GunNettySystemServices.coreProperty();
-        threadManager = GunNettyCoreThreadManager.initInstance(GunNettySystemServices.coreProperty(), observe);
+        threadManager = GunNettyCoreThreadManager.initInstance(GunNettySystemServices.coreProperty(), observe, null);
     }
 
 

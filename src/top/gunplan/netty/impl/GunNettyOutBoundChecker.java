@@ -14,16 +14,16 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNetOutbound> implements GunOutboundChecker {
+public final class GunNettyOutBoundChecker extends AbstractGunChecker<GunNetOutbound> implements GunOutboundChecker {
     private boolean hasDataToOutput;
 
     /**
-     * GunNettyOutputFilterChecker
+     * GunNettyOutBoundChecker
      *
      * @param outputObject GunNetOutbound
      * @param channel      SelectionKey
      */
-    public GunNettyOutputFilterChecker(GunNetOutbound outputObject, GunNettyChildChannel<SocketChannel> channel) {
+    public GunNettyOutBoundChecker(GunNetOutbound outputObject, GunNettyChildChannel<SocketChannel> channel) {
         super(channel);
         this.to = outputObject;
         hasDataToOutput = outputObject != null;
@@ -31,11 +31,12 @@ public final class GunNettyOutputFilterChecker extends AbstractGunChecker<GunNet
 
 
     @Override
-    public void translate() {
+    public GunNettyChecker<GunNetOutbound> translate() {
         if (isHasDataToOutput()) {
             this.src = to.serialize();
         }
         hasDataToOutput = src.length != 0;
+        return this;
     }
 
 
