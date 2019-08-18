@@ -5,7 +5,10 @@
 package top.gunplan.netty.impl.pipeline;
 
 
-import top.gunplan.netty.*;
+import top.gunplan.netty.GunHandle;
+import top.gunplan.netty.GunNettyHandle;
+import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.GunPipelineCheckResult;
 
 import java.util.List;
 
@@ -14,8 +17,6 @@ import java.util.List;
  * @since 1.0.0.1
  */
 public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandle {
-
-
     /**
      * addTimer
      *
@@ -24,13 +25,6 @@ public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandl
      */
     GunNettyPipeline addTimer(GunNettyTimer timer);
 
-    /**
-     * addFilter
-     *
-     * @param filter {@link GunNettyFilter}
-     * @return this, chain style
-     */
-    GunNettyPipeline addFilter(GunNettyFilter filter);
 
     /**
      * setHandle
@@ -41,19 +35,11 @@ public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandl
     GunNettyPipeline setHandle(KHAND handle);
 
     /**
-     * check the pileline model avilable
+     * check the pipeline model available
      *
      * @return check result
      */
     GunPipelineCheckResult check();
-
-
-    /**
-     * filters
-     *
-     * @return List<GunNettyFilter> GunNettyFilter's List
-     */
-    List<GunNettyFilter> filters();
 
 
     /**
@@ -65,11 +51,11 @@ public interface GunNettyPipeline<KHAND extends GunNettyHandle> extends GunHandl
 
 
     /**
-     * timer
+     * timers
      *
      * @return List<GunNettyTimer>
      */
-    List<GunNettyTimer> timer();
+    List<GunNettyTimer> timers();
 
 
     /**

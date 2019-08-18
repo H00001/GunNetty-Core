@@ -5,12 +5,10 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.GunNettyHandle;
 import top.gunplan.netty.impl.channel.GunNettyChannel;
 
 import java.nio.channels.Channel;
-import java.util.List;
 
 
 /**
@@ -22,7 +20,6 @@ abstract class BaseGunNettyWorker<A extends Channel, B extends GunCoreEventLoop,
     final A javaChannel;
     final C handle;
     final CH channel;
-    final List<GunNettyFilter> filters;
 
 
     BaseGunNettyWorker(final CH channel) {

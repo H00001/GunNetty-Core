@@ -82,7 +82,7 @@ abstract class AbstractNettyPipelineImpl<KHAND extends GunNettyHandle> implement
     }
 
     @Override
-    public List<GunNettyTimer> timer() {
+    public List<GunNettyTimer> timers() {
         return timers;
     }
 

@@ -16,6 +16,12 @@ import java.util.concurrent.ScheduledExecutorService;
  * @date 2019-08-12 10:03
  */
 public interface GunNettyCoreThreadManagerHelper {
+    /**
+     * create a new helper instance
+     *
+     * @param num sum data thread
+     * @return instance
+     */
     static GunNettyCoreThreadManagerHelper newInstance(int num) {
         return new GunNettyCoreThreadManagerHelperImpl(num);
     }

@@ -7,11 +7,9 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyTimer;
-import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 
 import java.io.IOException;
-import java.nio.channels.SocketChannel;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -36,15 +34,6 @@ public interface GunNettyCoreThreadManager {
     static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyBaseObserve observe, List<GunNettyTimer> l) {
         return new GunNettyCoreThreadManageImpl(property, observe, l);
     }
-
-    /**
-     * dealChannelEventLoop
-     * is data thread
-     * who can deal channel event? only Data EventLoop
-     *
-     * @return GunDataEventLoop
-     */
-    GunDataEventLoop<SocketChannel> dealChannelEventLoop();
 
 
     /**

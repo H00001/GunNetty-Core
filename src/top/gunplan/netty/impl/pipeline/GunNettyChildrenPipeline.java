@@ -5,6 +5,10 @@
 package top.gunplan.netty.impl.pipeline;
 
 import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyDataFilter;
+import top.gunplan.netty.GunNettyFilter;
+
+import java.util.List;
 
 /**
  * GunNettyChildrenPipeline
@@ -23,4 +27,30 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline<GunNettyChild
     static GunNettyChildrenPipeline newPipeline() {
         return new GunNettyChildrenPipelineImpl();
     }
+
+
+    /**
+     * add Filter
+     *
+     * @param filter {@link GunNettyFilter}
+     * @return this, chain style
+     */
+    GunNettyPipeline addFilter(GunNettyDataFilter filter);
+
+
+    /**
+     * ¬
+     * remove Filter
+     *
+     * @param filter {@link GunNettyDataFilter}
+     * @return this, chain style
+     */
+    GunNettyPipeline removeFilter(GunNettyDataFilter filter);
+
+    /**
+     * filters
+     *
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
+    List<GunNettyDataFilter> filters();
 }

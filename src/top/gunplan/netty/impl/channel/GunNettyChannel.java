@@ -19,7 +19,9 @@ import java.nio.channels.Channel;
  * @version 0.0.0.1
  * @date 2019-08-08 23:06
  */
-public interface GunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyHandle> extends Channel {
+public interface GunNettyChannel<CH extends Channel,
+        LOOP extends GunCoreEventLoop,
+        PL extends GunNettyHandle> extends Channel {
 
     /**
      * get the pipeline that the channel attachment

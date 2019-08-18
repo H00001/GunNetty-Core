@@ -29,7 +29,16 @@ public interface GunNettyEventLoopManager {
         return new GunNettyEventLoopManagerImpl();
     }
 
-
+    /**
+     * @param v1             sum
+     * @param timerList      global timers
+     * @param bossExecutor   to deal connection event
+     * @param dataExecutor   to deal i/o event
+     * @param parentHandle   parent handle
+     * @param childrenHandle children handle
+     * @param port           open port
+     * @return init result
+     */
     boolean init(int v1, List<GunNettyTimer> timerList, ExecutorService bossExecutor,
                  ExecutorService dataExecutor, ChannelInitHandle parentHandle,
                  ChannelInitHandle childrenHandle, int port);
@@ -37,9 +46,10 @@ public interface GunNettyEventLoopManager {
 
     /**
      * dealChannelEventLoop
-     * get one of event loop
+     * is data thread
+     * who can deal channel event? only Data EventLoop
      *
-     * @return data event loop
+     * @return GunDataEventLoop
      */
     GunDataEventLoop<SocketChannel> dealChannelEventLoop();
 
@@ -52,15 +62,38 @@ public interface GunNettyEventLoopManager {
     Set<SelectionKey> availableChannel();
 
 
+    /**
+     * transfer event loop
+     *
+     * @return event loop
+     */
     GunNettyTransfer<SocketChannel> transferEventLoop();
 
-
+    /**
+     * connection event loop
+     *
+     * @return event loop
+     */
     GunConnEventLoop connEventLoop();
 
 
+    /**
+     * all of data event loop
+     *
+     * @return event loop
+     */
     GunDataEventLoop[] dataEventLoop();
 
+    /**
+     * time event loop
+     *
+     * @return event loop
+     */
     GunTimeExecutor timeEventLoop();
+
+    /**
+     * stop all of event loop
+     */
 
     void shutDown();
 }

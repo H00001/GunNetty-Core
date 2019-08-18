@@ -1,6 +1,10 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty;
 
-import top.gunplan.netty.impl.GunNettyInputFilterChecker;
+import top.gunplan.netty.impl.GunInboundChecker;
 
 /**
  * GunNettyOutboundFilter
@@ -10,7 +14,8 @@ import top.gunplan.netty.impl.GunNettyInputFilterChecker;
  * @date 2019-07-27 08:09
  */
 
-public interface GunNettyOutboundFilter extends GunNettyFilter {
+@FunctionalInterface
+public interface GunNettyOutboundFilter extends GunNettyDataFilter {
     /**
      * doInputFilter
      *
@@ -19,7 +24,7 @@ public interface GunNettyOutboundFilter extends GunNettyFilter {
      * @throws GunChannelException channel i/o error
      */
     @Override
-    default DealResult doInputFilter(GunNettyInputFilterChecker filterDto) throws GunChannelException {
+    default DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException {
         return DealResult.NEXT;
     }
 }
