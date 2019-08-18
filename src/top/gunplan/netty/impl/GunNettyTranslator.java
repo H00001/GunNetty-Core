@@ -15,12 +15,6 @@ import top.gunplan.netty.protocol.GunNetInbound;
  */
 
 public interface GunNettyTranslator {
-    /**
-     * translator data
-     * from byte[] to object or
-     * from object ro byte[]
-     */
-    void translate();
 
 
     /**

@@ -31,8 +31,9 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetI
     }
 
     @Override
-    public void translate() {
+    public GunNettyChecker<GunNetInbound> translate() {
         this.to.unSerialize(src);
+        return this;
     }
 
 
