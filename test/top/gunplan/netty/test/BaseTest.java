@@ -6,6 +6,7 @@ package top.gunplan.netty.test;
 
 import org.junit.jupiter.api.Test;
 import top.gunplan.netty.GunBootServer;
+import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettySystemServices;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.common.GunNettyExecutors;
@@ -15,7 +16,7 @@ import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
-import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
+import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
 import top.gunplan.netty.impl.property.GunGetPropertyFromNet;
 
 public class BaseTest {
@@ -31,14 +32,15 @@ public class BaseTest {
         server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
                 GunNettyExecutors.newFixedExecutorPool(10));
         server.registerObserve(new GunNettyDefaultObserve());
-        server.onHasChannel(hand -> {
-            hand.addFilter(new GunNettyStdFirstFilter(new GunNettyDefaultObserve())).
-                    addFilter(new GunNettyCharsetInboundChecker()).
-                    setHandle(new GunNettyStringHandle());
+        server.onHasChannel(pipeline -> {
+            pipeline.addDataFilter(new GunNettyStdFirstFilter(new GunNettyBaseObserve() {
+            }));
+            pipeline.addDataFilter(new GunNettyCharsetInboundChecker());
+            pipeline.setHandle(new GunNettyStringHandle());
         });
         server.whenServerChannelStateChanged(new SystemChannelChangedHandle() {
             @Override
-            public void whenInit(GunNettyPipeline pipeline) {
+            public void whenInit(GunNettyParentPipeline pipeline) {
 
             }
 

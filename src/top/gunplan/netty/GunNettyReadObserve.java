@@ -31,4 +31,7 @@ public interface GunNettyReadObserve {
     void whenRegister(SocketChannel channel);
 
 
+    void whenRegisterMeetException(SocketChannel channel, Throwable throwable);
+
+
 }

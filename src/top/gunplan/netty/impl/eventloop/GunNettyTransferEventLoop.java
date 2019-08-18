@@ -11,14 +11,14 @@ import top.gunplan.netty.impl.GunNettyChannelTransfer;
 import java.nio.channels.SocketChannel;
 
 /**
- * GunNettyTransfer
+ * GunNettyTransferEventLoop
  *
  * @author frank albert
  * @version 0.0.0.2
  * @date 2019-06-19 00:28
  */
 
-public interface GunNettyTransfer<U extends SocketChannel> extends GunCoreEventLoop {
+public interface GunNettyTransferEventLoop<U extends SocketChannel> extends GunCoreEventLoop {
     /**
      * queue
      * push to queue

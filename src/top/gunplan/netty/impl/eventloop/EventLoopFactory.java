@@ -22,11 +22,11 @@ import java.util.concurrent.ExecutorService;
  */
 
 public final class EventLoopFactory {
-    public static GunNettyTransfer<SocketChannel> newGunNettyBaseTransfer() {
+    public static GunNettyTransferEventLoop<SocketChannel> newGunNettyBaseTransfer() {
         return new GunNettyBaseTransferEventLoopImpl<>();
     }
 
-    public static GunNettyTransfer<SocketChannel> newGunDisruptorTransfer() {
+    public static GunNettyTransferEventLoop<SocketChannel> newGunDisruptorTransfer() {
         return new GunNettyDisruptorTransferEventLoopImpl<>();
     }
 

@@ -35,7 +35,6 @@ public final class GunCoreCalculatorWorker extends
         super(nettyChannel);
         executeEvent.put(GunNettyFilter.DealResult.CLOSED, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NEXT, () -> 1);
-        executeEvent.put(GunNettyFilter.DealResult.CLOSED_WHEN_READ, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT, () -> -1);
         executeEvent.put(GunNettyFilter.DealResult.NATALINA, () -> 0);
         executeEvent.put(GunNettyFilter.DealResult.NOT_DEAL_OUTPUT, () -> {

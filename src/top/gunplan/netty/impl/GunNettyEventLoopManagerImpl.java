@@ -31,7 +31,7 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
     private volatile GunConnEventLoop dealAccept;
     private volatile GunTimeExecutor timeExecute;
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
-    private volatile GunNettyTransfer<SocketChannel> transfer;
+    private volatile GunNettyTransferEventLoop<SocketChannel> transfer;
     private volatile int dataEvenLoopSum;
 
     private GunNettySequencer sequencer0 = GunNettySequencer.newThreadUnSafeSequencer();
@@ -73,7 +73,7 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
 
 
     @Override
-    public GunNettyTransfer<SocketChannel> transferEventLoop() {
+    public GunNettyTransferEventLoop<SocketChannel> transferEventLoop() {
         return transfer;
     }
 

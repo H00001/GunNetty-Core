@@ -33,7 +33,7 @@ public class GunNettyChannelFactory {
                final GunDataEventLoop<SocketChannel> eventLoop) {
         GunNettyChildrenPipeline pipeline = GunNettyChildrenPipeline.newPipeline();
         initHandle.onHasChannel(pipeline);
-        return new GunNettyChannelImpl(channel, pipeline, pChannel, eventLoop, BOSS_SEQUENCER.nextSequence());
+        return new GunNettyChildrenChannelImpl(channel, pipeline, pChannel, eventLoop, BOSS_SEQUENCER.nextSequence());
     }
 
 

@@ -12,7 +12,6 @@ import top.gunplan.netty.impl.GunNettyOutBoundChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
-import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.ListIterator;
 
@@ -34,8 +33,8 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
         GunNetOutbound outbound = null;
         try {
             outbound = pHandle.dealConnEvent(channel.remoteAddress());
-        } catch (IOException e) {
-            if (handle.dealExceptionEvent(new GunChannelException(e)) != GunNettyFilter.DealResult.NEXT) {
+        } catch (GunChannelException e) {
+            if (handle.dealExceptionEvent(e) != GunNettyFilter.DealResult.NEXT) {
                 return;
             }
         }

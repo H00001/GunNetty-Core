@@ -89,7 +89,6 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter {
                 channel.closeAndRemove(false);
                 return invokeCloseEvent(channel.remoteAddress(), true);
             }
-            channel.addReadObserve();
             return DealResult.NEXT;
         } else {
             return DealResult.NOT_DEAL_ALL_NEXT;

@@ -6,7 +6,6 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.impl.GunNettyEventLoopManager;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
-import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -20,9 +19,8 @@ import java.util.concurrent.ExecutorService;
  * @version 0.0.2.1
  * @date 2019-07-23 00:36
  */
-public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransfer<U> {
+public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransferEventLoop<U> {
     private volatile boolean running = false;
-    private GunNettySequencer sequencer = GunNettySequencer.newThreadUnSafeSequencer();
     private volatile GunNettyEventLoopManager manager;
 
     /**
@@ -56,7 +54,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
     }
 
     @Override
-    public GunNettyTransfer<U> registerManager(GunNettyEventLoopManager manager) {
+    public GunNettyTransferEventLoop<U> registerManager(GunNettyEventLoopManager manager) {
         this.manager = manager;
         return this;
     }

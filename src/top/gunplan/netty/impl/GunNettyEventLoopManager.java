@@ -9,7 +9,7 @@ import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
-import top.gunplan.netty.impl.eventloop.GunNettyTransfer;
+import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.timeevent.GunTimeExecutor;
 
 import java.nio.channels.SelectionKey;
@@ -75,7 +75,7 @@ public interface GunNettyEventLoopManager {
      *
      * @return event loop
      */
-    GunNettyTransfer<SocketChannel> transferEventLoop();
+    GunNettyTransferEventLoop<SocketChannel> transferEventLoop();
 
     /**
      * connection event loop
