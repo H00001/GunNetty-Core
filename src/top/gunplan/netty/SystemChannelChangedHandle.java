@@ -11,7 +11,7 @@ import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
  * SystemChannelChangedHandle
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-13 09:28
  */
 public interface SystemChannelChangedHandle extends GunHandle {
@@ -26,6 +26,11 @@ public interface SystemChannelChangedHandle extends GunHandle {
     }
 
 
+    /**
+     * connEventLoopStop
+     *
+     * @param port event loop
+     */
     default void connEventLoopStop(GunConnEventLoop port) {
         GunNettyContext.logger.setTAG(SystemChannelChangedHandle.class).
                 info("even loop stop:" + port);

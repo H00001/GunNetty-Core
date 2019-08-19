@@ -57,7 +57,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         return channel().getLocalAddress();
     }
 
-    //if we do not set key
+
     @Override
     public boolean isValid() {
         return key == null || key.isValid();

@@ -38,8 +38,22 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
     int listenPort();
 
 
+    /**
+     * get select
+     *
+     * @return select;
+     */
     Selector select();
 
 
+    /**
+     * init with param
+     *
+     * @param service        service
+     * @param handle         parent handle
+     * @param childrenHandle children channel handle
+     * @return result
+     * @throws IOException init error
+     */
     int init(ExecutorService service, SystemChannelChangedHandle handle, ChannelInitHandle childrenHandle) throws IOException;
 }

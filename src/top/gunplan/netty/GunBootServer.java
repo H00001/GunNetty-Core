@@ -111,9 +111,20 @@ public interface GunBootServer extends GunBootServerBase {
 
     void onHasChannel(ChannelInitHandle initHandle);
 
+    /**
+     * server event handle
+     *
+     * @param handle handle
+     */
     void whenServerChannelStateChanged(SystemChannelChangedHandle handle);
 
 
+    /**
+     * registerGlobalTimers
+     *
+     * @param timer time event
+     * @return this
+     */
     GunBootServer registerGlobalTimers(GunNettyTimer timer);
 }
 
