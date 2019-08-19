@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.GunNettyReadObserve;
+import top.gunplan.netty.GunNettyChannelObserve;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
@@ -42,7 +42,7 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
     void registerReadWithEventLoop(GunDataEventLoop<SocketChannel> eventLoop);
 
 
-    GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyReadObserve observe);
+    GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyChannelObserve observe);
 
     /**
      * addReadObserve

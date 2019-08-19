@@ -28,11 +28,11 @@ public interface GunNettyCoreThreadManager {
      *
      * @param observe  event observe
      * @param property core property
-     * @param l timers
+     * @param l        timers
      * @return GunNettyCoreThreadManager
-     *
      */
     static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyBaseObserve observe, List<GunNettyTimer> l) {
+        assert l != null;
         return new GunNettyCoreThreadManageImpl(property, observe, l);
     }
 
@@ -57,11 +57,11 @@ public interface GunNettyCoreThreadManager {
     /**
      * init
      *
-     * @param acceptExecutor executor to deal accept event
-     * @param dataExecutor   executor to deal data event
-     * @param port           listen the port
+     * @param acceptExecutor     executor to deal accept event
+     * @param dataExecutor       executor to deal data event
+     * @param port               listen the port
      * @param childrenInitHandle what happened when children channel init
-     * @param initHandle what happened when parent channel init
+     * @param initHandle         what happened when parent channel init
      * @return init result
      * @throws IOException i/o error
      */

@@ -23,9 +23,9 @@ public interface GunNettyChannel<CH extends Channel,
         PL extends GunNettyPipeline> extends Channel {
 
     /**
-     * get the pipeline that the channel attachment
+     * get the handle that the channel attachment
      *
-     * @return pipeline
+     * @return handle
      */
     PL pipeline();
 
@@ -39,11 +39,11 @@ public interface GunNettyChannel<CH extends Channel,
 
 
     /**
-     * set pipeline
-     * @param pipeline pipeline
+     * set handle
+     * @param handle handle
      * @return this:self
      */
-    //GunNettyChannel setPipeline(GunNettyPipeline pipeline);
+    //GunNettyChannel setPipeline(GunNettyPipeline handle);
 
 
     /**

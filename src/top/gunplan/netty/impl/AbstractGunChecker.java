@@ -27,7 +27,7 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
 
     /**
      * translate
-     *
+     * @return this chain style
      * @see GunNetBound
      */
     @Override

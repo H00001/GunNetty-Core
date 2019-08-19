@@ -7,6 +7,7 @@ package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
 
@@ -22,14 +23,16 @@ import java.nio.channels.ServerSocketChannel;
  */
 public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketChannel, GunConnEventLoop, GunNettyParentPipeline>
         implements GunNettyServerChannel<ServerSocketChannel> {
+    private final SystemChannelChangedHandle handle;
 
-    GunNettyServerChannelImpl(final ServerSocketChannel channel, final GunNettyParentPipeline pipeline, final GunConnEventLoop eventLoop, final long id) {
-        super(pipeline, channel, id, eventLoop);
+    GunNettyServerChannelImpl(final ServerSocketChannel channel, final SystemChannelChangedHandle pipeline, final GunConnEventLoop eventLoop, final long id) {
+        super(null, channel, id, eventLoop);
+        this.handle = pipeline;
     }
 
     @Override
     public GunNettyParentPipeline pipeline() {
-        return super.pipeline();
+        throw new GunException(GunExceptionType.NOT_SUPPORT, "not support pipeline");
     }
 
 
@@ -58,6 +61,7 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
     @Override
     public GunNettyServerChannel<ServerSocketChannel> bind(int... port) throws IOException {
         channel().bind(new InetSocketAddress(port[0]));
+        handle.whenBind(port[0]);
         return this;
     }
 

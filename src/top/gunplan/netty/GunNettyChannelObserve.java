@@ -8,13 +8,13 @@ import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
 
 /**
- * GunNettyReadObserve
+ * GunNettyChannelObserve
  *
  * @author frank albert
  * @version 0.0.0.2
  * @date 2019-08-18 22:36
  */
-public interface GunNettyReadObserve {
+public interface GunNettyChannelObserve {
 
     /**
      * on recover read interest happened
@@ -22,15 +22,37 @@ public interface GunNettyReadObserve {
     void onRecoverReadInterest();
 
 
+    /**
+     * on close
+     *
+     * @param address remote address
+     */
     void onClose(SocketAddress address);
 
 
+    /**
+     * when to close exception happened
+     *
+     * @param address   remote
+     * @param throwable error
+     */
     void whenCloseMeetException(SocketAddress address, Throwable throwable);
 
 
+    /**
+     * when register to i/o event loop
+     *
+     * @param channel channel
+     */
     void whenRegister(SocketChannel channel);
 
 
+    /**
+     * when register exception happened
+     *
+     * @param channel   SocketChannel
+     * @param throwable exception
+     */
     void whenRegisterMeetException(SocketChannel channel, Throwable throwable);
 
 

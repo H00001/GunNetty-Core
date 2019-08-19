@@ -16,5 +16,10 @@ import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
 @FunctionalInterface
 public interface ChannelInitHandle extends GunHandle {
+    /**
+     * on have a channel connect
+     *
+     * @param pipeline base of pipeline
+     */
     void onHasChannel(GunNettyChildrenPipeline pipeline);
 }

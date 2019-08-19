@@ -33,7 +33,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     private volatile GunNettyServerChannel<ServerSocketChannel> channel;
 
     GunCoreConnectionEventLoopImpl() throws IOException {
-        channel = GunNettyChannelFactory.newServerChannel(ServerSocketChannel.open(), initHandle, this);
+
     }
 
     @Override
@@ -55,8 +55,11 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     @Override
     public int init(ExecutorService service, SystemChannelChangedHandle handle, ChannelInitHandle childrenHandle) throws IOException {
         super.init(service);
+        assert handle != null;
+        assert childrenHandle != null;
         this.initHandle = handle;
         this.childrenInitHandle = childrenHandle;
+        channel = GunNettyChannelFactory.newServerChannel(ServerSocketChannel.open(), initHandle, this);
         channel.bind(port[0]).registerAcceptWithEventLoop(this);
         return 0;
     }

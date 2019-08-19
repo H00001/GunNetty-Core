@@ -9,7 +9,6 @@ import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
-import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.nio.channels.ServerSocketChannel;
@@ -19,7 +18,7 @@ import java.nio.channels.SocketChannel;
  * GunNettyChannelFactory
  *
  * @author frank albert
- * @version 0.0.0.4
+ * @version 0.0.0.5
  * @date 2019-08-08 23:10
  */
 public class GunNettyChannelFactory {
@@ -41,8 +40,8 @@ public class GunNettyChannelFactory {
     newServerChannel(final ServerSocketChannel channel,
                      final SystemChannelChangedHandle initHandle,
                      final GunConnEventLoop eventLoop) {
-        GunNettyParentPipeline pipeline = GunNettyParentPipeline.newPipeline();
-        initHandle.whenInit(pipeline);
-        return new GunNettyServerChannelImpl(channel, pipeline, eventLoop, WORK_SEQUENCER.nextSequence());
+        assert initHandle != null;
+
+        return new GunNettyServerChannelImpl(channel, initHandle, eventLoop, WORK_SEQUENCER.nextSequence());
     }
 }

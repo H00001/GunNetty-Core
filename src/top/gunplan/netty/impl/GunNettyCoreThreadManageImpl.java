@@ -43,6 +43,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final GunNettyBaseObserve baseObserve, final List<GunNettyTimer> globalTimers) {
+        assert globalTimers != null;
         this.observe = baseObserve;
         this.globalTimers = globalTimers;
         GUN_NETTY_CORE_PROPERTY = property;

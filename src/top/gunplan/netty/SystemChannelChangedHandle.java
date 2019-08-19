@@ -4,9 +4,6 @@
 
 package top.gunplan.netty;
 
-import top.gunplan.netty.impl.channel.GunNettyChildChannel;
-import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
-
 /**
  * SystemChannelChangedHandle
  *
@@ -15,7 +12,8 @@ import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
  * @date 2019-08-13 09:28
  */
 public interface SystemChannelChangedHandle extends GunHandle {
-    void whenInit(GunNettyParentPipeline pipeline);
 
-    void hasChannel(GunNettyChildChannel channel);
+    default void whenBind(int port) {
+        System.out.println("lestion on " + port);
+    }
 }

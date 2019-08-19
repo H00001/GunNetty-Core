@@ -15,8 +15,6 @@ import top.gunplan.netty.example.GunNettyStringHandle;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;
-import top.gunplan.netty.impl.channel.GunNettyChildChannel;
-import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
 import top.gunplan.netty.impl.property.GunGetPropertyFromNet;
 
 public class BaseTest {
@@ -39,15 +37,7 @@ public class BaseTest {
             pipeline.setHandle(new GunNettyStringHandle());
         });
         server.whenServerChannelStateChanged(new SystemChannelChangedHandle() {
-            @Override
-            public void whenInit(GunNettyParentPipeline pipeline) {
 
-            }
-
-            @Override
-            public void hasChannel(GunNettyChildChannel channel) {
-
-            }
         });
         server.setSyncType(false);
         server.sync();

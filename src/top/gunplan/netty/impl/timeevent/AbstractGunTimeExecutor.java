@@ -40,6 +40,7 @@ public abstract class AbstractGunTimeExecutor implements GunTimeExecutor {
 
     @Override
     public GunTimeExecutor registerWorker(List<GunNettyTimer> works) {
+        assert works != null;
         this.works.addAll(works);
         return this;
     }

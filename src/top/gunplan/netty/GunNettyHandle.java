@@ -4,6 +4,8 @@
 
 package top.gunplan.netty;
 
+import java.net.SocketAddress;
+
 /**
  * net handle is a handle interface used to deal event
  *
@@ -13,13 +15,16 @@ public interface GunNettyHandle extends GunHandle {
 
     /**
      * when close event happened ,the method will be called
+     *
+     * @param address remote address
      */
-    void dealCloseEvent();
+    void dealCloseEvent(SocketAddress address);
 
     /**
      * when exception event happened ,the method will be called
      *
      * @param exp Exception
+     * @return result
      */
     GunNettyFilter.DealResult dealExceptionEvent(GunChannelException exp);
 }

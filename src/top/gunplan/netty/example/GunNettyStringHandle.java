@@ -11,6 +11,8 @@ import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
+import java.net.SocketAddress;
+
 
 /**
  * GunNettyStringHandle
@@ -26,8 +28,9 @@ public class GunNettyStringHandle implements GunNettyChildrenHandle {
         return (GunNetOutbound) request;
     }
 
+
     @Override
-    public void dealCloseEvent() {
+    public void dealCloseEvent(SocketAddress address) {
 
     }
 

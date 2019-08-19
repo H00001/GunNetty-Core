@@ -9,6 +9,8 @@ import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -41,6 +43,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private ChannelInitHandle initHandle;
 
+    private List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
 
     private volatile GunNettyCoreProperty coreProperty;
 
@@ -86,6 +89,12 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
+    public GunBootServer registerGlobalTimers(GunNettyTimer timer) {
+        this.timers.add(timer);
+        return this;
+    }
+
+    @Override
     public boolean initCheck() {
         if (acceptExecutor == null) {
             throw new GunException(GunExceptionType.EXC0, "acceptExecutor is null");
@@ -112,7 +121,8 @@ final class GunBootServerImpl implements GunBootServer {
 
     private void init() {
         coreProperty = GunNettySystemServices.coreProperty();
-        threadManager = GunNettyCoreThreadManager.initInstance(GunNettySystemServices.coreProperty(), observe, null);
+        threadManager = GunNettyCoreThreadManager.
+                initInstance(GunNettySystemServices.coreProperty(), observe, timers);
     }
 
 

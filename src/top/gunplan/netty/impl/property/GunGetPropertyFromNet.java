@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl.property;
 
+import org.junit.platform.commons.util.StringUtils;
 import top.gunplan.netty.GunBootServerBase;
 import top.gunplan.netty.GunProperty;
 
@@ -17,7 +18,7 @@ import java.util.Map;
  * GunGetPropertyFromNet
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-06 08:31
  */
 
@@ -42,6 +43,7 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
 
     @Override
     public boolean settingProperties(Map<String, GunProperty> propertyMap) {
+        assert propertyMap != null;
         HttpClient client = HttpClient.newHttpClient();
         HttpRequest request = HttpRequest.newBuilder()
                 .uri(URI.create(address))
@@ -52,6 +54,7 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
         client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
                 .thenApply(HttpResponse::body)
                 .whenCompleteAsync((body, en) -> {
+                    assert StringUtils.isNotBlank(body);
                     if (en == null) {
                         try {
                             analyzer.analyzingProperties(body.split("\n"), propertyMap);
@@ -63,6 +66,7 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
                     }
                 })
                 .join();
+
 
         return true;
     }

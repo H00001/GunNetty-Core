@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
-import top.gunplan.netty.GunNettyReadObserve;
+import top.gunplan.netty.GunNettyChannelObserve;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
@@ -31,7 +31,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     private GunNettyServerChannel pChannel;
     private volatile SelectionKey key;
     private boolean isSetKey;
-    private List<GunNettyReadObserve> observes = new CopyOnWriteArrayList<>();
+    private List<GunNettyChannelObserve> observes = new CopyOnWriteArrayList<>();
 
     GunNettyChildrenChannelImpl(final SocketChannel channel,
                                 final GunNettyChildrenPipeline pipeline,
@@ -111,7 +111,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
 
 
     @Override
-    public GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyReadObserve observe) {
+    public GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyChannelObserve observe) {
         observes.add(observe);
         return this;
     }
@@ -130,7 +130,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     public void recoverReadInterest() {
         key.interestOps(SelectionKey.OP_READ);
         continueLoop();
-        observes.parallelStream().forEach(GunNettyReadObserve::onRecoverReadInterest);
+        observes.parallelStream().forEach(GunNettyChannelObserve::onRecoverReadInterest);
     }
 
     @Override

@@ -41,6 +41,7 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
     public synchronized boolean init(int v1, List<GunNettyTimer> timerList, ExecutorService bossExecutor,
                                      ExecutorService dataExecutor, SystemChannelChangedHandle parentHandle,
                                      ChannelInitHandle childrenHandle, int port) {
+        assert timerList != null;
         this.dataEvenLoopSum = v1;
         transfer = EventLoopFactory.newGunNettyBaseTransfer();
         transfer.registerManager(this);
