@@ -35,4 +35,15 @@ public interface SystemChannelChangedHandle extends GunHandle {
         GunNettyContext.logger.setTAG(SystemChannelChangedHandle.class).
                 info("even loop stop:" + port);
     }
+
+
+    /**
+     * connEventLoopStop
+     *
+     * @param throwable event loop
+     */
+    default void failToCreateChildrenChannel(Throwable throwable) {
+        GunNettyContext.logger.setTAG(SystemChannelChangedHandle.class).
+                info("failToCreateChildrenChannel:" + throwable);
+    }
 }

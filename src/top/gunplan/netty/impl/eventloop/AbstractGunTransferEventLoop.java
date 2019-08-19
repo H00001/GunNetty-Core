@@ -7,8 +7,6 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.impl.GunNettyEventLoopManager;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
-import java.io.IOException;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 
@@ -33,17 +31,11 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
         return isRunning();
     }
 
-    void registerReadChannelToDataEventLoop(GunNettyChildChannel<U> channel) throws IOException {
-        channel.channel().configureBlocking(false);
-        GunDataEventLoop<SocketChannel> register = manager.dealChannelEventLoop();
-        channel.registerEventLoop(register);
+    void registerReadChannelToDataEventLoop(GunNettyChildChannel<U> channel) {
+        channel.registerEventLoop(manager.dealChannelEventLoop());
         channel.registerReadWithEventLoop();
     }
 
-    @Override
-    public void dealEvent(SelectionKey key) throws Exception {
-
-    }
 
     @Override
     public int init(ExecutorService deal) {

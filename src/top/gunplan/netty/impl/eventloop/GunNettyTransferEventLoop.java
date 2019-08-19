@@ -6,8 +6,11 @@ package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunException;
+import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 
+import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -33,4 +36,9 @@ public interface GunNettyTransferEventLoop<U extends SocketChannel> extends GunC
     @Override
     void loop();
 
+
+    @Override
+    default void dealEvent(SelectionKey key) {
+        throw new GunException(GunExceptionType.NOT_SUPPORT, "dealEvent not support");
+    }
 }

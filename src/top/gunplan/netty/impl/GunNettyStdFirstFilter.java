@@ -69,7 +69,9 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter {
 
     private DealResult doOutputFilter(GunOutboundChecker filterDto, GunNettyChildChannel<SocketChannel> channel) {
         try {
-            sendMessage(filterDto.translate().source(), channel.channel());
+            if (filterDto.isHasDataToOutput()) {
+                sendMessage(filterDto.translate().source(), channel.channel());
+            }
             return DealResult.NEXT;
         } catch (IOException exp) {
             channel.closeAndRemove(true);

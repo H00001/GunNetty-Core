@@ -9,7 +9,9 @@ package top.gunplan.netty.protocol;
  * @author dosdrtt
  * @apiNote 0.0.0.1
  * @since 0.0.0.2
+ * @deprecated
  */
+@Deprecated
 @FunctionalInterface
 public interface GunProtocolControl<I, O> {
     /**

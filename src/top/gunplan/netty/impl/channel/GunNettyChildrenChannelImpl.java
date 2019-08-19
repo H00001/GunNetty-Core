@@ -4,8 +4,6 @@
 
 package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunNettyChannelObserve;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
@@ -23,38 +21,37 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * GunNettyChildrenChannelImpl
  *
  * @author frank albert
- * @version 0.0.0.4
+ * @version 0.0.0.5
  * @date 2019-08-08 23:09
  */
 class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline>
         implements GunNettyChildChannel<SocketChannel> {
     private GunNettyServerChannel pChannel;
     private volatile SelectionKey key;
-    private boolean isSetKey;
+    private final SocketAddress remoteAddress;
+    private final SocketAddress localAddress;
     private List<GunNettyChannelObserve> observes = new CopyOnWriteArrayList<>();
 
     GunNettyChildrenChannelImpl(final SocketChannel channel,
                                 final GunNettyChildrenPipeline pipeline,
                                 final GunNettyServerChannel<ServerSocketChannel> pChannel,
                                 final long seq
-    ) {
+    ) throws IOException {
         super(pipeline, channel, seq);
         this.pChannel = pChannel;
+        this.remoteAddress = channel.getRemoteAddress();
+        this.localAddress = channel.getLocalAddress();
     }
 
 
     @Override
     public SocketAddress remoteAddress() {
-        try {
-            return channel().getRemoteAddress();
-        } catch (IOException e) {
-            throw new GunException(e);
-        }
+        return remoteAddress;
     }
 
     @Override
-    public SocketAddress localAddress() throws IOException {
-        return channel().getLocalAddress();
+    public SocketAddress localAddress() {
+        return localAddress;
     }
 
 
@@ -99,6 +96,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     @Override
     public void registerReadWithEventLoop() {
         try {
+            channel().configureBlocking(false);
             channel().socket().setTcpNoDelay(true);
             this.key = eventLoop.registerReadKey(channel());
             this.key.attach(this);
@@ -132,13 +130,4 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         observes.parallelStream().forEach(GunNettyChannelObserve::onRecoverReadInterest);
     }
 
-    @Override
-    public void setKey(SelectionKey key) {
-        if (!isSetKey && key != null && this.key == null) {
-            this.key = key;
-            isSetKey = true;
-        } else {
-            throw new GunException(GunExceptionType.EXC0, "replace set selection key");
-        }
-    }
 }

@@ -39,10 +39,9 @@ public final class EventLoopFactory {
     }
 
     static final class ConnEventLoopBuilderImpl implements ConnEventLoopBuilder {
-        final GunConnEventLoop eventLoop;
+        private volatile GunConnEventLoop eventLoop;
 
-        ConnEventLoopBuilderImpl() throws IOException {
-            this.eventLoop = new GunCoreConnectionEventLoopImpl();
+        ConnEventLoopBuilderImpl() {
         }
 
 
@@ -64,14 +63,16 @@ public final class EventLoopFactory {
         }
 
         @Override
-        public ConnEventLoopBuilder bindPort(int p) {
+        public ConnEventLoopBuilder bindPort(int p) throws IOException {
+            assert eventLoop != null;
             eventLoop.openPort(p);
             return this;
         }
 
         @Override
-        public EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, SystemChannelChangedHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException {
-            this.eventLoop.init(deal, parentHandle, childrenHandle);
+        public ConnEventLoopBuilder with(ExecutorService deal, SystemChannelChangedHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException {
+            this.eventLoop = new GunCoreConnectionEventLoopImpl(parentHandle, childrenHandle);
+            this.eventLoop.init(deal);
             return this;
         }
     }

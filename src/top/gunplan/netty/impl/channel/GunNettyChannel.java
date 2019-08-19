@@ -7,7 +7,6 @@ package top.gunplan.netty.impl.channel;
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
-import java.io.IOException;
 import java.net.SocketAddress;
 import java.nio.channels.Channel;
 
@@ -15,7 +14,7 @@ import java.nio.channels.Channel;
  * GunNettyChannel
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-08 23:06
  */
 public interface GunNettyChannel<CH extends Channel,
@@ -36,14 +35,6 @@ public interface GunNettyChannel<CH extends Channel,
      * @return java channel
      */
     CH channel();
-
-
-    /**
-     * set handle
-     * @param handle handle
-     * @return this:self
-     */
-    //GunNettyChannel setPipeline(GunNettyPipeline handle);
 
 
     /**
@@ -75,9 +66,8 @@ public interface GunNettyChannel<CH extends Channel,
      * get local address
      *
      * @return SocketAddress
-     * @throws IOException i/o error
      */
-    SocketAddress localAddress() throws IOException;
+    SocketAddress localAddress();
 
 
     /**

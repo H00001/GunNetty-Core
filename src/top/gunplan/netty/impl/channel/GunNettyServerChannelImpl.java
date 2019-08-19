@@ -43,8 +43,12 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
     }
 
     @Override
-    public SocketAddress localAddress() throws IOException {
-        return channel().getLocalAddress();
+    public SocketAddress localAddress() {
+        try {
+            return channel().getLocalAddress();
+        } catch (IOException e) {
+            return null;
+        }
     }
 
     @Override

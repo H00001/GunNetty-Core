@@ -32,16 +32,15 @@ public final class GunNettyOutBoundChecker extends AbstractGunChecker<GunNetOutb
 
     @Override
     public GunNettyChecker<GunNetOutbound> translate() {
-        if (isHasDataToOutput()) {
-            this.src = to.serialize();
-        }
-        hasDataToOutput = src.length != 0;
+        this.src = to.serialize();
+        hasDataToOutput = src != null && src.length != 0;
         return this;
     }
 
 
     @Override
     public boolean isHasDataToOutput() {
+        translate();
         return hasDataToOutput;
     }
 }

@@ -9,7 +9,6 @@ import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
 import java.nio.channels.Channel;
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -49,8 +48,6 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
      */
     GunNettyChildChannel<CH> cleanAllObserve();
 
-
     void recoverReadInterest();
 
-    void setKey(SelectionKey key);
 }

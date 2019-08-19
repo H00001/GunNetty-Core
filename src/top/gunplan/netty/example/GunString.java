@@ -15,11 +15,12 @@ import top.gunplan.netty.impl.GunNetInBoundOutBound;
  */
 
 public class GunString implements GunNetInBoundOutBound {
+    private static int v = 0;
     private String base;
 
     @Override
     public boolean unSerialize(byte[] in) {
-        base = new String(in);
+        base = new String(in) + ":" + v++;
         return true;
     }
 

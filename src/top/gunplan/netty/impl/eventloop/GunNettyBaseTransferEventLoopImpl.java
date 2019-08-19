@@ -5,11 +5,9 @@
 package top.gunplan.netty.impl.eventloop;
 
 
-import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.GunNettyChannelTransfer;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
-import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -29,10 +27,7 @@ class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends Abstrac
     @Override
     public void loopTransfer() {
         try {
-            GunNettyChildChannel<U> socketChannel = kQueue.take();
-            registerReadChannelToDataEventLoop(socketChannel);
-        } catch (IOException e) {
-            GunNettyContext.logger.error(e);
+            registerReadChannelToDataEventLoop(kQueue.take());
         } catch (InterruptedException ignored) {
 
         }

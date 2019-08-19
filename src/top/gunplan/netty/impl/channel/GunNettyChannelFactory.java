@@ -10,6 +10,7 @@ import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
+import java.io.IOException;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 
@@ -28,7 +29,7 @@ public class GunNettyChannelFactory {
     newChannel(final SocketChannel channel,
                final ChannelInitHandle initHandle,
                final GunNettyServerChannel<ServerSocketChannel> pChannel
-    ) {
+    ) throws IOException {
         GunNettyChildrenPipeline pipeline = GunNettyChildrenPipeline.newPipeline();
         initHandle.onHasChannel(pipeline);
         return new GunNettyChildrenChannelImpl(channel, pipeline, pChannel, BOSS_SEQUENCER.nextSequence());

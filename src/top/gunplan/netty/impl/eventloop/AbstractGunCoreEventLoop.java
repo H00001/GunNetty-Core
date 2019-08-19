@@ -6,7 +6,6 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunHandle;
 import top.gunplan.netty.impl.GunNettyEventLoopManager;
 
 import java.io.IOException;
@@ -25,11 +24,9 @@ import java.util.concurrent.ExecutorService;
 abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     volatile ExecutorService deal;
     volatile Selector bootSelector;
-    volatile GunHandle eventHandle;
     /**
      * pipe line, executor chain
      */
-
     private volatile boolean running;
     volatile Thread workThread;
 

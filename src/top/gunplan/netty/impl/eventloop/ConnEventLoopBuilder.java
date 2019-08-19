@@ -37,5 +37,5 @@ public interface ConnEventLoopBuilder extends EventLoopBuilder<GunConnEventLoop>
      * @return this
      * @throws IOException create fail
      */
-    EventLoopBuilder<GunConnEventLoop> with(ExecutorService deal, SystemChannelChangedHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;
+    ConnEventLoopBuilder with(ExecutorService deal, SystemChannelChangedHandle parentHandle, ChannelInitHandle childrenHandle) throws IOException;
 }

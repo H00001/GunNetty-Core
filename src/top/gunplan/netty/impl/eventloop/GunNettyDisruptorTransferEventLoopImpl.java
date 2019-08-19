@@ -4,9 +4,9 @@
 
 package top.gunplan.netty.impl.eventloop;
 
-import com.lmax.disruptor.BlockingWaitStrategy;
 import com.lmax.disruptor.EventHandler;
 import com.lmax.disruptor.RingBuffer;
+import com.lmax.disruptor.SleepingWaitStrategy;
 import com.lmax.disruptor.dsl.Disruptor;
 import com.lmax.disruptor.dsl.ProducerType;
 import top.gunplan.netty.common.GunNettyThreadFactory;
@@ -33,7 +33,7 @@ final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> exte
     GunNettyDisruptorTransferEventLoopImpl() {
         disruptor = new Disruptor<>(GunNettyChannelTransferImpl::new, BUFFER_SIZE,
                 new GunNettyThreadFactory(this.getClass().getName()),
-                ProducerType.MULTI, new BlockingWaitStrategy());
+                ProducerType.MULTI, new SleepingWaitStrategy());
         disruptor.handleEventsWith(this);
         ringBuffer = disruptor.getRingBuffer();
     }
@@ -64,9 +64,8 @@ final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> exte
 
 
     @Override
-    public void onEvent(GunNettyChannelTransfer<U> event, long sequence, boolean endOfBatch) throws Exception {
-        final GunNettyChildChannel<U> socketChannel = event.channel();
-        super.registerReadChannelToDataEventLoop(socketChannel);
+    public void onEvent(GunNettyChannelTransfer<U> event, long sequence, boolean endOfBatch) {
+        super.registerReadChannelToDataEventLoop(event.channel());
 
     }
 

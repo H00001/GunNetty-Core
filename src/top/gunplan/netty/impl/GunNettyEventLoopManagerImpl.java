@@ -50,7 +50,8 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
         timeExecute.registerManager(this);
         try {
             dealData = EventLoopFactory.buildDataEventLoop(v1).with(bossExecutor).andRegister(this).build();
-            dealAccept = EventLoopFactory.buildConnEventLoop().bindPort(port).with(dataExecutor, parentHandle, childrenHandle).andRegister(this).build();
+            dealAccept = EventLoopFactory.buildConnEventLoop().with(dataExecutor, parentHandle, childrenHandle)
+                    .bindPort(port).andRegister(this).build();
         } catch (IOException e) {
             return false;
         }

@@ -8,6 +8,7 @@ import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyFilter;
+import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
@@ -31,7 +32,7 @@ public class GunNettyStringHandle implements GunNettyChildrenHandle {
 
     @Override
     public void dealCloseEvent(SocketAddress address) {
-
+        GunNettyContext.logger.info(address + ":has closed");
     }
 
     @Override
