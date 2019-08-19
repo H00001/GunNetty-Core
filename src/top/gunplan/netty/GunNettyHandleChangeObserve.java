@@ -14,8 +14,17 @@ import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
  * @date 2019-08-18 13:31
  */
 public interface GunNettyHandleChangeObserve {
+    /**
+     * @param handle
+     * @param pipeline
+     */
     void onUpdateHandle(GunNettyChildrenHandle handle, GunNettyChildrenPipeline pipeline);
 
+    /**
+     *
+     * @param handle
+     * @param pipeline
+     */
     void onUpdateHandle(GunNettyParentHandle handle, GunNettyChildrenPipeline pipeline);
 
 }

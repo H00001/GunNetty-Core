@@ -15,9 +15,22 @@ import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
  */
 public interface GunNettyChildrenPipelineChangedObserve extends GunNettyHandleChangeObserve {
 
+    /**
+     * on add filter
+     *
+     * @param filter   added filter
+     * @param pipeline pipeline
+     * @param <V>      v
+     */
     <V extends GunNettyFilter> void onAddFilter(V filter, GunNettyChildrenPipeline pipeline);
 
-
+    /**
+     * on remove filter
+     *
+     * @param filter   removed filter
+     * @param pipeline pipeline
+     * @param <V>      v
+     */
     <V extends GunNettyFilter> void onRemoveFilter(V filter, GunNettyChildrenPipeline pipeline);
 
 

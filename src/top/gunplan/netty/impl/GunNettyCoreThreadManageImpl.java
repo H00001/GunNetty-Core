@@ -66,7 +66,6 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     @Override
     public Future<Integer> startAndWait() {
         status = ManagerState.BOOTING;
-        observe.onListen(eventLoopManager.connEventLoop().listenPort());
         threadHelper.submitData(eventLoopManager.dataEventLoop());
         threadHelper.submitTransfer(eventLoopManager.transferEventLoop());
         threadHelper.submitSchedule(eventLoopManager.timeEventLoop(),

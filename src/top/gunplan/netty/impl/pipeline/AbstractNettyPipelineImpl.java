@@ -4,10 +4,7 @@
 
 package top.gunplan.netty.impl.pipeline;
 
-import top.gunplan.netty.GunHandle;
-import top.gunplan.netty.GunNettyChildrenHandle;
-import top.gunplan.netty.GunNettyParentHandle;
-import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.*;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -20,6 +17,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
     private volatile GunNettyChildrenHandle cHandle;
+    private GunNettyHandleChangeObserve baseObserve;
     private volatile GunNettyParentHandle pHandle;
     private final List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
 
@@ -29,6 +27,13 @@ abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
         if (timer != null) {
             timers.add(timer);
         }
+        return this;
+    }
+
+
+    @Override
+    public synchronized GunNettyPipeline setPipelineHandleChangeObserve(GunNettyHandleChangeObserve baseObserve) {
+        this.baseObserve = baseObserve;
         return this;
     }
 
@@ -46,6 +51,7 @@ abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
     @Override
     public GunNettyPipeline setHandle(GunNettyChildrenHandle handle) {
         if (handle != null) {
+            baseObserve.onUpdateHandle(handle, (GunNettyChildrenPipeline) this);
             setHandle0(handle);
         }
         return this;
@@ -55,6 +61,7 @@ abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
     @Override
     public GunNettyPipeline setHandle(GunNettyParentHandle handle) {
         if (handle != null) {
+            baseObserve.onUpdateHandle(handle, (GunNettyChildrenPipeline) this);
             setHandle0(handle);
         }
         return this;

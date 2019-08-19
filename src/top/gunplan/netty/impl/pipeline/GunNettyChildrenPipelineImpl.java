@@ -11,8 +11,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.stream.Stream;
 
-import static top.gunplan.netty.GunExceptionType.NOT_SUPPORT;
-
 /**
  * GunNettyChildrenPipelineImpl
  *
@@ -74,6 +72,7 @@ class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
     public synchronized GunNettyChildrenPipeline setMetaInfoChangeObserver(GunNettyChildrenPipelineChangedObserve observe) {
         if (this.observe == null) {
             this.observe = observe;
+            super.setPipelineHandleChangeObserve(observe);
         } else {
             throw new GunException(GunExceptionType.EXC0, "reset GunNettyChildrenPipelineChangedObserve");
         }
@@ -81,14 +80,17 @@ class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
     }
 
     private <U extends GunNettyFilter> void addFilter0(U filter, List<U> list) {
+        assert observe != null;
         observe.onAddFilter(filter, this);
         if (filter != null) {
             GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
             if (order == null) {
                 throw new GunBootServerBase.GunNettyCanNotBootException(new NullPointerException("not have order"));
             }
-            list.set(order.index(), filter);
+
+            list.add(order.index(), filter);
         }
+
     }
 
 
@@ -113,8 +115,5 @@ class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
         }
     }
 
-    @Override
-    public void setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe) {
-        throw new GunException(NOT_SUPPORT, "please use method setMetaInfoChangeObserver to set");
-    }
+
 }

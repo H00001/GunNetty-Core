@@ -80,7 +80,8 @@ public interface GunNettyPipeline extends GunHandle {
     int init();
 
 
-    void setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe);
+    GunNettyPipeline setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe);
+
 
 }
 

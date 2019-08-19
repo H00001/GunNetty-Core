@@ -18,15 +18,6 @@ import java.net.SocketAddress;
  */
 public interface GunNettyBaseObserve {
     /**
-     * onListen happened
-     *
-     * @param port port
-     */
-    default void onListen(int port) {
-        GunNettyContext.logger.info("server running on :" + port);
-    }
-
-    /**
      * Ready-to-read termination
      *
      * @param address remote address

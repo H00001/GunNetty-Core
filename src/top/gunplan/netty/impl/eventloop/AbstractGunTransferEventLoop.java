@@ -37,6 +37,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
         channel.channel().configureBlocking(false);
         GunDataEventLoop<SocketChannel> register = manager.dealChannelEventLoop();
         final SelectionKey key = register.registerReadKey(channel.channel());
+        channel.setKey(key);
         key.attach(channel);
         return key;
     }

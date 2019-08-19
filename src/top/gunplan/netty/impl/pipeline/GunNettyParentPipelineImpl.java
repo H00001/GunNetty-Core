@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.impl.pipeline;
 
-import top.gunplan.netty.GunNettyHandleChangeObserve;
 import top.gunplan.netty.GunPipelineCheckResult;
 
 public class GunNettyParentPipelineImpl extends AbstractNettyPipelineImpl implements GunNettyParentPipeline {
@@ -15,8 +14,5 @@ public class GunNettyParentPipelineImpl extends AbstractNettyPipelineImpl implem
         return null;
     }
 
-    @Override
-    public void setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe) {
 
-    }
 }
