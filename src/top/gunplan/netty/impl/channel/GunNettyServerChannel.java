@@ -29,6 +29,11 @@ public interface GunNettyServerChannel<CH extends Channel> extends GunNettyChann
      */
     GunNettyServerChannel<ServerSocketChannel> bind(int... port) throws IOException;
 
-
-    void registerAcceptWithEventLoop(GunConnEventLoop eventLoop) throws IOException;
+    /**
+     * registerAcceptWithEventLoop
+     * use base event loop
+     *
+     * @throws IOException io error
+     */
+    void registerAcceptWithEventLoop() throws IOException;
 }

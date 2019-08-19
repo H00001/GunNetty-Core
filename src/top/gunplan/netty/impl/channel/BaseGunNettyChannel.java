@@ -24,11 +24,10 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
     LOOP eventLoop;
     private CH channel;
 
-    BaseGunNettyChannel(final PL pipeline, final CH channel, final long id, final LOOP eventLoop) {
+    BaseGunNettyChannel(final PL pipeline, final CH channel, final long id) {
         this.pipeline = pipeline;
         this.id = id;
         this.channel = channel;
-        this.eventLoop = eventLoop;
     }
 
 

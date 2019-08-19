@@ -26,7 +26,8 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
     private final SystemChannelChangedHandle handle;
 
     GunNettyServerChannelImpl(final ServerSocketChannel channel, final SystemChannelChangedHandle pipeline, final GunConnEventLoop eventLoop, final long id) {
-        super(null, channel, id, eventLoop);
+        super(null, channel, id);
+        this.registerEventLoop(eventLoop);
         this.handle = pipeline;
     }
 
@@ -66,8 +67,14 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
     }
 
     @Override
-    public void registerAcceptWithEventLoop(GunConnEventLoop eventLoop) throws IOException {
+    public void registerAcceptWithEventLoop() throws IOException {
         channel().configureBlocking(false);
         channel().register(eventLoop.select(), SelectionKey.OP_ACCEPT, null);
+    }
+
+    @Override
+    public void close() throws IOException {
+        super.close();
+        eventLoop.select().close();
     }
 }

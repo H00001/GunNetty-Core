@@ -7,7 +7,6 @@ package top.gunplan.netty.impl.channel;
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
-import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
@@ -28,11 +27,11 @@ public class GunNettyChannelFactory {
     public static GunNettyChildChannel<SocketChannel>
     newChannel(final SocketChannel channel,
                final ChannelInitHandle initHandle,
-               final GunNettyServerChannel<ServerSocketChannel> pChannel,
-               final GunDataEventLoop<SocketChannel> eventLoop) {
+               final GunNettyServerChannel<ServerSocketChannel> pChannel
+    ) {
         GunNettyChildrenPipeline pipeline = GunNettyChildrenPipeline.newPipeline();
         initHandle.onHasChannel(pipeline);
-        return new GunNettyChildrenChannelImpl(channel, pipeline, pChannel, eventLoop, BOSS_SEQUENCER.nextSequence());
+        return new GunNettyChildrenChannelImpl(channel, pipeline, pChannel, BOSS_SEQUENCER.nextSequence());
     }
 
 

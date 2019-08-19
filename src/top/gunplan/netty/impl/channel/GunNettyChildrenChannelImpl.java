@@ -36,10 +36,9 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     GunNettyChildrenChannelImpl(final SocketChannel channel,
                                 final GunNettyChildrenPipeline pipeline,
                                 final GunNettyServerChannel<ServerSocketChannel> pChannel,
-                                final GunDataEventLoop<SocketChannel> eventLoop,
                                 final long seq
     ) {
-        super(pipeline, channel, seq, eventLoop);
+        super(pipeline, channel, seq);
         this.pChannel = pChannel;
     }
 
@@ -96,13 +95,13 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
 
     /**
      * only called by {@link GunNettyTransferEventLoop}
-     *
-     * @param eventLoop event loop
      */
     @Override
-    public void registerReadWithEventLoop(GunDataEventLoop<SocketChannel> eventLoop) {
+    public void registerReadWithEventLoop() {
         try {
-            eventLoop.registerReadKey(channel());
+            channel().socket().setTcpNoDelay(true);
+            this.key = eventLoop.registerReadKey(channel());
+            this.key.attach(this);
             observes.parallelStream().forEach(v -> v.whenRegister(channel()));
         } catch (IOException e) {
             observes.parallelStream().forEach(v -> v.whenRegisterMeetException(channel(), e));

@@ -60,7 +60,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
         this.initHandle = handle;
         this.childrenInitHandle = childrenHandle;
         channel = GunNettyChannelFactory.newServerChannel(ServerSocketChannel.open(), initHandle, this);
-        channel.bind(port[0]).registerAcceptWithEventLoop(this);
+        channel.bind(port[0]).registerAcceptWithEventLoop();
         return 0;
     }
 
@@ -92,6 +92,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     @Override
     void whenHaltDeal() throws IOException {
         channel.close();
+        initHandle.connEventLoopStop(this);
     }
 
 
@@ -100,8 +101,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
         final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
         this.deal.submit(() -> {
             GunNettyChildChannel<SocketChannel> childChannel =
-                    GunNettyChannelFactory.newChannel(socketChannel,
-                            childrenInitHandle, channel, null);
+                    GunNettyChannelFactory.newChannel(socketChannel, childrenInitHandle, channel);
             manager.transferEventLoop().push(new GunNettyChannelTransferImpl<>(childChannel));
             BaseGunNettyWorker worker = new GunAcceptWorker(childChannel);
             if (worker.init() == 0) {

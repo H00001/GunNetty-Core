@@ -36,10 +36,8 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
 
     /**
      * register ReadWith EventLoop
-     *
-     * @param eventLoop event loop
      */
-    void registerReadWithEventLoop(GunDataEventLoop<SocketChannel> eventLoop);
+    void registerReadWithEventLoop();
 
 
     GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyChannelObserve observe);

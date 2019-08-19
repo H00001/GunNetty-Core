@@ -66,7 +66,7 @@ final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> exte
     @Override
     public void onEvent(GunNettyChannelTransfer<U> event, long sequence, boolean endOfBatch) throws Exception {
         final GunNettyChildChannel<U> socketChannel = event.channel();
-        dealEvent(registerReadChannelToDataEventLoop(socketChannel));
+        super.registerReadChannelToDataEventLoop(socketChannel);
 
     }
 

@@ -33,26 +33,23 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
         return isRunning();
     }
 
-    SelectionKey registerReadChannelToDataEventLoop(GunNettyChildChannel<U> channel) throws IOException {
+    void registerReadChannelToDataEventLoop(GunNettyChildChannel<U> channel) throws IOException {
         channel.channel().configureBlocking(false);
         GunDataEventLoop<SocketChannel> register = manager.dealChannelEventLoop();
-        final SelectionKey key = register.registerReadKey(channel.channel());
-        channel.setKey(key);
-        key.attach(channel);
-        return key;
+        channel.registerEventLoop(register);
+        channel.registerReadWithEventLoop();
     }
 
+    @Override
+    public void dealEvent(SelectionKey key) throws Exception {
+
+    }
 
     @Override
     public int init(ExecutorService deal) {
         return 0;
     }
 
-    @Override
-    public void dealEvent(SelectionKey socketChannel) throws IOException {
-        final SocketChannel javaChannel = ((SocketChannel) socketChannel.channel());
-        javaChannel.socket().setTcpNoDelay(true);
-    }
 
     @Override
     public GunNettyTransferEventLoop<U> registerManager(GunNettyEventLoopManager manager) {
