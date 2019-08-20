@@ -22,7 +22,7 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  */
 @GunNetFilterOrder
-public final class GunNettyStdFirstFilter implements GunNettyDataFilter {
+public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNettyConnFilter {
 
     private final GunNettyBaseObserve observe;
     private static Field operatorSrc;
@@ -84,7 +84,7 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter {
         final GunNettyChildChannel<SocketChannel> channel = filterDto.channel();
         if (channel.isValid()) {
             try {
-                GunFunctionMappingInterFace<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
+                GunFunctionMapping<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
                 operatorSrc.set(filterDto, reader.readBytes(channel.channel()));
                 channel.recoverReadInterest();
             } catch (IOException | ReflectiveOperationException e) {
@@ -105,5 +105,10 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter {
         } catch (GunChannelException e) {
             return invokeCloseEvent(filterDto.channel().remoteAddress(), false);
         }
+    }
+
+    @Override
+    public DealResult doConnFilter(GunNettyChildChannel<SocketChannel> ch) {
+        return DealResult.NEXT;
     }
 }

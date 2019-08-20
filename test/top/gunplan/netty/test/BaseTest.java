@@ -55,7 +55,10 @@ public class BaseTest {
             pipeline.addDataFilter(new GunNettyStdFirstFilter(new GunNettyBaseObserve() {
             }));
             pipeline.addDataFilter(new GunNettyCharsetInboundChecker());
-            pipeline.setHandle(new GunNettyStringHandle());
+            pipeline.addConnFilter(new GunNettyStdFirstFilter(new GunNettyBaseObserve() {
+            }));
+            pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
+            pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
         });
         server.whenServerChannelStateChanged(new SystemChannelChangedHandle() {
 

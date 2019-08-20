@@ -11,7 +11,7 @@ import top.gunplan.netty.protocol.GunNetOutbound;
  * GunNettyChildrenHandle
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-13 09:37
  */
 

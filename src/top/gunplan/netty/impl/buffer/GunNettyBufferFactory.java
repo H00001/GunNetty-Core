@@ -1,6 +1,8 @@
-package top.gunplan.netty.impl.buffer;
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
 
-import top.gunplan.netty.GunBufferManage;
+package top.gunplan.netty.impl.buffer;
 
 /**
  * GunNettyBufferFactory

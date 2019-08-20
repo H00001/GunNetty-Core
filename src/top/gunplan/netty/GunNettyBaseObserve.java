@@ -16,7 +16,7 @@ import java.net.SocketAddress;
  * @version 0.0.0.x
  * @date 2019-08-05 00:19
  */
-public interface GunNettyBaseObserve {
+public interface GunNettyBaseObserve extends GunObserve {
     /**
      * Ready-to-read termination
      *

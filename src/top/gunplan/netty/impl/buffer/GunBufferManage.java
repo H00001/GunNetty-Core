@@ -1,7 +1,9 @@
-package top.gunplan.netty;
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
 
+package top.gunplan.netty.impl.buffer;
 
-import top.gunplan.netty.impl.buffer.GunNettyBufferStream;
 
 /**
  * @author dosdrtt

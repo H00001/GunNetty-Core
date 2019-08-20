@@ -4,6 +4,8 @@
 
 package top.gunplan.netty.impl.buffer;
 
+import top.gunplan.netty.GunObserve;
+
 /**
  * GunNettyBufferObserve
  *
@@ -12,7 +14,7 @@ package top.gunplan.netty.impl.buffer;
  * @date 2019-06-08 15:17
  */
 @FunctionalInterface
-public interface GunNettyBufferObserve {
+public interface GunNettyBufferObserve extends GunObserve {
     /**
      * on release execute
      *

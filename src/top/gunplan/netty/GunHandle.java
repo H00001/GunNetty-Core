@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty;
 
 /**
@@ -5,16 +9,14 @@ package top.gunplan.netty;
  * and {@link GunNettyHandle}
  *
  * @author dosdrtt
- * @since 0.0.0.3
+ * @since 0.0.0.4
  */
 public interface GunHandle {
     /**
-     * <p></p>
-     * nothing it it
-     * <p>
+     * init init the handle
      *
      * @return int init result 0:succeed
-     *                         1:error
+     * 1:error
      */
     default int init() {
         return 0;
@@ -22,6 +24,7 @@ public interface GunHandle {
 
 
     /**
+     * destroy
      * this function will be called at destroy
      *
      * @return int destroy result
