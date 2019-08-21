@@ -4,9 +4,9 @@
 
 package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.GunNettyChannelObserve;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
+import top.gunplan.netty.observe.GunNettyChannelObserve;
 
 import java.nio.channels.Channel;
 import java.nio.channels.SocketChannel;

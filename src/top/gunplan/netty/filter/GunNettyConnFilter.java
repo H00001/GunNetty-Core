@@ -2,8 +2,9 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty;
+package top.gunplan.netty.filter;
 
+import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.nio.channels.SocketChannel;

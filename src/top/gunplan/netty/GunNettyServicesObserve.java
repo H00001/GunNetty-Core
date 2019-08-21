@@ -1,14 +1,13 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty;
 
+import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
+
+import java.io.IOException;
 
 /**
  * GunNettyObserve
@@ -16,7 +15,7 @@ import top.gunplan.netty.impl.property.GunNettyCoreProperty;
  * @author dosdrtt
  * @since 0.0.1.2
  */
-public interface GunNettyObserve extends GunHandle, GunNettyBaseObserve {
+public interface GunNettyServicesObserve extends GunHandle {
     /**
      * onBooted execute
      *
@@ -53,5 +52,27 @@ public interface GunNettyObserve extends GunHandle, GunNettyBaseObserve {
          * RUN TO STOP run status to stop status
          */
         RUN_TO_STOP, STOP_TO_RUN, RUN_TO_PAUSE
+    }
+
+
+    /**
+     * bootFail happened
+     *
+     * @param exp error
+     * @apiNote #4043
+     */
+    default void bootFail(IOException exp) {
+        GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
+    }
+
+
+    /**
+     * bootFail happened
+     *
+     * @param exp error
+     * @apiNote #4043
+     */
+    default void runningError(Exception exp) {
+        GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
     }
 }

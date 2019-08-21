@@ -5,9 +5,9 @@
 package top.gunplan.netty.example;
 
 import top.gunplan.netty.GunChannelException;
-import top.gunplan.netty.GunNettyInboundFilter;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.impl.GunInboundChecker;
+import top.gunplan.netty.filter.GunNettyInboundFilter;
+import top.gunplan.netty.impl.checker.GunInboundChecker;
 
 /**
  * GunNettyCharsetInboundChecker

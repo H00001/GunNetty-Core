@@ -6,13 +6,13 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunExceptionType;
-import top.gunplan.netty.GunNettyDataFilter;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.impl.GunInboundChecker;
+import top.gunplan.netty.filter.GunNettyDataFilter;
 import top.gunplan.netty.impl.GunNettyFunctional;
-import top.gunplan.netty.impl.GunNettyInputFilterChecker;
-import top.gunplan.netty.impl.GunNettyOutBoundChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
+import top.gunplan.netty.impl.checker.GunInboundChecker;
+import top.gunplan.netty.impl.checker.GunNetServerInboundChecker;
+import top.gunplan.netty.impl.checker.GunNetServerOutboundChecker;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SocketChannel;
@@ -49,7 +49,7 @@ public final class GunCoreCalculatorWorker extends
 
     @Override
     public void work() {
-        final GunInboundChecker gunFilterObj = new GunNettyInputFilterChecker(channel);
+        final GunInboundChecker gunFilterObj = new GunNetServerInboundChecker(channel);
         GunNettyFilter.DealResult result = null;
         for (final GunNettyDataFilter filter : dataFilters) {
             try {
@@ -74,7 +74,7 @@ public final class GunCoreCalculatorWorker extends
         } catch (GunChannelException e) {
             this.handle.dealExceptionEvent(e);
         }
-        GunNettyOutBoundChecker responseFilterDto = new GunNettyOutBoundChecker(output, channel);
+        GunNetServerOutboundChecker responseFilterDto = new GunNetServerOutboundChecker(output, channel);
         responseFilterDto.setChannel(gunFilterObj.channel());
         ListIterator<GunNettyDataFilter> iterator = dataFilters.listIterator(dataFilters.size());
         for (; iterator.hasPrevious() && !notDealOutputFlag; ) {

@@ -7,11 +7,9 @@ package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
-import top.gunplan.netty.impl.sequence.GunNettySequencer;
 import top.gunplan.utils.GunNumberUtil;
 
 import java.util.List;
@@ -29,11 +27,8 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     private final int MANAGE_THREAD_NUM;
 
-    private final GunNettyBaseObserve observe;
 
     private final List<GunNettyTimer> globalTimers;
-
-    private final GunNettySequencer sequencer = GunNettySequencer.newThreadSafeSequencer();
 
     private final GunNettyEventLoopManager eventLoopManager = GunNettyEventLoopManager.newInstance();
 
@@ -42,9 +37,8 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private volatile ManagerState status = ManagerState.INACTIVE;
 
 
-    GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final GunNettyBaseObserve baseObserve, final List<GunNettyTimer> globalTimers) {
+    GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final List<GunNettyTimer> globalTimers) {
         assert globalTimers != null;
-        this.observe = baseObserve;
         this.globalTimers = globalTimers;
         GUN_NETTY_CORE_PROPERTY = property;
         MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;

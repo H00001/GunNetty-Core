@@ -2,8 +2,10 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.checker;
 
+import top.gunplan.netty.impl.GunNetBound;
+import top.gunplan.netty.impl.GunNettyChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.nio.channels.SocketChannel;
@@ -14,7 +16,7 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNettyChecker<Transfer> {
+public abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNettyChecker<Transfer> {
     byte[] src;
 
     private Throwable exp;
@@ -27,6 +29,7 @@ abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNe
 
     /**
      * translate
+     *
      * @return this chain style
      * @see GunNetBound
      */

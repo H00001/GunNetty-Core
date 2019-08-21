@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.GunNettyBaseObserve;
+import top.gunplan.netty.GunNettyServicesObserve;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
@@ -31,9 +31,9 @@ public interface GunNettyCoreThreadManager {
      * @param l        timers
      * @return GunNettyCoreThreadManager
      */
-    static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyBaseObserve observe, List<GunNettyTimer> l) {
+    static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyServicesObserve observe, List<GunNettyTimer> l) {
         assert l != null;
-        return new GunNettyCoreThreadManageImpl(property, observe, l);
+        return new GunNettyCoreThreadManageImpl(property, l);
     }
 
 

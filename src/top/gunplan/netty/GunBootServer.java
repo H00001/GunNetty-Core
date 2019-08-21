@@ -37,7 +37,7 @@ public interface GunBootServer extends GunBootServerBase {
      * @param observe observe object
      * @return GunBootServer
      */
-    GunBootServer registerObserve(GunNettyObserve observe);
+    GunBootServer registerObserve(GunNettyServicesObserve observe);
 
     /**
      * GunNettyCoreThreadManager

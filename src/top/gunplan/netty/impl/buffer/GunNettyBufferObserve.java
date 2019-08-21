@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl.buffer;
 
-import top.gunplan.netty.GunObserve;
+import top.gunplan.netty.observe.GunObserve;
 
 /**
  * GunNettyBufferObserve

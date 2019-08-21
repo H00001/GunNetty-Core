@@ -2,9 +2,10 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty;
+package top.gunplan.netty.filter;
 
-import top.gunplan.netty.impl.GunInboundChecker;
+import top.gunplan.netty.GunChannelException;
+import top.gunplan.netty.impl.checker.GunInboundChecker;
 
 /**
  * GunNettyOutboundFilter

@@ -5,15 +5,15 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.observe.GunObserve;
 
-import java.io.IOException;
 import java.net.SocketAddress;
 
 /**
  * GunNettyBaseObserve
  *
  * @author frank albert
- * @version 0.0.0.x
+ * @version 0.0.0.y
  * @date 2019-08-05 00:19
  */
 public interface GunNettyBaseObserve extends GunObserve {
@@ -48,24 +48,5 @@ public interface GunNettyBaseObserve extends GunObserve {
         return 0;
     }
 
-    /**
-     * bootFail happened
-     *
-     * @param exp error
-     * @apiNote #4043
-     */
-    default void bootFail(IOException exp) {
-        GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
-    }
 
-
-    /**
-     * bootFail happened
-     *
-     * @param exp error
-     * @apiNote #4043
-     */
-    default void runningError(Exception exp) {
-        GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
-    }
 }

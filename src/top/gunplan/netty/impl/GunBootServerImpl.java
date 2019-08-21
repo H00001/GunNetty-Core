@@ -35,7 +35,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile boolean runnable = false;
 
-    private volatile GunNettyObserve observe;
+    private volatile GunNettyServicesObserve observe;
 
     private volatile ExecutorService acceptExecutor;
 
@@ -58,13 +58,7 @@ final class GunBootServerImpl implements GunBootServer {
         return isSync;
     }
 
-    @Override
-    public GunBootServer registerObserve(GunNettyObserve observe) {
-        if (observe != null) {
-            this.observe = observe;
-        }
-        return this;
-    }
+
 
     @Override
     public GunNettyCoreThreadManager manager() {
@@ -115,6 +109,14 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
+    public GunBootServer registerObserve(GunNettyServicesObserve observe) {
+        if (observe != null) {
+            this.observe = observe;
+        }
+        return this;
+    }
+
+    @Override
     public void setSyncType(boolean b) {
         isSync = b;
     }
@@ -146,7 +148,7 @@ final class GunBootServerImpl implements GunBootServer {
             if (isSync) {
                 try {
                     int val = executing.get();
-                    this.observe.onStatusChanged(GunNettyObserve.GunNettyChangeStatus.RUN_TO_STOP);
+                    this.observe.onStatusChanged(GunNettyServicesObserve.GunNettyChangeStatus.RUN_TO_STOP);
                     this.observe.onStop(coreProperty);
                     threadManager.stopAndWait();
                     return val;

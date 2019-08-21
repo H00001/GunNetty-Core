@@ -15,6 +15,7 @@ import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.property.GunGetPropertyFromNet;
+import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
 
 public class BaseTest {
 
@@ -24,12 +25,13 @@ public class BaseTest {
 
     @Test
     public void using019() throws InterruptedException {
+        GunNettyDefaultObserve p = new GunNettyDefaultObserve();
         GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config1.html"));
         GunBootServer server = GunBootServerFactory.newInstance();
         server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
                 GunNettyExecutors.newFixedExecutorPool(10));
         server.registerObserve(new GunNettyDefaultObserve());
-        server.onHasChannel(pipeline -> {
+        server.registerObserve(p).onHasChannel(pipeline -> {
             pipeline.setMetaInfoChangeObserver(new GunNettyChildrenPipelineChangedObserve() {
 
                 @Override
@@ -52,11 +54,9 @@ public class BaseTest {
                     GunNettyContext.logger.info("filter has been removed" + filter);
                 }
             });
-            pipeline.addDataFilter(new GunNettyStdFirstFilter(new GunNettyBaseObserve() {
-            }));
+            pipeline.addDataFilter(new GunNettyStdFirstFilter(p));
             pipeline.addDataFilter(new GunNettyCharsetInboundChecker());
-            pipeline.addConnFilter(new GunNettyStdFirstFilter(new GunNettyBaseObserve() {
-            }));
+            pipeline.addConnFilter(new GunNettyStdFirstFilter(p));
             pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
             pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
         });

@@ -2,7 +2,7 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty;
+package top.gunplan.netty.observe;
 
 import java.net.SocketAddress;
 import java.nio.channels.SocketChannel;
@@ -11,7 +11,7 @@ import java.nio.channels.SocketChannel;
  * GunNettyChannelObserve
  *
  * @author frank albert
- * @version 0.0.0.2
+ * @version 0.0.0.3
  * @date 2019-08-18 22:36
  */
 public interface GunNettyChannelObserve extends GunObserve {

@@ -2,10 +2,11 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.checker;
 
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.impl.GunNettyChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetInbound;
 
@@ -13,22 +14,17 @@ import java.nio.channels.SocketChannel;
 
 
 /**
- * GunNettyInputFilterChecker
+ * GunNetServerInboundChecker
  *
  * @author dosdrtt
  */
-public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetInbound> implements GunInboundChecker {
+public final class GunNetServerInboundChecker extends AbstractGunChecker<GunNetInbound> implements GunInboundChecker {
 
 
-    public GunNettyInputFilterChecker(final GunNettyChildChannel<SocketChannel> channel) {
+    public GunNetServerInboundChecker(final GunNettyChildChannel<SocketChannel> channel) {
         super(channel);
     }
 
-    public GunNettyInputFilterChecker(byte[] src, GunNetInbound object) {
-        super(null);
-        this.src = src;
-        this.to = object;
-    }
 
     @Override
     public GunNettyChecker<GunNetInbound> translate() {
@@ -44,7 +40,7 @@ public final class GunNettyInputFilterChecker extends AbstractGunChecker<GunNetI
             this.to = instance;
             return instance.unSerialize(src);
         } catch (ReflectiveOperationException e) {
-            throw new GunException(GunExceptionType.TRANSLATE_ERROR, GunNettyInputFilterChecker.class.getName());
+            throw new GunException(GunExceptionType.TRANSLATE_ERROR, GunNetServerInboundChecker.class.getName());
         }
     }
 

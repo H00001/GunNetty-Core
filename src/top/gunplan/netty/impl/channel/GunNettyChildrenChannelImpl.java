@@ -4,10 +4,10 @@
 
 package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.GunNettyChannelObserve;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
+import top.gunplan.netty.observe.GunNettyChannelObserve;
 
 import java.io.IOException;
 import java.net.SocketAddress;

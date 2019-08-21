@@ -5,11 +5,11 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
-import top.gunplan.netty.GunNettyConnFilter;
 import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunOutboundChecker;
-import top.gunplan.netty.impl.GunNettyOutBoundChecker;
+import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
+import top.gunplan.netty.impl.checker.GunNetServerOutboundChecker;
+import top.gunplan.netty.impl.checker.GunOutboundChecker;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SocketChannel;
@@ -38,7 +38,7 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
                 return;
             }
         }
-        GunOutboundChecker checker = new GunNettyOutBoundChecker(outbound, channel);
+        GunOutboundChecker checker = new GunNetServerOutboundChecker(outbound, channel);
         ListIterator<GunNettyConnFilter> iterator = connFilters.listIterator(connFilters.size());
         GunNettyFilter.DealResult result;
         do {

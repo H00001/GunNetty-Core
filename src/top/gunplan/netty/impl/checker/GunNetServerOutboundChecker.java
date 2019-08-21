@@ -2,9 +2,9 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty.impl;
+package top.gunplan.netty.impl.checker;
 
-import top.gunplan.netty.GunOutboundChecker;
+import top.gunplan.netty.impl.GunNettyChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
@@ -14,16 +14,16 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  * @see GunNettyChecker
  */
-public final class GunNettyOutBoundChecker extends AbstractGunChecker<GunNetOutbound> implements GunOutboundChecker {
+public final class GunNetServerOutboundChecker extends AbstractGunChecker<GunNetOutbound> implements GunOutboundChecker {
     private boolean hasDataToOutput;
 
     /**
-     * GunNettyOutBoundChecker
+     * GunNetServerOutboundChecker
      *
      * @param outputObject GunNetOutbound
      * @param channel      SelectionKey
      */
-    public GunNettyOutBoundChecker(GunNetOutbound outputObject, GunNettyChildChannel<SocketChannel> channel) {
+    public GunNetServerOutboundChecker(GunNetOutbound outputObject, GunNettyChildChannel<SocketChannel> channel) {
         super(channel);
         this.to = outputObject;
         hasDataToOutput = outputObject != null;
