@@ -21,7 +21,7 @@ public interface GunNettyInboundFilter extends GunNettyDataFilter {
      * doOutputFilter
      *
      * @param filterDto input to the filter's deal Object
-     * @return Deal result {@link top.gunplan.netty.GunNettyFilter.DealResult}
+     * @return Deal result {@link GunNettyFilter.DealResult}
      * @throws GunChannelException channel error
      */
     @Override

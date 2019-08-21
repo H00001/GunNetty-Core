@@ -6,8 +6,8 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunExceptionType;
-import top.gunplan.netty.GunNettyFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
+import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.GunNettyFunctional;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.checker.GunInboundChecker;

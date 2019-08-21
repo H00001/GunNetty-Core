@@ -4,6 +4,8 @@
 
 package top.gunplan.netty;
 
+import top.gunplan.netty.filter.GunNettyFilter;
+
 /**
  * this is a handle interface ,include {@link GunNettyFilter }
  * and {@link GunNettyHandle}

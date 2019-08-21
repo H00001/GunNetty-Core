@@ -10,6 +10,7 @@ import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.example.GunNettyCharsetInboundChecker;
 import top.gunplan.netty.example.GunNettyStringHandle;
+import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;

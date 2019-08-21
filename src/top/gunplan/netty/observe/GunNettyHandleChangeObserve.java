@@ -2,8 +2,10 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty;
+package top.gunplan.netty.observe;
 
+import top.gunplan.netty.GunNettyChildrenHandle;
+import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
 /**

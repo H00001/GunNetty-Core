@@ -4,8 +4,7 @@
 
 package top.gunplan.netty.observe;
 
-import top.gunplan.netty.GunNettyFilter;
-import top.gunplan.netty.GunNettyHandleChangeObserve;
+import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
 /**
