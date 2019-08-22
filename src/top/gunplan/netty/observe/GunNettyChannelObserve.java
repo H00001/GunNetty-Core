@@ -14,7 +14,7 @@ import java.nio.channels.SocketChannel;
  * @version 0.0.0.3
  * @date 2019-08-18 22:36
  */
-public interface GunNettyChannelObserve extends GunObserve {
+public interface GunNettyChannelObserve extends GunNettyObserve {
 
     /**
      * on recover read interest happened

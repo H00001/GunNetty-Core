@@ -7,11 +7,11 @@ package top.gunplan.netty.observe;
 import top.gunplan.netty.GunHandle;
 
 /**
- * GunObserve
+ * GunNettyObserve
  *
  * @author frank albert
  * @version 0.0.0.1
  * @date 2019-08-19 22:09
  */
-public interface GunObserve extends GunHandle {
+public interface GunNettyObserve extends GunHandle {
 }

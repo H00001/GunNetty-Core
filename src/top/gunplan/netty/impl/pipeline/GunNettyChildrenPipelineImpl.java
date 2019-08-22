@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.impl.pipeline;
 
-import top.gunplan.netty.GunBootServerBase;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunPipelineCheckResult;
@@ -88,15 +87,15 @@ class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
 
     private <U extends GunNettyFilter> void addFilter0(U filter, List<U> list) {
         assert observe != null;
-        observe.onAddFilter(filter, this);
         if (filter != null) {
             GunNetFilterOrder order = filter.getClass().getAnnotation(GunNetFilterOrder.class);
             if (order == null) {
-                throw new GunBootServerBase.GunNettyCanNotBootException(new NullPointerException("not have order"));
+                list.add(filter);
+            } else {
+                list.add(order.index(), filter);
             }
-
-            list.add(order.index(), filter);
         }
+        observe.onAddFilter(filter, this);
 
     }
 

@@ -2,10 +2,9 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty;
+package top.gunplan.netty.observe;
 
 import top.gunplan.netty.common.GunNettyContext;
-import top.gunplan.netty.observe.GunObserve;
 
 import java.net.SocketAddress;
 
@@ -16,7 +15,7 @@ import java.net.SocketAddress;
  * @version 0.0.0.y
  * @date 2019-08-05 00:19
  */
-public interface GunNettyBaseObserve extends GunObserve {
+public interface GunNettyBaseObserve extends GunNettyObserve {
     /**
      * Ready-to-read termination
      *

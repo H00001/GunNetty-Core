@@ -11,7 +11,7 @@ import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
  * GunNettyChildrenPipelineChangedObserve
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-18 12:29
  */
 public interface GunNettyChildrenPipelineChangedObserve extends GunNettyHandleChangeObserve {

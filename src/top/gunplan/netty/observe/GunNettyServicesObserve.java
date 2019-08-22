@@ -2,8 +2,9 @@
  * Copyright (c) frankHan personal 2017-2018
  */
 
-package top.gunplan.netty;
+package top.gunplan.netty.observe;
 
+import top.gunplan.netty.GunHandle;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 

@@ -11,12 +11,16 @@ import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.example.GunNettyCharsetInboundChecker;
 import top.gunplan.netty.example.GunNettyStringHandle;
 import top.gunplan.netty.filter.GunNettyFilter;
+import top.gunplan.netty.filter.GunNettyInboundFilter;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;
+import top.gunplan.netty.impl.checker.GunInboundChecker;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.property.GunGetPropertyFromNet;
 import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class BaseTest {
 
@@ -58,6 +62,21 @@ public class BaseTest {
             pipeline.addDataFilter(new GunNettyStdFirstFilter(p));
             pipeline.addDataFilter(new GunNettyCharsetInboundChecker());
             pipeline.addConnFilter(new GunNettyStdFirstFilter(p));
+            pipeline.addDataFilter(new GunNettyInboundFilter() {
+                AtomicInteger i = new AtomicInteger(0);
+
+                @Override
+                public DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException {
+                    i.incrementAndGet();
+                    if (i.get() == 10) {
+                        filterDto.channel().closeAndRemove(true);
+                        return DealResult.CLOSED;
+                    }
+                    return DealResult.NEXT;
+                }
+
+
+            });
             pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
             pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
         });

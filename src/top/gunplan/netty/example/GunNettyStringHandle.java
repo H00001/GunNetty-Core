@@ -25,6 +25,8 @@ import java.net.SocketAddress;
  * @date 2019-07-27 08:08
  */
 public class GunNettyStringHandle implements GunNettyChildrenHandle, GunNettyParentHandle {
+
+
     @Override
     public GunNetOutbound dealDataEvent(GunNetInbound request) throws GunException {
         return (GunNetOutbound) request;
@@ -43,6 +45,6 @@ public class GunNettyStringHandle implements GunNettyChildrenHandle, GunNettyPar
 
     @Override
     public GunNetOutbound dealConnEvent(SocketAddress address) throws GunException {
-        return new GunString("welcome to system");
+        return new GunString("welcome to system now time:" + System.currentTimeMillis() + "\n");
     }
 }

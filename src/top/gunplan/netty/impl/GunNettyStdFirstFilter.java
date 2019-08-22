@@ -6,7 +6,6 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunFunctionMapping;
-import top.gunplan.netty.GunNettyBaseObserve;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
@@ -14,6 +13,7 @@ import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.checker.AbstractGunChecker;
 import top.gunplan.netty.impl.checker.GunInboundChecker;
 import top.gunplan.netty.impl.checker.GunOutboundChecker;
+import top.gunplan.netty.observe.GunNettyBaseObserve;
 import top.gunplan.utils.GunBytesUtil;
 
 import java.io.IOException;
