@@ -18,11 +18,11 @@ import java.util.Objects;
  * GunGetPropertyFromBaseFile
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-06-25 20:55
  */
 public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, PropertyDataBuilder<String[]> {
-    private final GunNettyPropertyAnalyzer<String, String[]> analyzier = new AbstractGunNettyStandStringPropertyAnalysiser() {
+    private final GunNettyPropertyAnalyzer<String, String[]> analyzier = new AbstractGunNettyStandStringPropertyAnalizer() {
         @Override
         public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
             GunGetPropertyFromBaseFile.this.settingProperties0(propertiesMap, info);

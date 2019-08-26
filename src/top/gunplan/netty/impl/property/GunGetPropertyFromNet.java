@@ -28,7 +28,7 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
     private GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {
     };
 
-    private GunNettyPropertyAnalyzer<String, String[]> analyzer = new AbstractGunNettyStandStringPropertyAnalysiser() {
+    private GunNettyPropertyAnalyzer<String, String[]> analyzer = new AbstractGunNettyStandStringPropertyAnalizer() {
         @Override
         public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
             GunGetPropertyFromNet.this.address = info;

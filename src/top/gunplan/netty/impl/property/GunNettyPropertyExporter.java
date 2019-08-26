@@ -26,6 +26,11 @@ public interface GunNettyPropertyExporter {
     }
 
 
+    /**
+     * export
+     *
+     * @param k export k
+     */
     default void export(String k) {
         GunNettyContext.logger.setTAG(GunNettyPropertyExporter.class).info(k);
     }
