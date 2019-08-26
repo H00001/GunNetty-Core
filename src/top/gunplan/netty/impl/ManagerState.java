@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl;
 
 /**
@@ -9,7 +13,7 @@ package top.gunplan.netty.impl;
  */
 public enum ManagerState {
     /**
-     * INACTIVE   : stopd , not active
+     * INACTIVE   : stop , not active
      * BOOTING    : booting ,boot but not complete
      * RUNNING    : service is running
      * STOPPING   : stop is running but not stopd

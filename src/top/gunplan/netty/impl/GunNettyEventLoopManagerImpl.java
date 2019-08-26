@@ -24,7 +24,7 @@ import java.util.concurrent.ExecutorService;
  * GunNettyEventLoopManagerImpl
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-13 04:42
  */
 final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {

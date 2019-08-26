@@ -100,7 +100,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     @Override
     public void dealEvent(SelectionKey key) throws IOException {
         final SocketChannel socketChannel = ((ServerSocketChannel) key.channel()).accept();
-        this.deal.submit(() -> {
+        this.submit(() -> {
             GunNettyChildChannel<SocketChannel> childChannel;
             try {
                 childChannel = GunNettyChannelFactory.newChannel(socketChannel, childrenInitHandle, channel);

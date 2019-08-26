@@ -22,7 +22,7 @@ import java.util.concurrent.ExecutorService;
  * @see GunCoreConnectionEventLoopImpl
  */
 abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
-    volatile ExecutorService deal;
+    private volatile ExecutorService deal;
     volatile Selector bootSelector;
     /**
      * pipe line, executor chain
@@ -108,6 +108,9 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     }
 
 
+    public void submit(Runnable runnable) {
+        this.deal.submit(runnable);
+    }
 }
 
 

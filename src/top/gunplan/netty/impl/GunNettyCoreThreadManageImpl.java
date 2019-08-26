@@ -23,10 +23,12 @@ import java.util.concurrent.Future;
  * @apiNote 2.0.1.9
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
+    /**
+     * GunNettyCoreProperty
+     */
     private final GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY;
 
     private final int MANAGE_THREAD_NUM;
-
 
     private final List<GunNettyTimer> globalTimers;
 

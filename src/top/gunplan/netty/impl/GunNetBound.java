@@ -4,17 +4,15 @@
 
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.protocol.GunProtocolControl;
-
 /**
  * GunNetBound
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-07-21 10:19
  */
 
-public interface GunNetBound extends GunProtocolControl<Void, Void> {
+public interface GunNetBound {
 
     /**
      * supply
@@ -22,8 +20,6 @@ public interface GunNetBound extends GunProtocolControl<Void, Void> {
      * @param nullptr nullptr
      * @return null
      */
-
-    @Override
     default Void supply(Void nullptr) {
         return null;
     }
