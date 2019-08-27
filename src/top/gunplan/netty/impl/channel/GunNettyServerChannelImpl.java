@@ -81,4 +81,9 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
         super.close();
         eventLoop.select().close();
     }
+
+    @Override
+    public void time() {
+
+    }
 }

@@ -130,4 +130,9 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         observes.parallelStream().forEach(GunNettyChannelObserve::onRecoverReadInterest);
     }
 
+
+    @Override
+    public void time() {
+        timers.forEach(t -> t.doWork(this));
+    }
 }

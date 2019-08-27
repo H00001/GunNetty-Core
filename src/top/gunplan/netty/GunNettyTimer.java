@@ -1,7 +1,8 @@
-package top.gunplan.netty;
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
 
-import java.nio.channels.SelectionKey;
-import java.util.Set;
+package top.gunplan.netty;
 
 /**
  * @author dosdrtt
@@ -9,7 +10,7 @@ import java.util.Set;
  * this is a time execute interface
  * you can use this with {@link }
  */
-public interface GunNettyTimer extends GunHandle {
+public interface GunNettyTimer<R> extends GunHandle {
     /**
      * get interval
      *
@@ -32,7 +33,7 @@ public interface GunNettyTimer extends GunHandle {
      * @param keys selection keys set
      * @return work result
      */
-    int doWork(Set<SelectionKey> keys);
+    int doWork(R keys);
 
 
     /**

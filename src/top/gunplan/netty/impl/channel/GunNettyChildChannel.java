@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl.channel;
 
+import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.observe.GunNettyChannelObserve;
@@ -50,4 +51,6 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
 
     void recoverReadInterest();
 
+
+    GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> addTimer(GunNettyChildTimer timer);
 }

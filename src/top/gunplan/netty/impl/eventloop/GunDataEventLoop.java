@@ -63,5 +63,10 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
     int fastLimit() throws IOException;
 
 
+    /**
+     * submit async event
+     *
+     * @param runnable runner
+     */
     void submit(Runnable runnable);
 }
