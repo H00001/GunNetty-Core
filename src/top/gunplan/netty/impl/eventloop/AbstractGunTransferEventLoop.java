@@ -20,6 +20,7 @@ import java.util.concurrent.ExecutorService;
 public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransferEventLoop<U> {
     private volatile boolean running = false;
     private volatile GunNettyEventLoopManager manager;
+    private volatile Thread transferThread = null;
 
     /**
      * do transferTarget
@@ -52,6 +53,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
 
     @Override
     public void loop() {
+        transferThread = Thread.currentThread();
         for (; isLoopNext(); ) {
             loopTransfer();
         }
@@ -70,6 +72,7 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
     @Override
     public void stopEventLoop() {
         running = false;
+        transferThread.interrupt();
     }
 
 }

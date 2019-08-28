@@ -74,6 +74,9 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     @Override
     public void stopEventLoop() {
         this.running = false;
+        bootSelector.wakeup();
+
+
     }
 
     /**

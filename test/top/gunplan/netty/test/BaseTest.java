@@ -86,7 +86,7 @@ public class BaseTest {
         server.setSyncType(false);
         server.sync();
         //running time
-        Thread.sleep(10000000);
+        Thread.sleep(1000);
         server.stop();
     }
 }

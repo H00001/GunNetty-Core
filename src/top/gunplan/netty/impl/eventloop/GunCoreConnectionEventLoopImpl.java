@@ -116,4 +116,14 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
         });
     }
 
+    @Override
+    public void stopEventLoop() {
+        super.stopEventLoop();
+        try {
+            Thread.sleep(100);
+            bootSelector.close();
+        } catch (InterruptedException | IOException ignore) {
+
+        }
+    }
 }

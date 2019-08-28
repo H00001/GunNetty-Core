@@ -66,20 +66,27 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     public void nextDeal() {
         if (listenSize.get() == 0) {
             LockSupport.park();
+            if (listenSize.get() == 0) {
+                return;
+            }
         }
         try {
-            int val = timeWait == -1 ? bootSelector.select() : bootSelector.select(timeWait);
-            if (val > 0) {
-                Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
-                while (keyIterator.hasNext()) {
-                    final SelectionKey sk = keyIterator.next();
-                    this.dealEvent(sk);
-                    keyIterator.remove();
-                }
-            }
-            bootSelector.selectNow();
+            V();
         } catch (IOException exp) {
             throwGunException(exp);
+        }
+    }
+
+    private void V() throws IOException {
+        if ((timeWait == -1 ? bootSelector.select() : bootSelector.select(timeWait)) > 0) {
+            Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
+            while (keyIterator.hasNext()) {
+                final SelectionKey sk = keyIterator.next();
+                this.dealEvent(sk);
+                keyIterator.remove();
+            }
+        } else {
+            bootSelector.selectNow();
         }
     }
 
@@ -109,5 +116,15 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         return bootSelector.select(0);
     }
 
+    @Override
+    public void stopEventLoop() {
+        LockSupport.unpark(workThread);
+        super.stopEventLoop();
+        try {
+            Thread.sleep(100);
+            bootSelector.close();
+        } catch (InterruptedException | IOException ignore) {
 
+        }
+    }
 }
