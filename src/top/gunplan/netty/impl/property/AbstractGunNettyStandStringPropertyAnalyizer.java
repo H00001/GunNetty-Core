@@ -13,13 +13,13 @@ import java.util.Map;
 import static top.gunplan.utils.GunNumberUtil.isNumber;
 
 /**
- * AbstractGunNettyStandStringProperty Analysiser
+ * AbstractGunNettyStandStringProperty Analyizer
  *
  * @author frank albert
  * @version 0.0.0.1
  * @date 2019-08-03 18:21
  */
-public abstract class AbstractGunNettyStandStringPropertyAnalizer implements GunNettyPropertyAnalyzer<String, String[]> {
+public abstract class AbstractGunNettyStandStringPropertyAnalyizer implements GunNettyPropertyAnalyzer<String, String[]> {
     private final GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {
     };
     private final static String UN_USEFUL_CHARS = "#";

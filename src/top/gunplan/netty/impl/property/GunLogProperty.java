@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty.impl.property;
@@ -11,6 +7,7 @@ package top.gunplan.netty.impl.property;
 import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.common.GunNettyStringUtil;
 import top.gunplan.utils.GunLogger;
 
 import java.io.FileNotFoundException;
@@ -25,6 +22,7 @@ public class GunLogProperty implements GunProperty {
     private int outputlevel;
     private String direct;
     private String format = null;
+    private final String FILE = "file:";
 
 
     public GunLogProperty() {
@@ -39,7 +37,6 @@ public class GunLogProperty implements GunProperty {
     @Override
     public boolean doRegex() {
         GunLogger log = GunNettyContext.logger;
-        String f = "file:";
         if (isAvailable()) {
             log.setLevel(outputlevel);
             log.info("Check parameters succeed");
@@ -47,12 +44,11 @@ public class GunLogProperty implements GunProperty {
                 log.setFormat(format);
             }
             final String direct = this.direct;
-            if (direct.startsWith(f)) {
-                String[] prfile = direct.replace("file:", "").split(",");
+            if (direct.startsWith(FILE)) {
+                String[] profile = direct.replace(FILE, GunNettyStringUtil.EMPTY).split(",");
                 try {
-                    log.setStdOutput(new FileOutputStream(prfile[0], true));
-                    log.setErrOutput(new FileOutputStream(prfile[1], true));
-
+                    log.setStdOutput(new FileOutputStream(profile[0], true));
+                    log.setErrOutput(new FileOutputStream(profile[1], true));
                 } catch (FileNotFoundException e) {
                     log.error(e);
                     return false;

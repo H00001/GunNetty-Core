@@ -13,7 +13,7 @@ import java.nio.channels.SocketChannel;
  * @author dosdrtt
  */
 public final class GunNettyBytesUtil {
-    private static ByteBuffer heapbuff;
+    private static ByteBuffer heapBuff;
 
     public static boolean compareBytesFromStart(final byte[] src, final byte... b) {
         for (int i = 0; i < b.length; i++) {
@@ -45,15 +45,15 @@ public final class GunNettyBytesUtil {
         int nowpoint = 0;
         int maxsize = increment;
         int readlen;
-        while ((readlen = channel.read(heapbuff)) > 0) {
-            byte[] buffer = heapbuff.array();
+        while ((readlen = channel.read(heapBuff)) > 0) {
+            byte[] buffer = heapBuff.array();
             if (maxsize - nowpoint < buffer.length) {
                 save = GunNettyBytesUtil.incrementCopy(save, increment);
                 maxsize += increment;
             }
             System.arraycopy(buffer, 0, save, nowpoint, buffer.length);
             nowpoint += readlen;
-            heapbuff.clear();
+            heapBuff.clear();
         }
         byte[] realsave = new byte[nowpoint];
         System.arraycopy(save, 0, realsave, 0, nowpoint);
@@ -68,15 +68,15 @@ public final class GunNettyBytesUtil {
 //        int nowpoint = 0;
 //        int maxsize = increment;
 //        int readlen;
-//        while ((readlen = channel.read(heapbuff)) > 0) {
-//            byte[] buffer = heapbuff.array();
+//        while ((readlen = channel.read(heapBuff)) > 0) {
+//            byte[] buffer = heapBuff.array();
 //            if (maxsize - nowpoint < buffer.length) {
 //                save = GunNettyBytesUtil.incrementCopy(save, increment);
 //                maxsize += increment;
 //            }
 //            System.arraycopy(buffer, 0, save, nowpoint, buffer.length);
 //            nowpoint += readlen;
-//            heapbuff.clear();
+//            heapBuff.clear();
 //        }
 //        byte[] realsave = new byte[nowpoint];
 //        System.arraycopy(save, 0, realsave, 0, nowpoint);
@@ -86,7 +86,7 @@ public final class GunNettyBytesUtil {
 
 
     public static void init(int size) {
-        heapbuff = ByteBuffer.allocate(size);
+        heapBuff = ByteBuffer.allocate(size);
     }
 
     public static byte[] readFromChannel(SocketChannel channel) throws IOException {
