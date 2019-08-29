@@ -20,7 +20,6 @@ import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.property.GunPropertyStrategy;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -42,7 +41,7 @@ final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
             Constructor<GunNettyCoreProperty> cons = GunNettyCoreProperty.class.getDeclaredConstructor();
             cons.setAccessible(true);
             registerProperty(cons.newInstance());
-        } catch (InstantiationException | IllegalAccessException | NoSuchMethodException | InvocationTargetException e) {
+        } catch (ReflectiveOperationException e) {
             throw new GunException(GunExceptionType.REF, e);
         }
         registerProperty(new GunLogProperty());

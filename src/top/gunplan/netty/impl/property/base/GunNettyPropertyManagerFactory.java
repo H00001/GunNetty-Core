@@ -12,7 +12,7 @@ package top.gunplan.netty.impl.property.base;
  * GunNettyPropertyManagerFactory
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-07-21 14:50
  */
 

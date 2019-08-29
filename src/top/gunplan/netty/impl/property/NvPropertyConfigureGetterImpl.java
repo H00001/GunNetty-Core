@@ -19,21 +19,21 @@ import java.util.concurrent.CompletableFuture;
  * @date 2019-08-06 12:58
  */
 class NvPropertyConfigureGetterImpl implements NvPropertyConfigureGetter {
-    GunNettyPropertyAnalyzer<String, String[]> analyzier;
+    GunNettyPropertyAnalyzer<String, String[]> analyser;
     Map<String, GunProperty> p;
-    private PropertyDataBuilder<String[]> creater = new GunGetPropertyFromBaseFile();
+    private PropertyDataBuilder<String[]> creator = new GunGetPropertyFromBaseFile();
 
     void doGetProperty() {
         CompletableFuture.supplyAsync(() -> {
             try {
-                return creater.create();
+                return creator.create();
             } catch (IOException e) {
                 return null;
             }
         }).thenAcceptAsync((v) -> {
             if (v != null) {
                 try {
-                    analyzier.analyzingProperties(v, p);
+                    analyser.analyzingProperties(v, p);
                 } catch (NoSuchFieldException | IllegalAccessException e) {
                 }
             }

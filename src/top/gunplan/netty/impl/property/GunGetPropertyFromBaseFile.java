@@ -22,7 +22,7 @@ import java.util.Objects;
  * @date 2019-06-25 20:55
  */
 public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, PropertyDataBuilder<String[]> {
-    private final GunNettyPropertyAnalyzer<String, String[]> analyzier = new AbstractGunNettyStandStringPropertyAnalyizer() {
+    private final GunNettyPropertyAnalyzer<String, String[]> analyser = new AbstractGunNettyStandStringPropertyAnalyizer() {
         @Override
         public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
             GunGetPropertyFromBaseFile.this.settingProperties0(propertiesMap, info);
@@ -31,6 +31,7 @@ public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, Property
     };
     private String fileName = "GunNetty.conf";
 
+
     public GunGetPropertyFromBaseFile(String fileName) {
         this.fileName = fileName;
     }
@@ -38,13 +39,12 @@ public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, Property
     public GunGetPropertyFromBaseFile() {
     }
 
-
     private boolean settingProperties0(Map<String, GunProperty> propertyMap, String filename) throws GunBootServerBase.GunNettyCanNotBootException {
         try {
             final String read = Files.readString(Paths.get((Objects.requireNonNull(
                     this.getClass().getClassLoader().getResource(filename)).getPath())));
             String[] properties = read.split("\n");
-            analyzier.analyzingProperties(properties, propertyMap);
+            analyser.analyzingProperties(properties, propertyMap);
         } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
             throw new GunBootServerBase.GunNettyCanNotBootException(e);
         }
