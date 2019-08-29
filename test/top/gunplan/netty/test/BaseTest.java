@@ -27,7 +27,7 @@ public class BaseTest {
     @Test
     public void using019() throws InterruptedException {
         GunNettyDefaultObserve p = new GunNettyDefaultObserve();
-        GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config1.html"));
+        GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config.html"));
         GunBootServer server = GunBootServerFactory.newInstance();
         server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
                 GunNettyExecutors.newFixedExecutorPool(10));
@@ -61,7 +61,7 @@ public class BaseTest {
         server.setSyncType(false);
         server.sync();
         //running time
-        Thread.sleep(1000);
+        Thread.sleep(1000000);
         server.stop();
     }
 }

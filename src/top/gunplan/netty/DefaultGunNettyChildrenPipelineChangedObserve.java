@@ -19,12 +19,12 @@ import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
 public class DefaultGunNettyChildrenPipelineChangedObserve implements GunNettyChildrenPipelineChangedObserve {
     @Override
     public void onUpdateHandle(GunNettyChildrenHandle handle, GunNettyChildrenPipeline pipeline) {
-        GunNettyContext.logger.info("handle has been added:" + handle);
+        GunNettyContext.logger.info("child handle has been added:" + handle);
     }
 
     @Override
     public void onUpdateHandle(GunNettyParentHandle handle, GunNettyChildrenPipeline pipeline) {
-        GunNettyContext.logger.info("handle has been added:" + handle);
+        GunNettyContext.logger.info("parent handle has been added:" + handle);
     }
 
     @Override
@@ -34,6 +34,6 @@ public class DefaultGunNettyChildrenPipelineChangedObserve implements GunNettyCh
 
     @Override
     public <V extends GunNettyFilter> void onRemoveFilter(V filter, GunNettyChildrenPipeline pipeline) {
-        GunNettyContext.logger.info("filter has been removed" + filter);
+        GunNettyContext.logger.info("filter has been removed:" + filter);
     }
 }
