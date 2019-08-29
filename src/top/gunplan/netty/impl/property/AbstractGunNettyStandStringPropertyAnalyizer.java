@@ -33,14 +33,14 @@ public abstract class AbstractGunNettyStandStringPropertyAnalyizer implements Gu
         for (int now = 0; now < properties.length; now++) {
             if (!properties[now].startsWith(UN_USEFUL_CHARS)) {
                 if (properties[now].endsWith(OPEN_AND_CLOSE_CHILD_PROPERTIES[0])) {
-                    if (!GunNettyStringUtil.isEmpty0(properties[now])) {
+                    if (!GunNettyStringUtil.isNotEmpty0(properties[now])) {
                         break;
                     }
                     final String proHead = properties[now].replace(OPEN_AND_CLOSE_CHILD_PROPERTIES[0], "").trim();
                     final GunProperty obj = propertiesMap.get(proHead);
                     now++;
                     for (; now < properties.length; now++) {
-                        if (!GunNettyStringUtil.isEmpty0(properties[now])) {
+                        if (!GunNettyStringUtil.isNotEmpty0(properties[now])) {
                             break;
                         }
                         if (!properties[now].trim().endsWith(OPEN_AND_CLOSE_CHILD_PROPERTIES[1])) {

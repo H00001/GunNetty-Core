@@ -10,15 +10,15 @@ package top.gunplan.netty.common;
 public final class GunNettyStringUtil {
     public static final String EMPTY = "";
 
-    public static boolean isEmpty0(String in) {
+    public static boolean isNotEmpty0(String in) {
         return in != null && in.trim().length() != 0;
     }
 
     public static boolean isEmpty(String in) {
-        return !isEmpty0(in);
+        return !isNotEmpty0(in);
     }
 
-    public static boolean isEmpty0(String[] in) {
+    public static boolean isNotEmpty0(String[] in) {
         return in == null || in.length == 0;
     }
 }
