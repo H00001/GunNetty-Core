@@ -71,7 +71,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     }
 
     @Override
-    public void closeAndRemove(boolean notHappenedOnRead) {
+    public GunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> closeAndRemove(boolean notHappenedOnRead) {
         try {
             close();
             eventLoop.fastLimit();
@@ -82,6 +82,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         } catch (IOException e) {
             observes.parallelStream().forEach(v -> v.whenCloseMeetException(remoteAddress(), e));
         }
+        return this;
     }
 
 
@@ -133,6 +134,10 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
 
     @Override
     public void time() {
-        timers.forEach(t -> t.doWork(this));
+        timers.parallelStream().forEach(t -> {
+            if (unsafeSeqencer.nextSequence() % t.timeInterval() == 0) {
+                t.doWork(this);
+            }
+        });
     }
 }

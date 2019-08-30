@@ -66,6 +66,7 @@ final class GunNettyCoreThreadManagerHelperImpl implements GunNettyCoreThreadMan
 
     @Override
     public Future<Integer> submitConnection(Runnable task) {
+        assert task != null;
         return ACCEPTCO_POOL.submit(task, 1);
     }
 

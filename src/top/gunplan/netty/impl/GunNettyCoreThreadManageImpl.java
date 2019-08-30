@@ -67,6 +67,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         threadHelper.submitSchedule(eventLoopManager.timeEventLoop(),
                 GUN_NETTY_CORE_PROPERTY.initWait(),
                 GUN_NETTY_CORE_PROPERTY.minInterval());
+        assert eventLoopManager.connEventLoop() != null;
         var future = threadHelper.submitConnection(eventLoopManager.connEventLoop());
         status = ManagerState.RUNNING;
         return future;

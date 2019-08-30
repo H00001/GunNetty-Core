@@ -18,10 +18,14 @@ import top.gunplan.netty.impl.property.GunGetPropertyFromNet;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
-public class BaseTest {
+public class TestBase {
 
     public void preTest() {
 
+    }
+
+    public static void main(String[] args) throws InterruptedException {
+        new TestBase().using019();
     }
 
     @Test

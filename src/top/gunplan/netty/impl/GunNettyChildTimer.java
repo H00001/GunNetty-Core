@@ -18,5 +18,10 @@ import java.nio.channels.SocketChannel;
  */
 
 public interface GunNettyChildTimer extends GunNettyTimer<GunNettyChildChannel<SocketChannel>> {
-
+    /**
+     * get time Interval
+     *
+     * @return time interval
+     */
+    long timeInterval();
 }

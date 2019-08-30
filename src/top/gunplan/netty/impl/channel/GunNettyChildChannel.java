@@ -25,7 +25,7 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
      *
      * @param b is or not
      */
-    void closeAndRemove(boolean b);
+    GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> closeAndRemove(boolean b);
 
     /**
      * parent
@@ -49,6 +49,10 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
      */
     GunNettyChildChannel<CH> cleanAllObserve();
 
+
+    /**
+     * recover Read Interest
+     */
     void recoverReadInterest();
 
 

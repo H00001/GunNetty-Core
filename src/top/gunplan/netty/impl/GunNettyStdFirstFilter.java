@@ -95,7 +95,7 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
                 operatorSrc.set(filterDto, reader.readBytes(channel.channel()));
                 channel.recoverReadInterest();
             } catch (IOException | ReflectiveOperationException e) {
-                channel.closeAndRemove(false);
+                channel.closeAndRemove(false).destory();
                 return invokeCloseEvent(channel.remoteAddress(), true);
             }
             return DealResult.NEXT;

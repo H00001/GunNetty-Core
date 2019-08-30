@@ -81,4 +81,10 @@ public interface GunNettyChannel<CH extends Channel,
     boolean isValid();
 
 
+    /**
+     * when channel not use
+     */
+    void destory();
+
+
 }
