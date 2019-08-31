@@ -12,8 +12,6 @@ import top.gunplan.netty.observe.GunNettyHandleChangeObserve;
 
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * AbstractNettyPipelineImpl
@@ -21,16 +19,14 @@ import java.util.concurrent.ScheduledExecutorService;
  * @author dosdrtt
  * @see GunNettyPipeline
  */
-abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
+abstract class AbstractNettyPipelineImpl<G extends GunNettyTimer> implements GunNettyPipeline<G> {
     private volatile GunNettyChildrenHandle cHandle;
     private GunNettyHandleChangeObserve baseObserve;
     private volatile GunNettyParentHandle pHandle;
-    private final List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
-    private final ScheduledExecutorService es = Executors.newScheduledThreadPool(1);
-
+    private final List<G> timers = new CopyOnWriteArrayList<>();
 
     @Override
-    public GunNettyPipeline addTimer(GunNettyTimer timer) {
+    public GunNettyPipeline<G> addNettyTimer(G timer) {
         if (timer != null) {
             timers.add(timer);
         }
@@ -86,7 +82,7 @@ abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
     }
 
     @Override
-    public List<GunNettyTimer> timers() {
+    public List<G> timers() {
         return timers;
     }
 

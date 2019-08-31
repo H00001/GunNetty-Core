@@ -9,14 +9,17 @@ import top.gunplan.netty.*;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.example.GunNettyCharsetInboundChecker;
 import top.gunplan.netty.example.GunNettyStringHandle;
+import top.gunplan.netty.example.GunString;
+import top.gunplan.netty.example.GunTimerExample;
+import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.filter.GunNettyInboundFilter;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;
-import top.gunplan.netty.impl.checker.GunInboundChecker;
 import top.gunplan.netty.impl.property.GunGetPropertyFromNet;
 
-import java.util.concurrent.atomic.AtomicInteger;
+import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class TestBase {
 
@@ -37,25 +40,27 @@ public class TestBase {
                 GunNettyExecutors.newFixedExecutorPool(10));
         server.registerObserve(new GunNettyDefaultObserve());
         server.registerObserve(p).onHasChannel(pipeline -> {
-            pipeline.setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve());
-            pipeline.addDataFilter(new GunNettyStdFirstFilter(p));
-            pipeline.addDataFilter(new GunNettyCharsetInboundChecker());
-            pipeline.addConnFilter(new GunNettyStdFirstFilter(p));
-            pipeline.addDataFilter(new GunNettyInboundFilter() {
-                AtomicInteger i = new AtomicInteger(0);
+            pipeline.setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
+                    .addDataFilter(new GunNettyStdFirstFilter(p))
 
-                @Override
-                public DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException {
-                    i.incrementAndGet();
-                    if (i.get() == 10) {
-                        filterDto.channel().closeAndRemove(true);
-                        return DealResult.CLOSED;
-                    }
-                    return DealResult.NEXT;
-                }
+                    .addDataFilter(new GunNettyCharsetInboundChecker())
+                    .addConnFilter(new GunNettyStdFirstFilter(p))
+                    .addDataFilter((GunNettyInboundFilter) filterDto -> {
+                        if (((GunString) filterDto.transferTarget()).get().startsWith("666")) {
+                            ((GunTimerExample) filterDto.channel().timers().get(0)).k = 0;
+                        } else {
+                            try {
+                                filterDto.channel().channel().write(ByteBuffer.wrap(("you are dead\nhia hia hia").getBytes()));
+                                filterDto.channel().closeAndRemove(true);
+                            } catch (IOException ignored) {
 
-
-            });
+                            } finally {
+                                return GunNettyFilter.DealResult.CLOSED;
+                            }
+                        }
+                        return GunNettyFilter.DealResult.NEXT;
+                    })
+                    .addNettyTimer(new GunTimerExample());
             pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
             pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
         });
@@ -66,6 +71,9 @@ public class TestBase {
         server.sync();
         //running time
         Thread.sleep(1000000);
+
         server.stop();
     }
 }
+
+

@@ -6,6 +6,7 @@ package top.gunplan.netty.impl.pipeline;
 
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
+import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
 
 import java.util.List;
@@ -19,7 +20,12 @@ import java.util.stream.Stream;
  * @date 2019-08-13 09:35
  */
 
-public interface GunNettyChildrenPipeline extends GunNettyPipeline {
+public interface GunNettyChildrenPipeline extends GunNettyPipeline<GunNettyChildTimer> {
+    /**
+     * create a new pipeline
+     *
+     * @return GunNettyChildrenPipeline
+     */
     static GunNettyChildrenPipeline newPipeline() {
         return new GunNettyChildrenPipelineImpl();
     }
@@ -77,9 +83,19 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
     /**
      * add connection filter
      *
+     * @param filter added filter
      * @return List<GunNettyFilter> GunNettyFilter's List
      */
     GunNettyChildrenPipeline addConnFilter(GunNettyConnFilter filter);
+
+    /**
+     * add connection filter
+     *
+     * @param timer added timer
+     * @return List<GunNettyFilter> GunNettyFilter's List
+     */
+    @Override
+    GunNettyPipeline<GunNettyChildTimer> addNettyTimer(GunNettyChildTimer timer);
 
     /**
      * get connection filters
@@ -89,5 +105,11 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
     Stream<GunNettyConnFilter> connFilterStream();
 
 
+    /**
+     * setMetaInfoChangeObserver
+     *
+     * @param observe {@link GunNettyChildrenPipelineChangedObserve}
+     * @return self chain style
+     */
     GunNettyChildrenPipeline setMetaInfoChangeObserver(GunNettyChildrenPipelineChangedObserve observe);
 }

@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl.channel;
 
+import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
@@ -26,7 +27,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  */
 class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline>
         implements GunNettyChildChannel<SocketChannel> {
-    private GunNettyServerChannel pChannel;
+    private GunNettyServerChannel<ServerSocketChannel> pChannel;
     private volatile SelectionKey key;
     private final SocketAddress remoteAddress;
     private final SocketAddress localAddress;
@@ -41,6 +42,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         this.pChannel = pChannel;
         this.remoteAddress = channel.getRemoteAddress();
         this.localAddress = channel.getLocalAddress();
+
     }
 
 
@@ -82,6 +84,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         } catch (IOException e) {
             observes.parallelStream().forEach(v -> v.whenCloseMeetException(remoteAddress(), e));
         }
+        destory();
         return this;
     }
 
@@ -131,12 +134,19 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         observes.parallelStream().forEach(GunNettyChannelObserve::onRecoverReadInterest);
     }
 
+    @Override
+    @SuppressWarnings("unchecked")
+    public List<GunNettyChildTimer> timers() {
+        return super.timers();
+    }
+
 
     @Override
+    @SuppressWarnings("unchecked")
     public void time() {
         timers.parallelStream().forEach(t -> {
-            if (unsafeSeqencer.nextSequence() % t.timeInterval() == 0) {
-                t.doWork(this);
+            if (unsafeSequencer.nextSequence() % ((GunNettyChildTimer) t).timeInterval() == 0) {
+                ((GunNettyChildTimer) t).doWork(this);
             }
         });
     }

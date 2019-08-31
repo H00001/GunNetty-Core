@@ -11,6 +11,7 @@ import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
 import top.gunplan.netty.filter.GunNettyFilter;
+import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
 
 import java.util.List;
@@ -24,7 +25,7 @@ import java.util.stream.Stream;
  * @version 0.0.0.1
  * @date 2019-08-13 15:02
  */
-class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
+final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl<GunNettyChildTimer>
         implements GunNettyChildrenPipeline {
     private List<GunNettyDataFilter> dataFilters = new CopyOnWriteArrayList<>();
     private List<GunNettyConnFilter> connFilters = new CopyOnWriteArrayList<>();
@@ -68,6 +69,7 @@ class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
         addFilter0(filter, connFilters);
         return this;
     }
+
 
     @Override
     public Stream<GunNettyConnFilter> connFilterStream() {
@@ -120,6 +122,5 @@ class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
             return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.ERROR, "please set handle and filter");
         }
     }
-
 
 }

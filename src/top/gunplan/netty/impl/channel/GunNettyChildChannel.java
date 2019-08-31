@@ -11,6 +11,7 @@ import top.gunplan.netty.observe.GunNettyChannelObserve;
 
 import java.nio.channels.Channel;
 import java.nio.channels.SocketChannel;
+import java.util.List;
 
 /**
  * GunNettyChildChannel
@@ -56,5 +57,5 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
     void recoverReadInterest();
 
 
-    GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> addTimer(GunNettyChildTimer timer);
+    List<GunNettyChildTimer> timers();
 }
