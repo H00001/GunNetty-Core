@@ -14,7 +14,7 @@ import java.util.List;
  * @author dosdrtt
  * @since 1.0.0.4
  */
-public interface GunNettyPipeline<G extends GunNettyTimer> extends GunHandle {
+public interface GunNettyPipeline extends GunHandle {
     /**
      * setHandle
      *
@@ -59,7 +59,7 @@ public interface GunNettyPipeline<G extends GunNettyTimer> extends GunHandle {
      *
      * @return List<GunNettyTimer>
      */
-    List<G> timers();
+    List<GunNettyTimer> timers();
 
 
     /**
@@ -73,7 +73,7 @@ public interface GunNettyPipeline<G extends GunNettyTimer> extends GunHandle {
     int init();
 
 
-    GunNettyPipeline<G> setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe);
+    GunNettyPipeline setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe);
 
 
     /**
@@ -82,7 +82,7 @@ public interface GunNettyPipeline<G extends GunNettyTimer> extends GunHandle {
      * @param timer {@link GunNettyTimer}
      * @return this, chain style
      */
-    GunNettyPipeline<G> addNettyTimer(G timer);
+    GunNettyPipeline addNettyTimer(GunNettyTimer timer);
 
 
 }

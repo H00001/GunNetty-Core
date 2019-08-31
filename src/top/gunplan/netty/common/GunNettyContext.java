@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.common;
 
 
@@ -14,4 +18,10 @@ import top.gunplan.utils.GunNxLogger;
 
 public final class GunNettyContext {
     public static GunLogger logger = new GunNxLogger();
+
+    public static class NumberConst {
+        public static final int ONE = 1;
+        public static final int TWO = 2;
+        public static final int THREE = 1;
+    }
 }

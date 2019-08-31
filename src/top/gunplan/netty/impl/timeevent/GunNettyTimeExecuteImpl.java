@@ -5,6 +5,7 @@
 package top.gunplan.netty.impl.timeevent;
 
 import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.anno.GunTimeAnno;
 
 import java.nio.channels.SelectionKey;
 import java.util.Set;
@@ -54,8 +55,9 @@ final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
         }
 
         void execute(GunNettyTimer w) {
-            if (nowTime % w.interval() == 0) {
-                w.doWork(keys);
+            if (nowTime % w.getClass().getAnnotation(GunTimeAnno.class).interval() == 0) {
+                //todo
+                // w.doWork(keys);
             }
         }
     }

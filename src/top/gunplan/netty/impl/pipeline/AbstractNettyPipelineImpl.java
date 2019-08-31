@@ -19,14 +19,14 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author dosdrtt
  * @see GunNettyPipeline
  */
-abstract class AbstractNettyPipelineImpl<G extends GunNettyTimer> implements GunNettyPipeline<G> {
+abstract class AbstractNettyPipelineImpl<G extends GunNettyTimer> implements GunNettyPipeline {
     private volatile GunNettyChildrenHandle cHandle;
     private GunNettyHandleChangeObserve baseObserve;
     private volatile GunNettyParentHandle pHandle;
-    private final List<G> timers = new CopyOnWriteArrayList<>();
+    private final List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
 
     @Override
-    public GunNettyPipeline<G> addNettyTimer(G timer) {
+    public GunNettyPipeline addNettyTimer(GunNettyTimer timer) {
         if (timer != null) {
             timers.add(timer);
         }
@@ -82,7 +82,7 @@ abstract class AbstractNettyPipelineImpl<G extends GunNettyTimer> implements Gun
     }
 
     @Override
-    public List<G> timers() {
+    public List<GunNettyTimer> timers() {
         return timers;
     }
 

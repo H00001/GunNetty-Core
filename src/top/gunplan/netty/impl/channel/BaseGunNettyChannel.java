@@ -5,6 +5,7 @@
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
@@ -27,7 +28,7 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
     private final PL pipeline;
     private final long id;
     LOOP eventLoop;
-    List timers;
+    List<GunNettyTimer> timers;
     GunNettySequencer unsafeSequencer = GunNettySequencer.newThreadUnSafeSequencer();
     private ScheduledExecutorService scheduledExecutorService = GunNettyExecutors.newScheduleExecutorPool();
     private CH channel;

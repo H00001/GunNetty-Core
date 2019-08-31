@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.example;
 
+import top.gunplan.netty.anno.GunTimeExecutor;
 import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
@@ -11,25 +12,17 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
+
 public class GunTimerExample implements GunNettyChildTimer {
     public volatile int k = 0;
 
-    @Override
-    public long timeInterval() {
-        return 10;
-
-    }
-
-    @Override
-    public int interval() {
-        return 0;
-    }
 
     @Override
     public int runingTimes() {
         return 0;
     }
 
+    @GunTimeExecutor(interval = 10)
     @Override
     public int doWork(GunNettyChildChannel<SocketChannel> keys) {
         try {

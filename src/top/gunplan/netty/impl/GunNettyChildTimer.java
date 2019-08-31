@@ -17,11 +17,12 @@ import java.nio.channels.SocketChannel;
  * @date 2019-08-27 22:32
  */
 
-public interface GunNettyChildTimer extends GunNettyTimer<GunNettyChildChannel<SocketChannel>> {
+public interface GunNettyChildTimer extends GunNettyTimer {
     /**
-     * get time Interval
+     * available keys
      *
-     * @return time interval
+     * @param keys selection keys set
+     * @return work result
      */
-    long timeInterval();
+    int doWork(GunNettyChildChannel<SocketChannel> keys);
 }

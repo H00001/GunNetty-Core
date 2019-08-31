@@ -9,13 +9,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(value = ElementType.TYPE)
+@Target(value = ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GunTimeAnno {
+public @interface GunTimeExecutor {
     /**
      * get time Interval
      *
      * @return time interval
      */
-    int interval() default 1000;
+    int interval();
+
+
+    int maxRunningTimes() default -1;
 }

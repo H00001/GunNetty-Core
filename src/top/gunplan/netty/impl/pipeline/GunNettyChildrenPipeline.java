@@ -4,9 +4,9 @@
 
 package top.gunplan.netty.impl.pipeline;
 
+import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
-import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.stream.Stream;
  * @date 2019-08-13 09:35
  */
 
-public interface GunNettyChildrenPipeline extends GunNettyPipeline<GunNettyChildTimer> {
+public interface GunNettyChildrenPipeline extends GunNettyPipeline {
     /**
      * create a new pipeline
      *
@@ -95,7 +95,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline<GunNettyChild
      * @return List<GunNettyFilter> GunNettyFilter's List
      */
     @Override
-    GunNettyPipeline<GunNettyChildTimer> addNettyTimer(GunNettyChildTimer timer);
+    GunNettyPipeline addNettyTimer(GunNettyTimer timer);
 
     /**
      * get connection filters

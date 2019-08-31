@@ -5,7 +5,9 @@
 package top.gunplan.netty.example;
 
 import top.gunplan.netty.GunChannelException;
+import top.gunplan.netty.anno.GunHandleTag;
 import top.gunplan.netty.anno.GunNetFilterOrder;
+import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.filter.GunNettyInboundFilter;
 import top.gunplan.netty.impl.checker.GunInboundChecker;
 
@@ -18,6 +20,7 @@ import top.gunplan.netty.impl.checker.GunInboundChecker;
  * @date 2019-07-26 23:21
  */
 @GunNetFilterOrder(index = 1)
+@GunHandleTag(name = "GunNettyCharsetInboundChecker", id = GunNettyContext.NumberConst.ONE)
 public class GunNettyCharsetInboundChecker implements GunNettyInboundFilter {
 
     @Override
