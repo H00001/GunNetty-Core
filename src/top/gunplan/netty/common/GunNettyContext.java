@@ -24,4 +24,11 @@ public final class GunNettyContext {
         public static final int TWO = 2;
         public static final int THREE = 1;
     }
+
+    public static class ICE {
+        public static long nextValue() {
+            return System.currentTimeMillis() << 10 & System.nanoTime() >>> 3;
+        }
+    }
+
 }

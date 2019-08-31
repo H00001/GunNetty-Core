@@ -8,16 +8,9 @@ package top.gunplan.netty;
  * @author dosdrtt
  * @apiNote 0.1.0.3
  * this is a time execute interface
- * you can use this with {@link }
+ * you can use this with {@link GunNettyTimer}
  */
-public interface GunNettyTimer<R> extends GunHandle {
-    /**
-     * get run times
-     *
-     * @return run times
-     */
-    int runingTimes();
-
+public interface GunNettyTimer extends GunHandle {
     /**
      * ifKeyEmptyExec
      *
@@ -26,5 +19,7 @@ public interface GunNettyTimer<R> extends GunHandle {
     default boolean ifKeyEmptyExec() {
         return true;
     }
+
+    boolean timeExecuteError(String methodName, ReflectiveOperationException t);
 
 }

@@ -11,7 +11,6 @@ import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
 import top.gunplan.netty.filter.GunNettyFilter;
-import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
 
 import java.util.List;
@@ -25,7 +24,7 @@ import java.util.stream.Stream;
  * @version 0.0.0.1
  * @date 2019-08-13 15:02
  */
-final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl<GunNettyChildTimer>
+final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
         implements GunNettyChildrenPipeline {
     private List<GunNettyDataFilter> dataFilters = new CopyOnWriteArrayList<>();
     private List<GunNettyConnFilter> connFilters = new CopyOnWriteArrayList<>();

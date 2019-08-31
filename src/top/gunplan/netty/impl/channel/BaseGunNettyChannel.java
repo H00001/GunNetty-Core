@@ -80,7 +80,9 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
         System.gc();
     }
 
-    List timers() {
+
+    @Override
+    public List<GunNettyTimer> timers() {
         return timers;
     }
 }

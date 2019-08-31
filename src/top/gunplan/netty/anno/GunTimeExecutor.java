@@ -21,4 +21,10 @@ public @interface GunTimeExecutor {
 
 
     int maxRunningTimes() default -1;
+
+
+    boolean available() default true;
+
+
+    GunHandleTag t();
 }

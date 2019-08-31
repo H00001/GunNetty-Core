@@ -88,4 +88,6 @@ public interface GunNettyChecker<T extends GunNetBound> {
      * @return this chain style
      */
     GunNettyChecker<T> translate();
+
+
 }

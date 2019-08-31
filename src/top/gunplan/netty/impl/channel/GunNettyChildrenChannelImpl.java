@@ -5,14 +5,12 @@
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.anno.GunTimeExecutor;
-import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.observe.GunNettyChannelObserve;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
@@ -137,12 +135,6 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         observes.parallelStream().forEach(GunNettyChannelObserve::onRecoverReadInterest);
     }
 
-    @Override
-    @SuppressWarnings("unchecked")
-    public List<GunNettyChildTimer> timers() {
-        return super.timers();
-    }
-
 
     @Override
     public void time() {
@@ -155,8 +147,8 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
                 .forEach(who -> {
                     try {
                         who.invoke(t, GunNettyChildrenChannelImpl.this);
-                    } catch (IllegalAccessException | InvocationTargetException e) {
-                        e.printStackTrace();
+                    } catch (ReflectiveOperationException e) {
+                        t.timeExecuteError(who.getName(), e);
                     }
                 }));
     }

@@ -5,10 +5,12 @@
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.net.SocketAddress;
 import java.nio.channels.Channel;
+import java.util.List;
 
 /**
  * GunNettyChannel
@@ -86,5 +88,7 @@ public interface GunNettyChannel<CH extends Channel,
      */
     void destory();
 
+
+    List<GunNettyTimer> timers();
 
 }

@@ -4,26 +4,26 @@
 
 package top.gunplan.netty.example;
 
+import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.anno.GunHandleTag;
 import top.gunplan.netty.anno.GunTimeExecutor;
-import top.gunplan.netty.impl.GunNettyChildTimer;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
-
-public class GunTimerExample implements GunNettyChildTimer {
+/**
+ * GunTimerExample
+ *
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-08-31 23:37
+ */
+public class GunTimerExample implements GunNettyTimer {
     public volatile int k = 0;
 
-
-    @Override
-    public int runingTimes() {
-        return 0;
-    }
-
-    @GunTimeExecutor(interval = 10)
-    @Override
+    @GunTimeExecutor(interval = 10, t = @GunHandleTag(id = 140000001, name = "GunTimerExample"))
     public int doWork(GunNettyChildChannel<SocketChannel> keys) {
         try {
             keys.channel().write(ByteBuffer.wrap(("hello old iron " +
@@ -31,12 +31,19 @@ public class GunTimerExample implements GunNettyChildTimer {
         } catch (IOException e) {
             keys.closeAndRemove(true);
         }
-        if (k++ == 60) {
+        if (k++ == 10) {
             keys.closeAndRemove(true);
             System.out.println("time out closed");
         }
         System.out.println(keys);
         System.out.println(k);
         return 0;
+    }
+
+    @Override
+    public boolean timeExecuteError(String methodName, ReflectiveOperationException t) {
+        System.out.println(methodName + " execute is error");
+        //  t.printStackTrace();
+        return false;
     }
 }
