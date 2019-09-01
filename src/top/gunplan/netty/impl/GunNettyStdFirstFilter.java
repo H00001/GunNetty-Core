@@ -13,6 +13,7 @@ import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.checker.AbstractGunChecker;
 import top.gunplan.netty.impl.checker.GunInboundChecker;
 import top.gunplan.netty.impl.checker.GunOutboundChecker;
+import top.gunplan.netty.observe.DefaultGunBaseObserve;
 import top.gunplan.netty.observe.GunNettyBaseObserve;
 import top.gunplan.utils.GunBytesUtil;
 
@@ -31,7 +32,7 @@ import java.nio.channels.SocketChannel;
 @GunNetFilterOrder
 public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNettyConnFilter {
 
-    private final GunNettyBaseObserve observe;
+    private volatile GunNettyBaseObserve observe = new DefaultGunBaseObserve();
     private static Field operatorSrc;
 
     static {
@@ -45,10 +46,14 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
 
     }
 
-    public GunNettyStdFirstFilter(GunNettyBaseObserve baseObserve) {
-        this.observe = baseObserve;
+    public GunNettyStdFirstFilter() {
     }
 
+
+    public GunNettyStdFirstFilter setObserve(GunNettyBaseObserve observe) {
+        this.observe = observe;
+        return this;
+    }
 
     private void dealCloseEvent(SocketAddress key, boolean readOrWrite) throws GunChannelException {
         int v = readOrWrite

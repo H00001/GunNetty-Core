@@ -14,6 +14,11 @@ package top.gunplan.netty.impl.pipeline;
 public interface GunNettyParentPipeline extends GunNettyPipeline {
 
 
+    /**
+     * create a new instance
+     *
+     * @return GunNettyParentPipeline
+     */
     static GunNettyParentPipeline newPipeline() {
         return new GunNettyParentPipelineImpl();
     }

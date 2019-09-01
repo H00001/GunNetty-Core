@@ -25,8 +25,8 @@ public interface GunBootServer extends GunBootServerBase {
      * stop the server
      *
      * @return stop result
-     *                         0:normal
-     *              other value : not normal
+     * 0:normal
+     * other value : not normal
      * @throws InterruptedException when stoping the server
      */
     @Override
@@ -89,20 +89,30 @@ public interface GunBootServer extends GunBootServerBase {
 
 
         /**
-         *  STOP          :not boot, init state or stopped state
-         *  SYNC          :sync running
-         *  ASYNC         :async running
-         *  RUNNING       :running include:sync running,async running
-         *  BOOT_ERROR_1  :when boot error's stop state
+         * STOP          :not boot, init state or stopped state
+         * SYNC          :sync running
+         * ASYNC         :async running
+         * RUNNING       :running include:sync running,async running
+         * BOOT_ERROR_1  :when boot error's stop state
          */
 
-        STOP(0b0001), SYNC(STOP.state >> 1), ASYNC(STOP.state << 1), RUNNING(STOP.state << 3), BOOT_ERROR_1(-1), BOOT_ERROR_2(-2);
+        STOP(0b0000), SYNC(0b0001), ASYNC(0b0010), RUNNING(0b0100), BOOT_ERROR_1(0b1000), BOOT_ERROR_2(0b1001);
 
 
         public int state;
 
         GunNettyWorkState(int state) {
             this.state = state;
+        }
+
+        public static String getState(int k) {
+            StringBuilder builder = new StringBuilder();
+            for (GunNettyWorkState i : values()) {
+                if ((i.state & k) != 0) {
+                    builder.append(i).append("|");
+                }
+            }
+            return builder.toString();
         }
     }
 

@@ -41,22 +41,19 @@ public class TestBase {
         server.registerObserve(new GunNettyDefaultObserve());
         server.registerObserve(p).onHasChannel(pipeline -> {
             pipeline.setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
-                    .addDataFilter(new GunNettyStdFirstFilter(p))
-
+                    .addDataFilter(new GunNettyStdFirstFilter().setObserve(p))
                     .addDataFilter(new GunNettyCharsetInboundChecker())
-                    .addConnFilter(new GunNettyStdFirstFilter(p))
+                    .addConnFilter(new GunNettyStdFirstFilter())
                     .addDataFilter((GunNettyInboundFilter) filterDto -> {
-                        if (((GunString) filterDto.transferTarget()).get().startsWith("666")) {
+                        if (((GunString) (filterDto.transferTarget())).get().startsWith("666")) {
                             ((GunTimerExample) filterDto.channel().timers().get(0)).k = 0;
                         } else {
                             try {
                                 filterDto.channel().channel().write(ByteBuffer.wrap(("you are dead\nhia hia hia").getBytes()));
                                 filterDto.channel().closeAndRemove(true);
                             } catch (IOException ignored) {
-
-                            } finally {
-                                return GunNettyFilter.DealResult.CLOSED;
                             }
+                            return GunNettyFilter.DealResult.CLOSED;
                         }
                         return GunNettyFilter.DealResult.NEXT;
                     })
@@ -64,11 +61,9 @@ public class TestBase {
             pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
             pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
         });
-        server.whenServerChannelStateChanged(new SystemChannelChangedHandle() {
-
-        });
         server.setSyncType(false);
-        server.sync();
+        int k = server.sync();
+        System.out.println(GunBootServer.GunNettyWorkState.getState(k));
         //running time
         Thread.sleep(1000000);
 

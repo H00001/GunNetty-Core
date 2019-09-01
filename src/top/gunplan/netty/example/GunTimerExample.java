@@ -26,8 +26,7 @@ public class GunTimerExample implements GunNettyTimer {
     @GunTimeExecutor(interval = 10, t = @GunHandleTag(id = 140000001, name = "GunTimerExample"))
     public int doWork(GunNettyChildChannel<SocketChannel> keys) {
         try {
-            keys.channel().write(ByteBuffer.wrap(("hello old iron " +
-                    "\nplease double click 666\n").getBytes()));
+            keys.channel().write(ByteBuffer.wrap(("please double click 666 time:" + (10 - k) + "\n").getBytes()));
         } catch (IOException e) {
             keys.closeAndRemove(true);
         }

@@ -73,6 +73,12 @@ public interface GunNettyPipeline extends GunHandle {
     int init();
 
 
+    /**
+     * setPipelineHandleChangeObserve
+     *
+     * @param observe observe
+     * @return this chain style
+     */
     GunNettyPipeline setPipelineHandleChangeObserve(GunNettyHandleChangeObserve observe);
 
 
