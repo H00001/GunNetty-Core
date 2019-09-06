@@ -11,8 +11,8 @@ import top.gunplan.netty.observe.DefaultSystemChannelChangedHandle;
 import top.gunplan.netty.observe.GunNettyServicesObserve;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -29,13 +29,10 @@ import java.util.concurrent.Future;
  */
 
 final class GunBootServerImpl implements GunBootServer {
-    private volatile boolean isSync;
 
     private volatile SystemChannelChangedHandle changedHandle = new DefaultSystemChannelChangedHandle();
 
     private volatile GunNettyCoreThreadManager threadManager;
-
-    private volatile boolean runnable = false;
 
     private volatile GunNettyServicesObserve observe;
 
@@ -43,21 +40,21 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService workExecutor;
 
+    private volatile int state = 0;
+
     private ChannelInitHandle initHandle;
 
-    private List<GunNettyTimer> timers = new CopyOnWriteArrayList<>();
+    private List<GunNettyTimer> timers = new ArrayList<>(1);
 
     private volatile GunNettyCoreProperty coreProperty;
 
     GunBootServerImpl() {
         observe = new GunNettyDefaultObserve();
-
-
     }
 
     @Override
     public final boolean isSync() {
-        return isSync;
+        return GunNettyWorkState.getIsSync(state);
     }
 
 
@@ -68,8 +65,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public boolean isRunnable() {
-        return this.runnable;
-
+        return GunNettyWorkState.getIsRunning(this.state);
     }
 
 
@@ -95,7 +91,7 @@ final class GunBootServerImpl implements GunBootServer {
             throw new GunException(GunExceptionType.EXC0, "acceptExecutor is null");
         } else if (workExecutor == null) {
             throw new GunException(GunExceptionType.EXC0, "workExecutor is null");
-        } else if (runnable) {
+        } else if (isRunnable()) {
             throw new GunException(GunExceptionType.STATE_ERROR, "system has running");
         }
         return true;
@@ -104,9 +100,9 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public int stop() throws InterruptedException {
         if (threadManager.stopAndWait()) {
-            this.runnable = false;
+            this.state = 0;
         }
-        return GunNettyWorkState.STOP.state;
+        return state;
     }
 
     @Override
@@ -119,7 +115,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public void setSyncType(boolean b) {
-        isSync = b;
+        state = b ? GunNettyWorkState.SYNC.state : GunNettyWorkState.ASYNC.state;
     }
 
     private void init() {
@@ -131,7 +127,6 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public synchronized int sync() throws GunNettyCanNotBootException {
-        int state = GunNettyWorkState.STOP.state;
         if (baseParameterCheck() == 0) {
             init();
         } else {
@@ -141,13 +136,13 @@ final class GunBootServerImpl implements GunBootServer {
             threadManager.init(acceptExecutor, workExecutor, changedHandle, initHandle, coreProperty.getPort());
         } catch (IOException exc) {
             observe.bootFail(exc);
-            return state | GunNettyWorkState.BOOT_ERROR_1.state;
+            return state = GunNettyWorkState.BOOT_ERROR_1.state;
         }
         if (this.observe.onBooting(coreProperty)) {
             Future<Integer> executing = threadManager.startAndWait();
             this.observe.onBooted(coreProperty);
-            this.runnable = true;
-            if (isSync) {
+            state = state | GunNettyWorkState.RUNNING.state;
+            if (isSync()) {
                 try {
                     int val = executing.get();
                     this.observe.onStatusChanged(GunNettyServicesObserve.GunNettyChangeStatus.RUN_TO_STOP);
@@ -157,12 +152,11 @@ final class GunBootServerImpl implements GunBootServer {
                 } catch (InterruptedException | ExecutionException e) {
                     observe.runningError(e);
                 }
-                return state;
-            } else {
-                return (state | GunNettyWorkState.ASYNC.state | GunNettyWorkState.RUNNING.state);
             }
+            return state;
+        } else {
+            return state = GunNettyWorkState.BOOT_ERROR_1.state;
         }
-        return GunNettyWorkState.BOOT_ERROR_1.state;
     }
 
     private int baseParameterCheck() {
@@ -175,10 +169,9 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunBootServer setExecutors(ExecutorService acceptExecuters, ExecutorService requestExecuters) {
-        this.acceptExecutor = acceptExecuters;
-        this.workExecutor = requestExecuters;
+    public GunBootServer setExecutors(ExecutorService acceptExecutors, ExecutorService requestExecutors) {
+        this.acceptExecutor = acceptExecutors;
+        this.workExecutor = requestExecutors;
         return this;
     }
-
 }

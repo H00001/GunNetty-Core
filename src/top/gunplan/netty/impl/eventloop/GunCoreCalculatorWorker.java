@@ -5,7 +5,6 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunChannelException;
-import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.filter.GunNettyDataFilter;
 import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.GunNettyFunctional;
@@ -64,8 +63,6 @@ public final class GunCoreCalculatorWorker extends
                 return;
             } else if (exeCode == 1) {
 
-            } else {
-                throw new GunChannelException(GunExceptionType.EXC0, "why");
             }
         }
         GunNetOutbound output = null;

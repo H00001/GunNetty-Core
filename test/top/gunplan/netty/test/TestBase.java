@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.test;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import top.gunplan.netty.*;
 import top.gunplan.netty.common.GunNettyExecutors;
@@ -62,12 +63,11 @@ public class TestBase {
             pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
         });
         server.setSyncType(false);
-        int k = server.sync();
-        System.out.println(GunBootServer.GunNettyWorkState.getState(k));
+        Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
+                GunBootServer.GunNettyWorkState.RUNNING.state);
         //running time
-        Thread.sleep(1000000);
-
-        server.stop();
+        Thread.sleep(10000);
+        System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
     }
 }
 

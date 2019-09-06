@@ -7,6 +7,7 @@ package top.gunplan.netty;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 import top.gunplan.netty.observe.GunNettyServicesObserve;
 
+import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 
 
@@ -106,13 +107,24 @@ public interface GunBootServer extends GunBootServerBase {
         }
 
         public static String getState(int k) {
-            StringBuilder builder = new StringBuilder();
-            for (GunNettyWorkState i : values()) {
-                if ((i.state & k) != 0) {
-                    builder.append(i).append("|");
-                }
+            if (k == 0) {
+                return String.valueOf(STOP);
             }
+            StringBuilder builder = new StringBuilder();
+            Arrays.stream(values()).forEach((who) -> {
+                if ((who.state & k) != 0) {
+                    builder.append(who).append("|");
+                }
+            });
             return builder.toString();
+        }
+
+        public static boolean getIsRunning(int k) {
+            return (k & GunNettyWorkState.RUNNING.state) != 0;
+        }
+
+        public static boolean getIsSync(int k) {
+            return (k & GunNettyWorkState.SYNC.state) != 0;
         }
     }
 

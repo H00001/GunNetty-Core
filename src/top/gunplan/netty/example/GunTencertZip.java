@@ -37,8 +37,8 @@ public final class GunTencertZip {
     }
 
     public static class Help {
-        public String str;
-        public int pos;
+        String str;
+        int pos;
     }
 
 }
