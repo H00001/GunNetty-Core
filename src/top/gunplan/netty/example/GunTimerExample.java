@@ -6,6 +6,7 @@ package top.gunplan.netty.example;
 
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.anno.GunHandleTag;
+import top.gunplan.netty.anno.GunInjectSelf;
 import top.gunplan.netty.anno.GunTimeExecutor;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
@@ -24,15 +25,15 @@ public class GunTimerExample implements GunNettyTimer {
     public volatile int k = 0;
 
     @GunTimeExecutor(interval = 10, t = @GunHandleTag(id = 140000001, name = "GunTimerExample"))
-    public int doWork(GunNettyChildChannel<SocketChannel> keys) {
+    public int doWork(@GunInjectSelf GunNettyChildChannel<SocketChannel> keys) {
         try {
-            keys.channel().write(ByteBuffer.wrap(("please double click 666 time:" + (10 - k) + "\n").getBytes()));
+            keys.channel().write(ByteBuffer.wrap(("please double click 666 doTime:" + (10 - k) + "\n").getBytes()));
         } catch (IOException e) {
             keys.closeAndRemove(true);
         }
         if (k++ == 10) {
             keys.closeAndRemove(true);
-            System.out.println("time out closed");
+            System.out.println("doTime out closed");
         }
         System.out.println(keys);
         System.out.println(k);

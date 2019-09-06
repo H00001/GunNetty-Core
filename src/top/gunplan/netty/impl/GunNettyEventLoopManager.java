@@ -93,7 +93,7 @@ public interface GunNettyEventLoopManager {
     GunDataEventLoop[] dataEventLoop();
 
     /**
-     * time event loop
+     * doTime event loop
      *
      * @return event loop
      */

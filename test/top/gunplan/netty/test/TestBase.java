@@ -65,7 +65,7 @@ public class TestBase {
         server.setSyncType(false);
         Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
                 GunBootServer.GunNettyWorkState.RUNNING.state);
-        //running time
+        //running doTime
         Thread.sleep(10000);
         System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
     }

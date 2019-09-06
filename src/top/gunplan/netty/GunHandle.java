@@ -11,7 +11,7 @@ import top.gunplan.netty.filter.GunNettyFilter;
  * and {@link GunNettyHandle}
  *
  * @author dosdrtt
- * @since 0.0.0.4
+ * @since 0.0.0.5
  */
 public interface GunHandle {
     /**

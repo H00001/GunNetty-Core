@@ -7,7 +7,6 @@ package top.gunplan.netty;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 import top.gunplan.netty.observe.GunNettyServicesObserve;
 
-import java.util.Arrays;
 import java.util.concurrent.ExecutorService;
 
 
@@ -17,9 +16,9 @@ import java.util.concurrent.ExecutorService;
  *
  * @author dosdrtt
  * @date 2019-04-21
- * @since 0.0.0.1
+ * @since 0.0.0.3
  */
-public interface GunBootServer extends GunBootServerBase {
+public interface GunBootServer extends GunBootServerBase, GunServerStateManager {
     /**
      * stop
      * <p>
@@ -50,16 +49,8 @@ public interface GunBootServer extends GunBootServerBase {
 
 
     /**
-     * get the status of server
-     *
-     * @return the server 's status
-     */
-    boolean isRunnable();
-
-
-    /**
      * sync
-     * boot by synchronized or asynchronized
+     * boot by synchronized or asynchronizated
      *
      * @return sync result
      * @throws GunNettyCanNotBootException exception very urgency
@@ -86,49 +77,6 @@ public interface GunBootServer extends GunBootServerBase {
     boolean initCheck();
 
 
-    enum GunNettyWorkState {
-
-
-        /**
-         * STOP          :not boot, init state or stopped state
-         * SYNC          :sync running
-         * ASYNC         :async running
-         * RUNNING       :running include:sync running,async running
-         * BOOT_ERROR_1  :when boot error's stop state
-         */
-
-        STOP(0b0000), SYNC(0b0001), ASYNC(0b0010), RUNNING(0b0100), BOOT_ERROR_1(0b1000), BOOT_ERROR_2(0b1001);
-
-
-        public int state;
-
-        GunNettyWorkState(int state) {
-            this.state = state;
-        }
-
-        public static String getState(int k) {
-            if (k == 0) {
-                return String.valueOf(STOP);
-            }
-            StringBuilder builder = new StringBuilder();
-            Arrays.stream(values()).forEach((who) -> {
-                if ((who.state & k) != 0) {
-                    builder.append(who).append("|");
-                }
-            });
-            return builder.toString();
-        }
-
-        public static boolean getIsRunning(int k) {
-            return (k & GunNettyWorkState.RUNNING.state) != 0;
-        }
-
-        public static boolean getIsSync(int k) {
-            return (k & GunNettyWorkState.SYNC.state) != 0;
-        }
-    }
-
-
     /**
      * when has a new channel
      *
@@ -146,11 +94,11 @@ public interface GunBootServer extends GunBootServerBase {
 
 
     /**
-     * registerGlobalTimers
+     * addGlobalTimers
      *
-     * @param timer time event
+     * @param timer doTime event
      * @return this
      */
-    GunBootServer registerGlobalTimers(GunNettyTimer timer);
+    GunBootServer addGlobalTimers(GunNettyTimer timer);
 }
 

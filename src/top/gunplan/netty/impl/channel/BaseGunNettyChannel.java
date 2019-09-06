@@ -30,15 +30,16 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
     LOOP eventLoop;
     List<GunNettyTimer> timers;
     GunNettySequencer unsafeSequencer = GunNettySequencer.newThreadUnSafeSequencer();
-    private ScheduledExecutorService scheduledExecutorService = GunNettyExecutors.newScheduleExecutorPool();
+    private ScheduledExecutorService scheduledExecutorService;
     private CH channel;
 
     BaseGunNettyChannel(final PL pipeline, final CH channel, final long id) {
-        this.pipeline = pipeline;
         this.id = id;
+        this.pipeline = pipeline;
         this.channel = channel;
         timers = pipeline != null ? pipeline.timers() : null;
-        scheduledExecutorService.scheduleAtFixedRate(this::time, 100, 100, TimeUnit.MILLISECONDS);
+        scheduledExecutorService = GunNettyExecutors.newScheduleExecutorPool(timers != null ? timers.size() : 0);
+        scheduledExecutorService.scheduleAtFixedRate(this::doTime, 100, 100, TimeUnit.MILLISECONDS);
     }
 
 
@@ -71,11 +72,11 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
         channel.close();
     }
 
-    public abstract void time();
+    public abstract void doTime();
 
 
     @Override
-    public void destory() {
+    public void destroy() {
         scheduledExecutorService.shutdown();
         System.gc();
     }

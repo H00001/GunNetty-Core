@@ -20,7 +20,7 @@ public interface GunNettyBaseObserve extends GunNettyObserve {
      * Ready-to-read termination
      *
      * @param address remote address
-     * @return wait time
+     * @return wait doTime
      */
     default int preReadClose(SocketAddress address) {
         output(address);
@@ -40,7 +40,7 @@ public interface GunNettyBaseObserve extends GunNettyObserve {
      * Ready-to-write termination
      *
      * @param address remote address
-     * @return wait time
+     * @return wait doTime
      */
     default int preWriteClose(SocketAddress address) {
         output(address);

@@ -9,22 +9,7 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-@Target(value = ElementType.METHOD)
+@Target(value = ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GunTimeExecutor {
-    /**
-     * get doTime Interval
-     *
-     * @return doTime interval
-     */
-    int interval();
-
-
-    int maxRunningTimes() default -1;
-
-
-    boolean available() default true;
-
-
-    GunHandleTag t();
+public @interface GunInjectSelf {
 }

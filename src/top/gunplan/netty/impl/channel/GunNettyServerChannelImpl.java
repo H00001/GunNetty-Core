@@ -83,7 +83,7 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
     }
 
     @Override
-    public void time() {
+    public void doTime() {
 
     }
 }

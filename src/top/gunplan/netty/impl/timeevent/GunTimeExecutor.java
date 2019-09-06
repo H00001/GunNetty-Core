@@ -53,7 +53,7 @@ public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTime
     GunTimeExecutor registerWorker(GunNettyTimer work);
 
     /**
-     * delete worker form time execute
+     * delete worker form doTime execute
      *
      * @param work to erase
      * @return this chain style

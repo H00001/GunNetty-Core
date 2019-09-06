@@ -1,9 +1,5 @@
 /*
- * Copyright (c) 2019. Lorem ipsum dolor sit amet, consectetur adipiscing elit.
- * Morbi non lorem porttitor neque feugiat blandit. Ut vitae ipsum eget quam lacinia accumsan.
- * Etiam sed turpis ac ipsum condimentum fringilla. Maecenas magna.
- * Proin dapibus sapien vel ante. Aliquam erat volutpat. Pellentesque sagittis ligula eget metus.
- * Vestibulum commodo. Ut rhoncus gravida arcu.
+ * Copyright (c) frankHan personal 2017-2018
  */
 
 package top.gunplan.netty;
@@ -34,26 +30,6 @@ public interface GunBootServerBase {
      */
     int stop() throws InterruptedException;
 
-    /**
-     * is or not synchronized
-     *
-     * @return result
-     */
-    default boolean isSync() {
-        return true;
-    }
-
-
-    /**
-     * sync type
-     * : true sync
-     * : false async
-     *
-     * @param b type
-     */
-    default void setSyncType(boolean b) {
-        throw new GunException(GunExceptionType.FUNCTION_NOT_IMPLEMENT, ":setSyncType");
-    }
 
     class GunNettyCanNotBootException extends GunException {
 

@@ -92,8 +92,8 @@ public interface GunNettyCoreThreadManagerHelper {
      * submitSchedule
      *
      * @param task task
-     * @param v1   interval time
-     * @param v2   first init time
+     * @param v1   interval doTime
+     * @param v2   first init doTime
      */
     void submitSchedule(Runnable task, long v1, long v2);
 

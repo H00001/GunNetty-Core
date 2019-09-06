@@ -85,7 +85,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         } catch (IOException e) {
             observes.parallelStream().forEach(v -> v.whenCloseMeetException(remoteAddress(), e));
         }
-        destory();
+        destroy();
         return this;
     }
 
@@ -137,7 +137,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
 
 
     @Override
-    public void time() {
+    public void doTime() {
         long k = unsafeSequencer.nextSequence();
         timers.parallelStream().forEach(t -> Arrays.stream(t.getClass().getMethods()).
                 filter(who -> {

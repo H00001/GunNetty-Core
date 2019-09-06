@@ -80,7 +80,7 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public GunBootServer registerGlobalTimers(GunNettyTimer timer) {
+    public GunBootServer addGlobalTimers(GunNettyTimer timer) {
         this.timers.add(timer);
         return this;
     }
@@ -88,9 +88,9 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public boolean initCheck() {
         if (acceptExecutor == null) {
-            throw new GunException(GunExceptionType.EXC0, "acceptExecutor is null");
+            throw new GunException(GunExceptionType.NULLPTR, "acceptExecutor is null");
         } else if (workExecutor == null) {
-            throw new GunException(GunExceptionType.EXC0, "workExecutor is null");
+            throw new GunException(GunExceptionType.NULLPTR, "workExecutor is null");
         } else if (isRunnable()) {
             throw new GunException(GunExceptionType.STATE_ERROR, "system has running");
         }
