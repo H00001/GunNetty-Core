@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import java.util.stream.Stream;
 
-final class GunNettyCoreThreadManagerHelperImpl implements GunNettyCoreThreadManagerHelper {
+final class CoreThreadManagerHelperImpl implements GunNettyCoreThreadManagerHelper {
 
     private final ExecutorService DASERVER_POOL;
     private final ExecutorService TRANSFER_POOL;
@@ -21,7 +21,7 @@ final class GunNettyCoreThreadManagerHelperImpl implements GunNettyCoreThreadMan
     private final ScheduledExecutorService EXETIMER_POOL;
     private final ExecutorService[] EXE_POOL_LIST;
 
-    GunNettyCoreThreadManagerHelperImpl(int num) {
+    CoreThreadManagerHelperImpl(int num) {
         this.EXETIMER_POOL = GunNettyExecutors.newScheduleExecutorPool();
         this.TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("CoreTransferThread");
         this.ACCEPTCO_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");

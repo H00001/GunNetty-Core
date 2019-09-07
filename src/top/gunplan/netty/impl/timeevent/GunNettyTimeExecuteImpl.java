@@ -5,9 +5,9 @@
 package top.gunplan.netty.impl.timeevent;
 
 import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.anno.GunTimeExecutor;
 
-import java.nio.channels.SelectionKey;
-import java.util.Set;
+import java.util.Arrays;
 
 
 /**
@@ -23,14 +23,12 @@ final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
 
     @Override
     public boolean loop() {
-        final Set<SelectionKey> keys = manager.availableChannel();
         works.parallelStream().forEach(k -> {
-            if (k.ifKeyEmptyExec() || keys.size() != 0) {
-                new GunTimeWorkFunc(keys, sum.longValue()).execute(k);
+            if (k.ifKeyEmptyExec()) {
+                new GunTimeWorkFunc(seq.nextSequence()).execute(k);
             }
         });
         return false;
-
     }
 
     @Override
@@ -45,19 +43,26 @@ final class GunNettyTimeExecuteImpl extends AbstractGunTimeExecutor {
      * @author dosdrtt
      */
     public static class GunTimeWorkFunc {
-        private Set<SelectionKey> keys;
+
         private long nowTime;
 
-        GunTimeWorkFunc(Set<SelectionKey> keys, long nowTime) {
+        GunTimeWorkFunc(long nowTime) {
             this.nowTime = nowTime;
-            this.keys = keys;
         }
 
         void execute(GunNettyTimer w) {
-//            if (nowTime % w.getClass().getAnnotation(GunTimeAnno.class).interval() == 0) {
-//                //todo
-//                // w.doWork(keys);
-//            }
+            Arrays.stream(w.getClass().getMethods()).
+                    filter(who -> {
+                        final GunTimeExecutor g = who.getAnnotation(GunTimeExecutor.class);
+                        return g != null && nowTime % g.interval() == 0;
+                    })
+                    .forEach(who -> {
+                        try {
+                            who.invoke(w);
+                        } catch (ReflectiveOperationException e) {
+                            w.timeExecuteError(who.getName(), e);
+                        }
+                    });
         }
     }
 

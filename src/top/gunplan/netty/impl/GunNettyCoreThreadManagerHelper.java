@@ -12,7 +12,7 @@ import java.util.concurrent.ScheduledExecutorService;
  * GunNettyCoreThreadManagerHelper
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-08-12 10:03
  */
 public interface GunNettyCoreThreadManagerHelper {
@@ -23,7 +23,7 @@ public interface GunNettyCoreThreadManagerHelper {
      * @return instance
      */
     static GunNettyCoreThreadManagerHelper newInstance(int num) {
-        return new GunNettyCoreThreadManagerHelperImpl(num);
+        return new CoreThreadManagerHelperImpl(num);
     }
 
     /**
