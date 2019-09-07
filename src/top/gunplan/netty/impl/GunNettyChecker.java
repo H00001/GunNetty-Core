@@ -56,6 +56,11 @@ public interface GunNettyChecker<T extends GunNetBound> {
     Object attachment();
 
 
+    /**
+     * set transfer to ts next
+     *
+     * @param to object
+     */
     void setTransfer(T to);
 
     /**

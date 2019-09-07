@@ -8,10 +8,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import top.gunplan.netty.*;
 import top.gunplan.netty.common.GunNettyExecutors;
-import top.gunplan.netty.example.GunNettyCharsetInboundChecker;
-import top.gunplan.netty.example.GunNettyStringHandle;
-import top.gunplan.netty.example.GunString;
-import top.gunplan.netty.example.GunTimerExample;
+import top.gunplan.netty.example.*;
 import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.filter.GunNettyInboundFilter;
 import top.gunplan.netty.impl.GunBootServerFactory;
@@ -23,14 +20,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 public class TestBase {
-
-    public void preTest() {
-
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        new TestBase().using019();
-    }
 
     @Test
     public void using019() throws InterruptedException {
@@ -62,6 +51,7 @@ public class TestBase {
             pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
             pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
         });
+        server.timeManager().addGlobalTimers(new GlobalTimer());
         server.setSyncType(false);
         Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
                 GunBootServer.GunNettyWorkState.RUNNING.state);

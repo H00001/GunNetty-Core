@@ -13,9 +13,9 @@ package top.gunplan.netty.impl;
  */
 public interface GunNettyManagerGetter<K> {
     /**
-     * register manager
+     * register threadManager
      *
-     * @param manager manager
+     * @param manager threadManager
      * @return return chain
      */
     K registerManager(GunNettyEventLoopManager manager);

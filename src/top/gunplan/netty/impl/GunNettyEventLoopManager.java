@@ -5,17 +5,12 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
-import top.gunplan.netty.impl.timeevent.GunTimeExecutor;
 
-import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
-import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutorService;
 
 /**
@@ -39,7 +34,6 @@ public interface GunNettyEventLoopManager {
      * init
      *
      * @param v1             sum
-     * @param timerList      global timers
      * @param bossExecutor   to deal connection event
      * @param dataExecutor   to deal i/o event
      * @param parentHandle   parent handle
@@ -47,7 +41,7 @@ public interface GunNettyEventLoopManager {
      * @param port           open port
      * @return init result
      */
-    boolean init(int v1, List<GunNettyTimer> timerList, ExecutorService bossExecutor,
+    boolean init(int v1, ExecutorService bossExecutor,
                  ExecutorService dataExecutor, SystemChannelChangedHandle parentHandle,
                  ChannelInitHandle childrenHandle, int port);
 
@@ -60,14 +54,6 @@ public interface GunNettyEventLoopManager {
      * @return GunDataEventLoop
      */
     GunDataEventLoop<SocketChannel> dealChannelEventLoop();
-
-
-    /**
-     * get available channel
-     *
-     * @return channel
-     */
-    Set<SelectionKey> availableChannel();
 
 
     /**
@@ -92,12 +78,6 @@ public interface GunNettyEventLoopManager {
      */
     GunDataEventLoop[] dataEventLoop();
 
-    /**
-     * doTime event loop
-     *
-     * @return event loop
-     */
-    GunTimeExecutor timeEventLoop();
 
     /**
      * stop all of event loop

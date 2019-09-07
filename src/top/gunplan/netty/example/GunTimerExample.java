@@ -26,12 +26,13 @@ public class GunTimerExample implements GunNettyTimer {
 
     @GunTimeExecutor(interval = 10, t = @GunHandleTag(id = 140000001, name = "GunTimerExample"))
     public int doWork(@GunInjectSelf GunNettyChildChannel<SocketChannel> keys) {
+        int a = 10;
         try {
             keys.channel().write(ByteBuffer.wrap(("please double click 666 doTime:" + (10 - k) + "\n").getBytes()));
         } catch (IOException e) {
             keys.closeAndRemove(true);
         }
-        if (k++ == 10) {
+        if (k++ == a) {
             keys.closeAndRemove(true);
             System.out.println("doTime out closed");
         }

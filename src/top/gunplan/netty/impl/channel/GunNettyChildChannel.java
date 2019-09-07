@@ -23,12 +23,13 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
      * close channel and remove form selector
      *
      * @param b is or not
+     * @return this
      */
     GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> closeAndRemove(boolean b);
 
     /**
      * parent
-     * return parent channel
+     * @return parent channel
      */
     GunNettyServerChannel parent();
 
@@ -39,6 +40,12 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
     void registerReadWithEventLoop();
 
 
+    /**
+     * addReadObserve
+     *
+     * @param observe observe
+     * @return this
+     */
     GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyChannelObserve observe);
 
     /**

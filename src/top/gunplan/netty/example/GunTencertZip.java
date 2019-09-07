@@ -4,13 +4,23 @@
 
 package top.gunplan.netty.example;
 
+/**
+ * GunTencertZip
+ *
+ * @author frank albert
+ * @version 0.0.0.1
+ * @date 2019-09-07 16:31
+ */
+
 public final class GunTencertZip {
 
     public static String doDecode(String in) {
         return doDecode(in, 0, in.length()).str;
     }
 
+
     private static Help doDecode(String in, int sta, int end) {
+        char a = '|';
         char[] cs = in.toCharArray();
         Help hp = new Help();
         StringBuilder base = new StringBuilder();
@@ -20,7 +30,7 @@ public final class GunTencertZip {
             } else if (cs[i] == '[') {
                 int r = i + 1;
                 int loop = 0;
-                while (cs[r] != '|') {
+                while (cs[r] != a) {
                     loop = loop * 10 + (cs[r] - '0');
                     r++;
                 }

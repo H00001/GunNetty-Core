@@ -12,14 +12,36 @@ package top.gunplan.netty.common;
  * @date 2019-09-01 21:54
  */
 public interface GunNettyBitMap {
+    /**
+     * get a new instance
+     *
+     * @param k length
+     * @return GunNettyBitMap
+     */
     static GunNettyBitMap getInstance(int k) {
         return new GunNettyBitMapImpl(k);
     }
 
+    /**
+     * get i th value
+     *
+     * @param i i th
+     * @return 0 or 1
+     */
     boolean get(int i);
 
+    /**
+     * put i th value
+     * @param i i th
+     * @param tf 0 or 1
+     */
     void put(int i, boolean tf);
 
+    /**
+     * put area
+     * @param s s start area
+     * @param tf true or false 0:1
+     */
     default void putA(int s, boolean... tf) {
         for (int j = s; j < tf.length; j++) {
             put(j, tf[j - s]);

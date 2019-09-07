@@ -43,9 +43,9 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
     /**
      * GunNettyCoreThreadManager
      *
-     * @return manager
+     * @return threadManager
      */
-    GunNettyCoreThreadManager manager();
+    GunNettyCoreThreadManager threadManager();
 
 
     /**
@@ -78,6 +78,13 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
 
 
     /**
+     * get time manager
+     *
+     * @return time manager
+     */
+    GunTimeEventManager timeManager();
+
+    /**
      * when has a new channel
      *
      * @param initHandle input the pipeline
@@ -92,13 +99,5 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
      */
     void whenServerChannelStateChanged(SystemChannelChangedHandle handle);
 
-
-    /**
-     * addGlobalTimers
-     *
-     * @param timer doTime event
-     * @return this
-     */
-    GunBootServer addGlobalTimers(GunNettyTimer timer);
 }
 

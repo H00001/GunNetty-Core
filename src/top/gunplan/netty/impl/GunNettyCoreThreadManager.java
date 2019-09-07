@@ -5,13 +5,10 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
-import top.gunplan.netty.observe.GunNettyServicesObserve;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -26,14 +23,11 @@ public interface GunNettyCoreThreadManager {
     /**
      * initInstance
      *
-     * @param observe  event observe
      * @param property core property
-     * @param l        timers
      * @return GunNettyCoreThreadManager
      */
-    static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property, final GunNettyServicesObserve observe, List<GunNettyTimer> l) {
-        assert l != null;
-        return new GunNettyCoreThreadManageImpl(property, l);
+    static GunNettyCoreThreadManager initInstance(final GunNettyCoreProperty property) {
+        return new GunNettyCoreThreadManageImpl(property);
     }
 
 

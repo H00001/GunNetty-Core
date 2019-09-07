@@ -13,5 +13,10 @@ package top.gunplan.netty.impl;
  */
 @FunctionalInterface
 public interface GunNettyFunctional {
+    /**
+     * bi consumer
+     *
+     * @return int
+     */
     int apply();
 }

@@ -7,12 +7,10 @@ package top.gunplan.netty.impl;
 
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.utils.GunNumberUtil;
 
-import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -30,8 +28,6 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     private final int MANAGE_THREAD_NUM;
 
-    private final List<GunNettyTimer> globalTimers;
-
     private final GunNettyEventLoopManager eventLoopManager = GunNettyEventLoopManager.newInstance();
 
     private volatile GunNettyCoreThreadManagerHelper threadHelper;
@@ -39,9 +35,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     private volatile ManagerState status = ManagerState.INACTIVE;
 
 
-    GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property, final List<GunNettyTimer> globalTimers) {
-        assert globalTimers != null;
-        this.globalTimers = globalTimers;
+    GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property) {
         GUN_NETTY_CORE_PROPERTY = property;
         MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
     }
@@ -49,7 +43,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     @Override
     public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, SystemChannelChangedHandle pHandle, ChannelInitHandle cHandle, int port) {
         threadHelper = GunNettyCoreThreadManagerHelper.newInstance(MANAGE_THREAD_NUM);
-        return eventLoopManager.init(MANAGE_THREAD_NUM, globalTimers, acceptExecutor, dataExecutor, pHandle, cHandle, port);
+        return eventLoopManager.init(MANAGE_THREAD_NUM, acceptExecutor, dataExecutor, pHandle, cHandle, port);
     }
 
 
@@ -64,9 +58,6 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         status = ManagerState.BOOTING;
         threadHelper.submitData(eventLoopManager.dataEventLoop());
         threadHelper.submitTransfer(eventLoopManager.transferEventLoop());
-        threadHelper.submitSchedule(eventLoopManager.timeEventLoop(),
-                GUN_NETTY_CORE_PROPERTY.initWait(),
-                GUN_NETTY_CORE_PROPERTY.minInterval());
         assert eventLoopManager.connEventLoop() != null;
         var future = threadHelper.submitConnection(eventLoopManager.connEventLoop());
         status = ManagerState.RUNNING;

@@ -89,6 +89,11 @@ public interface GunNettyChannel<CH extends Channel,
     void destroy();
 
 
+    /**
+     * get timers
+     *
+     * @return timers
+     */
     List<GunNettyTimer> timers();
 
 }

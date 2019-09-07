@@ -106,6 +106,9 @@ public interface GunNettyCoreThreadManagerHelper {
     GunNettyCoreThreadManagerHelper shutdownReturn();
 
 
+    /**
+     * sync stop
+     */
     void syncStop();
 
 

@@ -18,11 +18,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author dosdrtt
  * @date 2019/05/30
  */
+@Deprecated
 public abstract class AbstractGunTimeExecutor implements GunTimeExecutor {
     volatile List<GunNettyTimer> works = new CopyOnWriteArrayList<>();
     volatile GunNettySequencer seq = GunNettySequencer.newThreadUnSafeSequencer();
     volatile GunNettyEventLoopManager manager;
 
+    @Deprecated
     public static GunTimeExecutor create() {
         return new GunNettyTimeExecuteImpl();
     }

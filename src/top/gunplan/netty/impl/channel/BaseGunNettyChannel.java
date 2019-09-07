@@ -72,6 +72,9 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
         channel.close();
     }
 
+    /**
+     * do time event loop
+     */
     public abstract void doTime();
 
 

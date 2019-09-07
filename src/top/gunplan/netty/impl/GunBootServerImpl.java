@@ -7,12 +7,11 @@ package top.gunplan.netty.impl;
 import top.gunplan.netty.*;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
+import top.gunplan.netty.impl.timeevent.GunTimeEventManagerImpl;
 import top.gunplan.netty.observe.DefaultSystemChannelChangedHandle;
 import top.gunplan.netty.observe.GunNettyServicesObserve;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
@@ -34,17 +33,19 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile GunNettyCoreThreadManager threadManager;
 
+    private final GunTimeEventManager timeManager = new GunTimeEventManagerImpl();
+
     private volatile GunNettyServicesObserve observe;
 
     private volatile ExecutorService acceptExecutor;
 
     private volatile ExecutorService workExecutor;
 
+
     private volatile int state = 0;
 
     private ChannelInitHandle initHandle;
 
-    private List<GunNettyTimer> timers = new ArrayList<>(1);
 
     private volatile GunNettyCoreProperty coreProperty;
 
@@ -59,7 +60,7 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunNettyCoreThreadManager manager() {
+    public GunNettyCoreThreadManager threadManager() {
         return threadManager;
     }
 
@@ -79,11 +80,6 @@ final class GunBootServerImpl implements GunBootServer {
         this.changedHandle = handle;
     }
 
-    @Override
-    public GunBootServer addGlobalTimers(GunNettyTimer timer) {
-        this.timers.add(timer);
-        return this;
-    }
 
     @Override
     public boolean initCheck() {
@@ -98,7 +94,13 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
+    public GunTimeEventManager timeManager() {
+        return timeManager;
+    }
+
+    @Override
     public int stop() throws InterruptedException {
+        this.timeManager.stop();
         if (threadManager.stopAndWait()) {
             this.state = 0;
         }
@@ -121,7 +123,7 @@ final class GunBootServerImpl implements GunBootServer {
     private void init() {
         coreProperty = GunNettySystemServices.coreProperty();
         threadManager = GunNettyCoreThreadManager.
-                initInstance(GunNettySystemServices.coreProperty(), observe, timers);
+                initInstance(GunNettySystemServices.coreProperty());
     }
 
 
@@ -139,6 +141,7 @@ final class GunBootServerImpl implements GunBootServer {
             return state = GunNettyWorkState.BOOT_ERROR_1.state;
         }
         if (this.observe.onBooting(coreProperty)) {
+            timeManager.boot(coreProperty.minInterval(), coreProperty.initWait());
             Future<Integer> executing = threadManager.startAndWait();
             this.observe.onBooted(coreProperty);
             state = state | GunNettyWorkState.RUNNING.state;
