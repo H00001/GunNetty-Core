@@ -78,8 +78,9 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public void useStealMode(boolean use) {
+    public GunBootServer useStealMode(boolean use) {
         this.isSteal = use;
+        return this;
     }
 
     @Override
