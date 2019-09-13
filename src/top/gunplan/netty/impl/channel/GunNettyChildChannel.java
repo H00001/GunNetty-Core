@@ -63,8 +63,20 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
     void recoverReadInterest();
 
 
+    /**
+     * consume the event
+     *
+     * @return an event
+     */
     Object consumeEvent();
 
 
+    /**
+     * pushEvent
+     * push event into event queue
+     *
+     * @param event need to input
+     * @return push result
+     */
     boolean pushEvent(Object event);
 }

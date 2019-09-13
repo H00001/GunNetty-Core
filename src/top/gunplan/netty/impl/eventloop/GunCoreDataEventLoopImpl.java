@@ -71,13 +71,13 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
             }
         }
         try {
-            V();
+            method0();
         } catch (IOException exp) {
             throwGunException(exp);
         }
     }
 
-    private void V() throws IOException {
+    private void method0() throws IOException {
         if ((timeWait == -1 ? bootSelector.select() : bootSelector.select(timeWait)) > 0) {
             Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
             while (keyIterator.hasNext()) {

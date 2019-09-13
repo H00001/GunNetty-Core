@@ -42,7 +42,7 @@ public interface GunNettyBitMap {
      * @param s s start area
      * @param tf true or false 0:1
      */
-    default void putA(int s, boolean... tf) {
+    default void putArea(int s, boolean... tf) {
         for (int j = s; j < tf.length; j++) {
             put(j, tf[j - s]);
         }
