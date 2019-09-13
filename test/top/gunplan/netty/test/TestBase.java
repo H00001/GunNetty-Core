@@ -26,21 +26,18 @@ public class TestBase {
 
     @Test
     public void using019() throws InterruptedException {
-        GunNettyDefaultObserve p = new GunNettyDefaultObserve();
         GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config.html"));
         GunBootServer server = GunBootServerFactory.newInstance();
-        server.setExecutors(10, 10);
-        server.registerObserve(new GunNettyDefaultObserve());
-        server.registerObserve(p).onHasChannel(pipeline -> {
-            pipeline.setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
-                    .addDataFilter(new GunNettyStdFirstFilter().setObserve(p))
-                    .addDataFilter(new GunNettyCharsetInboundChecker())
-                    .addConnFilter(new GunNettyStdFirstFilter())
-                    .addDataFilter(getGunNettyInboundFilter())
-                    .addNettyTimer(new GunTimerExample());
-            pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
-            pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
-        });
+        server.setExecutors(10, 10).useStealMode(true).
+                registerObserve(new GunNettyDefaultObserve()).onHasChannel(pipeline ->
+                pipeline.setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
+                        .addDataFilter(new GunNettyStdFirstFilter().setObserve(null))
+                        .addDataFilter(new GunNettyCharsetInboundChecker())
+                        .addConnFilter(new GunNettyStdFirstFilter())
+                        .addDataFilter(getGunNettyInboundFilter())
+                        .setHandle((GunNettyChildrenHandle) new GunNettyStringHandle())
+                        .setHandle((GunNettyParentHandle) new GunNettyStringHandle())
+                        .addNettyTimer(new GunTimerExample()));
         server.timeManager().addGlobalTimers(new GlobalTimer());
         server.setSyncType(false);
         Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |

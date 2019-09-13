@@ -94,7 +94,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
     /**
      * is or not use steal pool
      */
-    default void useStealMode(boolean use) {
+    default GunBootServer useStealMode(boolean use) {
         throw new GunException(GunExceptionType.NOT_SUPPORT, "not support steal mode");
     }
 
