@@ -5,6 +5,7 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.*;
+import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
 import top.gunplan.netty.impl.timeevent.GunTimeEventManagerImpl;
@@ -41,8 +42,9 @@ final class GunBootServerImpl implements GunBootServer {
 
     private volatile ExecutorService workExecutor;
 
-
     private volatile int state = 0;
+
+    private volatile boolean isSteal = false;
 
     private ChannelInitHandle initHandle;
 
@@ -73,6 +75,11 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public void onHasChannel(ChannelInitHandle initHandle) {
         this.initHandle = initHandle;
+    }
+
+    @Override
+    public void useStealMode(boolean use) {
+        this.isSteal = use;
     }
 
     @Override
@@ -172,9 +179,9 @@ final class GunBootServerImpl implements GunBootServer {
 
 
     @Override
-    public GunBootServer setExecutors(ExecutorService acceptExecutors, ExecutorService requestExecutors) {
-        this.acceptExecutor = acceptExecutors;
-        this.workExecutor = requestExecutors;
+    public GunBootServer setExecutors(int var1, int var2) {
+        acceptExecutor = GunNettyExecutors.newFixedExecutorPool(10, isSteal);
+        workExecutor = GunNettyExecutors.newFixedExecutorPool(10, isSteal);
         return this;
     }
 }

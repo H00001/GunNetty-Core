@@ -23,6 +23,10 @@ public final class GunNettyExecutors {
         return newFixedExecutorPool(size, GunNettyExecutors.class.getName());
     }
 
+    public static ExecutorService newFixedExecutorPool(int size, boolean isSteal) {
+        return isSteal ? Executors.newWorkStealingPool(size) : newFixedExecutorPool(size);
+    }
+
     public static ExecutorService newFixedExecutorPool(int size, String name) {
         return new ThreadPoolExecutor(size, size, 0, TimeUnit.MILLISECONDS, SYNC_INST, new GunNettyThreadFactory(name));
     }

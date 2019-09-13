@@ -7,8 +7,6 @@ package top.gunplan.netty;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 import top.gunplan.netty.observe.GunNettyServicesObserve;
 
-import java.util.concurrent.ExecutorService;
-
 
 /**
  * server interface ,has kinds of implements but now we have only one
@@ -61,12 +59,12 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
     /**
      * set the Thread pool that dispose the request
      *
-     * @param acceptExecutor  this Executor is used to deal with accept request
-     * @param requestExecutor this Executor is used to deal with data request
+     * @param var1  this Executor is used to deal with accept request
+     * @param var2 this Executor is used to deal with data request
      * @return this
      */
 
-    GunBootServer setExecutors(ExecutorService acceptExecutor, ExecutorService requestExecutor);
+    GunBootServer setExecutors(int var1, int var2);
 
 
     /**
@@ -91,6 +89,14 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
      */
 
     void onHasChannel(ChannelInitHandle initHandle);
+
+
+    /**
+     * is or not use steal pool
+     */
+    default void useStealMode(boolean use) {
+        throw new GunException(GunExceptionType.NOT_SUPPORT, "not support steal mode");
+    }
 
     /**
      * server event handle

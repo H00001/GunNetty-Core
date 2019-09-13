@@ -10,7 +10,6 @@ import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.GunNettySystemServices;
-import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.example.*;
 import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.filter.GunNettyInboundFilter;
@@ -30,29 +29,14 @@ public class TestBase {
         GunNettyDefaultObserve p = new GunNettyDefaultObserve();
         GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config.html"));
         GunBootServer server = GunBootServerFactory.newInstance();
-        server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
-                GunNettyExecutors.newFixedExecutorPool(10));
+        server.setExecutors(10, 10);
         server.registerObserve(new GunNettyDefaultObserve());
         server.registerObserve(p).onHasChannel(pipeline -> {
             pipeline.setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
                     .addDataFilter(new GunNettyStdFirstFilter().setObserve(p))
                     .addDataFilter(new GunNettyCharsetInboundChecker())
                     .addConnFilter(new GunNettyStdFirstFilter())
-                    .addDataFilter((GunNettyInboundFilter) filterDto -> {
-                        if (((GunString) (filterDto.transferTarget())).get().startsWith("666")) {
-                            filterDto.channel().pushEvent(1);
-                        } else {
-                            try {
-                                filterDto.channel().channel().write(ByteBuffer.wrap(("you are dead\nhia hia hia").getBytes()));
-                            } catch (IOException ignored) {
-
-                            }
-                            filterDto.channel().closeAndRemove(true);
-
-                            return GunNettyFilter.DealResult.CLOSED;
-                        }
-                        return GunNettyFilter.DealResult.NEXT;
-                    })
+                    .addDataFilter(getGunNettyInboundFilter())
                     .addNettyTimer(new GunTimerExample());
             pipeline.setHandle((GunNettyChildrenHandle) new GunNettyStringHandle());
             pipeline.setHandle((GunNettyParentHandle) new GunNettyStringHandle());
@@ -64,6 +48,24 @@ public class TestBase {
         //running doTime
         Thread.sleep(1000000);
         System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
+    }
+
+    private GunNettyInboundFilter getGunNettyInboundFilter() {
+        return filterDto -> {
+            if (((GunString) (filterDto.transferTarget())).get().startsWith("666")) {
+                filterDto.channel().pushEvent(1);
+            } else {
+                try {
+                    filterDto.channel().channel().write(ByteBuffer.wrap(("you are dead\nhia hia hia").getBytes()));
+                } catch (IOException ignored) {
+
+                }
+                filterDto.channel().closeAndRemove(true);
+
+                return GunNettyFilter.DealResult.CLOSED;
+            }
+            return GunNettyFilter.DealResult.NEXT;
+        };
     }
 }
 
