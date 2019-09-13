@@ -16,7 +16,7 @@ public interface GunNettyTimer extends GunHandle {
      *
      * @param methodName timer event
      * @param t          ReflectiveOperationException
-     * @return next execute
+     * @return is ot not next execute
      */
     boolean timeExecuteError(String methodName, ReflectiveOperationException t);
 

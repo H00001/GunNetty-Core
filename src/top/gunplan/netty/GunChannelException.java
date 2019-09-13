@@ -23,6 +23,5 @@ public class GunChannelException extends GunException {
 
     public GunChannelException(IOException exp) {
         super(GunExceptionType.CHANNEL_ERROR, exp);
-
     }
 }

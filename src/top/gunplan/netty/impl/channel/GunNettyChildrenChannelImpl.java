@@ -4,7 +4,7 @@
 
 package top.gunplan.netty.impl.channel;
 
-import top.gunplan.netty.anno.GunTimeExecutor;
+import top.gunplan.netty.common.GunNettyTimeExecutor;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
@@ -15,7 +15,6 @@ import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -151,18 +150,10 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
 
     @Override
     public void doTime() {
-        long k = unsafeSequencer.nextSequence();
-        timers.parallelStream().forEach(t -> Arrays.stream(t.getClass().getMethods()).
-                filter(who -> {
-                    final GunTimeExecutor g = who.getAnnotation(GunTimeExecutor.class);
-                    return g != null && k % g.interval() == 0;
-                })
-                .forEach(who -> {
-                    try {
-                        who.invoke(t, GunNettyChildrenChannelImpl.this);
-                    } catch (ReflectiveOperationException e) {
-                        t.timeExecuteError(who.getName(), e);
-                    }
-                }));
+        doTck(unsafeSequencer.nextSequence());
+    }
+
+    private void doTck(long k) {
+        GunNettyTimeExecutor.execute(timers, k, this);
     }
 }

@@ -8,12 +8,11 @@ import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.GunTimeEventManager;
-import top.gunplan.netty.anno.GunTimeExecutor;
 import top.gunplan.netty.common.GunNettyExecutors;
+import top.gunplan.netty.common.GunNettyTimeExecutor;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -53,19 +52,7 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
     @Override
     public void loop() {
         final long now = sequencer.nextSequenceInt32WithLimit(Integer.MAX_VALUE);
-        System.out.println("now:" + now);
-        timers.parallelStream().forEach(who -> Arrays.stream(who.getClass().getMethods()).
-                filter(w -> {
-                    final GunTimeExecutor g = w.getAnnotation(GunTimeExecutor.class);
-                    return g != null && (now % g.interval() == 0 || g.interval() == -1);
-                })
-                .forEach(m -> {
-                    try {
-                        m.invoke(who);
-                    } catch (ReflectiveOperationException e) {
-                        who.timeExecuteError(m.getName(), e);
-                    }
-                }));
+        GunNettyTimeExecutor.execute(timers, now);
     }
 
     @Override

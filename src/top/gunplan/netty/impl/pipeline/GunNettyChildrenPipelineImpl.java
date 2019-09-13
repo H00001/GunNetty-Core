@@ -97,7 +97,6 @@ final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
             }
         }
         observe.onAddFilter(filter, this);
-
     }
 
 

@@ -28,8 +28,8 @@ public class GunNettyStringHandle implements GunNettyChildrenHandle, GunNettyPar
 
 
     @Override
-    public GunNetOutbound dealDataEvent(GunNetInbound request) throws GunException {
-        return (GunNetOutbound) request;
+    public GunNetOutbound dealDataEvent(GunNetInbound inbound) throws GunException {
+        return (GunNetOutbound) inbound;
     }
 
 

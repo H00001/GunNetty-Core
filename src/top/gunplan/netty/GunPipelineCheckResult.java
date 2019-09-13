@@ -14,7 +14,6 @@ public class GunPipelineCheckResult {
     private CheckResult result;
 
     public GunPipelineCheckResult(CheckResult result, String reason) {
-
         this.result = result;
         this.reason = reason;
     }

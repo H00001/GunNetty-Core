@@ -19,9 +19,9 @@ public interface GunNettyChildrenHandle extends GunNettyHandle {
     /**
      * dealDataEvent
      *
-     * @param request GunNetInbound
+     * @param inbound GunNetInbound
      * @return GunNetOutbound
      * @throws GunException kinds of exception
      */
-    GunNetOutbound dealDataEvent(GunNetInbound request) throws GunException;
+    GunNetOutbound dealDataEvent(GunNetInbound inbound) throws GunException;
 }
