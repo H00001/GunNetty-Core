@@ -17,6 +17,8 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -32,6 +34,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     private volatile SelectionKey key;
     private final SocketAddress remoteAddress;
     private final SocketAddress localAddress;
+    private final Queue<Object> eventQueue = new ConcurrentLinkedQueue<>();
     private List<GunNettyChannelObserve> observes = new CopyOnWriteArrayList<>();
 
     GunNettyChildrenChannelImpl(final SocketChannel channel,
@@ -135,6 +138,16 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         observes.parallelStream().forEach(GunNettyChannelObserve::onRecoverReadInterest);
     }
 
+    @Override
+    public Object consumeEvent() {
+        return eventQueue.poll();
+    }
+
+
+    @Override
+    public boolean pushEvent(Object event) {
+        return eventQueue.offer(event);
+    }
 
     @Override
     public void doTime() {

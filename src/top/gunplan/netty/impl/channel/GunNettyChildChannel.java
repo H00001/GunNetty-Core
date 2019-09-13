@@ -29,6 +29,7 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
 
     /**
      * parent
+     *
      * @return parent channel
      */
     GunNettyServerChannel parent();
@@ -60,4 +61,10 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
      * recover Read Interest
      */
     void recoverReadInterest();
+
+
+    Object consumeEvent();
+
+
+    boolean pushEvent(Object event);
 }

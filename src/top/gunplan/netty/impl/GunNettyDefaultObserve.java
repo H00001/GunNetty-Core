@@ -24,11 +24,11 @@ public class GunNettyDefaultObserve implements GunNettyServicesObserve, GunNetty
     public void onBooted(GunNettyCoreProperty property) {
         final GunLogger logger = GunNettyContext.logger.setTAG(GunNettyDefaultObserve.class);
         logger.info("A high performance net server and a reverse proxy server", "BOOTED");
-        try {
-            logger.outputFile(property.getProfileName());
-        } catch (IOException | URISyntaxException e) {
-            logger.error(e);
-        }
+   //     try {
+      //      logger.outputFile(property.getProfileName());
+    //    } catch (IOException | URISyntaxException e) {
+    //        logger.error(e);
+    //    }
     }
 
     @Override

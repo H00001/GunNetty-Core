@@ -23,16 +23,20 @@ import java.nio.channels.SocketChannel;
  */
 public class GunTimerExample implements GunNettyTimer {
     public volatile int k = 0;
+    private final static int A = 10;
 
     @GunTimeExecutor(interval = 10, t = @GunHandleTag(id = 140000001, name = "GunTimerExample"))
     public int doWork(@GunInjectSelf GunNettyChildChannel<SocketChannel> keys) {
-        int a = 10;
+        Object b;
+        if ((b = keys.consumeEvent()) != null && ((Integer) b) == 1) {
+            k = 0;
+        }
         try {
             keys.channel().write(ByteBuffer.wrap(("please double click 666 doTime:" + (10 - k) + "\n").getBytes()));
         } catch (IOException e) {
             keys.closeAndRemove(true);
         }
-        if (k++ == a) {
+        if (k++ == A) {
             keys.closeAndRemove(true);
             System.out.println("doTime out closed");
         }

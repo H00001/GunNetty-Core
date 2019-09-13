@@ -36,13 +36,15 @@ public class TestBase {
                     .addConnFilter(new GunNettyStdFirstFilter())
                     .addDataFilter((GunNettyInboundFilter) filterDto -> {
                         if (((GunString) (filterDto.transferTarget())).get().startsWith("666")) {
-                            ((GunTimerExample) filterDto.channel().timers().get(0)).k = 0;
+                            filterDto.channel().pushEvent(1);
                         } else {
                             try {
                                 filterDto.channel().channel().write(ByteBuffer.wrap(("you are dead\nhia hia hia").getBytes()));
-                                filterDto.channel().closeAndRemove(true);
                             } catch (IOException ignored) {
+
                             }
+                            filterDto.channel().closeAndRemove(true);
+
                             return GunNettyFilter.DealResult.CLOSED;
                         }
                         return GunNettyFilter.DealResult.NEXT;
@@ -56,7 +58,7 @@ public class TestBase {
         Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
                 GunBootServer.GunNettyWorkState.RUNNING.state);
         //running doTime
-        Thread.sleep(10000);
+        Thread.sleep(1000000);
         System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
     }
 }
