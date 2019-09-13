@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
  * @date 2019-07-21 20:27
  */
 
-public final class EventLoopFactory {
+public final class GunNettyEventLoopFactory {
     public static GunNettyTransferEventLoop<SocketChannel> newGunNettyBaseTransfer() {
         return new GunNettyBaseTransferEventLoopImpl<>();
     }

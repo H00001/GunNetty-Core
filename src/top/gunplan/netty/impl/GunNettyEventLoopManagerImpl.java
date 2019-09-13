@@ -34,11 +34,11 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
                                      ExecutorService dataExecutor, SystemChannelChangedHandle parentHandle,
                                      ChannelInitHandle childrenHandle, int port) {
         this.dataEvenLoopSum = v1;
-        transfer = EventLoopFactory.newGunNettyBaseTransfer();
+        transfer = GunNettyEventLoopFactory.newGunNettyBaseTransfer();
         transfer.registerManager(this);
         try {
-            dealData = EventLoopFactory.buildDataEventLoop(v1).with(bossExecutor).andRegister(this).build();
-            dealAccept = EventLoopFactory.buildConnEventLoop().with(dataExecutor, parentHandle, childrenHandle)
+            dealData = GunNettyEventLoopFactory.buildDataEventLoop(v1).with(bossExecutor).andRegister(this).build();
+            dealAccept = GunNettyEventLoopFactory.buildConnEventLoop().with(dataExecutor, parentHandle, childrenHandle)
                     .bindPort(port).andRegister(this).build();
         } catch (IOException e) {
             return false;

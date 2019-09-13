@@ -14,7 +14,7 @@ import java.util.List;
  */
 public final class GunNettyTimeExecutor {
     public static void execute(List<GunNettyTimer> timers, long tick, Object... objc) {
-        timers.parallelStream().forEach(t -> Arrays.stream(t.getClass().getMethods()).
+        timers.parallelStream().forEach(t -> Arrays.stream(t.getClass().getDeclaredMethods()).
                 filter(who -> {
                     final GunTimeExecutor g = who.getAnnotation(GunTimeExecutor.class);
                     return g != null && tick % g.interval() == 0;

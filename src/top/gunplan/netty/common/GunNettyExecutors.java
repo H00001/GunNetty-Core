@@ -35,7 +35,6 @@ public final class GunNettyExecutors {
         return new ScheduledThreadPoolExecutor(num, new GunNettyThreadFactory("GunNettyExecutors"));
     }
 
-
     public static ScheduledExecutorService newScheduleExecutorPool() {
         return newScheduleExecutorPool(1);
     }

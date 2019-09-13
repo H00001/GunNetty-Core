@@ -36,9 +36,7 @@ public interface EventLoopBuilder<U> {
      * with
      * register executor
      *
-     * @param deal           ExecutorService
-     * @param parentHandle   server channel event
-     * @param childrenHandle child channel event
+     * @param deal ExecutorService
      * @return this chain style
      * @throws IOException i/o error
      */

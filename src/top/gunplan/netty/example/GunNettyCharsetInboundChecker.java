@@ -30,6 +30,5 @@ public class GunNettyCharsetInboundChecker implements GunNettyInboundFilter {
         } else {
             return DealResult.NOT_DEAL_OUTPUT;
         }
-
     }
 }
