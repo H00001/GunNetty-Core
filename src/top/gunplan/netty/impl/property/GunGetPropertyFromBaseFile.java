@@ -6,13 +6,12 @@ package top.gunplan.netty.impl.property;
 
 import top.gunplan.netty.GunBootServerBase;
 import top.gunplan.netty.GunProperty;
+import top.gunplan.netty.common.GunNettyStringUtil;
 import top.gunplan.netty.impl.property.base.PropertyDataBuilder;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.net.URISyntaxException;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * GunGetPropertyFromBaseFile
@@ -41,11 +40,9 @@ public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, Property
 
     private boolean settingProperties0(Map<String, GunProperty> propertyMap, String filename) throws GunBootServerBase.GunNettyCanNotBootException {
         try {
-            final String read = Files.readString(Paths.get((Objects.requireNonNull(
-                    this.getClass().getClassLoader().getResource(filename)).getPath())));
-            String[] properties = read.split("\n");
+            String[] properties = GunNettyStringUtil.confRead(filename).split("\n");
             analyser.analyzingProperties(properties, propertyMap);
-        } catch (NoSuchFieldException | IllegalAccessException | IOException e) {
+        } catch (NoSuchFieldException | IllegalAccessException | IOException | URISyntaxException e) {
             throw new GunBootServerBase.GunNettyCanNotBootException(e);
         }
         return true;
@@ -59,8 +56,9 @@ public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, Property
 
     @Override
     public String[] create() throws IOException {
-        final String read = Files.readString(Paths.get((Objects.requireNonNull(
-                this.getClass().getClassLoader().getResource(fileName)).getPath())));
-        return read.split("\n");
+//        final String read = Files.readString(Paths.get((Objects.requireNonNull(
+//                this.getClass().getClassLoader().getResource(fileName)).getPath())));
+//        return read.split("\n");
+        return null;
     }
 }

@@ -30,7 +30,8 @@ public class TestBase {
         GunBootServer server = GunBootServerFactory.newInstance();
         server.setExecutors(10, 10).useStealMode(true).
                 registerObserve(new GunNettyDefaultObserve()).onHasChannel(pipeline ->
-                pipeline.setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
+                pipeline
+                        .setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
                         .addDataFilter(new GunNettyStdFirstFilter().setObserve(null))
                         .addDataFilter(new GunNettyCharsetInboundChecker())
                         .addConnFilter(new GunNettyStdFirstFilter())
@@ -43,7 +44,7 @@ public class TestBase {
         Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
                 GunBootServer.GunNettyWorkState.RUNNING.state);
         //running doTime
-        Thread.sleep(1000000);
+        Thread.sleep(10000000);
         System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
     }
 

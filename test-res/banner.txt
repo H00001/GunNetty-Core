@@ -1,2 +1,1 @@
 g.g.t.t.BOOTED
-[08-03_17:55:24] [ STDOUT] [GunNettyDefaultObserve] g.g.t.t.BOOTED

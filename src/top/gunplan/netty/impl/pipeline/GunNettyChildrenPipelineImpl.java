@@ -11,6 +11,7 @@ import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
 import top.gunplan.netty.filter.GunNettyFilter;
+import top.gunplan.netty.observe.DefaultGunNettyChildrenPipelineChangedObserve;
 import top.gunplan.netty.observe.GunNettyChildrenPipelineChangedObserve;
 
 import java.util.List;
@@ -26,9 +27,14 @@ import java.util.stream.Stream;
  */
 final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
         implements GunNettyChildrenPipeline {
-    private List<GunNettyDataFilter> dataFilters = new CopyOnWriteArrayList<>();
-    private List<GunNettyConnFilter> connFilters = new CopyOnWriteArrayList<>();
-    private GunNettyChildrenPipelineChangedObserve observe;
+    private final List<GunNettyDataFilter> dataFilters = new CopyOnWriteArrayList<>();
+    private final List<GunNettyConnFilter> connFilters = new CopyOnWriteArrayList<>();
+    private volatile GunNettyChildrenPipelineChangedObserve observe;
+
+    GunNettyChildrenPipelineImpl() {
+        observe = new DefaultGunNettyChildrenPipelineChangedObserve();
+        super.setPipelineHandleChangeObserve(observe);
+    }
 
     @Override
     public GunNettyChildrenPipeline addDataFilter(GunNettyDataFilter filter) {
@@ -77,11 +83,11 @@ final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
 
     @Override
     public synchronized GunNettyChildrenPipeline setMetaInfoChangeObserver(GunNettyChildrenPipelineChangedObserve observe) {
-        if (this.observe == null) {
+        if (this.observe != null) {
             this.observe = observe;
             super.setPipelineHandleChangeObserve(observe);
         } else {
-            throw new GunException(GunExceptionType.EXC0, "reset GunNettyChildrenPipelineChangedObserve");
+            throw new GunException(GunExceptionType.NULLPTR, "reset GunNettyChildrenPipelineChangedObserve");
         }
         return this;
     }

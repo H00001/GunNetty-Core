@@ -17,7 +17,10 @@ import java.util.concurrent.CompletableFuture;
  * @author frank albert
  * @version 0.0.0.1
  * @date 2019-08-06 12:58
+ *
+ * @deprecated
  */
+@Deprecated
 class NvPropertyConfigureGetterImpl implements NvPropertyConfigureGetter {
     GunNettyPropertyAnalyzer<String, String[]> analyser;
     Map<String, GunProperty> p;
