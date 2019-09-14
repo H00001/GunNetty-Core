@@ -9,7 +9,6 @@ import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.GunTimeEventManager;
 import top.gunplan.netty.common.GunNettyExecutors;
-import top.gunplan.netty.common.GunNettyTimeExecutor;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.util.ArrayList;
@@ -25,6 +24,7 @@ import java.util.concurrent.TimeUnit;
  * @date 2019-09-07 12:24
  */
 public class GunTimeEventManagerImpl implements GunTimeEventManager {
+    private final ThreadLocal<GunNettyTimer> threadTimer = new ThreadLocal<>();
     private final List<GunNettyTimer> timers = new ArrayList<>(1);
     private final GunNettySequencer sequencer = GunNettySequencer.newThreadUnSafeSequencer();
     private volatile Thread first;
@@ -52,12 +52,15 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
     @Override
     public void loop() {
         final long now = sequencer.nextSequenceInt32WithLimit(Integer.MAX_VALUE);
-        GunNettyTimeExecutor.execute(timers, now);
+        if (threadTimer.get() == null) {
+            threadTimer.set(timers.get((int) (now % timers.size())));
+        }
+        GunNettyTimeExecutor.executeOne(threadTimer.get(), now);
     }
 
     @Override
     public int boot(long var1, long var2) {
-        ses = GunNettyExecutors.newScheduleExecutorPool();
+        ses = GunNettyExecutors.newScheduleExecutorPool(timers.size());
         ses.scheduleAtFixedRate(this::loop, var1, var2, TimeUnit.MILLISECONDS);
         return 0;
     }
