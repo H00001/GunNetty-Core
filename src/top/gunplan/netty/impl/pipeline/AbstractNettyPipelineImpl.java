@@ -90,12 +90,12 @@ abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
     @Override
     public int destroy() {
         timers.parallelStream().forEach(GunHandle::destroy);
-        return cHandle.destroy() | pHandle.destroy();
+        return cHandle.destroy() | (pHandle != null ? pHandle.init() : 0);
     }
 
     @Override
     public int init() {
         timers.parallelStream().forEach(GunHandle::init);
-        return cHandle.init() | pHandle.init();
+        return cHandle.init() | (pHandle != null ? pHandle.init() : 0);
     }
 }
