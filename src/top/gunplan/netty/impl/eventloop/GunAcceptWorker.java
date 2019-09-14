@@ -50,6 +50,5 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
         }
         while (iterator.hasPrevious() && (result != GunNettyFilter.DealResult.NEXT));
 
-
     }
 }

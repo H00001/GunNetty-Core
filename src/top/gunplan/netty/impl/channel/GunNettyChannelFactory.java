@@ -32,6 +32,7 @@ public class GunNettyChannelFactory {
     ) throws IOException {
         GunNettyChildrenPipeline pipeline = GunNettyChildrenPipeline.newPipeline();
         initHandle.onHasChannel(pipeline);
+        pipeline.init();
         return new GunNettyChildrenChannelImpl(channel, pipeline, pChannel, BOSS_SEQUENCER.nextSequence());
     }
 
@@ -41,7 +42,6 @@ public class GunNettyChannelFactory {
                      final SystemChannelChangedHandle initHandle,
                      final GunConnEventLoop eventLoop) {
         assert initHandle != null;
-
         return new GunNettyServerChannelImpl(channel, initHandle, eventLoop, WORK_SEQUENCER.nextSequence());
     }
 }

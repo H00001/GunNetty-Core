@@ -47,4 +47,10 @@ public class GunNettyStringHandle implements GunNettyChildrenHandle, GunNettyPar
     public GunNetOutbound dealConnEvent(SocketAddress address) throws GunException {
         return new GunString("welcome to system now doTime:" + System.currentTimeMillis() + "\n");
     }
+
+    @Override
+    public int init() {
+        System.out.println("handle init");
+        return 0;
+    }
 }

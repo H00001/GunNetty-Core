@@ -116,7 +116,7 @@ final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
 
     @Override
     public GunPipelineCheckResult check() {
-        if (dataFilters != null && dataFilters.size() > 0) {
+        if (dataFilters.size() > 0) {
             return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.SAFE);
         } else if (childHandel() == null && dataFilters.size() > 0) {
             return new GunPipelineCheckResult(GunPipelineCheckResult.CheckResult.UNSAFE);
