@@ -1,15 +1,18 @@
 package top.gunplan.netty.impl.buffer;
 
-import sun.misc.Unsafe;
+
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 
 class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
-
-
-    GunNettyUnsafeBuffer(long memoryAddress, int len, Unsafe unsafe) {
-        super(memoryAddress, len, unsafe);
+    public GunNettyUnsafeBuffer(int len) {
+        super(len);
     }
+
+
+//    GunNettyUnsafeBuffer(long memoryAddress, int len, Unsafe unsafe) {
+//        super(memoryAddress, len, unsafe);
+//    }
 
     @Override
     public void write(byte[] bin) {
@@ -24,24 +27,24 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
 
     @Override
     public void write(byte bin) {
-        if (maxLen - writePoint >= 1) {
-            unsafe.putByte(memorySegmentAddress + writePoint, bin);
-            writePoint++;
-        } else {
-            throw new GunException(GunExceptionType.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
-        }
+        // if (maxLen - writePoint >= 1) {
+        //   unsafe.putByte(memorySegmentAddress + writePoint, bin);
+        writePoint++;
+        // } else {
+        throw new GunException(GunExceptionType.NOT_SUPPORT, GunNettyUnsafeBuffer.class.getSimpleName());
+        // }
     }
 
     @Override
     public byte read() {
-        byte b;
-        if (maxLen - readPoint >= 1) {
-            b = unsafe.getByte(memorySegmentAddress + readPoint);
-            readPoint++;
-        } else {
+        //    byte b;
+        //    if (maxLen - readPoint >= 1) {
+        //     b = unsafe.getByte(memorySegmentAddress + readPoint);
+        //       readPoint++;
+        //   } else {
             throw new GunException(GunExceptionType.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
-        }
-        return b;
+        //  }
+        // return b;
     }
 
     @Override

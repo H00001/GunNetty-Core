@@ -29,8 +29,7 @@ public class TestBase {
         GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config.html"));
         GunBootServer server = GunBootServerFactory.newInstance();
         server.setExecutors(10, 10).useStealMode(true).
-                registerObserve(new GunNettyDefaultObserve()).onHasChannel(pipeline ->
-                pipeline
+                registerObserve(new GunNettyDefaultObserve()).onHasChannel(pipeline -> pipeline
                         .setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
                         .addDataFilter(new GunNettyStdFirstFilter().setObserve(null))
                         .addDataFilter(new GunNettyCharsetInboundChecker())

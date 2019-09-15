@@ -1,6 +1,5 @@
 package top.gunplan.netty.impl.buffer;
 
-import sun.misc.Unsafe;
 
 /**
  * BaseGunNettyUnsafeBuffer
@@ -10,15 +9,18 @@ import sun.misc.Unsafe;
  * @date 2019-06-08 18:52
  */
 public abstract class BaseGunNettyUnsafeBuffer extends BaseGunNettyBuffer {
-    final long memorySegmentAddress;
-    final Unsafe unsafe;
-
-
-    BaseGunNettyUnsafeBuffer(long memoryAddress, int len, Unsafe unsafe) {
+    public BaseGunNettyUnsafeBuffer(int len) {
         super(len);
-        this.memorySegmentAddress = memoryAddress;
-        this.unsafe = unsafe;
     }
+    // final long memorySegmentAddress;
+    //  final Unsafe unsafe;
+
+//
+//    BaseGunNettyUnsafeBuffer(long memoryAddress, int len, Unsafe unsafe) {
+//        super(len);
+//        this.memorySegmentAddress = memoryAddress;
+//  //      this.unsafe = unsafe;
+//    }
 
     /**
      * write
@@ -57,7 +59,7 @@ public abstract class BaseGunNettyUnsafeBuffer extends BaseGunNettyBuffer {
      */
     @Override
     public void flushData() {
-        unsafe.setMemory(memorySegmentAddress, maxLen, (byte) 0);
+        // unsafe.setMemory(memorySegmentAddress, maxLen, (byte) 0);
     }
 
 

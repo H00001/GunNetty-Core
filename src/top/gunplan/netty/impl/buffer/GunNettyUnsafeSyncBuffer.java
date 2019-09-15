@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.impl.buffer;
 
-import sun.misc.Unsafe;
 
 /**
  * GunNettyUnsafeSyncBuffer
@@ -15,9 +14,12 @@ import sun.misc.Unsafe;
  */
 
 public class GunNettyUnsafeSyncBuffer extends GunNettyUnsafeBuffer {
-    public GunNettyUnsafeSyncBuffer(long memoryAddress, int len, Unsafe unsafe) {
-        super(memoryAddress, len, unsafe);
+    public GunNettyUnsafeSyncBuffer(int len) {
+        super(len);
     }
+//    public GunNettyUnsafeSyncBuffer(long memoryAddress, int len, Unsafe unsafe) {
+//        //super(memoryAddress, len, unsafe);
+//    }
 
 
     /**
