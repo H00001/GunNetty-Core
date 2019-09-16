@@ -11,7 +11,6 @@ import java.util.List;
 
 /**
  * @author dosdrtt
- * @date 2019/05/30
  */
 
 public interface GunTimeExecutor extends Runnable, GunNettyManagerGetter<GunTimeExecutor> {

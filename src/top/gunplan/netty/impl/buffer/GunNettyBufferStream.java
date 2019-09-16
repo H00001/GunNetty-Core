@@ -133,7 +133,7 @@ public interface GunNettyBufferStream extends Comparable<GunNettyBufferStream> {
      * compare compare
      *
      * @param o compareTo
-     * @return
+     * @return compare result
      */
     @Override
     default int compareTo(GunNettyBufferStream o) {

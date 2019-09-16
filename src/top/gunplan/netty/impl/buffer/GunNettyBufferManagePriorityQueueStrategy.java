@@ -9,7 +9,6 @@ import java.util.concurrent.PriorityBlockingQueue;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 16:10
  */
 class GunNettyBufferManagePriorityQueueStrategy extends BaseGunNettyBufferManageStrategy {
 

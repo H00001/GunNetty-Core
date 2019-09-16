@@ -14,7 +14,6 @@ import top.gunplan.netty.impl.property.base.GunNettyPropertyManagerFactory;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-07-27 08:08
  */
 
 public final class GunNettySystemServices {

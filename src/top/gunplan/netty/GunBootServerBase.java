@@ -7,7 +7,6 @@ package top.gunplan.netty;
 
 /**
  * @author dosdrtt
- * @date 2019/05/25
  */
 
 public interface GunBootServerBase {

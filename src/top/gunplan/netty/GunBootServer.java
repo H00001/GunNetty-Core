@@ -13,7 +13,6 @@ import top.gunplan.netty.observe.GunNettyServicesObserve;
  * it is NioStdServerImpl
  *
  * @author dosdrtt
- * @date 2019-04-21
  * @since 0.0.0.3
  */
 public interface GunBootServer extends GunBootServerBase, GunServerStateManager {

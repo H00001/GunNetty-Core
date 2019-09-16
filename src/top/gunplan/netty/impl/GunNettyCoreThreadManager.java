@@ -17,7 +17,7 @@ import java.util.concurrent.Future;
  *
  * @author frank albert
  * @version 0.0.h.1
- * @date 2019-07-21 15:18
+ * @date 2019-07-21
  */
 public interface GunNettyCoreThreadManager {
     /**

@@ -12,7 +12,6 @@ import java.io.OutputStream;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-28 23:05
  */
 public class GunNettyNetStream extends OutputStream {
 

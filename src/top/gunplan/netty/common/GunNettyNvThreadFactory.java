@@ -13,7 +13,7 @@ public interface GunNettyNvThreadFactory extends ThreadFactory {
     /**
      * newThread
      *
-     * @param r @see ThreadFactory
+     * @param r runnable @see ThreadFactory
      * @return Thread ThreadFactory
      * @see ThreadFactory
      */
@@ -23,7 +23,7 @@ public interface GunNettyNvThreadFactory extends ThreadFactory {
     /**
      * newThread
      *
-     * @param r       @see ThreadFactory
+     * @param r       runnable @see ThreadFactory
      * @param handler handler to deal exception
      * @return Thread ThreadFactory
      * @see ThreadFactory

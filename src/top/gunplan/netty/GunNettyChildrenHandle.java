@@ -12,7 +12,6 @@ import top.gunplan.netty.protocol.GunNetOutbound;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-13 09:37
  */
 
 public interface GunNettyChildrenHandle extends GunNettyHandle {

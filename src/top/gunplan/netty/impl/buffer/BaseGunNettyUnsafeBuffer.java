@@ -6,7 +6,6 @@ package top.gunplan.netty.impl.buffer;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 18:52
  */
 public abstract class BaseGunNettyUnsafeBuffer extends BaseGunNettyBuffer {
     public BaseGunNettyUnsafeBuffer(int len) {

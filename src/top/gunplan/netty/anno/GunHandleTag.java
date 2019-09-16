@@ -11,8 +11,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
+ * GunHandleTag
+ *
  * @author frankHan
- * @date 2019-09-13
  */
 @Target(value = ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)

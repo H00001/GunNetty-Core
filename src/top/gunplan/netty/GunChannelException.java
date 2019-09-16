@@ -11,7 +11,6 @@ import java.io.IOException;
  *
  * @author frank albert
  * @version 0.0.0.3
- * @date 2019-06-30 09:34
  */
 
 public class GunChannelException extends GunException {

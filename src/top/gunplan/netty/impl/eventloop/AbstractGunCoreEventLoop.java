@@ -99,6 +99,7 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
 
     /**
      * when halt the deal
+     * @throws IOException IO error
      */
     void whenHaltDeal() throws IOException {
         bootSelector.close();

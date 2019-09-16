@@ -17,7 +17,6 @@ import java.util.concurrent.Future;
 
 /**
  * @author dosdrtt
- * @concurrent
  * @apiNote 2.0.1.9
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
