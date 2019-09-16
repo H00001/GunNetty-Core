@@ -6,7 +6,6 @@ package top.gunplan.netty;
 
 /**
  * @author dosdrtt
- * @apiNote 0.1.0.4
  * this is a doTime execute interface
  * you can use this with {@link GunNettyTimer}
  */

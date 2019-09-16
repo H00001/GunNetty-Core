@@ -10,7 +10,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08
  */
 class GunNettyBufferManageConcurrentStrategy extends BaseGunNettyBufferManageStrategy {
     @Override

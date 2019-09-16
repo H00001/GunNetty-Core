@@ -25,7 +25,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * @author frank albert
  * @version 0.0.0.6
- * @date 2019-08-08 23:09
  */
 class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline>
         implements GunNettyChildChannel<SocketChannel> {

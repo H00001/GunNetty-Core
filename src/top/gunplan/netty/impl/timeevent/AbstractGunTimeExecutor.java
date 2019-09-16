@@ -16,7 +16,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * AbstractGunTimeExecutor
  *
  * @author dosdrtt
- * @date 2019/05/30
  */
 @Deprecated
 public abstract class AbstractGunTimeExecutor implements GunTimeExecutor {

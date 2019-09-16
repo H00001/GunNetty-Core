@@ -12,7 +12,6 @@ import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-13 09:28
  */
 public interface SystemChannelChangedHandle extends GunHandle {
     /**

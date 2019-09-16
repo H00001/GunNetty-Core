@@ -18,8 +18,7 @@ import java.util.Map;
  * GunGetPropertyFromNet
  *
  * @author frank albert
- * @version 0.0.0.2
- * @date 2019-08-06 08:31
+ * @version 0.0.0.3
  */
 
 public class GunGetPropertyFromNet implements GunPropertyStrategy {

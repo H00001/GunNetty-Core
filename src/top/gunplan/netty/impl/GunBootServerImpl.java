@@ -23,7 +23,6 @@ import java.util.concurrent.Future;
  *
  * @author Gunplan
  * @version 0.1.1.4
- * @apiNote 0.0.0.5
  * @see GunBootServer
  * @since 0.0.0.5
  */

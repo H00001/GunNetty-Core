@@ -15,7 +15,6 @@ import java.io.IOException;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-06 13:09
  */
 @FunctionalInterface
 public interface PropertyDataBuilder<D> {

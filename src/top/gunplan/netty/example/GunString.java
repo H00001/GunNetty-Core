@@ -11,7 +11,6 @@ import top.gunplan.netty.impl.GunNetInBoundOutBound;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-07-26 23:30
  */
 
 public class GunString implements GunNetInBoundOutBound {

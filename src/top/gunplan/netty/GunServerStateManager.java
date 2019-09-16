@@ -11,7 +11,6 @@ import java.util.Arrays;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-09-06 23:28
  */
 public interface GunServerStateManager {
     /**

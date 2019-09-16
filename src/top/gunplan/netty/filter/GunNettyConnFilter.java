@@ -13,7 +13,6 @@ import java.nio.channels.SocketChannel;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-18 11:40
  */
 public interface GunNettyConnFilter extends GunNettyFilter {
 

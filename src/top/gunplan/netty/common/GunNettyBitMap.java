@@ -9,7 +9,6 @@ package top.gunplan.netty.common;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-09-01 21:54
  */
 public interface GunNettyBitMap {
     /**

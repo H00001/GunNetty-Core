@@ -13,7 +13,6 @@ import top.gunplan.netty.anno.GunTimeExecutor;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-09-07 12:12
  */
 public class GlobalTimer implements GunNettyTimer {
 

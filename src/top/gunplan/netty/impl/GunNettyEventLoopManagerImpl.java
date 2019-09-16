@@ -19,7 +19,6 @@ import java.util.concurrent.ExecutorService;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-13 04:42
  */
 final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
     private volatile GunConnEventLoop dealAccept;

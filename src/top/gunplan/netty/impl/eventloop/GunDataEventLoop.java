@@ -16,7 +16,6 @@ import java.util.Set;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-07-22 23:29
  */
 public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
 

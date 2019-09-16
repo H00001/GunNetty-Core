@@ -9,7 +9,6 @@ package top.gunplan.netty;
  * Exception types
  *
  * @author dosdrtt
- * @date 2019/05/31
  */
 public enum GunExceptionType {
     /**

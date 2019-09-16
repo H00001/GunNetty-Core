@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutorService;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-07-23 00:17
  */
 public interface ConnEventLoopBuilder extends EventLoopBuilder<GunConnEventLoop> {
     /**

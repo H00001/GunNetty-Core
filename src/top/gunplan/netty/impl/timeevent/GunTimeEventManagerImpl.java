@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-09-07 12:24
  */
 public class GunTimeEventManagerImpl implements GunTimeEventManager {
     private final ThreadLocal<GunNettyTimer> threadTimer = new ThreadLocal<>();

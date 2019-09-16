@@ -13,7 +13,6 @@ import top.gunplan.netty.protocol.GunNetInbound;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-13 17:21
  */
 public interface GunInboundChecker extends GunNettyChecker<GunNetInbound>, GunNettyTranslator {
 }
