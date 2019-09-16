@@ -17,7 +17,7 @@ import top.gunplan.netty.impl.checker.GunInboundChecker;
  *
  * @author frank albert
  * @version 0.0.0.3
- * @date 2019-07-26 23:21
+ * # 2019-07-26 23:21
  */
 @GunNetFilterOrder(index = 1)
 @GunHandleTag(name = "GunNettyCharsetInboundChecker", id = GunNettyContext.NumberConst.ONE)

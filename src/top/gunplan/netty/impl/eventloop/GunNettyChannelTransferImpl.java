@@ -14,7 +14,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-06-19 00:02
+ * # 2019-06-19 00:02
  */
 
 public class GunNettyChannelTransferImpl<U extends SocketChannel> implements

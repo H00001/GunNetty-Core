@@ -21,7 +21,7 @@ import java.util.Map;
  *
  * @author frank albert
  * @version 0.0.2.1
- * @date 2019-06-25 20:45
+ * # 2019-06-25 20:45
  */
 @FunctionalInterface
 public interface GunPropertyStrategy {

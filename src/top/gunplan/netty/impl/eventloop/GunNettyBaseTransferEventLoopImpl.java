@@ -17,7 +17,7 @@ import java.util.concurrent.LinkedBlockingQueue;
  *
  * @author frank albert
  * @version 0.0.0.e
- * @date 2019-06-09 22:10
+ * # 2019-06-09 22:10
  */
 class GunNettyBaseTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U> {
 

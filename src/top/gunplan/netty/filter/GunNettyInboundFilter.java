@@ -12,7 +12,6 @@ import top.gunplan.netty.impl.checker.GunOutboundChecker;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-07-19 14:18
  */
 @FunctionalInterface
 public interface GunNettyInboundFilter extends GunNettyDataFilter {

@@ -23,7 +23,7 @@ import java.util.stream.Stream;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-13 15:02
+ * # 2019-08-13 15:02
  */
 final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
         implements GunNettyChildrenPipeline {

@@ -11,7 +11,7 @@ import top.gunplan.netty.GunPipelineCheckResult;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-19 13:17
+ * # 2019-08-19 13:17
  */
 public class GunNettyParentPipelineImpl extends AbstractNettyPipelineImpl implements GunNettyParentPipeline {
 

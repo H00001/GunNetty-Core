@@ -17,7 +17,7 @@ import java.util.stream.Stream;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-13 09:35
+ * # 2019-08-13 09:35
  */
 
 public interface GunNettyChildrenPipeline extends GunNettyPipeline {
@@ -50,7 +50,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
      * get data filters
      * {@link GunNettyDataFilter}
      *
-     * @return List<GunNettyFilter> GunNettyFilter's List
+     * @return stream  GunNettyFilter's stream
      */
     Stream<GunNettyDataFilter> dataFilterStream();
 
@@ -59,7 +59,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
      * get data filters
      * {@link GunNettyDataFilter}
      *
-     * @return List<GunNettyFilter> GunNettyFilter's List
+     * @return GunNettyFilter's List
      */
     List<GunNettyConnFilter> connFilters();
 
@@ -68,7 +68,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
      * get data filters
      * {@link GunNettyDataFilter}
      *
-     * @return List<GunNettyFilter> GunNettyFilter's List
+     * @return GunNettyFilter's List
      */
     List<GunNettyDataFilter> dataFilters();
 
@@ -76,7 +76,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
      * remove connection filter
      *
      * @param filter {@link GunNettyConnFilter} to remove
-     * @return List<GunNettyFilter> GunNettyFilter's List
+     * @return this chain style
      */
     GunNettyChildrenPipeline removeConnFilter(GunNettyConnFilter filter);
 
@@ -84,7 +84,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
      * add connection filter
      *
      * @param filter added filter
-     * @return List<GunNettyFilter> GunNettyFilter's List
+     * @return this chain style
      */
     GunNettyChildrenPipeline addConnFilter(GunNettyConnFilter filter);
 
@@ -92,7 +92,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
      * add connection filter
      *
      * @param timer added timer
-     * @return List<GunNettyFilter> GunNettyFilter's List
+     * @return GunNettyPipeline chain style
      */
     @Override
     GunNettyPipeline addNettyTimer(GunNettyTimer timer);
@@ -100,7 +100,7 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
     /**
      * get connection filters
      *
-     * @return List<GunNettyFilter> GunNettyFilter's List
+     * @return GunNettyFilter's Stream
      */
     Stream<GunNettyConnFilter> connFilterStream();
 

@@ -9,7 +9,7 @@ import top.gunplan.netty.protocol.GunNetOutbound;
  *
  * @author frank albert
  * @version 0.0.0.4
- * @date 2019-06-29 20:52
+ * # 2019-06-29 20:52
  */
 
 public interface GunNetInBoundOutBound extends GunNetInbound, GunNetOutbound {

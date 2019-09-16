@@ -13,7 +13,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-07-17 07:39
+ * # 2019-07-17 07:39
  */
 public interface GunNettyChannelTransfer<U extends SocketChannel> {
     /**

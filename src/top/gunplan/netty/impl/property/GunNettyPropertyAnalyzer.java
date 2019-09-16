@@ -14,7 +14,7 @@ import java.util.Map;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-03 18:22
+ * # 2019-08-03 18:22
  */
 
 public interface GunNettyPropertyAnalyzer<U, R> {

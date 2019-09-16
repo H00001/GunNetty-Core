@@ -16,7 +16,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-09 22:52
+ * # 2019-08-09 22:52
  */
 public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> {
     /**

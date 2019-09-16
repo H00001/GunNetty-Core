@@ -9,7 +9,7 @@ package top.gunplan.netty.impl;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-07-21 10:19
+ * # 2019-07-21 10:19
  */
 
 public interface GunNetBound {

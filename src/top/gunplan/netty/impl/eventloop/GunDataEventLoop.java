@@ -23,7 +23,7 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
     /**
      * availableSelectionKey
      *
-     * @return Set<SelectionKey>
+     * @return keys
      * @throws IOException fast release happened I/O error
      */
     Set<SelectionKey> availableSelectionKey() throws IOException;

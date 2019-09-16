@@ -18,7 +18,6 @@ import java.util.concurrent.ExecutorService;
  *
  * @author frank albert
  * @version 0.0.0.3
- * @date 2019-08-13 04:41
  */
 public interface GunNettyEventLoopManager {
     /**

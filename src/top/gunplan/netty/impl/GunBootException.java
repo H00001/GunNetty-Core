@@ -8,7 +8,7 @@ import top.gunplan.netty.GunExceptionType;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-29 22:50
+ * # 2019-06-29 22:50
  */
 
 public class GunBootException extends GunException {

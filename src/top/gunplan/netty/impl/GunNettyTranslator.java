@@ -11,7 +11,7 @@ import top.gunplan.netty.protocol.GunNetInbound;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-29 21:46
+ * # 2019-06-29 21:46
  */
 
 public interface GunNettyTranslator {
@@ -21,7 +21,7 @@ public interface GunNettyTranslator {
      * tranToObject
      * translate a class to a object by src
      *
-     * @param in  Class<R> class
+     * @param in  class Class
      * @param <R> GunNetInbound {@link  GunNetInbound}
      * @return boolean
      */

@@ -15,7 +15,7 @@ import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-29 06:34
+ * # 2019-08-29 06:34
  */
 public class DefaultGunNettyChildrenPipelineChangedObserve implements GunNettyChildrenPipelineChangedObserve {
     @Override

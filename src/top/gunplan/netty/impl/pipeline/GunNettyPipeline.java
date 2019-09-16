@@ -57,7 +57,7 @@ public interface GunNettyPipeline extends GunHandle {
     /**
      * timers
      *
-     * @return List<GunNettyTimer>
+     * @return timer list GunNettyTimer
      */
     List<GunNettyTimer> timers();
 

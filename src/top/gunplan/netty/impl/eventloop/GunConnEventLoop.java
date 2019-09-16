@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutorService;
  *
  * @author frank albert
  * @version 0.0.0.3
- * @date 2019-07-23 00:11
  */
 public interface GunConnEventLoop extends GunCoreEventLoop {
     /**

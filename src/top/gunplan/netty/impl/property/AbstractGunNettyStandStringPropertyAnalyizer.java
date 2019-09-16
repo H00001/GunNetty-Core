@@ -17,7 +17,7 @@ import static top.gunplan.utils.GunNumberUtil.isNumber;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-03 18:21
+ * # 2019-08-03 18:21
  */
 public abstract class AbstractGunNettyStandStringPropertyAnalyizer implements GunNettyPropertyAnalyzer<String, String[]> {
     private final GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {

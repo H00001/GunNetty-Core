@@ -21,7 +21,6 @@ public interface GunNettyConnFilter extends GunNettyFilter {
      *
      * @param ch channel
      * @return is or not continue
-     * @apiNote 0.1.2.3
      */
     DealResult doConnFilter(GunNettyChildChannel<SocketChannel> ch);
 

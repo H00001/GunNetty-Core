@@ -8,7 +8,7 @@ import java.util.Queue;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-09 18:36
+ * # 2019-06-09 18:36
  */
 public abstract class BaseGunNettyBufferManageStrategy implements GunNettyBufferManageStrategy {
     @Override

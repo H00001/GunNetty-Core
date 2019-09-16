@@ -10,7 +10,6 @@ package top.gunplan.netty.impl.buffer;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 19:12
  */
 
 public class GunNettyUnsafeSyncBuffer extends GunNettyUnsafeBuffer {
@@ -30,8 +29,7 @@ public class GunNettyUnsafeSyncBuffer extends GunNettyUnsafeBuffer {
      * step from the register to memory :
      * first write 32 high bit the next is
      * write low 32 bits.so if we do not
-     * use {@link synchronized}
-     *
+     * use synchronized
      * @return long write point
      */
 

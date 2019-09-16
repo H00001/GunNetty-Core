@@ -9,7 +9,6 @@ package top.gunplan.netty.impl.buffer;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 14:56
  */
 public final class GunNettyBufferFactory {
     /**

@@ -9,7 +9,6 @@ package top.gunplan.netty;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-09-07 12:23
  */
 public interface GunTimeEventManager {
     /**

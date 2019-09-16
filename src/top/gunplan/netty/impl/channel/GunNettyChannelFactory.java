@@ -19,7 +19,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author frank albert
  * @version 0.0.0.5
- * @date 2019-08-08 23:10
+ * # 2019-08-08 23:10
  */
 public class GunNettyChannelFactory {
     private static final GunNettySequencer BOSS_SEQUENCER = GunNettySequencer.newThreadSafeSequencer();

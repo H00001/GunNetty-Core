@@ -9,7 +9,7 @@ import top.gunplan.netty.impl.property.GunPropertyStrategy;
 
 /**
  * @author dosdrtt
- * @date 2019-04-13
+ * # 2019-04-13
  * @since 0.0.0.1
  */
 public interface GunNettyPropertyManager {

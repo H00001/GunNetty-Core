@@ -11,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-06 15:20
+ * # 2019-08-06 15:20
  */
 final class GunNettySafeSequenceImpl implements GunNettySequencer {
     private AtomicLong adder = new AtomicLong();

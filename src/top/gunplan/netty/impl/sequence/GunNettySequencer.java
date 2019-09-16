@@ -11,7 +11,7 @@ import top.gunplan.utils.GunNumberUtil;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-05 00:22
+ * # 2019-08-05 00:22
  */
 
 public interface GunNettySequencer {

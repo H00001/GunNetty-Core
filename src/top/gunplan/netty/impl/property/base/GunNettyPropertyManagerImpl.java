@@ -28,7 +28,7 @@ import java.util.Map;
  * analyzing config information by reference
  *
  * @author dosdrtt
- * @date 2019/04/22
+ * # 2019/04/22
  * @see GunNettyPropertyManager
  */
 final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {

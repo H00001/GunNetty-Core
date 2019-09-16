@@ -9,7 +9,6 @@ package top.gunplan.netty.impl.buffer;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 14:12
  */
 public interface GunNettyBufferStream extends Comparable<GunNettyBufferStream> {
 

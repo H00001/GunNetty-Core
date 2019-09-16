@@ -12,7 +12,7 @@ import java.util.Queue;
  *
  * @author frank albert
  * @version 0.0.0.3
- * @date 2019-06-08 15:58
+ * # 2019-06-08 15:58
  */
 public interface GunNettyBufferManageStrategy {
     /**

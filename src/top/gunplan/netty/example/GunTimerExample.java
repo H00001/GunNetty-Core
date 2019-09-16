@@ -19,7 +19,7 @@ import java.nio.channels.SocketChannel;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-31 23:37
+ * # 2019-08-31 23:37
  */
 public class GunTimerExample implements GunNettyTimer {
     public volatile int k = 0;

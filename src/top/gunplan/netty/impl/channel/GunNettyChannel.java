@@ -17,7 +17,6 @@ import java.util.List;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-08 23:06
  */
 public interface GunNettyChannel<CH extends Channel,
         LOOP extends GunCoreEventLoop,

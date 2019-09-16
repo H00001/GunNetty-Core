@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-06-25 20:55
+ * # 2019-06-25 20:55
  */
 public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, PropertyDataBuilder<String[]> {
     private final GunNettyPropertyAnalyzer<String, String[]> analyser = new AbstractGunNettyStandStringPropertyAnalyizer() {

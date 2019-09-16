@@ -5,7 +5,7 @@ package top.gunplan.netty.impl.buffer;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-09 18:42
+ * # 2019-06-09 18:42
  */
 public class GunNettySafeSyncBuffer extends GunNettySafeBuffer {
     public GunNettySafeSyncBuffer(int len) {

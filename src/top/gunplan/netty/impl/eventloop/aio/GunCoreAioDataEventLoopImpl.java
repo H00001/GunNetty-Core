@@ -8,7 +8,7 @@ import top.gunplan.netty.impl.eventloop.AbstractGunCoreAioEventLoop;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-07-27 08:09
+ * # 2019-07-27 08:09
  */
 public class GunCoreAioDataEventLoopImpl extends AbstractGunCoreAioEventLoop {
 

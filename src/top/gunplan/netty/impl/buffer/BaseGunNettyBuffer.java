@@ -9,7 +9,7 @@ import static top.gunplan.netty.GunExceptionType.OUT_POSITION;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 14:15
+ * # 2019-06-08 14:15
  */
 public abstract class BaseGunNettyBuffer implements GunNettyBufferStream {
     final long maxLen;

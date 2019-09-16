@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author frank albert
  * @version 0.1.0.2
- * @date 2019-07-23 08:57
+ * # 2019-07-23 08:57
  */
 
 final class GunNettyDisruptorTransferEventLoopImpl<U extends SocketChannel> extends AbstractGunTransferEventLoop<U>

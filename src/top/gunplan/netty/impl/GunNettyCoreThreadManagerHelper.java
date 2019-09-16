@@ -13,7 +13,7 @@ import java.util.concurrent.ScheduledExecutorService;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-08-12
+ * # 2019-08-12
  */
 public interface GunNettyCoreThreadManagerHelper {
     /**

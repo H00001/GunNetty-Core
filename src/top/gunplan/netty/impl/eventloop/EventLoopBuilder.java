@@ -14,7 +14,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-07-23 00:10
+ * # 2019-07-23 00:10
  */
 public interface EventLoopBuilder<U> {
     /**
@@ -28,7 +28,7 @@ public interface EventLoopBuilder<U> {
      * andRegister
      *
      * @param manager GunNettyCoreThreadManager
-     * @return EventLoopBuilder<U>
+     * @return this builder EventLoopBuilder
      */
     EventLoopBuilder<U> andRegister(GunNettyEventLoopManager manager);
 

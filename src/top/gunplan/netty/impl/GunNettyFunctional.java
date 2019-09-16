@@ -9,7 +9,6 @@ package top.gunplan.netty.impl;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-08-06 22:42
  */
 @FunctionalInterface
 public interface GunNettyFunctional {

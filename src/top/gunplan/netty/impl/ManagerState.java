@@ -9,7 +9,6 @@ package top.gunplan.netty.impl;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-07-21 16:17
  */
 public enum ManagerState {
     /**

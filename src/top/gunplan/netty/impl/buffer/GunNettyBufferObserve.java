@@ -11,7 +11,7 @@ import top.gunplan.netty.observe.GunNettyObserve;
  *
  * @author frank albert
  * @version 0.0.0.2
- * @date 2019-06-08 15:17
+ * # 2019-06-08 15:17
  */
 @FunctionalInterface
 public interface GunNettyBufferObserve extends GunNettyObserve {

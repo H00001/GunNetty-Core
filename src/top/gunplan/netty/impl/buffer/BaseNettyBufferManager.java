@@ -12,7 +12,7 @@ import java.util.Queue;
  *
  * @author frank albert
  * @version 0.0.0.1
- * @date 2019-06-08 15:37
+ * # 2019-06-08 15:37
  */
 public abstract class BaseNettyBufferManager implements GunBufferManage, GunNettyBufferObserve {
     private Queue<GunNettyBufferStream> using;

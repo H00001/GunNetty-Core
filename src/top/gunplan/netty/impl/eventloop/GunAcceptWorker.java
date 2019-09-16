@@ -19,7 +19,7 @@ import java.util.ListIterator;
  * GunAcceptWorker
  *
  * @author dosdrtt
- * @date 2019-04-25
+ * # 2019-04-25
  */
 public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnable {
 

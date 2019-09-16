@@ -21,7 +21,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author frank albert
  * @version 0.0.1.1
- * @date 2019-08-09 23:07
+ * # 2019-08-09 23:07
  */
 
 abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyPipeline> implements GunNettyChannel<CH, LOOP, PL> {

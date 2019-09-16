@@ -15,7 +15,7 @@ import java.util.concurrent.ExecutorService;
  *
  * @author frank albert
  * @version 0.0.2.1
- * @date 2019-07-23 00:36
+ * # 2019-07-23 00:36
  */
 public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> implements GunNettyTransferEventLoop<U> {
     private volatile boolean running = false;

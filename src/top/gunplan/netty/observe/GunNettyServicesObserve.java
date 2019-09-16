@@ -60,7 +60,7 @@ public interface GunNettyServicesObserve extends GunHandle {
      * bootFail happened
      *
      * @param exp error
-     * @apiNote #4043
+     * @version #4043
      */
     default void bootFail(IOException exp) {
         GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
@@ -71,7 +71,7 @@ public interface GunNettyServicesObserve extends GunHandle {
      * bootFail happened
      *
      * @param exp error
-     * @apiNote #4043
+     * @version #4043
      */
     default void runningError(Exception exp) {
         GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
