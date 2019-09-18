@@ -16,7 +16,6 @@ import top.gunplan.netty.protocol.GunNetOutbound;
 
 import java.nio.channels.SocketChannel;
 import java.util.HashMap;
-import java.util.ListIterator;
 import java.util.Map;
 
 
@@ -48,11 +47,11 @@ public final class GunCoreCalculatorWorker extends
 
     @Override
     public void work() {
-        final GunInboundChecker gunFilterObj = new GunNetServerInboundChecker(channel);
+        final GunInboundChecker inbound = new GunNetServerInboundChecker(channel);
         GunNettyFilter.DealResult result = null;
         for (final GunNettyDataFilter filter : dataFilters) {
             try {
-                result = filter.doInputFilter(gunFilterObj);
+                result = filter.doInputFilter(inbound);
             } catch (GunChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }
@@ -67,16 +66,14 @@ public final class GunCoreCalculatorWorker extends
         }
         GunNetOutbound output = null;
         try {
-            output = this.handle.dealDataEvent(gunFilterObj.transferTarget());
+            output = handle.dealDataEvent(inbound.transferTarget());
         } catch (GunChannelException e) {
             this.handle.dealExceptionEvent(e);
         }
-        GunNetServerOutboundChecker responseFilterDto = new GunNetServerOutboundChecker(output, channel);
-        responseFilterDto.setChannel(gunFilterObj.channel());
-        ListIterator<GunNettyDataFilter> iterator = dataFilters.listIterator(dataFilters.size());
-        for (; iterator.hasPrevious() && !notDealOutputFlag; ) {
+        GunNetServerOutboundChecker outboundChecker = new GunNetServerOutboundChecker(output, channel);
+        for (int i = dataFilters.size() - 1; i >= 0 && !notDealOutputFlag; i++) {
             try {
-                result = iterator.previous().doOutputFilter(responseFilterDto);
+                result = dataFilters.get(i).doOutputFilter(outboundChecker);
             } catch (GunChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }

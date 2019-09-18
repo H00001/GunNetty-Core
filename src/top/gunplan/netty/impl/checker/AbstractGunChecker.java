@@ -25,7 +25,7 @@ public abstract class AbstractGunChecker<Transfer extends GunNetBound> implement
 
     private Object attach;
 
-    private volatile GunNettyChildChannel<SocketChannel> key;
+    private volatile GunNettyChildChannel<SocketChannel> channel;
 
     /**
      * translate
@@ -62,17 +62,17 @@ public abstract class AbstractGunChecker<Transfer extends GunNetBound> implement
 
 
     AbstractGunChecker(GunNettyChildChannel<SocketChannel> key) {
-        this.key = key;
+        this.channel = key;
     }
 
     @Override
     public GunNettyChildChannel<SocketChannel> channel() {
-        return key;
+        return channel;
     }
 
     @Override
-    public void setChannel(GunNettyChildChannel<SocketChannel> key) {
-        this.key = key;
+    public void setChannel(GunNettyChildChannel<SocketChannel> channel) {
+        this.channel = channel;
     }
 
     @Override

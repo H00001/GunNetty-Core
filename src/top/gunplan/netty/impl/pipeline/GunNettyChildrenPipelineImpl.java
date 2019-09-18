@@ -127,4 +127,16 @@ final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
         }
     }
 
+    @Override
+    public String toString() {
+        StringBuilder builder = new StringBuilder("chain:");
+        for (GunNettyFilter f : dataFilters) {
+            builder.append(f.getClass().getSimpleName()).append("->");
+        }
+        builder.append(childHandel().getClass().getSimpleName()).append("->");
+        for (int i = dataFilters.size() - 1; i >= 0; i--) {
+            builder.append(dataFilters.get(i).getClass().getSimpleName()).append("->");
+        }
+        return builder.toString();
+    }
 }

@@ -11,6 +11,7 @@ import java.lang.annotation.Target;
 
 /**
  * @author frank
+ * use inject self -> channel
  */
 @Target(value = ElementType.PARAMETER)
 @Retention(RetentionPolicy.RUNTIME)

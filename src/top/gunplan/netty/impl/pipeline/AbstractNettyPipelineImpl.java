@@ -98,4 +98,6 @@ abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
         timers.parallelStream().forEach(GunHandle::init);
         return cHandle.init() | (pHandle != null ? pHandle.init() : 0);
     }
+
+
 }

@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
 
 /**
  * GunHandleTag
+ * handle's uniqueness tag
  *
  * @author frankHan
  */
