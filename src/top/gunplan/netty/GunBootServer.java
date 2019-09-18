@@ -38,11 +38,13 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
     GunBootServer registerObserve(GunNettyServicesObserve observe);
 
     /**
-     * GunNettyCoreThreadManager
+     * GunNettyCoreThreadManager but not support
      *
      * @return threadManager
      */
-    GunNettyCoreThreadManager threadManager();
+    default GunNettyCoreThreadManager threadManager() {
+        throw new GunException(GunExceptionType.NOT_SUPPORT, "GunNettyCoreThreadManager not support :");
+    }
 
 
     /**
@@ -58,7 +60,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
     /**
      * set the Thread pool that dispose the request
      *
-     * @param var1  this Executor is used to deal with accept request
+     * @param var1 this Executor is used to deal with accept request
      * @param var2 this Executor is used to deal with data request
      * @return this
      */
@@ -93,6 +95,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
     /**
      * useStealMode
      * is or not use steal pool
+     *
      * @param use is or not use steal model
      * @return this chain style
      */

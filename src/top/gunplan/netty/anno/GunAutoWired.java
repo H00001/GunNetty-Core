@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.anno;
 
 import top.gunplan.netty.GunHandle;
@@ -9,6 +13,8 @@ import java.lang.annotation.Target;
 
 
 /**
+ * the anno is auto wired
+ *
  * @author frank
  */
 @Target(value = ElementType.FIELD)

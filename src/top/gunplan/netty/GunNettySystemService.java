@@ -10,13 +10,14 @@ import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
 import top.gunplan.netty.impl.property.base.GunNettyPropertyManagerFactory;
 
 /**
- * GunNettySystemServices
+ * a System Service to proved such as log
+ * GunNettySystemService
  *
  * @author frank albert
  * @version 0.0.0.2
  */
 
-public final class GunNettySystemServices {
+public final class GunNettySystemService {
     public final static GunNettyPropertyManager PROPERTY_MANAGER = GunNettyPropertyManagerFactory.
             propertyInstance();
 

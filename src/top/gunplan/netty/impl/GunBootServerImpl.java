@@ -60,10 +60,6 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
 
-    @Override
-    public GunNettyCoreThreadManager threadManager() {
-        return threadManager;
-    }
 
     @Override
     public boolean isRunnable() {
@@ -128,9 +124,9 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     private void init() {
-        coreProperty = GunNettySystemServices.coreProperty();
+        coreProperty = GunNettySystemService.coreProperty();
         threadManager = GunNettyCoreThreadManager.
-                initInstance(GunNettySystemServices.coreProperty());
+                initInstance(GunNettySystemService.coreProperty());
     }
 
 
@@ -170,7 +166,7 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     private int baseParameterCheck() {
-        final GunNettyPropertyManager propertyManager = GunNettySystemServices.PROPERTY_MANAGER;
+        final GunNettyPropertyManager propertyManager = GunNettySystemService.PROPERTY_MANAGER;
         if (!this.initCheck() || !propertyManager.initProperty()) {
             throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
         }

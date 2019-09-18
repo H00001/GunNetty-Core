@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 import top.gunplan.netty.GunBootServer;
 import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyParentHandle;
-import top.gunplan.netty.GunNettySystemServices;
+import top.gunplan.netty.GunNettySystemService;
 import top.gunplan.netty.example.*;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.GunNettyDefaultObserve;
@@ -21,7 +21,7 @@ public class TestBase {
 
     @Test
     public void using019() throws InterruptedException {
-        GunNettySystemServices.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config.html"));
+        GunNettySystemService.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config.html"));
         GunBootServer server = GunBootServerFactory.newInstance();
         server
                 .setExecutors(10, 10)

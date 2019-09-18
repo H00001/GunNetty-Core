@@ -21,7 +21,7 @@ import java.util.concurrent.ExecutorService;
  */
 
 public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunNettyManagerGetter<GunCoreEventLoop> {
-    GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY = GunNettySystemServices.coreProperty();
+    GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY = GunNettySystemService.coreProperty();
 
     /**
      * when the event come ,the method will be call back

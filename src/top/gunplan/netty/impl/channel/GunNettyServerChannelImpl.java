@@ -53,7 +53,7 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
 
     @Override
     public boolean isValid() {
-        return true;
+        return isOpen();
     }
 
 

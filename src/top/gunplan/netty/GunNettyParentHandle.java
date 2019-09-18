@@ -10,6 +10,7 @@ import top.gunplan.netty.protocol.GunNetOutbound;
 import java.net.SocketAddress;
 
 /**
+ * parent handle ,do parent event
  * GunNettyParentHandle
  *
  * @author frank albert
