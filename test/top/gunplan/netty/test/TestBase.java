@@ -14,14 +14,14 @@ import top.gunplan.netty.example.*;
 import top.gunplan.netty.impl.GunBootServerFactory;
 import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;
-import top.gunplan.netty.impl.property.GunGetPropertyFromNet;
+import top.gunplan.netty.impl.property.GunGetPropertyFromBaseFile;
 import top.gunplan.netty.observe.DefaultGunNettyChildrenPipelineChangedObserve;
 
 public class TestBase {
 
     @Test
     public void using019() throws InterruptedException {
-        GunNettySystemService.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromNet("https://p.gunplan.top/config.html"));
+        GunNettySystemService.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromBaseFile());
         GunBootServer server = GunBootServerFactory.newInstance();
         server
                 .setExecutors(10, 10)

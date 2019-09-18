@@ -7,6 +7,8 @@ package top.gunplan.netty;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 
+import java.util.Arrays;
+
 /**
  * SystemChannelChangedHandle
  *
@@ -19,9 +21,9 @@ public interface SystemChannelChangedHandle extends GunHandle {
      *
      * @param port need to port
      */
-    default void whenBind(int port) {
+    default void whenBind(int... port) {
         GunNettyContext.logger.setTAG(SystemChannelChangedHandle.class).
-                info("server running on :" + port);
+                info("server running on :" + Arrays.toString(port));
     }
 
 

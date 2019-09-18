@@ -64,9 +64,12 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
 
 
     @Override
-    public GunNettyServerChannel<ServerSocketChannel> bind(int... port) throws IOException {
-        channel().bind(new InetSocketAddress(port[0]));
-        handle.whenBind(port[0]);
+    @SafeVarargs
+    public final GunNettyServerChannel<ServerSocketChannel> bind(int... port) throws IOException {
+        for (int p : port) {
+            channel().bind(new InetSocketAddress(p));
+        }
+        handle.whenBind(port);
         return this;
     }
 
