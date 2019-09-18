@@ -87,7 +87,7 @@ final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
             this.observe = observe;
             super.setPipelineHandleChangeObserve(observe);
         } else {
-            throw new GunException(GunExceptionType.NULLPTR, "reset GunNettyChildrenPipelineChangedObserve");
+            throw new GunException(GunExceptionType.NULLPTR, "doReset GunNettyChildrenPipelineChangedObserve");
         }
         return this;
     }

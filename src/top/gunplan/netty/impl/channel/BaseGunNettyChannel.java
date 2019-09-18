@@ -7,12 +7,15 @@ package top.gunplan.netty.impl.channel;
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.common.GunNettyExecutors;
+import top.gunplan.netty.impl.channel.pool.GunChildrenChannelPool;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
 
 import java.io.IOException;
 import java.nio.channels.Channel;
 import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -27,6 +30,8 @@ import java.util.concurrent.TimeUnit;
 abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyPipeline> implements GunNettyChannel<CH, LOOP, PL> {
     private final PL pipeline;
     private final long id;
+    private final Queue<Object> eventQueue = new ConcurrentLinkedQueue<>();
+    private volatile GunChildrenChannelPool pool = null;
     LOOP eventLoop;
     List<GunNettyTimer> timers;
     GunNettySequencer unsafeSequencer = GunNettySequencer.newThreadUnSafeSequencer();
@@ -84,9 +89,33 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
         System.gc();
     }
 
+    public Object consumeEvent() {
+        return eventQueue.poll();
+    }
+
+
+    public boolean pushEvent(Object event) {
+        return eventQueue.offer(event);
+    }
+
+
+    public void cleanEvent() {
+        eventQueue.clear();
+    }
 
     @Override
     public List<GunNettyTimer> timers() {
         return timers;
+    }
+
+
+    @Override
+    public void doReset() {
+        cleanEvent();
+    }
+
+    @Override
+    public boolean isUsed() {
+        return false;
     }
 }

@@ -16,8 +16,6 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.List;
-import java.util.Queue;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
@@ -26,13 +24,13 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * @author frank albert
  * @version 0.0.0.6
  */
-class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline>
+class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
+        GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline>
         implements GunNettyChildChannel<SocketChannel> {
     private GunNettyServerChannel<ServerSocketChannel> pChannel;
     private volatile SelectionKey key;
     private final SocketAddress remoteAddress;
     private final SocketAddress localAddress;
-    private final Queue<Object> eventQueue = new ConcurrentLinkedQueue<>();
     private List<GunNettyChannelObserve> observes = new CopyOnWriteArrayList<>();
 
     GunNettyChildrenChannelImpl(final SocketChannel channel,
@@ -75,7 +73,8 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     }
 
     @Override
-    public GunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> closeAndRemove(boolean notHappenedOnRead) {
+    public GunNettyChannel<SocketChannel, GunDataEventLoop<SocketChannel>,
+            GunNettyChildrenPipeline> closeAndRemove(boolean notHappenedOnRead) {
         try {
             close();
             eventLoop.fastLimit();
@@ -136,16 +135,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
         observes.parallelStream().forEach(GunNettyChannelObserve::onRecoverReadInterest);
     }
 
-    @Override
-    public Object consumeEvent() {
-        return eventQueue.poll();
-    }
 
-
-    @Override
-    public boolean pushEvent(Object event) {
-        return eventQueue.offer(event);
-    }
 
     @Override
     public void doTime() {
@@ -155,4 +145,6 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel, Gun
     private void doTck(long k) {
         GunNettyTimeExecutor.execute(timers, k, this);
     }
+
+
 }

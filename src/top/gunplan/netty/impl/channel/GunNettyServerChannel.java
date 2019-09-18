@@ -23,7 +23,7 @@ public interface GunNettyServerChannel<CH extends Channel> extends GunNettyChann
     /**
      * bind
      *
-     * @param port lestion the port
+     * @param port wait on the port
      * @return ServerSocketChannel
      * @throws IOException bind error
      */

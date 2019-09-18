@@ -18,7 +18,8 @@ import java.nio.channels.SocketChannel;
  * @version 0.0.0.1
  * # 2019-08-09 22:52
  */
-public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> {
+public interface GunNettyChildChannel<CH extends Channel> extends
+        GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> {
     /**
      * close channel and remove form selector
      *
@@ -69,6 +70,13 @@ public interface GunNettyChildChannel<CH extends Channel> extends GunNettyChanne
      * @return an event
      */
     Object consumeEvent();
+
+
+    /**
+     * remove all of event
+     * consume the event
+     */
+    void cleanEvent();
 
 
     /**

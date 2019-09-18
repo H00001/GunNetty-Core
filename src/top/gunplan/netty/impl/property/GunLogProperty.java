@@ -22,7 +22,7 @@ public class GunLogProperty implements GunProperty {
     private int outputlevel;
     private String direct;
     private String format = null;
-    private final String FILE = "file:";
+    private static final String FILE = "file:";
 
 
     public GunLogProperty() {

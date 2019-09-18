@@ -16,6 +16,15 @@ import top.gunplan.utils.GunBytesUtil;
  */
 @GunPropertyMap(name = "core")
 public class GunNettyCoreProperty implements GunProperty {
+    private volatile int initWait;
+    private volatile int minInterval;
+    private volatile int port;
+    private volatile int maxRunningNum;
+    private volatile int clientWaitTime;
+    private volatile int fileReadBufferMin;
+    private volatile int connection;
+    private volatile String profileName;
+
     private GunNettyCoreProperty() {
 
     }
@@ -35,17 +44,6 @@ public class GunNettyCoreProperty implements GunProperty {
         }
     }
 
-    private volatile int initWait;
-    private volatile int minInterval;
-
-    private volatile int port;
-
-
-    private volatile int maxRunningNum;
-    private volatile int clientWaitTime;
-    private volatile int fileReadBufferMin;
-    private volatile int connection;
-    private volatile String profileName;
 
     public long initWait() {
         return initWait;
@@ -55,36 +53,6 @@ public class GunNettyCoreProperty implements GunProperty {
         return minInterval;
     }
 
-    /**
-     * @deprecated
-     */
-    @Deprecated
-    public enum connectionType {
-        /**
-         *
-         */
-        KEEP_ALIVE(1, "keep-alive"), CLOSE(2, "close"), NODEF(4, "nodef");
-        private int index;
-        private String sval;
-
-        public String getSVal() {
-            return sval;
-        }
-
-        connectionType(int index, String sval) {
-            this.index = index;
-            this.sval = sval;
-        }
-
-        public static connectionType getTypeByVal(int val) {
-            for (connectionType type : connectionType.values()) {
-                if (type.index == val) {
-                    return type;
-                }
-            }
-            return NODEF;
-        }
-    }
 
     public int getFileReadBufferMin() {
         return fileReadBufferMin;

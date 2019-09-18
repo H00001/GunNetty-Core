@@ -6,6 +6,7 @@ package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.impl.channel.pool.GunNettyChannelReuse;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 
 import java.net.SocketAddress;
@@ -20,7 +21,7 @@ import java.util.List;
  */
 public interface GunNettyChannel<CH extends Channel,
         LOOP extends GunCoreEventLoop,
-        PL extends GunNettyPipeline> extends Channel {
+        PL extends GunNettyPipeline> extends Channel, GunNettyChannelReuse {
 
     /**
      * get the handle that the channel attachment
