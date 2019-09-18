@@ -44,9 +44,8 @@ public final class GunCoreCalculatorWorker extends
         });
     }
 
-
     @Override
-    public void work() {
+    public boolean doRealWork() {
         final GunInboundChecker inbound = new GunNetServerInboundChecker(channel);
         GunNettyFilter.DealResult result = null;
         for (final GunNettyDataFilter filter : dataFilters) {
@@ -59,17 +58,12 @@ public final class GunCoreCalculatorWorker extends
             if (exeCode == 0) {
                 break;
             } else if (exeCode == -1) {
-                return;
+                return false;
             } else if (exeCode == 1) {
 
             }
         }
-        GunNetOutbound output = null;
-        try {
-            output = handle.dealDataEvent(inbound.transferTarget());
-        } catch (GunChannelException e) {
-            this.handle.dealExceptionEvent(e);
-        }
+        GunNetOutbound output = doNetOutbound(inbound);
         GunNetServerOutboundChecker outboundChecker = new GunNetServerOutboundChecker(output, channel);
         for (int i = dataFilters.size() - 1; i >= 0 && !notDealOutputFlag; i++) {
             try {
@@ -82,10 +76,20 @@ public final class GunCoreCalculatorWorker extends
             } else if (result == GunNettyFilter.DealResult.CLOSED) {
 
             } else if (result == GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT) {
-                return;
+                return false;
             }
         }
-        destroy();
+        return true;
+    }
 
+
+    private GunNetOutbound doNetOutbound(GunInboundChecker inbound) {
+        GunNetOutbound output = null;
+        try {
+            output = handle.dealDataEvent(inbound.transferTarget());
+        } catch (GunChannelException e) {
+            this.handle.dealExceptionEvent(e);
+        }
+        return output;
     }
 }

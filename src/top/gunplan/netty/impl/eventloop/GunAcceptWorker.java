@@ -29,13 +29,13 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
 
 
     @Override
-    public void work() {
+    public boolean doRealWork() {
         GunNetOutbound outbound = null;
         try {
             outbound = pHandle.dealConnEvent(channel.remoteAddress());
         } catch (GunChannelException e) {
             if (handle.dealExceptionEvent(e) != GunNettyFilter.DealResult.NEXT) {
-                return;
+                return false;
             }
         }
         GunOutboundChecker checker = new GunNetServerOutboundChecker(outbound, channel);
@@ -49,6 +49,6 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
             }
         }
         while (iterator.hasPrevious() && (result != GunNettyFilter.DealResult.NEXT));
-
+        return true;
     }
 }

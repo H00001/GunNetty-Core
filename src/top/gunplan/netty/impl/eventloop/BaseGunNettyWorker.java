@@ -42,4 +42,27 @@ abstract class BaseGunNettyWorker implements GunNettyWorker {
         this.connFilterStream = channel.pipeline().connFilterStream();
     }
 
+    public boolean beforeWork() {
+        return init() == 0;
+    }
+
+
+    public boolean endWork() {
+        return destroy() == 0;
+    }
+
+    /**
+     * do real work in children class
+     *
+     * @return work result
+     */
+    public abstract boolean doRealWork();
+
+    @Override
+    public void work() {
+        if (beforeWork() && doRealWork()) {
+            endWork();
+        }
+
+    }
 }
