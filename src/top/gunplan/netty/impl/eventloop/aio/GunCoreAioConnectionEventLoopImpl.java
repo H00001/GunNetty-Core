@@ -1,7 +1,11 @@
 package top.gunplan.netty.impl.eventloop.aio;
 
 
+import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.impl.GunNettyEventLoopManager;
 import top.gunplan.netty.impl.eventloop.AbstractGunCoreAioEventLoop;
+
+import java.nio.channels.Selector;
 
 /**
  * GunCoreAioConnectionEventLoopImpl
@@ -33,4 +37,18 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
     }
 
 
+    @Override
+    public int listenPort() {
+        return 0;
+    }
+
+    @Override
+    public Selector select() {
+        return null;
+    }
+
+    @Override
+    public GunCoreEventLoop registerManager(GunNettyEventLoopManager manager) {
+        return null;
+    }
 }
