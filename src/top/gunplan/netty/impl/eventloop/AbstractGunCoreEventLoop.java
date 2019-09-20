@@ -75,8 +75,6 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
     public void stopEventLoop() {
         this.running = false;
         bootSelector.wakeup();
-
-
     }
 
     /**
@@ -99,6 +97,7 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
 
     /**
      * when halt the deal
+     *
      * @throws IOException IO error
      */
     void whenHaltDeal() throws IOException {

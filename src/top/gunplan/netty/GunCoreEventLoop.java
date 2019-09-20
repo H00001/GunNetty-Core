@@ -39,6 +39,7 @@ public interface GunCoreEventLoop extends Runnable, GunNettyVariableWorker, GunN
     default void run() {
         startEventLoop();
         loop();
+        stopEventLoop();
     }
 
 
