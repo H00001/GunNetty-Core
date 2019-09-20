@@ -60,7 +60,6 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
 
-
     @Override
     public boolean isRunnable() {
         return GunNettyWorkState.getIsRunning(this.state);
@@ -107,6 +106,8 @@ final class GunBootServerImpl implements GunBootServer {
         if (threadManager.stopAndWait()) {
             this.state = 0;
         }
+        acceptExecutor.shutdown();
+        workExecutor.shutdown();
         return state;
     }
 

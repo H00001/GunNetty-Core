@@ -1,13 +1,16 @@
 package top.gunplan.netty.impl.eventloop;
 
+import top.gunplan.netty.GunException;
+import top.gunplan.netty.GunExceptionType;
+
 import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.StandardSocketOptions;
 import java.nio.channels.AsynchronousServerSocketChannel;
 import java.nio.channels.AsynchronousSocketChannel;
+import java.nio.channels.CompletionHandler;
 import java.nio.channels.SelectionKey;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
 
 
 /**
@@ -18,17 +21,17 @@ import java.util.concurrent.Future;
  * # 2019-06-09 10:25
  */
 
-public abstract class AbstractGunCoreAioEventLoop implements GunConnEventLoop {
+public abstract class AbstractGunCoreAioConnectionEventLoop implements GunConnEventLoop, CompletionHandler<AsynchronousSocketChannel, Object> {
     private volatile AsynchronousServerSocketChannel serverSocketChannel;
+    private volatile boolean isRunning = false;
 
-    public AbstractGunCoreAioEventLoop() {
+    AbstractGunCoreAioConnectionEventLoop() {
         super();
     }
 
-
     @Override
     public void loop() {
-
+        serverSocketChannel.accept(null, this);
     }
 
     @Override
@@ -38,16 +41,17 @@ public abstract class AbstractGunCoreAioEventLoop implements GunConnEventLoop {
         return serverSocketChannel.isOpen() ? 0 : -1;
     }
 
+    @Override
+    public void startEventLoop() {
+
+    }
 
     /**
      * aio running method
      */
-
-
     @Override
     public void dealEvent(SelectionKey key) throws Exception {
-        Future<AsynchronousSocketChannel> channelFuture = serverSocketChannel.accept();
-        // channelFuture.get().read()
+        throw new GunException(GunExceptionType.NOT_SUPPORT, "AIO Not support this method");
     }
 
 
@@ -56,6 +60,10 @@ public abstract class AbstractGunCoreAioEventLoop implements GunConnEventLoop {
         return isRunning();
     }
 
+    @Override
+    public boolean isRunning() {
+        return isRunning;
+    }
 
     @Override
     public int openPort(int... port) throws IOException {

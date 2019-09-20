@@ -1,10 +1,10 @@
-package top.gunplan.netty.impl.eventloop.aio;
+package top.gunplan.netty.impl.eventloop;
 
 
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.impl.GunNettyEventLoopManager;
-import top.gunplan.netty.impl.eventloop.AbstractGunCoreAioEventLoop;
 
+import java.nio.channels.AsynchronousSocketChannel;
 import java.nio.channels.Selector;
 
 /**
@@ -13,23 +13,9 @@ import java.nio.channels.Selector;
  * @author frank albert
  * @version 0.0.0.1
  */
-public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLoop {
-
-    @Override
-    public synchronized void run() {
-
-    }
+public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioConnectionEventLoop {
 
 
-    @Override
-    public void startEventLoop() {
-
-    }
-
-    @Override
-    public boolean isRunning() {
-        return false;
-    }
 
     @Override
     public void stopEventLoop() {
@@ -50,5 +36,14 @@ public class GunCoreAioConnectionEventLoopImpl extends AbstractGunCoreAioEventLo
     @Override
     public GunCoreEventLoop registerManager(GunNettyEventLoopManager manager) {
         return null;
+    }
+
+    @Override
+    public void completed(AsynchronousSocketChannel result, Object attachment) {
+    }
+
+    @Override
+    public void failed(Throwable exc, Object attachment) {
+
     }
 }
