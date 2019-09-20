@@ -27,11 +27,26 @@ public interface GunTimeEventManager {
      */
     GunTimeEventManager removeGlobalTimers(GunNettyTimer timer);
 
+
+    /**
+     * loop for deal event
+     */
     void loop();
 
 
+    /**
+     * boot ,boot the event manager
+     *
+     * @param var1 interval time
+     * @param var2 init wait time
+     * @return boot code
+     */
     int boot(long var1, long var2);
 
 
+    /**
+     * stop the event
+     * @return stop code
+     */
     int stop();
 }
