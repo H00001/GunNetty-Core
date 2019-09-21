@@ -94,7 +94,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
 
     /**
      * useStealMode
-     * is or not use steal pool
+     * is or not use steal pool (ForkJoinPool)
      *
      * @param use is or not use steal model
      * @return this chain style
