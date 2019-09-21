@@ -5,18 +5,32 @@ as a web services ,a load balancing and so on.<br>
 a echo server
 
 ```
-GunBootServer server = GunBootServerFactory.getInstance();
-        server.setExecutors(GunNettyExecutors.newFixedExecutorPool(10),
-                GunNettyExecutors.newFixedExecutorPool(10));
-        server.registerObserve(new GunNettyDefaultObserve());
-        server.pipeline().addFilter(new GunNettyStdFirstFilter()).
-                addFilter(new GunNettyCharsetInboundChecker()).
-                setHandle(new GunNettyStringHandle());
+        //set property strategy
+        GunNettySystemService.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromBaseFile());
+        //get a server instance 
+        GunBootServer server = GunBootServerFactory.newInstance();
+        server
+                //set sum of thread          
+                .setExecutors(10, 10)
+                //use steal work model (ForkJoinPool)
+                .useStealMode(true)
+                .registerObserve(new GunNettyDefaultObserve())
+                .onHasChannel(pipeline -> pipeline
+                        .setMetaInfoChangeObserver(new DefaultGunNettyChildrenPipelineChangedObserve())
+                        .addDataFilter(new GunNettyStdFirstFilter().setObserve(null))
+                        .addDataFilter(new GunNettyCharsetInboundChecker())
+                        .addConnFilter(new GunNettyStdFirstFilter())
+                        .addDataFilter(new GunNettyExampleStopFilter())
+                        .setHandle((GunNettyChildrenHandle) new GunNettyStringHandle())
+                        .setHandle((GunNettyParentHandle) new GunNettyStringHandle())
+                        .addNettyTimer(new GunTimerExample()));
+        server.timeManager().addGlobalTimers(new GlobalTimer());
         server.setSyncType(false);
-        server.sync();
-        //running time
-        Thread.sleep(100000);
-        server.stop();
+        Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
+                GunBootServer.GunNettyWorkState.RUNNING.state);
+        //running doTime
+        Thread.sleep(100);
+        System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
  ```
  if you want to make it as a web server ,please use `GunStdHttp2Filter` as `GunNettyFilter` and use `GunStdHttpHandle` as `GunNettyhandle` ,
  even though you can writer the filter and headle that belong to you .

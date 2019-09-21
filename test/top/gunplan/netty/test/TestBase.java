@@ -32,7 +32,7 @@ public class TestBase {
                         .addDataFilter(new GunNettyStdFirstFilter().setObserve(null))
                         .addDataFilter(new GunNettyCharsetInboundChecker())
                         .addConnFilter(new GunNettyStdFirstFilter())
-                        .addDataFilter(GunNetty3304aacd.getGunNettyInboundFilter())
+                        .addDataFilter(new GunNettyExampleStopFilter())
                         .setHandle((GunNettyChildrenHandle) new GunNettyStringHandle())
                         .setHandle((GunNettyParentHandle) new GunNettyStringHandle())
                         .addNettyTimer(new GunTimerExample()));
