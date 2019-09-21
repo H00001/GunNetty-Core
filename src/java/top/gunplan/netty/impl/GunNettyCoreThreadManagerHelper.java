@@ -112,4 +112,5 @@ public interface GunNettyCoreThreadManagerHelper {
     void syncStop();
 
 
+    void waitFecen();
 }

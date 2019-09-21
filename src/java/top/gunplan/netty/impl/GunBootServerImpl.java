@@ -60,7 +60,6 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
 
-
     @Override
     public boolean isRunnable() {
         return GunNettyWorkState.getIsRunning(this.state);
@@ -102,7 +101,7 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public int stop() throws InterruptedException {
+    public synchronized int stop() throws InterruptedException {
         this.timeManager.stop();
         if (threadManager.stopAndWait()) {
             this.state = 0;

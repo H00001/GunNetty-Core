@@ -57,8 +57,8 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         status = ManagerState.BOOTING;
         threadHelper.submitData(eventLoopManager.dataEventLoop());
         threadHelper.submitTransfer(eventLoopManager.transferEventLoop());
-        assert eventLoopManager.connEventLoop() != null;
         var future = threadHelper.submitConnection(eventLoopManager.connEventLoop());
+        threadHelper.waitFecen();
         status = ManagerState.RUNNING;
         return future;
     }
