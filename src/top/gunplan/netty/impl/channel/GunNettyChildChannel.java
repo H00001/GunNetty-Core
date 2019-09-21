@@ -6,7 +6,6 @@ package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
-import top.gunplan.netty.observe.GunNettyChannelObserve;
 
 import java.nio.channels.Channel;
 import java.nio.channels.SocketChannel;
@@ -42,20 +41,7 @@ public interface GunNettyChildChannel<CH extends Channel> extends
     void registerReadWithEventLoop();
 
 
-    /**
-     * addReadObserve
-     *
-     * @param observe observe
-     * @return this
-     */
-    GunNettyChildChannel<SocketChannel> addReadObserve(GunNettyChannelObserve observe);
 
-    /**
-     * addReadObserve
-     *
-     * @return this chain style
-     */
-    GunNettyChildChannel<CH> cleanAllObserve();
 
 
     /**

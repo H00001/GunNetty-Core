@@ -40,7 +40,7 @@ public class GunNettyChannelFactory {
     public static GunNettyServerChannel<ServerSocketChannel>
     newServerChannel(final ServerSocketChannel channel,
                      final SystemChannelChangedHandle initHandle,
-                     final GunConnEventLoop eventLoop) {
+                     final GunConnEventLoop eventLoop) throws IOException {
         assert initHandle != null;
         return new GunNettyServerChannelImpl(channel, initHandle, eventLoop, WORK_SEQUENCER.nextSequence());
     }

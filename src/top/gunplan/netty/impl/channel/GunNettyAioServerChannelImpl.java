@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
@@ -11,9 +15,8 @@ public class GunNettyAioServerChannelImpl extends BaseGunNettyChannel<ServerSock
         implements GunNettyServerChannel<ServerSocketChannel> {
 
 
-    GunNettyAioServerChannelImpl(GunNettyParentPipeline pipeline, ServerSocketChannel channel, long id) {
+    GunNettyAioServerChannelImpl(GunNettyParentPipeline pipeline, ServerSocketChannel channel, long id) throws IOException {
         super(pipeline, channel, id);
-
     }
 
     @Override

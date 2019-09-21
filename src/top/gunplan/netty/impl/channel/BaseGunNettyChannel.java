@@ -10,12 +10,15 @@ import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.channel.pool.GunChildrenChannelPool;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
+import top.gunplan.netty.observe.GunNettyChannelObserve;
 
 import java.io.IOException;
-import java.nio.channels.Channel;
+import java.net.SocketAddress;
+import java.nio.channels.NetworkChannel;
 import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
@@ -27,7 +30,7 @@ import java.util.concurrent.TimeUnit;
  * # 2019-08-09 23:07
  */
 
-abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEventLoop, PL extends GunNettyPipeline> implements GunNettyChannel<CH, LOOP, PL> {
+abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCoreEventLoop, PL extends GunNettyPipeline> implements GunNettyChannel<CH, LOOP, PL> {
     private final PL pipeline;
     private final long id;
     private final Queue<Object> eventQueue = new ConcurrentLinkedQueue<>();
@@ -37,14 +40,17 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
     GunNettySequencer unsafeSequencer = GunNettySequencer.newThreadUnSafeSequencer();
     private ScheduledExecutorService scheduledExecutorService;
     private CH channel;
+    private final SocketAddress localAddress;
+    List<GunNettyChannelObserve> observes = new CopyOnWriteArrayList<>();
 
-    BaseGunNettyChannel(final PL pipeline, final CH channel, final long id) {
+    BaseGunNettyChannel(final PL pipeline, final CH channel, final long id) throws IOException {
         this.id = id;
         this.pipeline = pipeline;
         this.channel = channel;
         timers = pipeline != null ? pipeline.timers() : null;
         scheduledExecutorService = GunNettyExecutors.newScheduleExecutorPool(timers != null ? timers.size() : 0);
         scheduledExecutorService.scheduleAtFixedRate(this::doTime, 100, 100, TimeUnit.MILLISECONDS);
+        this.localAddress = channel.getLocalAddress();
     }
 
 
@@ -54,6 +60,10 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
         return this;
     }
 
+    @Override
+    public SocketAddress localAddress() {
+        return localAddress;
+    }
 
     @Override
     public PL pipeline() {
@@ -117,5 +127,20 @@ abstract class BaseGunNettyChannel<CH extends Channel, LOOP extends GunCoreEvent
     @Override
     public boolean isUsed() {
         return false;
+    }
+
+
+    @Override
+    public boolean isOpen() {
+        return channel().isOpen();
+    }
+
+
+    public void addObserve(GunNettyChannelObserve observe) {
+        observes.add(observe);
+    }
+
+    public void cleanAllObserve() {
+        observes.clear();
     }
 }

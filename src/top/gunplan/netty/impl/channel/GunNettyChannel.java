@@ -8,6 +8,7 @@ import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.impl.channel.pool.GunNettyChannelReuse;
 import top.gunplan.netty.impl.pipeline.GunNettyPipeline;
+import top.gunplan.netty.observe.GunNettyChannelObserve;
 
 import java.net.SocketAddress;
 import java.nio.channels.Channel;
@@ -95,5 +96,18 @@ public interface GunNettyChannel<CH extends Channel,
      * @return timers
      */
     List<GunNettyTimer> timers();
+
+
+    /**
+     * addObserve
+     *
+     * @param observe observe
+     */
+    void addObserve(GunNettyChannelObserve observe);
+
+    /**
+     * remove all observe
+     */
+    void cleanAllObserve();
 
 }

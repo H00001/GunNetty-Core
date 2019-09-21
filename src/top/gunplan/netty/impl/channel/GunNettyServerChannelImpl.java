@@ -25,7 +25,7 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
         implements GunNettyServerChannel<ServerSocketChannel> {
     private final SystemChannelChangedHandle handle;
 
-    GunNettyServerChannelImpl(final ServerSocketChannel channel, final SystemChannelChangedHandle pipeline, final GunConnEventLoop eventLoop, final long id) {
+    GunNettyServerChannelImpl(final ServerSocketChannel channel, final SystemChannelChangedHandle pipeline, final GunConnEventLoop eventLoop, final long id) throws IOException {
         super(null, channel, id);
         this.registerEventLoop(eventLoop);
         this.handle = pipeline;
@@ -42,24 +42,10 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
         throw new GunException(GunExceptionType.NOT_SUPPORT, "not support");
     }
 
-    @Override
-    public SocketAddress localAddress() {
-        try {
-            return channel().getLocalAddress();
-        } catch (IOException e) {
-            return null;
-        }
-    }
 
     @Override
     public boolean isValid() {
         return isOpen();
-    }
-
-
-    @Override
-    public boolean isOpen() {
-        return channel().isOpen();
     }
 
 
