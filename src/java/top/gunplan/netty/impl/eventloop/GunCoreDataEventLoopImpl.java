@@ -118,8 +118,8 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
 
     @Override
     public void stopEventLoop() {
-        LockSupport.unpark(workThread);
         super.stopEventLoop();
+        LockSupport.unpark(workThread);
         try {
             Thread.sleep(100);
             bootSelector.close();

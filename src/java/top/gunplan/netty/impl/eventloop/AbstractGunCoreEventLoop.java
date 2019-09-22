@@ -73,8 +73,11 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
 
     @Override
     public void stopEventLoop() {
+        //this do not need lock because running is volatile
+        //happens-before list of 3
         this.running = false;
         bootSelector.wakeup();
+
     }
 
     /**

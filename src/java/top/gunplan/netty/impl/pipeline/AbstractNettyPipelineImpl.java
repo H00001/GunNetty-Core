@@ -4,10 +4,8 @@
 
 package top.gunplan.netty.impl.pipeline;
 
-import top.gunplan.netty.GunHandle;
-import top.gunplan.netty.GunNettyChildrenHandle;
-import top.gunplan.netty.GunNettyParentHandle;
-import top.gunplan.netty.GunNettyTimer;
+import top.gunplan.netty.*;
+import top.gunplan.netty.anno.GunHandleTag;
 import top.gunplan.netty.observe.GunNettyHandleChangeObserve;
 
 import java.util.List;
@@ -100,4 +98,14 @@ abstract class AbstractNettyPipelineImpl implements GunNettyPipeline {
     }
 
 
+    public static boolean isBelongTag(GunNettyHandle handle, String tag) {
+        GunHandleTag tag0;
+        return (tag0 = handle.getClass().getAnnotation(GunHandleTag.class)) != null
+                && tag0.name().equals(tag);
+    }
+
+    @Override
+    public <N extends GunNettyHandle> N findHandleByTag(String tag) {
+        return isBelongTag(cHandle, tag) ? (N) cHandle : (isBelongTag(pHandle, tag) ? (N) pHandle : null);
+    }
 }

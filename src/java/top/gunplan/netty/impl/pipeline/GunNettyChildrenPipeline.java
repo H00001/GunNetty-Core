@@ -38,6 +38,24 @@ public interface GunNettyChildrenPipeline extends GunNettyPipeline {
      */
     GunNettyChildrenPipeline addDataFilter(GunNettyDataFilter filter);
 
+
+    /**
+     * find DataFilter by tag
+     *
+     * @param tag tag
+     * @return child pipeline GunNettyChildrenPipeline
+     */
+    GunNettyDataFilter findDataFilterByTag(String tag);
+
+
+    /**
+     * find ConnFilter by tag
+     *
+     * @param tag tag
+     * @return child pipeline GunNettyChildrenPipeline
+     */
+    GunNettyConnFilter findConnFilterByTag(String tag);
+
     /**
      * remove data Filter
      *

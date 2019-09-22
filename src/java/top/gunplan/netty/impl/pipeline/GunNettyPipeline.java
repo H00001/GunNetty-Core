@@ -32,6 +32,15 @@ public interface GunNettyPipeline extends GunHandle {
      */
     GunNettyPipeline setHandle(GunNettyParentHandle handle);
 
+
+    /**
+     * find handle by tag
+     * every handle should have a tag
+     *
+     * @return this.chain style
+     */
+    <N extends GunNettyHandle> N findHandleByTag(String tag);
+
     /**
      * check the pipeline model available
      *
