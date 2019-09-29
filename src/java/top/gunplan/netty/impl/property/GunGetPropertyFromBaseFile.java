@@ -42,8 +42,8 @@ public class GunGetPropertyFromBaseFile implements GunPropertyStrategy, Property
         try {
             String[] properties = GunNettyStringUtil.confRead(filename).split("\n");
             analyser.analyzingProperties(properties, propertyMap);
-        } catch (NoSuchFieldException | IllegalAccessException | IOException | URISyntaxException e) {
-            throw new GunBootServerBase.GunNettyCanNotBootException(e);
+        } catch (NullPointerException | NoSuchFieldException | IllegalAccessException | IOException | URISyntaxException fileNotFound) {
+            throw new GunBootServerBase.GunNettyCanNotBootException(fileNotFound);
         }
         return true;
     }

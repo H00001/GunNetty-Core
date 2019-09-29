@@ -64,7 +64,7 @@ public final class GunCoreCalculatorWorker extends
         }
         GunNetOutbound output = doNetOutbound(inbound);
         GunNetServerOutboundChecker outboundChecker = new GunNetServerOutboundChecker(output, channel);
-        for (int i = dataFilters.size() - 1; i >= 0 && !notDealOutputFlag; i++) {
+        for (int i = dataFilters.size() - 1; i >= 0 && !notDealOutputFlag; i--) {
             try {
                 result = dataFilters.get(i).doOutputFilter(outboundChecker);
             } catch (GunChannelException e) {
