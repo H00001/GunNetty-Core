@@ -19,24 +19,28 @@ public final class GunNettyExecutors {
 
     private static final short ONE = 1;
 
-    public static ExecutorService newFixedExecutorPool(int size) {
-        return newFixedExecutorPool(size, GunNettyExecutors.class.getName());
+    public static ExecutorService newNoQueueFixedExecutorPool(int size) {
+        return newNoQueueFixedExecutorPool(size, GunNettyExecutors.class.getName());
     }
 
-    public static ExecutorService newFixedExecutorPool(int size, boolean isSteal) {
-        return isSteal ? Executors.newWorkStealingPool(size) : newFixedExecutorPool(size);
+    public static ExecutorService newNoQueueFixedExecutorPool(int size, boolean isSteal) {
+        return isSteal ? Executors.newWorkStealingPool(size) : newNoQueueFixedExecutorPool(size);
     }
 
-    public static ExecutorService newFixedExecutorPool(int size, String name) {
+    public static ExecutorService newNoQueueFixedExecutorPool(int size, String name) {
         return new ThreadPoolExecutor(size, size, 0, TimeUnit.MILLISECONDS, SYNC_INST, new GunNettyThreadFactory(name));
     }
 
+    public static ExecutorService newFixedCacheableExecutorPool(int size, String name, boolean isSteal) {
+        return isSteal ? Executors.newWorkStealingPool(size) : new ThreadPoolExecutor(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(size), new GunNettyThreadFactory(name));
+    }
+
     public static ExecutorService newSignalExecutorPool(String name) {
-        return newFixedExecutorPool(ONE, name);
+        return newNoQueueFixedExecutorPool(ONE, name);
     }
 
     public static ScheduledExecutorService newScheduleExecutorPool(int num) {
-        return new ScheduledThreadPoolExecutor(num, new GunNettyThreadFactory("GunNettyExecutors"));
+        return new ScheduledThreadPoolExecutor(num, new GunNettyThreadFactory("GunNettyExecutors-Schedule"));
     }
 
     public static ScheduledExecutorService newScheduleExecutorPool() {

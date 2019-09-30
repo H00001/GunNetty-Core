@@ -113,7 +113,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     @Override
     public int fastLimit() throws IOException {
         bootSelector.wakeup();
-        return bootSelector.select(0);
+        return 0;
     }
 
     @Override

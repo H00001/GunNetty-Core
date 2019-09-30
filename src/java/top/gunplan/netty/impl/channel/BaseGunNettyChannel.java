@@ -95,8 +95,10 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
 
     @Override
     public void destroy() {
+        timers = null;
+        channel = null;
         scheduledExecutorService.shutdown();
-        System.gc();
+        System.gc(); //help gc
     }
 
     public Object consumeEvent() {
@@ -136,10 +138,12 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
     }
 
 
+    @Override
     public void addObserve(GunNettyChannelObserve observe) {
         observes.add(observe);
     }
 
+    @Override
     public void cleanAllObserve() {
         observes.clear();
     }

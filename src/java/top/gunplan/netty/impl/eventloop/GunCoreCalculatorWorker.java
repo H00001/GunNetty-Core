@@ -73,6 +73,7 @@ public final class GunCoreCalculatorWorker extends
             if (result == GunNettyFilter.DealResult.NOT_DEAL_OUTPUT || result == GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT) {
                 break;
             } else if (result == GunNettyFilter.DealResult.CLOSED) {
+                channel.destroy();
                 return false;
             }
         }

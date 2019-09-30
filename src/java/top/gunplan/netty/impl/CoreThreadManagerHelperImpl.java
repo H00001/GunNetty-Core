@@ -25,7 +25,7 @@ final class CoreThreadManagerHelperImpl implements GunNettyCoreThreadManagerHelp
         this.EXETIMER_POOL = GunNettyExecutors.newScheduleExecutorPool();
         this.TRANSFER_POOL = GunNettyExecutors.newSignalExecutorPool("CoreTransferThread");
         this.ACCEPTCO_POOL = GunNettyExecutors.newSignalExecutorPool("CoreAcceptThread");
-        this.DASERVER_POOL = GunNettyExecutors.newFixedExecutorPool(num, "CoreDataThread");
+        this.DASERVER_POOL = GunNettyExecutors.newNoQueueFixedExecutorPool(num, "CoreDataThread");
         EXE_POOL_LIST = new ExecutorService[]{ACCEPTCO_POOL, TRANSFER_POOL, DASERVER_POOL, EXETIMER_POOL};
     }
 
