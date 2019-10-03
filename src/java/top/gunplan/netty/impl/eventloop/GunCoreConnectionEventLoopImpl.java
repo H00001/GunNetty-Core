@@ -68,7 +68,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     @Override
     public boolean isLoopNext() {
         try {
-            return bootSelector.select() > 0 && isRunning();
+            return bootSelector.select() > 0 && super.isLoopNext();
         } catch (IOException e) {
             GunNettyContext.logger.error(e);
             return false;

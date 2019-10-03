@@ -88,14 +88,10 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         listenSize.decrementAndGet();
     }
 
-    public static class RegisterConstruct {
-        final SocketChannel channel;
-        final Object attachment;
-
-        public RegisterConstruct(SocketChannel channel, Object attachment) {
-            this.channel = channel;
-            this.attachment = attachment;
-        }
+    @Override
+    public int fastLimit() {
+        bootSelector.wakeup();
+        return 0;
     }
 
 
@@ -172,11 +168,14 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         return super.init(deal);
     }
 
+    public static class RegisterConstruct {
+        final SocketChannel channel;
+        final Object attachment;
 
-    @Override
-    public int fastLimit() throws IOException {
-        bootSelector.wakeup();
-        return 0;
+        RegisterConstruct(SocketChannel channel, Object attachment) {
+            this.channel = channel;
+            this.attachment = attachment;
+        }
     }
 
     @Override

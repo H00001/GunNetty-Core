@@ -42,8 +42,6 @@ public interface GunNettyChildChannel<CH extends Channel> extends
 
 
 
-
-
     /**
      * recover Read Interest
      */
