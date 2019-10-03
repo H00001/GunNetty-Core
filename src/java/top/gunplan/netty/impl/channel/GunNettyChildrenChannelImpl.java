@@ -28,7 +28,6 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
         implements GunNettyChildChannel<SocketChannel> {
     private GunNettyServerChannel<ServerSocketChannel> pChannel;
     private volatile SelectionKey key;
-
     private final SocketAddress remoteAddress;
 
     GunNettyChildrenChannelImpl(final SocketChannel channel,
@@ -85,9 +84,15 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
         try {
             channel().configureBlocking(false);
             channel().socket().setTcpNoDelay(true);
-            this.key = eventLoop.registerReadKey(channel(), this).get();
-            observes.parallelStream().forEach(v -> v.whenRegister(channel()));
-        } catch (IOException | InterruptedException | ExecutionException e) {
+            execute(() -> {
+                try {
+                    this.key = eventLoop.registerReadKey(channel(), this).get();
+                    observes.parallelStream().forEach(v -> v.whenRegister(channel()));
+                } catch (InterruptedException | ExecutionException | IOException e) {
+                    observes.parallelStream().forEach(v -> v.whenRegisterMeetException(channel(), e));
+                }
+            });
+        } catch (IOException e) {
             observes.parallelStream().forEach(v -> v.whenRegisterMeetException(channel(), e));
         }
     }

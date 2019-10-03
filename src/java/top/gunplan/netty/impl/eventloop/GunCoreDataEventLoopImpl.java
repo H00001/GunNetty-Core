@@ -32,12 +32,15 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     private final Queue<RegisterFuture> waitToRegisterQueue = new ConcurrentLinkedDeque<>();
 
     @Override
-    public Future<SelectionKey> registerReadKey(SocketChannel channel, Object attach) throws IOException {
-        var r2 = new RegisterFuture(new RegisterConstruct(channel, attach));
-        waitToRegisterQueue.add(r2);
-        bootSelector.wakeup();
+    public Future<SelectionKey> registerReadKey(SocketChannel channel, Object attach) {
+        //use async way to register channel
+        var register = new RegisterFuture(new RegisterConstruct(channel, attach));
+        waitToRegisterQueue.add(register);
+        //make it continue rather than at WAIT status
         this.incrAndContinueLoop();
-        return r2;
+        //wake up selector if it is blocking select
+        bootSelector.wakeup();
+        return register;
     }
 
     private void method0() throws IOException {

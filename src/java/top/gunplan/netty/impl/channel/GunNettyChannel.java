@@ -110,4 +110,7 @@ public interface GunNettyChannel<CH extends Channel,
      */
     void cleanAllObserve();
 
+
+    void execute(Runnable run);
+
 }
