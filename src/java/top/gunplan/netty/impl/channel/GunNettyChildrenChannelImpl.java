@@ -15,6 +15,7 @@ import java.net.SocketAddress;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ExecutionException;
 
 /**
  * GunNettyChildrenChannelImpl
@@ -84,15 +85,12 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
         try {
             channel().configureBlocking(false);
             channel().socket().setTcpNoDelay(true);
-            this.key = eventLoop.registerReadKey(channel());
-            this.key.attach(this);
+            this.key = eventLoop.registerReadKey(channel(), this).get();
             observes.parallelStream().forEach(v -> v.whenRegister(channel()));
-        } catch (IOException e) {
+        } catch (IOException | InterruptedException | ExecutionException e) {
             observes.parallelStream().forEach(v -> v.whenRegisterMeetException(channel(), e));
         }
     }
-
-
 
 
     private void continueLoop() {

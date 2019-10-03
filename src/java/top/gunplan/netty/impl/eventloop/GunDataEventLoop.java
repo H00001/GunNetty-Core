@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.nio.channels.Channel;
 import java.nio.channels.SelectionKey;
 import java.util.Set;
+import java.util.concurrent.Future;
 
 /**
  * GunDataEventLoop
@@ -40,10 +41,11 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
      * registerReadKey
      *
      * @param channel javaChannel chan read
+     * @param attach  attach object
      * @return selector
      * @throws IOException register fail
      */
-    SelectionKey registerReadKey(U channel) throws IOException;
+    Future<SelectionKey> registerReadKey(U channel, Object attach) throws IOException;
 
 
     /**

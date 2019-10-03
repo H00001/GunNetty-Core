@@ -4,6 +4,8 @@
 
 package top.gunplan.netty.observe;
 
+import java.net.SocketAddress;
+
 /**
  * GunNettyParentChannelObserve
  *
@@ -12,5 +14,11 @@ package top.gunplan.netty.observe;
  * @date 2019-09-21 08:16
  */
 
-public interface GunNettyParentChannelObserve {
+public interface GunNettyParentChannelObserve extends GunNettyObserve {
+    /**
+     * on child channel connected execute
+     *
+     * @param address connect address
+     */
+    void onChildrenChannelConnected(SocketAddress address);
 }
