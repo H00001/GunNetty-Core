@@ -112,5 +112,8 @@ public interface GunNettyCoreThreadManagerHelper {
     void syncStop();
 
 
-    void waitFecen();
+    /**
+     * wait for another work complete
+     */
+    void waitNext();
 }

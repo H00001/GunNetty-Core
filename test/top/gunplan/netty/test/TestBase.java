@@ -12,10 +12,10 @@ import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.GunNettySystemService;
 import top.gunplan.netty.example.*;
 import top.gunplan.netty.impl.GunBootServerFactory;
-import top.gunplan.netty.impl.GunNettyDefaultObserve;
 import top.gunplan.netty.impl.GunNettyStdFirstFilter;
 import top.gunplan.netty.impl.property.GunGetPropertyFromBaseFile;
 import top.gunplan.netty.observe.DefaultGunNettyChildrenPipelineChangedObserve;
+import top.gunplan.netty.observe.GunNettyDefaultObserve;
 
 public class TestBase {
 
@@ -41,7 +41,7 @@ public class TestBase {
         Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
                 GunBootServer.GunNettyWorkState.RUNNING.state);
         //running doTime
-        Thread.sleep(1000000);
+        Thread.sleep(100000000);
         System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
     }
 

@@ -20,10 +20,6 @@ import java.util.concurrent.Future;
  * @version 2.0.1.9
  */
 final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
-    /**
-     * GunNettyCoreProperty
-     */
-    private final GunNettyCoreProperty GUN_NETTY_CORE_PROPERTY;
 
     private final int MANAGE_THREAD_NUM;
 
@@ -35,7 +31,6 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property) {
-        GUN_NETTY_CORE_PROPERTY = property;
         MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
     }
 
@@ -58,7 +53,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         threadHelper.submitData(eventLoopManager.dataEventLoop());
         threadHelper.submitTransfer(eventLoopManager.transferEventLoop());
         var future = threadHelper.submitConnection(eventLoopManager.connEventLoop());
-        threadHelper.waitFecen();
+        threadHelper.waitNext();
         status = ManagerState.RUNNING;
         return future;
     }
@@ -77,6 +72,4 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
         eventLoopManager.shutDown();
         threadHelper.shutdownReturn().syncStop();
     }
-
-
 }

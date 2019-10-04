@@ -10,6 +10,7 @@ import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
 import top.gunplan.netty.impl.timeevent.GunTimeEventManagerImpl;
 import top.gunplan.netty.observe.DefaultSystemChannelChangedHandle;
+import top.gunplan.netty.observe.GunNettyDefaultObserve;
 import top.gunplan.netty.observe.GunNettyServicesObserve;
 
 import java.io.IOException;

@@ -17,7 +17,7 @@ public class GameClient {
         JButton area1 = new JButton("666");
         area.setBounds(0, 0, 700, 400);
         area1.setBounds(0, 500, 700, 400);
-        Socket ss = new Socket("127.0.0.1", 8866);
+        Socket ss = new Socket("127.0.0.1", 8855);
         area1.addActionListener(e -> {
             try {
                 ss.getOutputStream().write("666".getBytes());

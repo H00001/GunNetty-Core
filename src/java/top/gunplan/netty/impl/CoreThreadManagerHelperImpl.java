@@ -95,6 +95,6 @@ final class CoreThreadManagerHelperImpl implements GunNettyCoreThreadManagerHelp
     }
 
     @Override
-    public void waitFecen() {
+    public void waitNext() {
     }
 }
