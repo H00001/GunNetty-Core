@@ -9,6 +9,7 @@ import top.gunplan.netty.anno.GunTimeExecutor;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * GunNettyTimeExecutor
@@ -16,22 +17,25 @@ import java.util.List;
  * @author frankHan
  */
 public final class GunNettyTimeExecutor {
-    public static void execute(List<GunNettyTimer> timers, long tick, Object... objc) {
-        timers.parallelStream().forEach(t -> executeOne(t, tick, objc));
+
+    public static void execute(List<GunNettyTimer> timers, long tick, ScheduledExecutorService ses, Object... objc) {
+        timers.parallelStream().forEach(t -> executeOne(t, tick, ses, objc));
     }
 
-    static void executeOne(GunNettyTimer timer, long tick, Object... objc) {
+    static void executeOne(GunNettyTimer timer, long tick, ScheduledExecutorService ses, Object... objc) {
         Arrays.stream(timer.getClass().getDeclaredMethods()).
                 filter(who -> {
                     final GunTimeExecutor g = who.getAnnotation(GunTimeExecutor.class);
                     return g != null && tick % g.interval() == 0;
                 })
-                .forEach(who -> {
-                    try {
-                        who.invoke(timer, objc);
-                    } catch (ReflectiveOperationException e) {
-                        timer.timeExecuteError(who.getName(), e);
-                    }
-                });
+                .parallel().forEach(who -> {
+            try {
+                who.invoke(timer, objc);
+            } catch (ReflectiveOperationException e) {
+                if (!timer.timeExecuteError(who.getName(), e)) {
+                    ses.shutdown();
+                }
+            }
+        });
     }
 }

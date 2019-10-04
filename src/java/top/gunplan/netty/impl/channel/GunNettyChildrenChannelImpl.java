@@ -116,7 +116,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
     }
 
     private void doTck(long k) {
-        GunNettyTimeExecutor.execute(timers, k, this);
+        GunNettyTimeExecutor.execute(timers, k, scheduledExecutorService, this);
     }
 
 

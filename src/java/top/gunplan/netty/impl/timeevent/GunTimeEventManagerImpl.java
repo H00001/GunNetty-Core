@@ -54,7 +54,7 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
         if (threadTimer.get() == null) {
             threadTimer.set(timers.get((int) (now % timers.size())));
         }
-        GunNettyTimeExecutor.executeOne(threadTimer.get(), now);
+        GunNettyTimeExecutor.executeOne(threadTimer.get(), now, ses);
     }
 
     @Override

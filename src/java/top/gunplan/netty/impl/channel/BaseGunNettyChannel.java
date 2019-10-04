@@ -38,7 +38,7 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
     LOOP eventLoop;
     List<GunNettyTimer> timers;
     GunNettySequencer unsafeSequencer = GunNettySequencer.newThreadUnSafeSequencer();
-    private ScheduledExecutorService scheduledExecutorService;
+    ScheduledExecutorService scheduledExecutorService;
     private CH channel;
     private final SocketAddress localAddress;
     List<GunNettyChannelObserve> observes = new CopyOnWriteArrayList<>();
