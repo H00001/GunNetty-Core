@@ -83,6 +83,4 @@ public interface GunNettyEventLoopManager {
      */
 
     void shutDown();
-
-
 }

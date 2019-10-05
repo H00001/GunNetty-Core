@@ -31,13 +31,17 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
 
     GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property) {
-        MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum()) ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
+        MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum())
+                ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;
     }
 
     @Override
-    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, SystemChannelChangedHandle pHandle, ChannelInitHandle cHandle, int port) {
+    public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor,
+                                     SystemChannelChangedHandle pHandle,
+                                     ChannelInitHandle cHandle, int port) {
         threadHelper = GunNettyCoreThreadManagerHelper.newInstance(MANAGE_THREAD_NUM);
-        return eventLoopManager.init(MANAGE_THREAD_NUM, acceptExecutor, dataExecutor, pHandle, cHandle, port);
+        return eventLoopManager.init(MANAGE_THREAD_NUM, acceptExecutor,
+                dataExecutor, pHandle, cHandle, port);
     }
 
 

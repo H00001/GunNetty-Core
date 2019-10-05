@@ -23,6 +23,5 @@ final class GunChildrenChannelPoolImpl extends BaseGunChannelPool<GunNettyChildC
     @Override
     protected GunNettyChildChannel<SocketChannel> acquireCreateNew() {
         return null;
-        // return GunNettyChannelFactory.newChannel();
     }
 }

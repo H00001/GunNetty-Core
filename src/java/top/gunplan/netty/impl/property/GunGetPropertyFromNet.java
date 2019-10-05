@@ -27,9 +27,11 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
     private GunNettyPropertyExporter exporter = new GunNettyPropertyExporter() {
     };
 
-    private GunNettyPropertyAnalyzer<String, String[]> analyzer = new AbstractGunNettyStandStringPropertyAnalyizer() {
+    private GunNettyPropertyAnalyzer<String, String[]> analyzer =
+            new AbstractGunNettyStandStringPropertyAnalyizer() {
         @Override
-        public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info) throws GunBootServerBase.GunNettyCanNotBootException {
+        public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info)
+                throws GunBootServerBase.GunNettyCanNotBootException {
             GunGetPropertyFromNet.this.address = info;
             GunGetPropertyFromNet.this.settingProperties(propertiesMap);
         }
@@ -50,7 +52,8 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
 
 
         exporter.export("acquire configure from :" + address);
-        client.sendAsync(request, HttpResponse.BodyHandlers.ofString())
+        client.sendAsync(request, HttpResponse.BodyHandlers.
+                ofString())
                 .thenApply(HttpResponse::body)
                 .whenCompleteAsync((body, en) -> {
                     assert GunNettyStringUtil.isNotEmpty0(body);

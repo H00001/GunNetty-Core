@@ -58,7 +58,9 @@ public interface GunNettyCoreThreadManager {
      * @return init result
      * @throws IOException i/o error
      */
-    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor, SystemChannelChangedHandle initHandle, ChannelInitHandle childrenInitHandle, int port) throws IOException;
+    boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor,
+                 SystemChannelChangedHandle initHandle, ChannelInitHandle childrenInitHandle,
+                 int port) throws IOException;
 
 
     /**

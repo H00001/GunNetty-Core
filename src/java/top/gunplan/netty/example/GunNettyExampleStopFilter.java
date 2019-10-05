@@ -27,7 +27,6 @@ public class GunNettyExampleStopFilter implements GunNettyInboundFilter {
 
             }
             filterDto.channel().closeAndRemove(true);
-
             return GunNettyFilter.DealResult.CLOSED;
         }
         return GunNettyFilter.DealResult.NEXT;

@@ -22,7 +22,8 @@ public interface GunNettyPropertyExporter {
      * @param v value
      */
     default void export(String k, String v) {
-        GunNettyContext.logger.setTAG(GunNettyPropertyExporter.class).info(k + ":" + v, "[PROPERTY]");
+        GunNettyContext.logger.setTAG(GunNettyPropertyExporter.class).
+                info(k + ":" + v, "[PROPERTY]");
     }
 
 
@@ -32,6 +33,7 @@ public interface GunNettyPropertyExporter {
      * @param k export k
      */
     default void export(String k) {
-        GunNettyContext.logger.setTAG(GunNettyPropertyExporter.class).info(k);
+        GunNettyContext.logger.
+                setTAG(GunNettyPropertyExporter.class).info(k);
     }
 }

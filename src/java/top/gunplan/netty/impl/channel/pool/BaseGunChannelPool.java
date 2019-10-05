@@ -19,6 +19,11 @@ abstract class BaseGunChannelPool<V extends GunNettyChannel> {
         return v;
     }
 
+    /**
+     * acquireCreateNew
+     *
+     * @return V
+     */
     protected abstract V acquireCreateNew();
 
     public boolean addChannelToPool0(V channel) {
