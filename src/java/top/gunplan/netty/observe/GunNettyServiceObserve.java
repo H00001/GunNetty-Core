@@ -16,7 +16,7 @@ import java.io.IOException;
  * @author dosdrtt
  * @since 0.0.1.2
  */
-public interface GunNettyServicesObserve extends GunHandle {
+public interface GunNettyServiceObserve extends GunHandle {
     /**
      * onBooted execute
      *

@@ -9,13 +9,15 @@ package top.gunplan.netty;
  * Thread safe
  */
 public class GunPipelineCheckResult {
+
     private String reason;
+
+    private CheckResult result;
 
     public GunPipelineCheckResult(CheckResult result) {
         this.result = result;
     }
 
-    private CheckResult result;
 
     public GunPipelineCheckResult(CheckResult result, String reason) {
         this.result = result;

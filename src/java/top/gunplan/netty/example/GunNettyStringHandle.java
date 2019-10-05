@@ -22,7 +22,7 @@ import java.net.SocketAddress;
  *
  * @author frank albert
  * @version 0.0.0.1
- * # 2019-07-27 08:08
+ * #2019-07-27 08:08
  */
 public class GunNettyStringHandle implements GunNettyChildrenHandle, GunNettyParentHandle {
 

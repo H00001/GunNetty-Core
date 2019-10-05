@@ -22,7 +22,6 @@ public class GunNettyCoreProperty implements GunProperty {
     private volatile int maxRunningNum;
     private volatile int clientWaitTime;
     private volatile int fileReadBufferMin;
-    private volatile int connection;
     private volatile String profileName;
 
     private GunNettyCoreProperty() {

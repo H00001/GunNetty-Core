@@ -16,7 +16,7 @@ import java.net.URISyntaxException;
  *
  * @author dosdrtt
  */
-public class GunNettyDefaultObserve implements GunNettyServicesObserve, GunNettyBaseObserve {
+public class GunNettyDefaultObserve implements GunNettyServiceObserve, GunNettyBaseObserve {
 
     @Override
     public void onBooted(GunNettyCoreProperty property) {

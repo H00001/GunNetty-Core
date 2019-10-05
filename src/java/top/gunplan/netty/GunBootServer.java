@@ -5,7 +5,7 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
-import top.gunplan.netty.observe.GunNettyServicesObserve;
+import top.gunplan.netty.observe.GunNettyServiceObserve;
 
 
 /**
@@ -35,7 +35,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
      * @param observe observe object
      * @return GunBootServer
      */
-    GunBootServer registerObserve(GunNettyServicesObserve observe);
+    GunBootServer registerObserve(GunNettyServiceObserve observe);
 
     /**
      * GunNettyCoreThreadManager but not support

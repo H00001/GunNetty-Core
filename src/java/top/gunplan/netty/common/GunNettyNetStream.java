@@ -16,11 +16,9 @@ import java.io.OutputStream;
 public class GunNettyNetStream extends OutputStream {
 
     public GunNettyNetStream(String ip, int port) {
-
     }
 
     @Override
     public void write(int b) throws IOException {
-
     }
 }

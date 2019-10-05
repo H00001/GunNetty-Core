@@ -34,7 +34,8 @@ final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
 
     GunNettyPropertyManagerImpl() {
         try {
-            Constructor<GunNettyCoreProperty> cons = GunNettyCoreProperty.class.getDeclaredConstructor();
+            Constructor<GunNettyCoreProperty> cons = GunNettyCoreProperty.
+                    class.getDeclaredConstructor();
             cons.setAccessible(true);
             registerProperty(cons.newInstance());
         } catch (ReflectiveOperationException e) {
@@ -50,7 +51,8 @@ final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
 
     @Override
     public void registerProperty(GunProperty property) {
-        GunPropertyMap propertyMap = property.getClass().getAnnotation(GunPropertyMap.class);
+        GunPropertyMap propertyMap = property.getClass().
+                getAnnotation(GunPropertyMap.class);
         registerProperty(propertyMap.name(), property);
     }
 
@@ -63,7 +65,8 @@ final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
     }
 
     @Override
-    public boolean initProperty() throws GunBootServerBase.GunNettyCanNotBootException {
+    public boolean initProperty() throws GunBootServerBase.
+            GunNettyCanNotBootException {
         return strategy.settingProperties(propertiesMap);
     }
 

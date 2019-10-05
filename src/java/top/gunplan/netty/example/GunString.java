@@ -26,7 +26,7 @@ public class GunString implements GunNetInBoundOutBound {
 
     @Override
     public boolean unSerialize(byte[] in) {
-        //base = GunTencertZip.doDecode(new String(in));
+        //base = Gun Tencert Zip.doDecode(new String(in));
         base = new String(in);
         return true;
     }

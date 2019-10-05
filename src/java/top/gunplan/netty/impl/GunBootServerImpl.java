@@ -11,7 +11,7 @@ import top.gunplan.netty.impl.property.base.GunNettyPropertyManager;
 import top.gunplan.netty.impl.timeevent.GunTimeEventManagerImpl;
 import top.gunplan.netty.observe.DefaultSystemChannelChangedHandle;
 import top.gunplan.netty.observe.GunNettyDefaultObserve;
-import top.gunplan.netty.observe.GunNettyServicesObserve;
+import top.gunplan.netty.observe.GunNettyServiceObserve;
 
 import java.io.IOException;
 import java.util.concurrent.ExecutionException;
@@ -36,7 +36,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     private final GunTimeEventManager timeManager = new GunTimeEventManagerImpl();
 
-    private volatile GunNettyServicesObserve observe;
+    private volatile GunNettyServiceObserve observe;
 
     private volatile ExecutorService acceptExecutor;
 
@@ -111,7 +111,7 @@ final class GunBootServerImpl implements GunBootServer {
     }
 
     @Override
-    public GunBootServer registerObserve(GunNettyServicesObserve observe) {
+    public GunBootServer registerObserve(GunNettyServiceObserve observe) {
         if (observe != null) {
             this.observe = observe;
         }
@@ -151,7 +151,7 @@ final class GunBootServerImpl implements GunBootServer {
             if (isSync()) {
                 try {
                     int val = executing.get();
-                    this.observe.onStatusChanged(GunNettyServicesObserve.GunNettyChangeStatus.RUN_TO_STOP);
+                    this.observe.onStatusChanged(GunNettyServiceObserve.GunNettyChangeStatus.RUN_TO_STOP);
                     this.observe.onStop(coreProperty);
                     threadManager.stopAndWait();
                     return val;
