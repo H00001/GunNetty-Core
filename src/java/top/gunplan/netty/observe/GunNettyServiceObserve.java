@@ -64,6 +64,7 @@ public interface GunNettyServiceObserve extends GunHandle {
      */
     default void bootFail(IOException exp) {
         GunNettyContext.logger.setTAG(this.getClass()).urgency(exp.getMessage());
+        GunNettyContext.logger.setTAG(this.getClass()).urgency("RUNNING STOP");
     }
 
 

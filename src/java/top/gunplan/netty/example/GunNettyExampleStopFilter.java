@@ -24,7 +24,6 @@ public class GunNettyExampleStopFilter implements GunNettyInboundFilter {
             try {
                 filterDto.channel().channel().write(ByteBuffer.wrap(("you are dead\nhia hia hia\n").getBytes()));
             } catch (IOException ignored) {
-
             }
             filterDto.channel().closeAndRemove(true);
             return GunNettyFilter.DealResult.CLOSED;

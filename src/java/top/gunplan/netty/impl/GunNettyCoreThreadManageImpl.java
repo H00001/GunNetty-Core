@@ -11,6 +11,7 @@ import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.property.GunNettyCoreProperty;
 import top.gunplan.utils.GunNumberUtil;
 
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Future;
 
@@ -38,7 +39,7 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
     @Override
     public synchronized boolean init(ExecutorService acceptExecutor, ExecutorService dataExecutor,
                                      SystemChannelChangedHandle pHandle,
-                                     ChannelInitHandle cHandle, int port) {
+                                     ChannelInitHandle cHandle, int port) throws IOException {
         threadHelper = GunNettyCoreThreadManagerHelper.newInstance(MANAGE_THREAD_NUM);
         return eventLoopManager.init(MANAGE_THREAD_NUM, acceptExecutor,
                 dataExecutor, pHandle, cHandle, port);

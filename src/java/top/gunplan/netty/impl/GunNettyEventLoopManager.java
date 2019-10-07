@@ -10,6 +10,7 @@ import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 
+import java.io.IOException;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutorService;
 
@@ -42,7 +43,7 @@ public interface GunNettyEventLoopManager {
      */
     boolean init(int v1, ExecutorService bossExecutor,
                  ExecutorService dataExecutor, SystemChannelChangedHandle parentHandle,
-                 ChannelInitHandle childrenHandle, int port);
+                 ChannelInitHandle childrenHandle, int port) throws IOException;
 
 
     /**

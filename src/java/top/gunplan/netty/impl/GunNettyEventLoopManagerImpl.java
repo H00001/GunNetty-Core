@@ -25,23 +25,18 @@ final class GunNettyEventLoopManagerImpl implements GunNettyEventLoopManager {
     private volatile GunDataEventLoop<SocketChannel>[] dealData;
     private volatile GunNettyTransferEventLoop<SocketChannel> transfer;
     private volatile int dataEvenLoopSum;
-
     private GunNettySequencer sequencer0 = GunNettySequencer.newThreadUnSafeSequencer();
 
     @Override
     public synchronized boolean init(int v1, ExecutorService bossExecutor,
                                      ExecutorService dataExecutor, SystemChannelChangedHandle parentHandle,
-                                     ChannelInitHandle childrenHandle, int port) {
+                                     ChannelInitHandle childrenHandle, int port) throws IOException {
         this.dataEvenLoopSum = v1;
         transfer = GunNettyEventLoopFactory.newGunNettyBaseTransfer();
         transfer.registerManager(this);
-        try {
-            dealData = GunNettyEventLoopFactory.buildDataEventLoop(v1).with(bossExecutor).andRegister(this).build();
-            dealAccept = GunNettyEventLoopFactory.buildConnEventLoop().with(dataExecutor, parentHandle, childrenHandle)
-                    .bindPort(port).andRegister(this).build();
-        } catch (IOException e) {
-            return false;
-        }
+        dealData = GunNettyEventLoopFactory.buildDataEventLoop(v1).with(bossExecutor).andRegister(this).build();
+        dealAccept = GunNettyEventLoopFactory.buildConnEventLoop().with(dataExecutor, parentHandle, childrenHandle)
+                .bindPort(port).andRegister(this).build();
         return true;
     }
 

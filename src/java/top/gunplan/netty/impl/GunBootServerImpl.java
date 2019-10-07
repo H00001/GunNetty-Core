@@ -138,7 +138,9 @@ final class GunBootServerImpl implements GunBootServer {
             return state | GunNettyWorkState.BOOT_ERROR_2.state;
         }
         try {
-            threadManager.init(acceptExecutor, workExecutor, changedHandle, initHandle, coreProperty.getPort());
+            if (!threadManager.init(acceptExecutor, workExecutor, changedHandle, initHandle, coreProperty.getPort())) {
+                state = GunNettyWorkState.BOOT_ERROR_3.state;
+            }
         } catch (IOException exc) {
             observe.bootFail(exc);
             return state = GunNettyWorkState.BOOT_ERROR_1.state;

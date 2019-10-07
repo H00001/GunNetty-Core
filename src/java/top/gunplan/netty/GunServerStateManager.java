@@ -50,7 +50,7 @@ public interface GunServerStateManager {
          * BOOT_ERROR_1  :when boot error's stop state
          */
 
-        STOP(0b0000), SYNC(0b0001), ASYNC(0b0010), RUNNING(0b0100), BOOT_ERROR_1(0b1000), BOOT_ERROR_2(0b1001);
+        STOP(0b0000), SYNC(0b0001), ASYNC(0b0010), RUNNING(0b0100), BOOT_ERROR_1(0b1000), BOOT_ERROR_2(0b1001), BOOT_ERROR_3(0b1010);
 
 
         public int state;
