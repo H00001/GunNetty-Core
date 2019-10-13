@@ -119,5 +119,9 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
         GunNettyTimeExecutor.execute(timers, k, scheduledExecutorService, this);
     }
 
+    @Override
+    public void generalClose() {
+        closeAndRemove(true);
+    }
 
 }

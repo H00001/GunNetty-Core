@@ -152,4 +152,6 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
     public void execute(Runnable run) {
         GunNettyExecutors.executeByNewThread(run);
     }
+
+
 }

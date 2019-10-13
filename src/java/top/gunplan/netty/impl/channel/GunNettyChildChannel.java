@@ -22,10 +22,16 @@ public interface GunNettyChildChannel<CH extends Channel> extends
     /**
      * close channel and remove form selector
      *
-     * @param b is or not
+     * @param b is or not remove sum of selector
      * @return this
      */
     GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> closeAndRemove(boolean b);
+
+    /**
+     * close channel and remove form selector
+     */
+    void generalClose();
+
 
     /**
      * parent
