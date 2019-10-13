@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl.channel;
 
+import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
@@ -29,8 +30,9 @@ public interface GunNettyChildChannel<CH extends Channel> extends
 
     /**
      * close channel and remove form selector
+     * return closed
      */
-    void generalClose();
+    GunNettyFilter.DealResult generalClose();
 
 
     /**

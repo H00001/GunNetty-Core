@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.impl.channel;
 
+import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
@@ -120,8 +121,9 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
     }
 
     @Override
-    public void generalClose() {
+    public GunNettyFilter.DealResult generalClose() {
         closeAndRemove(true);
+        return GunNettyFilter.DealResult.CLOSED;
     }
 
 }

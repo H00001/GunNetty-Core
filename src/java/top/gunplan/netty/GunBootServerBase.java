@@ -37,5 +37,9 @@ public interface GunBootServerBase {
         public GunNettyCanNotBootException(Throwable why) {
             super(GunExceptionType.URGENCY, why);
         }
+
+        public GunNettyCanNotBootException(String why) {
+            super(GunExceptionType.URGENCY, why);
+        }
     }
 }

@@ -29,13 +29,13 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
 
     private GunNettyPropertyAnalyzer<String, String[]> analyzer =
             new AbstractGunNettyStandStringPropertyAnalyizer() {
-        @Override
-        public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info)
-                throws GunBootServerBase.GunNettyCanNotBootException {
-            GunGetPropertyFromNet.this.address = info;
-            GunGetPropertyFromNet.this.settingProperties(propertiesMap);
-        }
-    };
+                @Override
+                public void nextAnalyze(Map<String, GunProperty> propertiesMap, String info)
+                        throws GunBootServerBase.GunNettyCanNotBootException {
+                    GunGetPropertyFromNet.this.address = info;
+                    GunGetPropertyFromNet.this.settingProperties(propertiesMap);
+                }
+            };
 
 
     public GunGetPropertyFromNet(String address) {
@@ -50,21 +50,23 @@ public class GunGetPropertyFromNet implements GunPropertyStrategy {
                 .uri(URI.create(address))
                 .build();
 
-
         exporter.export("acquire configure from :" + address);
         client.sendAsync(request, HttpResponse.BodyHandlers.
                 ofString())
-                .thenApply(HttpResponse::body)
                 .whenCompleteAsync((body, en) -> {
-                    assert GunNettyStringUtil.isNotEmpty0(body);
-                    if (en == null) {
-                        try {
-                            analyzer.analyzingProperties(body.split("\n"), propertyMap);
-                        } catch (NoSuchFieldException | IllegalAccessException e) {
-                            throw new GunBootServerBase.GunNettyCanNotBootException(e);
+                    if (body.statusCode() == 200) {
+                        assert GunNettyStringUtil.isNotEmpty0(body.body());
+                        if (en == null) {
+                            try {
+                                analyzer.analyzingProperties(body.body().split("\n"), propertyMap);
+                            } catch (NoSuchFieldException | IllegalAccessException e) {
+                                throw new GunBootServerBase.GunNettyCanNotBootException(e);
+                            }
+                        } else {
+                            throw new GunBootServerBase.GunNettyCanNotBootException(en);
                         }
                     } else {
-                        throw new GunBootServerBase.GunNettyCanNotBootException(en);
+                        throw new GunBootServerBase.GunNettyCanNotBootException("status error");
                     }
                 })
                 .join();
