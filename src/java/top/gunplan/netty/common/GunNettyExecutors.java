@@ -40,7 +40,11 @@ public final class GunNettyExecutors {
     }
 
     public static ScheduledExecutorService newScheduleExecutorPool(int num) {
-        return new ScheduledThreadPoolExecutor(num, new GunNettyThreadFactory("GunNettyExecutors-Schedule"));
+        return newScheduleExecutorPool(num, "GunNetty-Auto-Schedule-Executor-52");
+    }
+
+    public static ScheduledExecutorService newScheduleExecutorPool(int num, String name) {
+        return num <= 0 ? null : new ScheduledThreadPoolExecutor(num, new GunNettyThreadFactory(name));
     }
 
     public static void executeByNewThread(Runnable runner) {
@@ -48,7 +52,7 @@ public final class GunNettyExecutors {
     }
 
     public static ScheduledExecutorService newScheduleExecutorPool() {
-        return newScheduleExecutorPool(1);
+        return newScheduleExecutorPool(1, "Signal-Auto-Schedule-Executor-78");
     }
 
 }

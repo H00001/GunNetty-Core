@@ -27,6 +27,13 @@ public interface GunTimeEventManager {
      */
     GunTimeEventManager removeGlobalTimers(GunNettyTimer timer);
 
+    /**
+     * add thread Timer
+     *
+     * @param timer doTime event
+     * @return server
+     */
+    GunTimeEventManager addThreadTimer(GunNettyTimer timer);
 
     /**
      * loop for deal event
@@ -46,6 +53,7 @@ public interface GunTimeEventManager {
 
     /**
      * stop the event
+     *
      * @return stop code
      */
     int stop();

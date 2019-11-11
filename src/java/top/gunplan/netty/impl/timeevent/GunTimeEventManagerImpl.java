@@ -49,6 +49,12 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
     }
 
     @Override
+    public GunTimeEventManager addThreadTimer(GunNettyTimer timer) {
+        threadTimer.set(timer);
+        return this;
+    }
+
+    @Override
     public void loop() {
         final long now = sequencer.nextSequenceInt32WithLimit(Integer.MAX_VALUE);
         if (threadTimer.get() == null) {
@@ -59,7 +65,7 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
 
     @Override
     public int boot(long var1, long var2) {
-        ses = GunNettyExecutors.newScheduleExecutorPool(timers.size());
+        ses = GunNettyExecutors.newScheduleExecutorPool(timers.size(), "main-schedule");
         ses.scheduleAtFixedRate(this::loop, var1, var2, TimeUnit.MILLISECONDS);
         return 0;
     }
