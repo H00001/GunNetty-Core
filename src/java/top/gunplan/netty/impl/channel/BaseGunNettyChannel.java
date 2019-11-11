@@ -48,11 +48,17 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
         this.pipeline = pipeline;
         this.channel = channel;
         timers = pipeline != null ? pipeline.timers() : null;
-        scheduledExecutorService = GunNettyExecutors.newScheduleExecutorPool(timers != null ? timers.size() : 0);
-        scheduledExecutorService.scheduleAtFixedRate(this::doTime, 100, 100, TimeUnit.MILLISECONDS);
         this.localAddress = channel.getLocalAddress();
+        bootSchedule();
     }
 
+    private void bootSchedule() {
+        int k;
+        if (timers != null && (k = timers.size()) >= 1) {
+            scheduledExecutorService = GunNettyExecutors.newScheduleExecutorPool(k);
+            scheduledExecutorService.scheduleAtFixedRate(this::doTime, 100, 100, TimeUnit.MILLISECONDS);
+        }
+    }
 
     @Override
     public GunNettyChannel<CH, LOOP, PL> registerEventLoop(LOOP eventLoop) {

@@ -52,7 +52,7 @@ public final class GunNettyExecutors {
     }
 
     public static ScheduledExecutorService newScheduleExecutorPool() {
-        return newScheduleExecutorPool(1, "Signal-Auto-Schedule-Executor-78");
+        return newScheduleExecutorPool(ONE, "Signal-Auto-Schedule-Executor-78");
     }
 
 }
