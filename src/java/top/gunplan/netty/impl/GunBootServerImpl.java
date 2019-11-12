@@ -178,7 +178,7 @@ final class GunBootServerImpl implements GunBootServer {
 
     @Override
     public GunBootServer setExecutors(int var1, int var2) {
-        acceptExecutor = GunNettyExecutors.newFixedCacheableExecutorPool(var1, "calculator pool", isSteal);
+        acceptExecutor = GunNettyExecutors.newFixedCacheableExecutorPool(var1, "connection pool", isSteal);
         workExecutor = GunNettyExecutors.newFixedCacheableExecutorPool(var2, "calculator pool", isSteal);
         return this;
     }

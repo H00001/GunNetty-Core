@@ -17,6 +17,7 @@ public final class GunNettyExecutors {
 
     private static final BlockingQueue<Runnable> SYNC_INST = new SynchronousQueue<>();
 
+    private static final ThreadFactory TEMP_POOL = new GunNettyThreadFactory("TEMP THREAD");
     private static final short ONE = 1;
 
     public static ExecutorService newNoQueueFixedExecutorPool(int size) {
@@ -48,7 +49,7 @@ public final class GunNettyExecutors {
     }
 
     public static void executeByNewThread(Runnable runner) {
-        new Thread(runner, "TEMP THREAD").start();
+        TEMP_POOL.newThread(runner).start();
     }
 
     public static ScheduledExecutorService newScheduleExecutorPool() {

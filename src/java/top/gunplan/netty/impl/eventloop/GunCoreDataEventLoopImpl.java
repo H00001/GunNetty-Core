@@ -56,10 +56,8 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         }
         RegisterFuture r;
         while ((r = waitToRegisterQueue.poll()) != null) {
-            synchronized (r) {
-                r.key = r.construct.channel.register(this.bootSelector, SelectionKey.OP_READ, r.construct.attachment);
-                r.notify();
-            }
+            r.key = r.construct.channel.register(this.bootSelector, SelectionKey.OP_READ, r.construct.attachment);
+            r.unLock();
         }
     }
 
@@ -116,6 +114,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     class RegisterFuture implements Future<SelectionKey> {
         final RegisterConstruct construct;
         volatile SelectionKey key;
+        volatile Thread wait;
         volatile boolean isCancel = false;
 
         RegisterFuture(RegisterConstruct construct) {
@@ -138,12 +137,24 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
             return key != null;
         }
 
-        @Override
-        public synchronized SelectionKey get() throws InterruptedException {
-            if (key == null) {
-                this.wait();
+        void unLock() {
+            if (wait != null) {           // 5
+                LockSupport.unpark(wait); // 6
             }
-            return key;
+        }
+
+
+        //this code is thread safe
+        //stand 1 2 3 5 6 5 4
+        //stand 5 6 1 4
+        //special 1 2 5 6 3 4 :this process do not have thread safe auestion
+        @Override
+        public SelectionKey get() {
+            wait = Thread.currentThread(); // 1
+            if (key == null) {             // 2
+                LockSupport.park();        // 3
+            }
+            return key;                    // 4
         }
 
         @Override
