@@ -8,6 +8,7 @@ import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.common.GunNettyContext;
+import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.channel.GunNettyChannelFactory;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.channel.GunNettyServerChannel;
@@ -19,6 +20,7 @@ import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * GunCoreConnectionEventLoopImpl deal connection event
@@ -126,5 +128,11 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
         } catch (InterruptedException | IOException ignore) {
 
         }
+    }
+
+    @Override
+    public void whenSendTaskFail(Runnable r, RejectedExecutionException e) {
+        GunNettyExecutors.executeByNewThread(r);
+        e.printStackTrace();
     }
 }

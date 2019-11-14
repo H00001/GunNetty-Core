@@ -6,6 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
 import top.gunplan.netty.GunException;
+import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.GunNettyEventLoopManager;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.spi.SelectorProvider;
 import java.util.concurrent.ExecutorService;
+import java.util.concurrent.RejectedExecutionException;
 
 /**
  * AbstractGunCoreEventLoop
@@ -115,7 +117,15 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
 
 
     public void submit(Runnable runnable) {
-        this.deal.submit(runnable);
+        try {
+            this.deal.submit(runnable);
+        } catch (RejectedExecutionException e) {
+            whenSendTaskFail(runnable, e);
+        }
+    }
+
+    public void whenSendTaskFail(Runnable r, RejectedExecutionException e) {
+        GunNettyExecutors.executeByNewThread(r);
     }
 }
 

@@ -147,7 +147,8 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         //this code is thread safe
         //stand 1 2 3 5 6 5 4
         //stand 5 6 1 4
-        //special 1 2 5 6 3 4 :this process do not have thread safe auestion
+        //special 1 2 5 6 3 4 :this process do not have thread safe problem
+
         @Override
         public SelectionKey get() {
             wait = Thread.currentThread(); // 1

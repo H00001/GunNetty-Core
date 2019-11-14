@@ -103,7 +103,9 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
     public void destroy() {
         timers = null;
         channel = null;
-        scheduledExecutorService.shutdown();
+        if (scheduledExecutorService != null) {
+            scheduledExecutorService.shutdown();
+        }
         System.gc(); //help gc
     }
 

@@ -14,6 +14,7 @@ import java.util.concurrent.*;
  * # 2019-06-19 00:38
  */
 public final class GunNettyExecutors {
+    private static int L = 2;
 
     private static final BlockingQueue<Runnable> SYNC_INST = new SynchronousQueue<>();
 
@@ -33,7 +34,7 @@ public final class GunNettyExecutors {
     }
 
     public static ExecutorService newFixedCacheableExecutorPool(int size, String name, boolean isSteal) {
-        return isSteal ? Executors.newWorkStealingPool(size) : new ThreadPoolExecutor(size, size, 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(size), new GunNettyThreadFactory(name));
+        return isSteal ? Executors.newWorkStealingPool(size) : new ThreadPoolExecutor(size, size * L, 0, TimeUnit.MILLISECONDS, new LinkedBlockingDeque<>(size * L), new GunNettyThreadFactory(name));
     }
 
     public static ExecutorService newSignalExecutorPool(String name) {
