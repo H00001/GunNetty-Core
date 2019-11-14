@@ -5,6 +5,7 @@
 package top.gunplan.netty.common;
 
 import top.gunplan.netty.anno.GunHandleTag;
+import top.gunplan.netty.filter.GunNettyFilter;
 
 import java.util.List;
 
@@ -16,11 +17,11 @@ import java.util.List;
  * @date 2019-09-22 08:36
  */
 public class GunNettyAnnoUtil {
-    public final static FindStrategy<Object, String> NAME_STAGE = (v, oc) -> {
+    private final static FindStrategy<GunNettyFilter, String> NAME_STAGE = (v, oc) -> {
         GunHandleTag tag = v.getClass().getAnnotation(GunHandleTag.class);
         return (tag != null) && tag.name().equals(oc);
     };
-    public final static FindStrategy<Object, Integer> ID_STAGE = (v, oc) -> {
+    private final static FindStrategy<GunNettyFilter, Integer> ID_STAGE = (v, oc) -> {
         GunHandleTag tag = v.getClass().getAnnotation(GunHandleTag.class);
         return (tag != null) && tag.id() == oc;
     };
@@ -34,18 +35,19 @@ public class GunNettyAnnoUtil {
         return null;
     }
 
-    public static <T> T findByTag(final List<T> list, String name) {
-        for (var val : list) {
-            if (NAME_STAGE.isThis(val, name)) {
-                return val;
-            }
-        }
-        return null;
+
+    public static <T extends GunNettyFilter> T findByTag(final List<T> list, String name) {
+        return findGerenal(list, name, NAME_STAGE);
     }
 
-    public static <T> T findById(final List<T> list, int id) {
+    public static <T extends GunNettyFilter> T findById(final List<T> list, Integer id) {
+        return findGerenal(list, id, ID_STAGE);
+
+    }
+
+    private static <T, R, V> T findGerenal(final List<T> list, V id, FindStrategy<R, V> strategy) {
         for (var val : list) {
-            if (ID_STAGE.isThis(val, id)) {
+            if (strategy.isThis((R) val, id)) {
                 return val;
             }
         }
