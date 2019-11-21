@@ -13,6 +13,7 @@ import top.gunplan.netty.impl.GunNetBound;
  *
  * @author dosdrtt
  */
+@FunctionalInterface
 public interface GunNetOutbound extends GunNetBound {
     /**
      * serialize the protocol

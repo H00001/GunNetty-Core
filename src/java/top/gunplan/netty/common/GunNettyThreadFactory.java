@@ -22,7 +22,6 @@ public class GunNettyThreadFactory implements GunNettyNvThreadFactory {
         return createThread(r, null);
     }
 
-    @SuppressWarnings("AlibabaAvoidManuallyCreateThread")
     private Thread createThread(Runnable r, Thread.UncaughtExceptionHandler handler) {
         haveUsedCount.increment();
         @SuppressWarnings("AlibabaAvoidManuallyCreateThread")

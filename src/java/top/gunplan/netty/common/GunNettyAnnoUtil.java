@@ -25,27 +25,28 @@ public class GunNettyAnnoUtil {
         GunHandleTag tag = v.getClass().getAnnotation(GunHandleTag.class);
         return (tag != null) && tag.id() == oc;
     };
+    private final static FindStrategy<Object, Class<?>> ClASS_STAGE = (v, oc) -> v.getClass() == oc;
 
     public static <T, R> T findByAny(final List<T> list, R r, FindStrategy<T, R> strategy) {
-        for (var val : list) {
-            if (strategy.isThis(val, r)) {
-                return val;
-            }
-        }
-        return null;
+        return findGeneral(list, r, strategy);
     }
 
 
     public static <T extends GunNettyFilter> T findByTag(final List<T> list, String name) {
-        return findGerenal(list, name, NAME_STAGE);
+        return findGeneral(list, name, NAME_STAGE);
+    }
+
+    public static <T extends GunNettyFilter> T findByClass(final List<T> list, Class<T> name) {
+        return findGeneral(list, name, ClASS_STAGE);
     }
 
     public static <T extends GunNettyFilter> T findById(final List<T> list, Integer id) {
-        return findGerenal(list, id, ID_STAGE);
+        return findGeneral(list, id, ID_STAGE);
 
     }
 
-    private static <T, R, V> T findGerenal(final List<T> list, V id, FindStrategy<R, V> strategy) {
+    @SuppressWarnings("unchecked")
+    private static <T, R, V> T findGeneral(final List<T> list, V id, FindStrategy<R, V> strategy) {
         for (var val : list) {
             if (strategy.isThis((R) val, id)) {
                 return val;

@@ -55,6 +55,11 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
     }
 
     @Override
+    public GunNettyTimer getThreadTimer() {
+        return threadTimer.get();
+    }
+
+    @Override
     public void loop() {
         final long now = sequencer.nextSequenceInt32WithLimit(Integer.MAX_VALUE);
         if (threadTimer.get() == null) {

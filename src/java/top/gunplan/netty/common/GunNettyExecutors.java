@@ -14,7 +14,7 @@ import java.util.concurrent.*;
  * # 2019-06-19 00:38
  */
 public final class GunNettyExecutors {
-    private static int L = 2;
+    private static final short L = 2;
 
     private static final BlockingQueue<Runnable> SYNC_INST = new SynchronousQueue<>();
 

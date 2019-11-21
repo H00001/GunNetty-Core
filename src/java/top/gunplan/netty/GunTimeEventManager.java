@@ -57,4 +57,7 @@ public interface GunTimeEventManager {
      * @return stop code
      */
     int stop();
+
+
+    GunNettyTimer getThreadTimer();
 }

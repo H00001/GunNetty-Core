@@ -11,6 +11,7 @@ import top.gunplan.netty.impl.GunNetBound;
  *
  * @author dosdrtt
  */
+@FunctionalInterface
 public interface GunNetInbound extends GunNetBound {
     /**
      * get the unSerialize result succeed or fail
