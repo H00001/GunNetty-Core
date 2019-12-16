@@ -41,6 +41,13 @@ public interface GunNettyChannel<CH extends Channel,
 
 
     /**
+     * is or not close
+     *
+     * @return boolean
+     */
+
+    boolean isClose();
+    /**
      * get channel id
      *
      * @return cid

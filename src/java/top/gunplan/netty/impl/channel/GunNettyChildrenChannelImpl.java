@@ -123,6 +123,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
     @Override
     public GunNettyFilter.DealResult generalClose() {
         closeAndRemove(true);
+        destroy();
         return GunNettyFilter.DealResult.CLOSED;
     }
 

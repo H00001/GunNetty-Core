@@ -194,6 +194,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     }
 
     @Override
+    @SuppressWarnings("unchecked")
     public void stopEventLoop() {
         super.stopEventLoop();
         bootSelector.keys().parallelStream().forEach(channel -> ((GunNettyChildChannel<SocketChannel>) channel.attachment()).destroy());

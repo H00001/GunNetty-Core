@@ -33,6 +33,9 @@ public final class GunCoreCalculatorWorker extends
         super(nettyChannel);
         executeEvent.put(GunNettyFilter.DealResult.CLOSED, () -> {
             handle.dealCloseEvent(nettyChannel.remoteAddress());
+            if (!channel.isClose()) {
+                channel.generalClose();
+            }
             return -1;
         });
         executeEvent.put(GunNettyFilter.DealResult.NEXT, () -> 1);
@@ -44,7 +47,7 @@ public final class GunCoreCalculatorWorker extends
         });
     }
 
-    //todo
+
     @Override
     public boolean doRealWork() {
         final GunInboundChecker inbound = new GunNetServerInboundChecker(channel);
@@ -55,7 +58,7 @@ public final class GunCoreCalculatorWorker extends
             } catch (GunChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }
-            final int exeCode = executeEvent.get(result).apply();
+            final int exeCode = mapNext(result);
             if (exeCode == 0) {
                 break;
             } else if (exeCode == -1) {
@@ -70,14 +73,18 @@ public final class GunCoreCalculatorWorker extends
             } catch (GunChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }
-            if (result == GunNettyFilter.DealResult.NOT_DEAL_OUTPUT || result == GunNettyFilter.DealResult.NOT_DEAL_ALL_NEXT) {
+            final int exeCode = mapNext(result);
+            if (exeCode == 0) {
                 break;
-            } else if (result == GunNettyFilter.DealResult.CLOSED) {
-                channel.destroy();
+            } else if (exeCode == -1) {
                 return false;
             }
         }
         return true;
+    }
+
+    private int mapNext(GunNettyFilter.DealResult result) {
+        return executeEvent.get(result).apply();
     }
 
 

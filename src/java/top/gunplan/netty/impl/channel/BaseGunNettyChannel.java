@@ -32,6 +32,7 @@ import java.util.concurrent.TimeUnit;
 
 abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCoreEventLoop, PL extends GunNettyPipeline> implements GunNettyChannel<CH, LOOP, PL> {
     private final PL pipeline;
+    volatile boolean isClose = false;
     private final long id;
     private final Queue<Object> eventQueue = new ConcurrentLinkedQueue<>();
     private volatile GunChildrenChannelPool pool = null;
@@ -67,6 +68,11 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
     }
 
     @Override
+    public boolean isClose() {
+        return isClose;
+    }
+
+    @Override
     public SocketAddress localAddress() {
         return localAddress;
     }
@@ -90,6 +96,7 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
 
     @Override
     public void close() throws IOException {
+        isClose = true;
         channel.close();
     }
 
