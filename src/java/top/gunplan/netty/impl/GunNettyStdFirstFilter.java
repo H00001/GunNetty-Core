@@ -17,10 +17,13 @@ import top.gunplan.netty.observe.DefaultGunBaseObserve;
 import top.gunplan.netty.observe.GunNettyBaseObserve;
 import top.gunplan.utils.GunBytesUtil;
 
+import java.io.EOFException;
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
+import java.nio.channels.SelectionKey;
+import java.nio.channels.Selector;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -68,10 +71,57 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
     }
 
 
+    public static int readSendMessage(SocketChannel socketChannel,
+                                      ByteBuffer sended) throws IOException {
+        SelectionKey key = null;
+        Selector writeSelector = null;
+        int attempts = 0;
+        int bytesProduced = 0;
+        try {
+            while (sended.hasRemaining()) {
+                int len = socketChannel.write(sended);
+                if (len < 0) {
+                    throw new EOFException();
+                }
+                bytesProduced += len;
+                //send fail
+                if (len == 0) {
+                    writeSelector = GunNettySelectorFactory.INSTANCE.allocate();
+                    key = socketChannel.register(writeSelector, SelectionKey.OP_WRITE);
+                    if (writeSelector.select(3000) == 0) {
+                        if (attempts > 3) {
+                            throw new IOException("Client disconnected");
+                        }
+                    } else {
+                        attempts--;
+                    }
+                } else {
+                    attempts = 0;
+                }
+            }
+        } finally {
+            if (key != null) {
+                key.cancel();
+                key = null;
+                //help gc
+            }
+            if (writeSelector != null) {
+                // Cancel the key.
+                GunNettySelectorFactory.INSTANCE.release(writeSelector);
+            }
+        }
+        return bytesProduced;
+    }
+
     private void sendMessage(byte[] src, SocketChannel channel) throws IOException {
         if (src != null && src.length > 0) {
             if (channel.isOpen()) {
-                channel.write(ByteBuffer.wrap(src));
+                ByteBuffer buffer = ByteBuffer.allocateDirect(src.length);
+                buffer.put(src);
+                buffer.flip();
+                if (readSendMessage(channel, buffer) <= 0) {
+                    throw new IOException("socket send error" + ":" + channel.getRemoteAddress());
+                }
             } else {
                 throw new IOException("socket close" + ":" + channel.getRemoteAddress());
             }

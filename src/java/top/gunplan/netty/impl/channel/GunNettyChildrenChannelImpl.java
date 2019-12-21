@@ -5,6 +5,7 @@
 package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.filter.GunNettyFilter;
+import top.gunplan.netty.impl.GunNettyStdFirstFilter;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.eventloop.GunNettyTransferEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
@@ -13,6 +14,7 @@ import top.gunplan.netty.observe.GunNettyChildChannelObserve;
 
 import java.io.IOException;
 import java.net.SocketAddress;
+import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
@@ -108,6 +110,11 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
         key.interestOps(SelectionKey.OP_READ);
         continueLoop();
         observes.parallelStream().forEach(GunNettyChildChannelObserve::onRecoverReadInterest);
+    }
+
+    @Override
+    public void sendMessage(ByteBuffer byteBuffer) throws IOException {
+        GunNettyStdFirstFilter.readSendMessage(channel(), byteBuffer);
     }
 
 

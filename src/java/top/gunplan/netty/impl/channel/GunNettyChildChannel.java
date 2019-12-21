@@ -8,6 +8,8 @@ import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.eventloop.GunDataEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 
+import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
 import java.nio.channels.SocketChannel;
 
@@ -49,7 +51,6 @@ public interface GunNettyChildChannel<CH extends Channel> extends
     void registerReadWithEventLoop();
 
 
-
     /**
      * recover Read Interest
      */
@@ -70,6 +71,8 @@ public interface GunNettyChildChannel<CH extends Channel> extends
      */
     void cleanEvent();
 
+
+    void sendMessage(ByteBuffer byteBuffer) throws IOException;
 
     /**
      * pushEvent
