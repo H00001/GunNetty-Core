@@ -35,6 +35,8 @@ public interface GunTimeEventManager {
      */
     GunTimeEventManager addThreadTimer(GunNettyTimer timer);
 
+    void removeThreadTimer();
+
     /**
      * loop for deal event
      */
@@ -59,5 +61,11 @@ public interface GunTimeEventManager {
     int stop();
 
 
-    GunNettyTimer getThreadTimer();
+    /**
+     * acquire the Thread's timer
+     *
+     * @return timer
+     */
+    GunNettyTimer acquireThreadTimer();
+
 }

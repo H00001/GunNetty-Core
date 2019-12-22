@@ -113,13 +113,11 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
         return bytesProduced;
     }
 
-    private void sendMessage(byte[] src, SocketChannel channel) throws IOException {
-        if (src != null && src.length > 0) {
+    private void sendMessage(ByteBuffer src, SocketChannel channel) throws IOException {
+        src.flip();
+        if (src.hasRemaining()) {
             if (channel.isOpen()) {
-                ByteBuffer buffer = ByteBuffer.allocateDirect(src.length);
-                buffer.put(src);
-                buffer.flip();
-                if (readSendMessage(channel, buffer) <= 0) {
+                if (readSendMessage(channel, src) <= 0) {
                     throw new IOException("socket send error" + ":" + channel.getRemoteAddress());
                 }
             } else {

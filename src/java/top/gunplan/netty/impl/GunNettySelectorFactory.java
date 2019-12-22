@@ -17,7 +17,16 @@ public interface GunNettySelectorFactory {
 
     GunNettySelectorFactory INSTANCE = new GunNettySelectorFactoryImpl();
 
+    /**
+     * get a new instance
+     *
+     * @return instance
+     */
     Selector allocate();
 
+    /**
+     * release the instance to pool
+     * @param selector instance
+     */
     void release(Selector selector);
 }

@@ -6,6 +6,7 @@ package top.gunplan.netty.impl;
 
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -30,7 +31,7 @@ public interface GunNettyChecker<T extends GunNetBound> {
      *
      * @return bytes
      */
-    byte[] source();
+    ByteBuffer source();
 
 
     /**

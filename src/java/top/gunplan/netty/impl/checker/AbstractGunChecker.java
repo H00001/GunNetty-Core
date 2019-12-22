@@ -8,6 +8,7 @@ import top.gunplan.netty.impl.GunNetBound;
 import top.gunplan.netty.impl.GunNettyChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
+import java.nio.ByteBuffer;
 import java.nio.channels.SocketChannel;
 
 /**
@@ -17,7 +18,7 @@ import java.nio.channels.SocketChannel;
  * @see GunNettyChecker
  */
 public abstract class AbstractGunChecker<Transfer extends GunNetBound> implements GunNettyChecker<Transfer> {
-    byte[] src;
+    ByteBuffer src;
 
     private Throwable exp;
 
@@ -42,7 +43,7 @@ public abstract class AbstractGunChecker<Transfer extends GunNetBound> implement
      * @return bytes
      */
     @Override
-    public byte[] source() {
+    public ByteBuffer source() {
         return src;
     }
 

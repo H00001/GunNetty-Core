@@ -55,9 +55,16 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
     }
 
     @Override
-    public GunNettyTimer getThreadTimer() {
+    public GunNettyTimer acquireThreadTimer() {
         return threadTimer.get();
     }
+
+
+    @Override
+    public void removeThreadTimer() {
+        threadTimer.remove();
+    }
+
 
     @Override
     public void loop() {

@@ -16,6 +16,13 @@ import top.gunplan.netty.protocol.GunNetOutbound;
 
 public interface GunNettyChildrenHandle extends GunNettyHandle {
     /**
+     * is or not use it to execute
+     */
+    default boolean useToExecute(GunNetInbound in) {
+        return true;
+    }
+
+    /**
      * dealDataEvent
      *
      * @param inbound GunNetInbound

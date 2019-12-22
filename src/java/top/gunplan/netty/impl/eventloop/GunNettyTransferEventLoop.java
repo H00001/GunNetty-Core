@@ -37,6 +37,11 @@ public interface GunNettyTransferEventLoop<U extends SocketChannel> extends GunC
     void loop();
 
 
+    /**
+     * deal event
+     *
+     * @param key SelectionKey input the SelectionKey
+     */
     @Override
     default void dealEvent(SelectionKey key) {
         throw new GunException(GunExceptionType.NOT_SUPPORT, "dealEvent not support");
