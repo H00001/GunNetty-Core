@@ -13,36 +13,36 @@ import java.util.List;
  * GunNettyAnnoUtil
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-09-22 08:36
  */
-public class GunNettyAnnoUtil {
+public class GunNettyAnnotationUtil {
+    private final static FindStrategy<Object, Class<?>> CLASS_STAGE = (v, oc) -> v.getClass() == oc;
+
     private final static FindStrategy<GunNettyFilter, String> NAME_STAGE = (v, oc) -> {
         GunHandleTag tag = v.getClass().getAnnotation(GunHandleTag.class);
         return (tag != null) && tag.name().equals(oc);
     };
+
     private final static FindStrategy<GunNettyFilter, Integer> ID_STAGE = (v, oc) -> {
         GunHandleTag tag = v.getClass().getAnnotation(GunHandleTag.class);
         return (tag != null) && tag.id() == oc;
     };
-    private final static FindStrategy<Object, Class<?>> ClASS_STAGE = (v, oc) -> v.getClass() == oc;
 
     public static <T, R> T findByAny(final List<T> list, R r, FindStrategy<T, R> strategy) {
         return findGeneral(list, r, strategy);
     }
-
 
     public static <T extends GunNettyFilter> T findByTag(final List<T> list, String name) {
         return findGeneral(list, name, NAME_STAGE);
     }
 
     public static <T extends GunNettyFilter> T findByClass(final List<T> list, Class<T> name) {
-        return findGeneral(list, name, ClASS_STAGE);
+        return findGeneral(list, name, CLASS_STAGE);
     }
 
     public static <T extends GunNettyFilter> T findById(final List<T> list, Integer id) {
         return findGeneral(list, id, ID_STAGE);
-
     }
 
     @SuppressWarnings("unchecked")
@@ -56,7 +56,13 @@ public class GunNettyAnnoUtil {
     }
 
     @FunctionalInterface
-    interface FindStrategy<V, K extends Object> {
+    interface FindStrategy<V, K> {
+        /**
+         * is this strategy
+         * @param v list
+         * @param oc object
+         * @return result
+         */
         boolean isThis(V v, K oc);
     }
 }

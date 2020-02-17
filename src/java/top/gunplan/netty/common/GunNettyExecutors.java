@@ -15,11 +15,9 @@ import java.util.concurrent.*;
  */
 public final class GunNettyExecutors {
     private static final short L = 2;
-
-    private static final BlockingQueue<Runnable> SYNC_INST = new SynchronousQueue<>();
-
-    private static final ThreadFactory TEMP_POOL = new GunNettyThreadFactory("TEMP THREAD");
     private static final short ONE = 1;
+    private static final BlockingQueue<Runnable> SYNC_INST = new SynchronousQueue<>();
+    private static final ThreadFactory TEMP_POOL = new GunNettyThreadFactory("TEMP THREAD");
 
     public static ExecutorService newNoQueueFixedExecutorPool(int size) {
         return newNoQueueFixedExecutorPool(size, GunNettyExecutors.class.getName());

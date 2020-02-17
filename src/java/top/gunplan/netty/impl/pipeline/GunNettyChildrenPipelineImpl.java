@@ -8,7 +8,7 @@ import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunPipelineCheckResult;
 import top.gunplan.netty.anno.GunNetFilterOrder;
-import top.gunplan.netty.common.GunNettyAnnoUtil;
+import top.gunplan.netty.common.GunNettyAnnotationUtil;
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
 import top.gunplan.netty.filter.GunNettyFilter;
@@ -144,11 +144,11 @@ final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
 
     @Override
     public GunNettyDataFilter findDataFilterByTag(String tag) {
-        return GunNettyAnnoUtil.findByTag(dataFilters, tag);
+        return GunNettyAnnotationUtil.findByTag(dataFilters, tag);
     }
 
     @Override
     public GunNettyConnFilter findConnFilterByTag(String tag) {
-        return GunNettyAnnoUtil.findByTag(connFilters, tag);
+        return GunNettyAnnotationUtil.findByTag(connFilters, tag);
     }
 }

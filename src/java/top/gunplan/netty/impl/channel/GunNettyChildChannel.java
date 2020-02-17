@@ -34,8 +34,9 @@ public interface GunNettyChildChannel<CH extends Channel> extends
     GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> closeAndRemove(boolean b);
 
     /**
+     * generalClose
      * close channel and remove form selector
-     * return closed
+     * @return Deal Result
      */
     GunNettyFilter.DealResult generalClose();
 
