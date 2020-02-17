@@ -10,6 +10,7 @@ import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
+import top.gunplan.netty.impl.timeevent.GunNettyTimeExecutor;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -73,6 +74,6 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
 
     @Override
     public void doTime() {
-
+        GunNettyTimeExecutor.execute(timers, unsafeSequencer.nextSequence(), scheduledExecutorService, this);
     }
 }
