@@ -19,6 +19,8 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
 import java.util.concurrent.ExecutionException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * GunNettyChildrenChannelImpl
@@ -32,6 +34,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
     private GunNettyServerChannel<ServerSocketChannel> pChannel;
     private volatile SelectionKey key;
     private final SocketAddress remoteAddress;
+    private Consumer<GunNettyChildChannel<SocketChannel>> readCompleteCallBack;
 
     GunNettyChildrenChannelImpl(final SocketChannel channel,
                                 final GunNettyChildrenPipeline pipeline,
@@ -75,7 +78,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
 
 
     @Override
-    public GunNettyServerChannel parent() {
+    public GunNettyServerChannel<ServerSocketChannel> parent() {
         return pChannel;
     }
 
@@ -101,14 +104,9 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
     }
 
 
-    private void continueLoop() {
-        eventLoop.incrAndContinueLoop();
-    }
-
     @Override
     public void recoverReadInterest() {
-        key.interestOps(SelectionKey.OP_READ);
-        continueLoop();
+        readCompleteCallBack.accept(this);
         observes.parallelStream().forEach(GunNettyChildChannelObserve::onRecoverReadInterest);
     }
 
@@ -117,6 +115,15 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
         GunNettyStdFirstFilter.readSendMessage(channel(), byteBuffer);
     }
 
+    @Override
+    public SelectionKey key() {
+        return this.key;
+    }
+
+    @Override
+    public void setWhenReadCompleteCallBack(Consumer<GunNettyChildChannel<SocketChannel>> t) {
+        this.readCompleteCallBack = t;
+    }
 
     @Override
     public void doTime() {

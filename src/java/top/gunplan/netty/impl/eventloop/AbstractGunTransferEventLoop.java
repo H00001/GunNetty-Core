@@ -33,7 +33,9 @@ public abstract class AbstractGunTransferEventLoop<U extends SocketChannel> impl
     }
 
     void registerReadChannelToDataEventLoop(GunNettyChildChannel<U> channel) {
-        channel.registerEventLoop(manager.dealChannelEventLoop());
+        var l = manager.dealChannelEventLoop();
+        channel.registerEventLoop(l);
+        channel.setWhenReadCompleteCallBack(l::childChannelReadComplete);
         channel.registerReadWithEventLoop();
     }
 

@@ -9,6 +9,7 @@ import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.io.IOException;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.SocketChannel;
 import java.util.Iterator;
@@ -27,8 +28,8 @@ import java.util.concurrent.locks.LockSupport;
  * @author dosdrtt
  */
 class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDataEventLoop<SocketChannel> {
-    private final AtomicInteger listenSize = new AtomicInteger(0);
     private final int timeWait;
+    private final AtomicInteger listenSize = new AtomicInteger(0);
     private final Queue<RegisterFuture> waitToRegisterQueue = new ConcurrentLinkedDeque<>();
 
     @Override
@@ -95,6 +96,11 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         return 0;
     }
 
+    @Override
+    public <CH extends SelectableChannel> void childChannelReadComplete(GunNettyChildChannel<CH> channel) {
+        channel.key().interestOps(SelectionKey.OP_READ);
+        this.incrAndContinueLoop();
+    }
 
     @Override
     public void nextDeal() {
