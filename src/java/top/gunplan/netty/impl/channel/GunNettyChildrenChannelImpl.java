@@ -18,6 +18,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.ExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
@@ -35,6 +36,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
     private volatile SelectionKey key;
     private final SocketAddress remoteAddress;
     private Consumer<GunNettyChildChannel<SocketChannel>> readCompleteCallBack;
+    private ConcurrentLinkedQueue<ByteBuffer> writeBuffer = new ConcurrentLinkedQueue<>();
 
     GunNettyChildrenChannelImpl(final SocketChannel channel,
                                 final GunNettyChildrenPipeline pipeline,
@@ -112,7 +114,7 @@ class GunNettyChildrenChannelImpl extends BaseGunNettyChannel<SocketChannel,
 
     @Override
     public void sendMessage(ByteBuffer byteBuffer) throws IOException {
-        GunNettyStdFirstFilter.readSendMessage(channel(), byteBuffer);
+        this.writeBuffer.add(byteBuffer);
     }
 
     @Override
