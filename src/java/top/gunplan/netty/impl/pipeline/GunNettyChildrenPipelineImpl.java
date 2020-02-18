@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.pipeline;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 import top.gunplan.netty.GunPipelineCheckResult;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyAnnotationUtil;
@@ -88,7 +88,7 @@ final class GunNettyChildrenPipelineImpl extends AbstractNettyPipelineImpl
             this.observe = observe;
             super.setPipelineHandleChangeObserve(observe);
         } else {
-            throw new GunException(GunExceptionType.NULLPTR, "doReset GunNettyChildrenPipelineChangedObserve");
+            throw new GunException(GunExceptionMode.NULLPTR, "doReset GunNettyChildrenPipelineChangedObserve");
         }
         return this;
     }

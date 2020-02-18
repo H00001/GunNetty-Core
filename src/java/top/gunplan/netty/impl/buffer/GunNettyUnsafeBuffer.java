@@ -6,7 +6,7 @@ package top.gunplan.netty.impl.buffer;
 
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 
 class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
     public GunNettyUnsafeBuffer(int len) {
@@ -25,7 +25,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
                 write(b);
             }
         } else {
-            throw new GunException(GunExceptionType.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
+            throw new GunException(GunExceptionMode.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
         }
     }
 
@@ -35,7 +35,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
         //   unsafe.putByte(memorySegmentAddress + writePoint, bin);
         writePoint++;
         // } else {
-        throw new GunException(GunExceptionType.NOT_SUPPORT, GunNettyUnsafeBuffer.class.getSimpleName());
+        throw new GunException(GunExceptionMode.NOT_SUPPORT, GunNettyUnsafeBuffer.class.getSimpleName());
         // }
     }
 
@@ -46,7 +46,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
         //     b = unsafe.getByte(memorySegmentAddress + readPoint);
         //       readPoint++;
         //   } else {
-            throw new GunException(GunExceptionType.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
+            throw new GunException(GunExceptionMode.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
         //  }
         // return b;
     }
@@ -59,7 +59,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
                 b[i] = read();
             }
         } else {
-            throw new GunException(GunExceptionType.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
+            throw new GunException(GunExceptionMode.OUT_POSITION, GunNettyUnsafeBuffer.class.getSimpleName());
         }
         return b;
     }

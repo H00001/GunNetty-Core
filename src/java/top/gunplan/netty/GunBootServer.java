@@ -43,7 +43,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
      * @return threadManager
      */
     default GunNettyCoreThreadManager threadManager() {
-        throw new GunException(GunExceptionType.NOT_SUPPORT, "GunNettyCoreThreadManager not support :");
+        throw new GunException(GunExceptionMode.NOT_SUPPORT, "GunNettyCoreThreadManager not support :");
     }
 
 
@@ -100,7 +100,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
      * @return this chain style
      */
     default GunBootServer useStealMode(boolean use) {
-        throw new GunException(GunExceptionType.NOT_SUPPORT, "not support steal mode");
+        throw new GunException(GunExceptionMode.NOT_SUPPORT, "not support steal mode");
     }
 
     /**

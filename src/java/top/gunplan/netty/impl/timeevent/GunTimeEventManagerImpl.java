@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.timeevent;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 import top.gunplan.netty.GunNettyTimer;
 import top.gunplan.netty.GunTimeEventManager;
 import top.gunplan.netty.common.GunNettyExecutors;
@@ -37,7 +37,7 @@ public class GunTimeEventManagerImpl implements GunTimeEventManager {
         } else if (first == Thread.currentThread()) {
             timers.add(timer);
         } else {
-            throw new GunException(GunExceptionType.NOT_SUPPORT, "you shouldn't add in another thread");
+            throw new GunException(GunExceptionMode.NOT_SUPPORT, "you shouldn't add in another thread");
         }
         return this;
     }

@@ -16,11 +16,11 @@ import java.io.IOException;
 public class GunChannelException extends GunException {
     private static final long serialVersionUID = -4413715733291360863L;
 
-    public GunChannelException(GunExceptionType type, String why) {
+    public GunChannelException(GunExceptionMode type, String why) {
         super(type, why);
     }
 
     public GunChannelException(IOException exp) {
-        super(GunExceptionType.CHANNEL_ERROR, exp);
+        super(GunExceptionMode.CHANNEL_ERROR, exp);
     }
 }

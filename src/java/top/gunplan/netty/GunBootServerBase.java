@@ -35,11 +35,11 @@ public interface GunBootServerBase {
         private static final long serialVersionUID = -8015693220955781128L;
 
         public GunNettyCanNotBootException(Throwable why) {
-            super(GunExceptionType.URGENCY, why);
+            super(GunExceptionMode.URGENCY, why);
         }
 
         public GunNettyCanNotBootException(String why) {
-            super(GunExceptionType.URGENCY, why);
+            super(GunExceptionMode.URGENCY, why);
         }
     }
 }

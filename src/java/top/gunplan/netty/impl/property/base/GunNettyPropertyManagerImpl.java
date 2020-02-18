@@ -7,7 +7,7 @@ package top.gunplan.netty.impl.property.base;
 
 import top.gunplan.netty.GunBootServerBase;
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 import top.gunplan.netty.GunProperty;
 import top.gunplan.netty.anno.GunPropertyMap;
 import top.gunplan.netty.impl.property.GunGetPropertyFromBaseFile;
@@ -39,7 +39,7 @@ final class GunNettyPropertyManagerImpl implements GunNettyPropertyManager {
             cons.setAccessible(true);
             registerProperty(cons.newInstance());
         } catch (ReflectiveOperationException e) {
-            throw new GunException(GunExceptionType.REF, e);
+            throw new GunException(GunExceptionMode.REF, e);
         }
         registerProperty(new GunLogProperty());
     }

@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.io.IOException;
@@ -166,7 +166,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
 
         @Override
         public SelectionKey get(long timeout, TimeUnit unit) {
-            throw new GunException(GunExceptionType.NOT_SUPPORT, "this method not support");
+            throw new GunException(GunExceptionMode.NOT_SUPPORT, "this method not support");
         }
     }
 

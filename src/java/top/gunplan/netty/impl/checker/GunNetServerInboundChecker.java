@@ -5,7 +5,7 @@
 package top.gunplan.netty.impl.checker;
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 import top.gunplan.netty.impl.GunNettyChecker;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.protocol.GunNetInbound;
@@ -40,7 +40,7 @@ public final class GunNetServerInboundChecker extends AbstractGunChecker<GunNetI
             this.to = instance;
             return instance.unSerialize(src);
         } catch (ReflectiveOperationException e) {
-            throw new GunException(GunExceptionType.TRANSLATE_ERROR, GunNetServerInboundChecker.class.getName());
+            throw new GunException(GunExceptionMode.TRANSLATE_ERROR, GunNetServerInboundChecker.class.getName());
         }
     }
 
