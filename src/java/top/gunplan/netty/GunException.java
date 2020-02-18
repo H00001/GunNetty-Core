@@ -19,9 +19,6 @@ public class GunException extends RuntimeException {
         this.type = type;
     }
 
-    public GunException(Throwable exp) {
-        this(GunExceptionMode.EXC3, exp);
-    }
 
     public GunException(GunExceptionMode type, Throwable exp) {
         super(exp);
@@ -34,7 +31,7 @@ public class GunException extends RuntimeException {
 
     @Override
     public String getMessage() {
-        return this.type.getInfo();
+        return this.type.info();
     }
 
     @Override

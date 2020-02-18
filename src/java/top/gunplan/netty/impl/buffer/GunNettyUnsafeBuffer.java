@@ -5,6 +5,8 @@
 package top.gunplan.netty.impl.buffer;
 
 
+import top.gunplan.netty.GunCommonException;
+import top.gunplan.netty.GunCommonExceptionType;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunExceptionMode;
 
@@ -35,7 +37,7 @@ class GunNettyUnsafeBuffer extends BaseGunNettyUnsafeBuffer {
         //   unsafe.putByte(memorySegmentAddress + writePoint, bin);
         writePoint++;
         // } else {
-        throw new GunException(GunExceptionMode.NOT_SUPPORT, GunNettyUnsafeBuffer.class.getSimpleName());
+        throw new GunCommonException(GunCommonExceptionType.FUNCTION_NOT_SUPPORT, GunNettyUnsafeBuffer.class.getSimpleName());
         // }
     }
 
