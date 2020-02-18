@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunFunctionMapping;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filter.GunNettyConnFilter;

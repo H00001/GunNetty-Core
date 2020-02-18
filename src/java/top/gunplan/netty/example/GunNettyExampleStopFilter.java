@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.example;
 
-import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.filter.GunNettyInboundFilter;
 import top.gunplan.netty.impl.checker.GunInboundChecker;

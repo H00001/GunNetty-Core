@@ -5,8 +5,6 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.GunChannelException;
-import top.gunplan.netty.GunException;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;

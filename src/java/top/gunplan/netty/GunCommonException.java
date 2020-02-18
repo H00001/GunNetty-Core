@@ -1,25 +1,10 @@
 package top.gunplan.netty;
 
+
 /**
  * GunCommonException
  * @author frank
  */
-enum GunCommonExceptionType implements ExceptionType{
-    /**
-     *
-     */
-    FUNCTION_NOT_IMPLEMENT("Function not implement"),
-    FUNCTION_NOT_SUPPORT("Function not support");
-    String info;
-    GunCommonExceptionType(String info){
-        this.info = info;
-    }
-    @Override
-    public String info() {
-        return null;
-    }
-}
-
 public class GunCommonException extends GunException {
     GunCommonExceptionType type;
     public GunCommonException(GunCommonExceptionType type, Throwable exp) {
@@ -31,7 +16,6 @@ public class GunCommonException extends GunException {
         super(GunExceptionMode.CORE, why);
         this.type = type;
     }
-
 
     @Override
     public String getMessage() {

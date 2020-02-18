@@ -6,6 +6,8 @@ package top.gunplan.netty.protocol;
 
 import top.gunplan.netty.impl.GunNetBound;
 
+import java.nio.ByteBuffer;
+
 /**
  * GunNetInbound
  *
@@ -19,5 +21,5 @@ public interface GunNetInbound extends GunNetBound {
      * @param in byte[]
      * @return serialize status
      */
-    boolean unSerialize(byte[] in);
+    boolean unSerialize(ByteBuffer in);
 }

@@ -20,8 +20,7 @@ public enum GunExceptionMode implements ExceptionType{
     REF("Reference exception"), READ_PROPERTY_ERROR("Read property error"),
     EXC0("Init error"), EXC1("Connection error"),
     OUT_POSITION("Out of position"), STATE_ERROR("State error"),
-    CHANNEL_ERROR("channel error"),
-    TRANSLATE_ERROR("Translate error"), NOT_SUPPORT("Not support");
+    NOT_SUPPORT("Not support");
     private String info;
 
     GunExceptionMode(String info) {
