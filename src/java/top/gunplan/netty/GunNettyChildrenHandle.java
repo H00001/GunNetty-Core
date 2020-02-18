@@ -11,12 +11,15 @@ import top.gunplan.netty.protocol.GunNetOutbound;
  * GunNettyChildrenHandle
  *
  * @author frank albert
- * @version 0.0.0.2
+ * @version 0.0.0.3
  */
 
 public interface GunNettyChildrenHandle extends GunNettyHandle {
     /**
+     * useToExecute
      * is or not use it to execute
+     * @param in inbound
+     * @return is or not execute
      */
     default boolean useToExecute(GunNetInbound in) {
         return true;
