@@ -11,9 +11,11 @@ import top.gunplan.netty.impl.channel.GunNettyChannel;
  *
  * @author frank albert
  * #date 2019-09-18 09:05
- * @version 0.0.0.1
+ * @version 0.0.0.2
  */
 public interface GunNettyChannelPool {
+    GunChildrenChannelPool INSTANCE = new GunChildrenChannelPoolImpl();
+
     /**
      * acquireChannelFromPool
      *
@@ -22,9 +24,9 @@ public interface GunNettyChannelPool {
     GunNettyChannel acquireChannelFromPool();
 
     /**
-     * addChannelToPool
+     * releaseChannelToPool
+     *
      * @param channel GunNettyChannel
-     * @return bool
      */
-    boolean addChannelToPool(GunNettyChannel channel);
+    void releaseChannelToPool(GunNettyChannel channel);
 }

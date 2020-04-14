@@ -6,6 +6,8 @@ package top.gunplan.netty.example;
 
 import top.gunplan.netty.impl.GunNetInBoundOutBound;
 
+import java.nio.ByteBuffer;
+
 /**
  * GunString
  *
@@ -14,7 +16,6 @@ import top.gunplan.netty.impl.GunNetInBoundOutBound;
  */
 
 public class GunString implements GunNetInBoundOutBound {
-    private static int v = 0;
     private String base;
 
     public GunString() {
@@ -25,9 +26,8 @@ public class GunString implements GunNetInBoundOutBound {
     }
 
     @Override
-    public boolean unSerialize(byte[] in) {
-        //base = Gun Tencert Zip.doDecode(new String(in));
-        base = new String(in);
+    public boolean unSerialize(ByteBuffer byteBuffer) {
+        base = new String(byteBuffer.array());
         return true;
     }
 
@@ -42,7 +42,8 @@ public class GunString implements GunNetInBoundOutBound {
     }
 
     @Override
-    public byte[] serialize() {
-        return base.getBytes();
+    public ByteBuffer serialize() {
+        byte[] list = base.getBytes();
+        return ByteBuffer.allocateDirect(list.length).put(list);
     }
 }

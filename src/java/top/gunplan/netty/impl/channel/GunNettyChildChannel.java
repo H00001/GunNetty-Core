@@ -32,7 +32,8 @@ public interface GunNettyChildChannel<CH extends Channel> extends
 
     /**
      * close channel and remove form selector
-     * return closed
+     *
+     * @return closed
      */
     GunNettyFilter.DealResult generalClose();
 

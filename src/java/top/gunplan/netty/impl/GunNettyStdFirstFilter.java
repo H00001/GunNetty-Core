@@ -5,6 +5,8 @@
 package top.gunplan.netty.impl;
 
 import top.gunplan.netty.GunChannelException;
+import top.gunplan.netty.GunException;
+import top.gunplan.netty.GunExceptionType;
 import top.gunplan.netty.GunFunctionMapping;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filter.GunNettyConnFilter;
@@ -19,7 +21,8 @@ import top.gunplan.utils.GunBytesUtil;
 
 import java.io.EOFException;
 import java.io.IOException;
-import java.lang.reflect.Field;
+import java.lang.invoke.MethodHandles;
+import java.lang.invoke.VarHandle;
 import java.net.SocketAddress;
 import java.nio.ByteBuffer;
 import java.nio.channels.SelectionKey;
@@ -36,18 +39,17 @@ import java.nio.channels.SocketChannel;
 public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNettyConnFilter {
 
     private volatile GunNettyBaseObserve observe = new DefaultGunBaseObserve();
-    private static Field operatorSrc;
+    private static final VarHandle SRC_HANDLE;
 
     static {
         try {
-            operatorSrc = AbstractGunChecker.class.getDeclaredField("src");
-            assert operatorSrc != null;
-        } catch (NoSuchFieldException ignore) {
-
+            SRC_HANDLE = MethodHandles.privateLookupIn(AbstractGunChecker.class, MethodHandles.lookup()).findVarHandle(AbstractGunChecker.class, "src", ByteBuffer.class);
+            SRC_HANDLE.accessModeType(VarHandle.AccessMode.SET_VOLATILE);
+        } catch (NoSuchFieldException | IllegalAccessException e) {
+            throw new GunException(GunExceptionType.READ_PROPERTY_ERROR, e);
         }
-        operatorSrc.setAccessible(true);
-
     }
+
 
     public GunNettyStdFirstFilter() {
     }
@@ -144,10 +146,10 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
         final GunNettyChildChannel<SocketChannel> channel = filterDto.channel();
         if (channel.isValid()) {
             try {
-                GunFunctionMapping<SocketChannel, byte[]> reader = GunBytesUtil::readFromChannel;
-                operatorSrc.set(filterDto, reader.readBytes(channel.channel()));
+                GunFunctionMapping<SocketChannel, ByteBuffer> reader = GunBytesUtil::readFromChannel;
+                SRC_HANDLE.setVolatile(filterDto, reader.readBytes(channel.channel()));
                 channel.recoverReadInterest();
-            } catch (IOException | ReflectiveOperationException e) {
+            } catch (IOException e) {
                 channel.closeAndRemove(false).destroy();
                 return invokeCloseEvent(channel.remoteAddress(), true);
             }

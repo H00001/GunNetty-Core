@@ -8,6 +8,8 @@ package top.gunplan.netty.protocol;
 
 import top.gunplan.netty.impl.GunNetBound;
 
+import java.nio.ByteBuffer;
+
 /**
  * GunNetOutbound
  *
@@ -20,7 +22,7 @@ public interface GunNetOutbound extends GunNetBound {
      *
      * @return bytes[] transferTarget to client
      */
-    byte[] serialize();
+    ByteBuffer serialize();
 
 }
 

@@ -137,17 +137,6 @@ abstract class BaseGunNettyChannel<CH extends NetworkChannel, LOOP extends GunCo
 
 
     @Override
-    public void doReset() {
-        cleanEvent();
-    }
-
-    @Override
-    public boolean isUsed() {
-        return false;
-    }
-
-
-    @Override
     public boolean isOpen() {
         return channel().isOpen();
     }

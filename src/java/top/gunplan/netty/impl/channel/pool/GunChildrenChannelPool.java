@@ -16,17 +16,22 @@ import java.nio.channels.SocketChannel;
  * @version 0.0.0.1
  * @date 2019-09-18 09:19
  */
-public interface GunChildrenChannelPool extends GunNettyChannelPool {
+public interface GunChildrenChannelPool extends GunNettyChannelPool, GunNettyReuse {
+    /**
+     * acquireChannelFromPool
+     *
+     * @return GunNettyChildChannel
+     */
     @Override
     GunNettyChildChannel<SocketChannel> acquireChannelFromPool();
 
     @Override
-    default boolean addChannelToPool(GunNettyChannel channel) {
-        return channel instanceof GunNettyChildChannel && addChannelToPool(channel);
+    default void releaseChannelToPool(GunNettyChannel channel) {
+        if (channel instanceof GunNettyChildChannel) {
+            releaseChannelToPool((GunNettyChildChannel<SocketChannel>) channel);
+        }
     }
 
 
-    void declareNotUse(GunNettyChildChannel<SocketChannel> channel);
-
-    boolean addChannelToPool(GunNettyChildChannel<SocketChannel> channel);
+    void addChannelToUse(GunNettyChildChannel<SocketChannel> channel);
 }

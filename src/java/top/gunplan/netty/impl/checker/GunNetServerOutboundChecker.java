@@ -33,7 +33,7 @@ public final class GunNetServerOutboundChecker extends AbstractGunChecker<GunNet
     @Override
     public GunNettyChecker<GunNetOutbound> translate() {
         this.src = to.serialize();
-        hasDataToOutput = src != null && src.length != 0;
+        hasDataToOutput = src != null && src.flip().hasRemaining();
         return this;
     }
 

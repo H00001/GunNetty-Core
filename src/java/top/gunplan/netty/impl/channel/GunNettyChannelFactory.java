@@ -6,6 +6,8 @@ package top.gunplan.netty.impl.channel;
 
 import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.SystemChannelChangedHandle;
+import top.gunplan.netty.impl.channel.pool.GunChildrenChannelPool;
+import top.gunplan.netty.impl.channel.pool.GunNettyChannelPool;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyChildrenPipeline;
 import top.gunplan.netty.impl.sequence.GunNettySequencer;
@@ -24,6 +26,7 @@ import java.nio.channels.SocketChannel;
 public class GunNettyChannelFactory {
     private static final GunNettySequencer BOSS_SEQUENCER = GunNettySequencer.newThreadSafeSequencer();
     private static final GunNettySequencer WORK_SEQUENCER = GunNettySequencer.newThreadSafeSequencer();
+    private static final GunChildrenChannelPool POOL = GunNettyChannelPool.INSTANCE;
 
     public static GunNettyChildChannel<SocketChannel>
     newChannel(final SocketChannel channel,
@@ -33,7 +36,12 @@ public class GunNettyChannelFactory {
         GunNettyChildrenPipeline pipeline = GunNettyChildrenPipeline.newPipeline();
         initHandle.onHasChannel(pipeline);
         pipeline.init();
-        return new GunNettyChildrenChannelImpl(channel, pipeline, pChannel, BOSS_SEQUENCER.nextSequence());
+        GunNettyChildChannel<SocketChannel> data;
+        if ((data = POOL.acquireChannelFromPool()) == null) {
+            data = new GunNettyChildrenChannelImpl(channel, pipeline, pChannel, BOSS_SEQUENCER.nextSequence());
+            //  POOL.addChannelToUse(data);
+        }
+        return data;//ReflectChannel.ref(data, channel, pipeline, pChannel, BOSS_SEQUENCER.nextSequence());
     }
 
 

@@ -12,15 +12,5 @@ package top.gunplan.netty.impl.channel.pool;
  * @date 2019-09-18 09:29
  */
 public interface GunNettyReuse {
-    /**
-     * doReset
-     */
-    void doReset();
 
-    /**
-     * isUsed
-     *
-     * @return is used
-     */
-    boolean isUsed();
 }

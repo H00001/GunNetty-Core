@@ -25,7 +25,7 @@ public class GunNettyAnnoUtil {
         GunHandleTag tag = v.getClass().getAnnotation(GunHandleTag.class);
         return (tag != null) && tag.id() == oc;
     };
-    private final static FindStrategy<Object, Class<?>> ClASS_STAGE = (v, oc) -> v.getClass() == oc;
+    private final static FindStrategy<Object, Class<?>> CLASS_STAGE = (v, oc) -> v.getClass() == oc;
 
     public static <T, R> T findByAny(final List<T> list, R r, FindStrategy<T, R> strategy) {
         return findGeneral(list, r, strategy);
@@ -37,7 +37,7 @@ public class GunNettyAnnoUtil {
     }
 
     public static <T extends GunNettyFilter> T findByClass(final List<T> list, Class<T> name) {
-        return findGeneral(list, name, ClASS_STAGE);
+        return findGeneral(list, name, CLASS_STAGE);
     }
 
     public static <T extends GunNettyFilter> T findById(final List<T> list, Integer id) {
@@ -57,6 +57,13 @@ public class GunNettyAnnoUtil {
 
     @FunctionalInterface
     interface FindStrategy<V, K extends Object> {
+        /**
+         * belong to class
+         *
+         * @param v  find
+         * @param oc object
+         * @return is or not
+         */
         boolean isThis(V v, K oc);
     }
 }

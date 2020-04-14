@@ -14,26 +14,19 @@ abstract class BaseGunChannelPool<V extends GunNettyChannel> {
     private final Queue<V> unUsedQueue = new ConcurrentLinkedQueue<>();
 
     public V acquireChannelFromPool() {
-        V v = unUsedQueue.element();
-        usedQueue.add(v == null ? acquireCreateNew() : v);
-        return v;
+        return unUsedQueue.poll();
     }
 
-    /**
-     * acquireCreateNew
-     *
-     * @return V
-     */
-    protected abstract V acquireCreateNew();
 
     public boolean addChannelToPool0(V channel) {
         return usedQueue.add(channel);
     }
 
 
-    protected void declareNotUse(V channel) {
-        if (usedQueue.remove(channel) && unUsedQueue.add(channel)) {
-
-        }
+    protected void release(V channel) {
+        usedQueue.remove(channel);
+        unUsedQueue.add(channel);
     }
+
+
 }
