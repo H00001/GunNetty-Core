@@ -1,3 +1,7 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunException;
@@ -7,7 +11,8 @@ enum GunEventLoopExceptionType {
     /**
      *
      */
-    EXECUTE_TASK_FAIL("Execute task fail");
+    EXECUTE_TASK_FAIL("Execute task fail"),
+    LOOP_ERROR("Loop error");
 
     private String info;
 

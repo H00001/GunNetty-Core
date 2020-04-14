@@ -21,7 +21,7 @@ public interface GunNettyOutboundFilter extends GunNettyDataFilter {
      *
      * @param filterDto input filter dto
      * @return DealResult
-     * @throws GunChannelException channel i/o error
+     * @throws GunNettyChannelException channel i/o error
      */
     @Override
     default DealResult doInputFilter(GunInboundChecker filterDto) throws GunNettyChannelException {

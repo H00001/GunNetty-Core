@@ -1,10 +1,14 @@
+/*
+ * Copyright (c) frankHan personal 2017-2018
+ */
+
 package top.gunplan.netty;
 
 /**
  * GunCommonException
  * @author frank
  */
-enum GunCommonExceptionType implements ExceptionType{
+public enum GunCommonExceptionType implements ExceptionType {
     /**
      *
      */

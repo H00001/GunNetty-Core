@@ -76,6 +76,12 @@ public interface GunNettyChildChannel<CH extends Channel> extends
     void cleanEvent();
 
 
+    /**
+     * send message
+     *
+     * @param byteBuffer buffer
+     * @throws IOException i/o error
+     */
     void sendMessage(ByteBuffer byteBuffer) throws IOException;
 
     /**

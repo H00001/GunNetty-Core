@@ -161,11 +161,11 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
     }
 
     @Override
-    public DealResult doOutputFilter(GunOutboundChecker filterDto) throws GunChannelException {
+    public DealResult doOutputFilter(GunOutboundChecker filterDto) throws GunNettyChannelException {
         GunNettyChildChannel<SocketChannel> channel = filterDto.channel();
         try {
             return doOutputFilter(filterDto, channel);
-        } catch (GunChannelException e) {
+        } catch (GunNettyChannelException e) {
             return invokeCloseEvent(filterDto.channel().remoteAddress(), false);
         }
     }

@@ -113,7 +113,7 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
         try {
             method0();
         } catch (IOException exp) {
-            throwGunException(exp);
+            throw new GunEventLoopException(GunEventLoopExceptionType.LOOP_ERROR, exp);
         }
     }
 
