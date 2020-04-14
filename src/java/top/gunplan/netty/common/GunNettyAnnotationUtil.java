@@ -13,7 +13,7 @@ import java.util.List;
  * GunNettyAnnoUtil
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  * @date 2019-09-22 08:36
  */
 public class GunNettyAnnoUtil {
@@ -42,7 +42,6 @@ public class GunNettyAnnoUtil {
 
     public static <T extends GunNettyFilter> T findById(final List<T> list, Integer id) {
         return findGeneral(list, id, ID_STAGE);
-
     }
 
     @SuppressWarnings("unchecked")

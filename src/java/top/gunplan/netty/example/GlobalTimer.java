@@ -12,18 +12,17 @@ import top.gunplan.netty.anno.GunTimeExecutor;
  * GlobalTimer
  *
  * @author frank albert
- * @version 0.0.0.1
+ * @version 0.0.0.2
  */
 public class GlobalTimer implements GunNettyTimer {
-
 
     @Override
     public boolean timeExecuteError(String methodName, ReflectiveOperationException t) {
         return false;
     }
 
-    @GunTimeExecutor(interval = -1, t = @GunHandleTag(id = 10, name = "gt"))
+    @GunTimeExecutor(interval = -1, t = @GunHandleTag(id = 10, name = "global timber 0"))
     public void doTime() {
-        System.out.println("timing ");
+        System.out.println("timber tick");
     }
 }

@@ -50,19 +50,21 @@ public interface GunNettyBitMap {
 
 
 class GunNettyBitMapImpl implements GunNettyBitMap {
+    private static final int LEN = 64;
+
     private long[] c;
 
     GunNettyBitMapImpl(int len) {
-        c = new long[len / 64 + 1];
+        c = new long[len / LEN + 1];
     }
 
     @Override
     public boolean get(int i) {
-        return (c[(i / 64)] & (1 << (i % 64))) != 0;
+        return (c[(i / LEN)] & (1 << (i % LEN))) != 0;
     }
 
     @Override
     public void put(int i, boolean tf) {
-        c[(i / 64)] = tf ? (c[(i / 64)] | (1 << (i % 64))) : (c[(i / 64)] & ~(1 << (i % 64)));
+        c[(i / LEN)] = tf ? (c[(i / LEN)] | (1 << (i % LEN))) : (c[(i / LEN)] & ~(1 << (i % LEN)));
     }
 }

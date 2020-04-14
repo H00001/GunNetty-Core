@@ -9,6 +9,7 @@ package top.gunplan.netty;
  * this is a doTime execute interface
  * you can use this with {@link GunNettyTimer}
  */
+@FunctionalInterface
 public interface GunNettyTimer extends GunHandle {
     /**
      * timeExecuteError
@@ -18,5 +19,4 @@ public interface GunNettyTimer extends GunHandle {
      * @return is ot not next execute
      */
     boolean timeExecuteError(String methodName, ReflectiveOperationException t);
-
 }

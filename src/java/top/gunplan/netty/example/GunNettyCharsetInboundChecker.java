@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.example;
 
-import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.anno.GunHandleTag;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.common.GunNettyContext;

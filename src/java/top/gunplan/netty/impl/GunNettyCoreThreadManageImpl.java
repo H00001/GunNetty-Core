@@ -30,7 +30,6 @@ final class GunNettyCoreThreadManageImpl implements GunNettyCoreThreadManager {
 
     private volatile ManagerState status = ManagerState.INACTIVE;
 
-
     GunNettyCoreThreadManageImpl(final GunNettyCoreProperty property) {
         MANAGE_THREAD_NUM = GunNumberUtil.isPowOf2(property.maxRunningNum())
                 ? property.maxRunningNum() : Runtime.getRuntime().availableProcessors() << 1;

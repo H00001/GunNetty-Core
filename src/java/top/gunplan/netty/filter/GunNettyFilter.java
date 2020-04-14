@@ -5,7 +5,6 @@
 package top.gunplan.netty.filter;
 
 
-import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunHandle;
 import top.gunplan.netty.impl.checker.GunOutboundChecker;
 

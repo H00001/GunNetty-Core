@@ -5,9 +5,11 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
+import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 
 import java.io.IOException;
 import java.nio.channels.Channel;
+import java.nio.channels.SelectableChannel;
 import java.nio.channels.SelectionKey;
 import java.util.Set;
 import java.util.concurrent.Future;
@@ -70,4 +72,11 @@ public interface GunDataEventLoop<U extends Channel> extends GunCoreEventLoop {
      * @param runnable runner
      */
     void submit(Runnable runnable);
+
+    /**
+     * childChannelReadComplete
+     * @param channel child channel
+     * @param <CH> channel template
+     */
+    <CH extends SelectableChannel> void childChannelReadComplete(GunNettyChildChannel<CH> channel);
 }

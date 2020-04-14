@@ -10,24 +10,26 @@ package top.gunplan.netty;
  *
  * @author dosdrtt
  */
-public enum GunExceptionType {
+public enum GunExceptionMode implements ExceptionType{
     /**
      * types such as
      */
+    CHANNEL("module:channel"),EVENT_LOOP("module:event_loop"),
+    CORE("Core:"),
     NULLPTR("Nullptr exception"), URGENCY("Urgency can incur boot fail"),
     REF("Reference exception"), READ_PROPERTY_ERROR("Read property error"),
-    EXC0("Init error"), EXC1("Connection error"), EXC2("Use high level"),
+    EXC0("Init error"), EXC1("Connection error"),
     OUT_POSITION("Out of position"), STATE_ERROR("State error"),
-    CHANNEL_ERROR("channel error"),
-    EXC3("None know exc3"), FUNCTION_NOT_IMPLEMENT("Function not implement"),
-    TRANSLATE_ERROR("Translate error"), NOT_SUPPORT("Not support");
+    NOT_SUPPORT("Not support");
     private String info;
 
-    GunExceptionType(String info) {
+    GunExceptionMode(String info) {
         this.info = info;
     }
 
-    public String getInfo() {
+    @Override
+    public String info() {
         return info;
     }
 }
+

@@ -4,6 +4,7 @@
 
 package top.gunplan.netty;
 
+import top.gunplan.netty.common.GunNettyStringUtil;
 import top.gunplan.netty.impl.GunNettyCoreThreadManager;
 import top.gunplan.netty.observe.GunNettyServiceObserve;
 
@@ -43,7 +44,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
      * @return threadManager
      */
     default GunNettyCoreThreadManager threadManager() {
-        throw new GunException(GunExceptionType.NOT_SUPPORT, "GunNettyCoreThreadManager not support :");
+        throw new GunCommonException(GunCommonExceptionType.FUNCTION_NOT_SUPPORT, "GunNettyCoreThreadManager");
     }
 
 
@@ -100,7 +101,7 @@ public interface GunBootServer extends GunBootServerBase, GunServerStateManager 
      * @return this chain style
      */
     default GunBootServer useStealMode(boolean use) {
-        throw new GunException(GunExceptionType.NOT_SUPPORT, "not support steal mode");
+        throw new GunCommonException(GunCommonExceptionType.FUNCTION_NOT_IMPLEMENT, GunNettyStringUtil.EMPTY);
     }
 
     /**

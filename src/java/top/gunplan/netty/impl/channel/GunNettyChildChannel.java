@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.Channel;
 import java.nio.channels.SocketChannel;
+import java.util.function.Consumer;
 
 /**
  * GunNettyChildChannel
@@ -31,9 +32,9 @@ public interface GunNettyChildChannel<CH extends Channel> extends
     GunNettyChannel<CH, GunDataEventLoop<SocketChannel>, GunNettyChildrenPipeline> closeAndRemove(boolean b);
 
     /**
+     * generalClose
      * close channel and remove form selector
-     *
-     * @return closed
+     * @return Deal Result
      */
     GunNettyFilter.DealResult generalClose();
 
@@ -43,7 +44,7 @@ public interface GunNettyChildChannel<CH extends Channel> extends
      *
      * @return parent channel
      */
-    GunNettyServerChannel parent();
+    <PCH extends ServerSocketChannel> GunNettyServerChannel<PCH> parent();
 
 
     /**
@@ -83,4 +84,16 @@ public interface GunNettyChildChannel<CH extends Channel> extends
      * @return push result
      */
     boolean pushEvent(Object event);
+
+    /**
+     * key
+     * @return selection key
+     */
+    SelectionKey key();
+
+    /**
+     * when read complete handle
+     * @param t call back pointer
+     */
+    void setWhenReadCompleteCallBack(Consumer<GunNettyChildChannel<CH>> t);
 }

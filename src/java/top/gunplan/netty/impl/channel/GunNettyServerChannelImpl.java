@@ -6,10 +6,11 @@ package top.gunplan.netty.impl.channel;
 
 
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 import top.gunplan.netty.impl.pipeline.GunNettyParentPipeline;
+import top.gunplan.netty.impl.timeevent.GunNettyTimeExecutor;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
@@ -33,13 +34,13 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
 
     @Override
     public GunNettyParentPipeline pipeline() {
-        throw new GunException(GunExceptionType.NOT_SUPPORT, "not support pipeline");
+        throw new GunException(GunExceptionMode.NOT_SUPPORT, "not support pipeline");
     }
 
 
     @Override
     public SocketAddress remoteAddress() {
-        throw new GunException(GunExceptionType.NOT_SUPPORT, "not support");
+        throw new GunException(GunExceptionMode.NOT_SUPPORT, "not support");
     }
 
 
@@ -73,6 +74,6 @@ public class GunNettyServerChannelImpl extends BaseGunNettyChannel<ServerSocketC
 
     @Override
     public void doTime() {
-
+        GunNettyTimeExecutor.execute(timers, unsafeSequencer.nextSequence(), scheduledExecutorService, this);
     }
 }

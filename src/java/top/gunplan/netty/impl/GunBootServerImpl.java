@@ -87,11 +87,11 @@ final class GunBootServerImpl implements GunBootServer {
     @Override
     public boolean initCheck() {
         if (acceptExecutor == null) {
-            throw new GunException(GunExceptionType.NULLPTR, "acceptExecutor is null");
+            throw new GunException(GunExceptionMode.NULLPTR, "acceptExecutor is null");
         } else if (workExecutor == null) {
-            throw new GunException(GunExceptionType.NULLPTR, "workExecutor is null");
+            throw new GunException(GunExceptionMode.NULLPTR, "workExecutor is null");
         } else if (isRunnable()) {
-            throw new GunException(GunExceptionType.STATE_ERROR, "system has running");
+            throw new GunException(GunExceptionMode.STATE_ERROR, "system has running");
         }
         return true;
     }
@@ -170,7 +170,7 @@ final class GunBootServerImpl implements GunBootServer {
     private int baseParameterCheck() {
         final GunNettyPropertyManager propertyManager = GunNettySystemService.PROPERTY_MANAGER;
         if (!this.initCheck() || !propertyManager.initProperty()) {
-            throw new GunException(GunExceptionType.EXC0, "Exception has been threw");
+            throw new GunException(GunExceptionMode.EXC0, "Exception has been threw");
         }
         return 0;
     }

@@ -4,7 +4,6 @@
 
 package top.gunplan.netty.example;
 
-import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.GunException;
 import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyParentHandle;

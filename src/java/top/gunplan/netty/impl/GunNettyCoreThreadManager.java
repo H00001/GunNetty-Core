@@ -49,7 +49,6 @@ public interface GunNettyCoreThreadManager {
 
     /**
      * init
-     *
      * @param acceptExecutor     executor to deal accept event
      * @param dataExecutor       executor to deal data event
      * @param port               listen the port

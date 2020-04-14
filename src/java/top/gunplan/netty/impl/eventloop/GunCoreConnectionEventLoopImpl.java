@@ -5,7 +5,6 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.ChannelInitHandle;
-import top.gunplan.netty.GunChannelException;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
@@ -80,9 +79,9 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
 
     @Override
     public void nextDeal() {
-        Iterator keyIterator = bootSelector.selectedKeys().iterator();
+        Iterator<SelectionKey> keyIterator = bootSelector.selectedKeys().iterator();
         while (keyIterator.hasNext()) {
-            SelectionKey sk = (SelectionKey) keyIterator.next();
+            SelectionKey sk = keyIterator.next();
             try {
                 this.dealEvent(sk);
             } catch (IOException e) {
@@ -133,6 +132,6 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     @Override
     public void whenSendTaskFail(Runnable r, RejectedExecutionException e) {
         GunNettyExecutors.executeByNewThread(r);
-        e.printStackTrace();
+        throw new GunEventLoopException(GunEventLoopExceptionType.EXECUTE_TASK_FAIL,e);
     }
 }
