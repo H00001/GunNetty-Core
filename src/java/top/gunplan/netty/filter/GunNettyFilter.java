@@ -6,6 +6,7 @@ package top.gunplan.netty.filter;
 
 
 import top.gunplan.netty.GunHandle;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.impl.checker.GunOutboundChecker;
 
 /**
@@ -20,9 +21,9 @@ public interface GunNettyFilter extends GunHandle {
      *
      * @param filterDto input to the filter's deal Object
      * @return DealResult result true:next false:break
-     * @throws GunChannelException kinds of exception
+     * @throws top.gunplan.netty.impl.channel.GunNettyChannelException kinds of exception
      */
-    DealResult doOutputFilter(GunOutboundChecker filterDto) throws GunChannelException;
+    DealResult doOutputFilter(GunOutboundChecker filterDto) throws GunNettyChannelException;
 
 
     enum DealResult {

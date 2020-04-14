@@ -5,6 +5,7 @@
 package top.gunplan.netty;
 
 import top.gunplan.netty.filter.GunNettyFilter;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 
 import java.net.SocketAddress;
 
@@ -28,5 +29,5 @@ public interface GunNettyHandle extends GunHandle {
      * @param exp Exception
      * @return result
      */
-    GunNettyFilter.DealResult dealExceptionEvent(GunChannelException exp);
+    GunNettyFilter.DealResult dealExceptionEvent(GunNettyChannelException exp);
 }

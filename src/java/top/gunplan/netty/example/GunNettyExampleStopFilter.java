@@ -6,6 +6,7 @@ package top.gunplan.netty.example;
 
 import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.filter.GunNettyInboundFilter;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.impl.checker.GunInboundChecker;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ public class GunNettyExampleStopFilter implements GunNettyInboundFilter {
 
 
     @Override
-    public DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException {
+    public DealResult doInputFilter(GunInboundChecker filterDto) throws GunNettyChannelException {
         System.out.println(filterDto.channel().pipeline().toString());
         if (((GunString) (filterDto.transferTarget())).get().startsWith("666")) {
             filterDto.channel().pushEvent(1);

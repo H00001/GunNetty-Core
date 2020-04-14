@@ -171,11 +171,6 @@ class GunCoreDataEventLoopImpl extends AbstractGunCoreEventLoop implements GunDa
     }
 
 
-    private void throwGunException(IOException e) throws GunException {
-        throw new GunException(e);
-    }
-
-
     @Override
     @SuppressWarnings("unchecked")
     public void dealEvent(SelectionKey key) {

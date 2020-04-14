@@ -8,6 +8,7 @@ import top.gunplan.netty.ChannelInitHandle;
 import top.gunplan.netty.SystemChannelChangedHandle;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.common.GunNettyExecutors;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.impl.channel.GunNettyChannelFactory;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.channel.GunNettyServerChannel;
@@ -85,7 +86,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
             try {
                 this.dealEvent(sk);
             } catch (IOException e) {
-                channel.pipeline().parentHandel().dealExceptionEvent(new GunChannelException(e));
+                channel.pipeline().parentHandel().dealExceptionEvent(new GunNettyChannelException(null, e));
             }
             keyIterator.remove();
         }

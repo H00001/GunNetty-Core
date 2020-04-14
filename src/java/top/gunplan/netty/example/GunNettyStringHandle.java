@@ -9,6 +9,7 @@ import top.gunplan.netty.GunNettyChildrenHandle;
 import top.gunplan.netty.GunNettyParentHandle;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.filter.GunNettyFilter;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.protocol.GunNetInbound;
 import top.gunplan.netty.protocol.GunNetOutbound;
 
@@ -38,7 +39,7 @@ public class GunNettyStringHandle implements GunNettyChildrenHandle, GunNettyPar
     }
 
     @Override
-    public GunNettyFilter.DealResult dealExceptionEvent(GunChannelException exp) {
+    public GunNettyFilter.DealResult dealExceptionEvent(GunNettyChannelException exp) {
         return GunNettyFilter.DealResult.NEXT;
     }
 

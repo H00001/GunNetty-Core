@@ -18,7 +18,7 @@ public enum GunExceptionMode implements ExceptionType{
     CORE("Core:"),
     NULLPTR("Nullptr exception"), URGENCY("Urgency can incur boot fail"),
     REF("Reference exception"), READ_PROPERTY_ERROR("Read property error"),
-    EXC0("Init error"), EXC1("Connection error"),
+    EXC0("Init error"),
     OUT_POSITION("Out of position"), STATE_ERROR("State error"),
     NOT_SUPPORT("Not support");
     private String info;

@@ -4,13 +4,14 @@
 
 package top.gunplan.netty.impl;
 
-import top.gunplan.netty.GunChannelException;
+
 import top.gunplan.netty.GunException;
-import top.gunplan.netty.GunExceptionType;
+import top.gunplan.netty.GunExceptionMode;
 import top.gunplan.netty.GunFunctionMapping;
 import top.gunplan.netty.anno.GunNetFilterOrder;
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyDataFilter;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.checker.AbstractGunChecker;
 import top.gunplan.netty.impl.checker.GunInboundChecker;
@@ -46,7 +47,7 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
             SRC_HANDLE = MethodHandles.privateLookupIn(AbstractGunChecker.class, MethodHandles.lookup()).findVarHandle(AbstractGunChecker.class, "src", ByteBuffer.class);
             SRC_HANDLE.accessModeType(VarHandle.AccessMode.SET_VOLATILE);
         } catch (NoSuchFieldException | IllegalAccessException e) {
-            throw new GunException(GunExceptionType.READ_PROPERTY_ERROR, e);
+            throw new GunException(GunExceptionMode.NOT_SUPPORT, e);
         }
     }
 
@@ -60,7 +61,7 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
         return this;
     }
 
-    private void dealCloseEvent(SocketAddress key, boolean readOrWrite) throws GunChannelException {
+    private void dealCloseEvent(SocketAddress key, boolean readOrWrite) throws GunNettyChannelException {
         int v = readOrWrite
                 ? observe.preReadClose(key) :
                 observe.preWriteClose(key);
@@ -142,7 +143,7 @@ public final class GunNettyStdFirstFilter implements GunNettyDataFilter, GunNett
     }
 
     @Override
-    public DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException {
+    public DealResult doInputFilter(GunInboundChecker filterDto) throws GunNettyChannelException {
         final GunNettyChildChannel<SocketChannel> channel = filterDto.channel();
         if (channel.isValid()) {
             try {

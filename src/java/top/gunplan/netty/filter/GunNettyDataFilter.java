@@ -4,6 +4,7 @@
 
 package top.gunplan.netty.filter;
 
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.impl.checker.GunInboundChecker;
 
 /**
@@ -19,7 +20,7 @@ public interface GunNettyDataFilter extends GunNettyFilter {
      *
      * @param filterDto input filter dto
      * @return deal result {@link DealResult};
-     * @throws GunChannelException kinds of exception
+     * @throws GunNettyChannelException kinds of exception
      */
-    DealResult doInputFilter(GunInboundChecker filterDto) throws GunChannelException;
+    DealResult doInputFilter(GunInboundChecker filterDto) throws GunNettyChannelException;
 }

@@ -6,6 +6,7 @@ package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.filter.GunNettyConnFilter;
 import top.gunplan.netty.filter.GunNettyFilter;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.checker.GunNetServerOutboundChecker;
 import top.gunplan.netty.impl.checker.GunOutboundChecker;
@@ -32,7 +33,7 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
         GunNetOutbound outbound = null;
         try {
             outbound = pHandle.dealConnEvent(channel.remoteAddress());
-        } catch (GunChannelException e) {
+        } catch (GunNettyChannelException e) {
             if (handle.dealExceptionEvent(e) != GunNettyFilter.DealResult.NEXT) {
                 return false;
             }
@@ -43,7 +44,7 @@ public final class GunAcceptWorker extends BaseGunNettyWorker implements Runnabl
         do {
             try {
                 result = iterator.previous().doOutputFilter(checker);
-            } catch (GunChannelException e) {
+            } catch (GunNettyChannelException e) {
                 result = handle.dealExceptionEvent(e);
             }
         }

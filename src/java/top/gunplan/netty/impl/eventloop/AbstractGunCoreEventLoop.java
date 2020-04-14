@@ -5,9 +5,10 @@
 package top.gunplan.netty.impl.eventloop;
 
 import top.gunplan.netty.GunCoreEventLoop;
-import top.gunplan.netty.GunException;
 import top.gunplan.netty.common.GunNettyExecutors;
 import top.gunplan.netty.impl.GunNettyEventLoopManager;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
+import top.gunplan.netty.impl.channel.GunNettyChannelExceptionType;
 
 import java.io.IOException;
 import java.nio.channels.SelectionKey;
@@ -96,7 +97,7 @@ abstract class AbstractGunCoreEventLoop implements GunCoreEventLoop {
         try {
             whenHaltDeal();
         } catch (IOException e) {
-            throw new GunException(e);
+            throw new GunNettyChannelException(GunNettyChannelExceptionType.TRANSLATE_ERROR, e);
         }
     }
 

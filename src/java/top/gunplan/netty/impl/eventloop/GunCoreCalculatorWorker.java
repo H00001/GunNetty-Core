@@ -7,6 +7,7 @@ package top.gunplan.netty.impl.eventloop;
 import top.gunplan.netty.filter.GunNettyDataFilter;
 import top.gunplan.netty.filter.GunNettyFilter;
 import top.gunplan.netty.impl.GunNettyFunctional;
+import top.gunplan.netty.impl.channel.GunNettyChannelException;
 import top.gunplan.netty.impl.channel.GunNettyChildChannel;
 import top.gunplan.netty.impl.checker.GunInboundChecker;
 import top.gunplan.netty.impl.checker.GunNetServerInboundChecker;
@@ -54,7 +55,7 @@ public final class GunCoreCalculatorWorker extends
         for (final GunNettyDataFilter filter : dataFilters) {
             try {
                 result = filter.doInputFilter(inbound);
-            } catch (GunChannelException e) {
+            } catch (GunNettyChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }
             final int exeCode = mapNext(result);
@@ -69,7 +70,7 @@ public final class GunCoreCalculatorWorker extends
         for (int i = dataFilters.size() - 1; i >= 0 && !notDealOutputFlag; i--) {
             try {
                 result = dataFilters.get(i).doOutputFilter(outboundChecker);
-            } catch (GunChannelException e) {
+            } catch (GunNettyChannelException e) {
                 this.handle.dealExceptionEvent(e);
             }
             final int exeCode = mapNext(result);
@@ -91,7 +92,7 @@ public final class GunCoreCalculatorWorker extends
         GunNetOutbound output = null;
         try {
             output = handle.dealDataEvent(inbound.transferTarget());
-        } catch (GunChannelException e) {
+        } catch (GunNettyChannelException e) {
             this.handle.dealExceptionEvent(e);
         }
         return output;
