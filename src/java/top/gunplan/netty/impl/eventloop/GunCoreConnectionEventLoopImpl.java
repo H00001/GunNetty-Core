@@ -59,9 +59,13 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     }
 
     @Override
-    public int init(ExecutorService service) throws IOException {
-        super.init(service);
-        channel = GunNettyChannelFactory.newServerChannel(ServerSocketChannel.open(), initHandle, this);
+    public int init(ExecutorService service) {
+        try {
+            super.init(service);
+            channel = GunNettyChannelFactory.newServerChannel(ServerSocketChannel.open(), initHandle, this);
+        } catch (IOException e) {
+            this.initHandle.failToCreateParentChannel(e);
+        }
         assert channel != null;
         return 0;
     }
@@ -108,7 +112,7 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
             try {
                 childChannel = GunNettyChannelFactory.newChannel(socketChannel, childrenInitHandle, channel);
             } catch (IOException e) {
-                initHandle.failToCreateChildrenChannel(e);
+                initHandle.failToCreateChildChannel(e);
                 return;
             }
             manager.transferEventLoop().push(new GunNettyChannelTransferImpl<>(childChannel));

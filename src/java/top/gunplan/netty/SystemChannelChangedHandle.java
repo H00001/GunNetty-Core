@@ -7,6 +7,7 @@ package top.gunplan.netty;
 import top.gunplan.netty.common.GunNettyContext;
 import top.gunplan.netty.impl.eventloop.GunConnEventLoop;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 /**
@@ -39,12 +40,22 @@ public interface SystemChannelChangedHandle extends GunHandle {
 
 
     /**
-     * connEventLoopStop
+     * failToCreateChildChannel call back
      *
-     * @param throwable event loop
+     * @param throwable error
      */
-    default void failToCreateChildrenChannel(Throwable throwable) {
+    default void failToCreateChildChannel(Throwable throwable) {
         GunNettyContext.logger.setTAG(SystemChannelChangedHandle.class).
-                info("failToCreateChildrenChannel:" + throwable);
+                info("failToCreateChildChannel:" + throwable);
+    }
+
+    /**
+     * failToCreateParentChannel call back
+     *
+     * @param throwable i/o error
+     */
+    default void failToCreateParentChannel(IOException throwable) {
+        GunNettyContext.logger.setTAG(SystemChannelChangedHandle.class).
+                info("failToCreateParentChannel:" + throwable);
     }
 }
