@@ -29,6 +29,15 @@ public interface SystemChannelChangedHandle extends GunHandle {
 
 
     /**
+     * whenBindError
+     *
+     * @param t throwable error
+     */
+    default void whenBindError(Throwable t) {
+        GunNettyContext.logger.setTAG(SystemChannelChangedHandle.class).
+                error("whenBindError:" + t);
+    }
+    /**
      * connEventLoopStop
      *
      * @param port event loop

@@ -33,7 +33,7 @@ public interface GunConnEventLoop extends GunCoreEventLoop {
      *
      * @return port
      */
-    int listenPort();
+    int[] listenPort();
 
 
     /**

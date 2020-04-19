@@ -18,6 +18,7 @@ import java.nio.channels.SelectionKey;
 import java.nio.channels.Selector;
 import java.nio.channels.ServerSocketChannel;
 import java.nio.channels.SocketChannel;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.RejectedExecutionException;
@@ -44,13 +45,19 @@ class GunCoreConnectionEventLoopImpl extends AbstractGunCoreEventLoop implements
     @Override
     public int openPort(int... port) throws IOException {
         this.port = port;
-        channel.bind(port[0]).registerAcceptWithEventLoop();
+        Arrays.stream(port).forEach(p -> {
+            try {
+                channel.bind(p).registerAcceptWithEventLoop();
+            } catch (IOException e) {
+                initHandle.whenBindError(e);
+            }
+        });
         return 0;
     }
 
     @Override
-    public int listenPort() {
-        return this.port[0];
+    public int[] listenPort() {
+        return this.port;
     }
 
     @Override
