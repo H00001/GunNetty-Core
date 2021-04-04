@@ -50,6 +50,6 @@ mvn clean && mvn install to install this project
 If you want to make it as a web server, please use `GunStdHttp2Filter` as `GunNettyFilter` and  
 use `GunStdHttpHandle` as `GunNettyhandle`,even though you can writer the filter and handle that   
 belong to you.    
-the execute order is filter's `doRequest` method -> `handle` -> the filter's `doResponse` method.
+The execute order is `doRequest` of filters method -> `handle` -> `doResponse` of filters method.
  
  
