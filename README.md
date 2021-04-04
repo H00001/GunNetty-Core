@@ -1,19 +1,19 @@
 # I am a README file, please read me first.
 `Copyright © frank albert personal 2016-2018`  
-This is a support for high concurrency net servers. you can use me  
-as a web service, a load balancing service and so on.  
+This is a support for high concurrency net servers. You can use me  
+as a web service, a load balancing service and etc.  
 
 ## GETTING START
 **As a old ferric double click 666 game server**
 ```Java
-        //set property strategy
+       // set property strategy
         GunNettySystemService.PROPERTY_MANAGER.setStrategy(new GunGetPropertyFromBaseFile());
-        //get a server instance 
+       // get a server instance 
         GunBootServer server = GunBootServerFactory.newInstance();
         server
-                //set sum of thread          
+               // set sum of thread          
                 .setExecutors(10, 10)
-                //use steal work model (ForkJoinPool)
+               // use steal work model (ForkJoinPool)
                 .useStealMode(true)
                 .registerObserve(new GunNettyDefaultObserve())
                 .onHasChannel(pipeline -> pipeline
@@ -29,7 +29,7 @@ as a web service, a load balancing service and so on.
         server.setSyncType(false);
         Assertions.assertEquals(server.sync(), GunBootServer.GunNettyWorkState.ASYNC.state |
                 GunBootServer.GunNettyWorkState.RUNNING.state);
-        //running doTime
+       // running doTime
         Thread.sleep(100);
         System.out.println(GunBootServer.GunNettyWorkState.getState(server.stop()));
  ```
@@ -42,12 +42,12 @@ Yep. The next is playing the game!
 ...
 ```
 ### Building the Application
-if you want to install it on the local, please execute
+If you want to install it on the local, please execute the following.
 ```shell script
 mvn clean && mvn install to install this project
 ```
 ## CREATE YOUR SELF SERVICE
-if you want to make it as a web server, please use `GunStdHttp2Filter` as `GunNettyFilter` and  
+If you want to make it as a web server, please use `GunStdHttp2Filter` as `GunNettyFilter` and  
 use `GunStdHttpHandle` as `GunNettyhandle`,even though you can writer the filter and handle that   
 belong to you.    
 the execute order is filter's `doRequest` method -> `handle` -> the filter's `doResponse` method.
